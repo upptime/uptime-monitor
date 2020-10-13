@@ -3,7 +3,6 @@ import slugify from "@sindresorhus/slugify";
 import { readFile, writeFile, ensureDir, writeJson, readJson } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
-import "chart.js";
 import { CanvasRenderService } from "chartjs-node-canvas";
 
 const canvasRenderService = new CanvasRenderService(600, 400);
