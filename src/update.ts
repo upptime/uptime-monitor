@@ -44,16 +44,20 @@ export const update = async () => {
 
     try {
       currentStatus =
-        (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
-          .split("\n")
-          .find((line) => line.toLocaleLowerCase().includes("- status"))
-          ?.split(":")[1]
+        (
+          (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
+            .split("\n")
+            .find((line) => line.toLocaleLowerCase().includes("- status")) || ""
+        )
+          .split(":")[1]
           .trim() || "unknown";
       startTime =
-        (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
-          .split("\n")
-          .find((line) => line.toLocaleLowerCase().includes("- starttime"))
-          ?.split("startTime:")[1]
+        (
+          (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
+            .split("\n")
+            .find((line) => line.toLocaleLowerCase().includes("- starttime")) || ""
+        )
+          .split("startTime:")[1]
           .trim() || new Date().toISOString();
     } catch (error) {}
 

@@ -41,10 +41,12 @@ export const generateSummary = async () => {
     let startTime = new Date().toISOString();
     try {
       startTime =
-        (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
-          .split("\n")
-          .find((line) => line.toLocaleLowerCase().includes("- starttime"))
-          ?.split("startTime:")[1]
+        (
+          (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
+            .split("\n")
+            .find((line) => line.toLocaleLowerCase().includes("- starttime")) || ""
+        )
+          .split("startTime:")[1]
           .trim() || new Date().toISOString();
     } catch (error) {}
     let secondsDown = 0;
