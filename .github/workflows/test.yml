@@ -12,7 +12,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - uses: ./
-        with:
-          milliseconds: 1000
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
