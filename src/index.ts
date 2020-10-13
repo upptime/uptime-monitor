@@ -1,25 +1,28 @@
-import { getInput, debug, setFailed, setOutput } from "@actions/core";
-import { getOctokit } from "@actions/github";
+import { debug, getInput, setFailed } from "@actions/core";
+import { generateGraphs } from "./graph";
+import { generateSummary } from "./summary";
+import { update } from "./update";
 
-const token =
-  getInput("token") || process.env.GH_PAT || process.env.GITHUB_TOKEN;
+const token = getInput("token") || process.env.GH_PAT || process.env.GITHUB_TOKEN;
 
 export const run = async () => {
   if (!token) throw new Error("GitHub token not found");
-  const octokit = getOctokit(token);
 
-  const ms: string = getInput("milliseconds");
-  debug(`Waiting ${ms} milliseconds ...`);
+  debug("Starting Upptime");
 
-  debug(new Date().toTimeString());
-  await wait(parseInt(ms, 10));
-  debug(new Date().toTimeString());
-
-  setOutput("time", new Date().toTimeString());
-};
-
-export const wait = (milliseconds: number) => {
-  return new Promise((resolve) => setTimeout(() => resolve(), milliseconds));
+  switch (getInput("command")) {
+    case "summary":
+      debug("Starting summary");
+    case "readme":
+      debug("Starting readme");
+      return generateSummary();
+    case "graph":
+      debug("Starting graph");
+      return generateGraphs();
+    default:
+      debug("Starting update");
+      return update();
+  }
 };
 
 run()
