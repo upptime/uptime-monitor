@@ -9,6 +9,7 @@ const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
+require("chart.js");
 const chartjs_node_canvas_1 = require("chartjs-node-canvas");
 const canvasRenderService = new chartjs_node_canvas_1.CanvasRenderService(600, 400);
 exports.generateGraphs = async () => {
