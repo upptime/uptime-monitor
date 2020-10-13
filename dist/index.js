@@ -26058,8 +26058,7 @@ const axios_1 = __importDefault(__webpack_require__(53));
 const node_libcurl_1 = __webpack_require__(268);
 const path_1 = __webpack_require__(622);
 const summary_1 = __webpack_require__(596);
-const shouldCommit = process.argv[2] === "commit";
-exports.update = async () => {
+exports.update = async (shouldCommit = false) => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     const owner = config.owner;
     const repo = config.repo;
