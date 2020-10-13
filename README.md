@@ -1,25 +1,29 @@
-# 🎬 GitHub Actions Starter
+# ⬆️📈 Upptime Uptime Monitor
 
-GitHub Actions starter for TypeScript with automated releases to `dist`, Semantic Release, and auto-PR merges.
+This repository contains Upptime's GitHub Action.
+
+[**To get started, visit upptime/upptime →**](https://github.com/upptime/upptime)
 
 [![Build CI](https://github.com/upptime/uptime-monitor/workflows/Build%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Build+CI%22)
 [![Test CI](https://github.com/upptime/uptime-monitor/workflows/Test%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Test+CI%22)
 [![Release CI](https://github.com/upptime/uptime-monitor/workflows/Release%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Release+CI%22)
 [![Node CI](https://github.com/upptime/uptime-monitor/workflows/Node%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Node+CI%22)
 
-## ⭐ Features
+## 🎁 Contributing
 
-- Write source in TypeScript
-- Auto-publish compiled code to `dist/`
-- Semantic Release to GitHub and npm
-- Includes Actions Core and Octokit
+This repository is for Upptime's GitHub Action. We love contributions, so please read our [Contributing Guidelines](https://github.com/upptime-js/.github/blob/master/CONTRIBUTING.md) and [Code of Conduct](https://github.com/upptime-js/.github/blob/master/CODE_OF_CONDUCT.md) and open an issue or make a pull request!
 
-[**Create a repository using this template →**](https://github.com/upptime/uptime-monitor/generate)
+### Issues
+
+We use the [upptime/upptime](https://github.com/upptime/upptime) repository for issues for all projects, including this one. If you found a bug or have a feature request, [open an issue](https://github.com/upptime/upptime/issues) in the Upptime repository and add the label "action".
+
+## 💻 Usage
+
+When you use Upptime, we automatically add the required workflows.
 
 ## 📄 License
 
-- Code: [MIT](./LICENSE) © [Koj](https://koj.co)
-- "GitHub" is a trademark of GitHub, Inc.
+[MIT](./LICENSE) © [Koj](https://koj.co)
 
 <p align="center">
   <a href="https://koj.co">
