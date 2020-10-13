@@ -1,0 +1,11 @@
+---
+name: err-code
+version: 1.1.2
+type: npm
+summary: Create an error with a code
+homepage: https://github.com/IndigoUnited/js-err-code#readme
+license: mit
+licenses:
+- sources: README.md
+  text: Released under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
+notices: []

@@ -1,0 +1,11 @@
+---
+name: spdx-license-ids
+version: 3.0.5
+type: npm
+summary: A list of SPDX license identifiers
+homepage: https://github.com/shinnn/spdx-license-ids#readme
+license: cc0-1.0
+licenses:
+- sources: README.md
+  text: "[Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/deed)"
+notices: []

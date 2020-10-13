@@ -1,0 +1,18 @@
+name: Test CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  test:
+    name: Test action
+    runs-on: ubuntu-18.04
+    if: "contains(github.event.head_commit.message, 'Deploy new version')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: ./
+        with:
+          milliseconds: 1000
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

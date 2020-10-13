@@ -1,0 +1,58 @@
+{
+  "name": "github-actions-starter",
+  "version": "1.0.2",
+  "description": "Starter for GitHub Actions with TypeScript and automated releases",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "package": "ncc build --source-map",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koj-co/action.ts.git"
+  },
+  "keywords": [
+    "github",
+    "github actions",
+    "nodejs",
+    "typescript",
+    "starter"
+  ],
+  "author": "Anand Chowdhary <mail@anandchowdhary.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koj-co/action.ts/issues"
+  },
+  "homepage": "https://github.com/koj-co/action.ts#readme",
+  "devDependencies": {
+    "@semantic-release/git": "^9.0.0",
+    "@types/jest": "^26.0.14",
+    "@zeit/ncc": "^0.22.3",
+    "jest": "^26.5.2",
+    "semantic-release": "^17.1.2",
+    "semantic-release-gitmoji": "^1.3.4",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "@koj/config": "^1.2.5"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "automock": false
+  }
+}

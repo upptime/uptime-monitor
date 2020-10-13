@@ -1,0 +1,31 @@
+---
+name: split2
+version: 1.0.0
+type: npm
+summary: split a Text Stream into a Line Stream, using Stream 3
+homepage: https://github.com/mcollina/split2#readme
+license: isc
+licenses:
+- sources: LICENSE
+  text: "Copyright (c) 2014, Matteo Collina <hello@matteocollina.com>\r\n\r\nPermission
+    to use, copy, modify, and/or distribute this software for any\r\npurpose with
+    or without fee is hereby granted, provided that the above\r\ncopyright notice
+    and this permission notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE
+    INCLUDING ALL IMPLIED WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT
+    SHALL THE AUTHOR BE LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+    DAMAGES OR ANY DAMAGES\r\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+    WHETHER IN AN\r\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+    OUT OF OR\r\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\r\n"
+- sources: README.md
+  text: "Copyright (c) 2014, Matteo Collina <hello@matteocollina.com>\r\n\r\nPermission
+    to use, copy, modify, and/or distribute this software for any\r\npurpose with
+    or without fee is hereby granted, provided that the above\r\ncopyright notice
+    and this permission notice appear in all copies.\r\n\r\nTHE SOFTWARE IS PROVIDED
+    \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\r\nWITH REGARD TO THIS SOFTWARE
+    INCLUDING ALL IMPLIED WARRANTIES OF\r\nMERCHANTABILITY AND FITNESS. IN NO EVENT
+    SHALL THE AUTHOR BE LIABLE FOR\r\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+    DAMAGES OR ANY DAMAGES\r\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+    WHETHER IN AN\r\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+    OUT OF OR\r\nIN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE."
+notices: []

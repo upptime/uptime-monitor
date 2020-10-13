@@ -1,0 +1,22 @@
+---
+name: array-ify
+version: 1.0.0
+type: npm
+summary: Turn anything into an array
+homepage: https://github.com/stevemao/array-ify
+license: mit
+licenses:
+- sources: README.md
+  text: |-
+    MIT © [Steve Mao](https://github.com/stevemao)
+
+
+    [npm-image]: https://badge.fury.io/js/array-ify.svg
+    [npm-url]: https://npmjs.org/package/array-ify
+    [travis-image]: https://travis-ci.org/stevemao/array-ify.svg?branch=master
+    [travis-url]: https://travis-ci.org/stevemao/array-ify
+    [daviddm-image]: https://david-dm.org/stevemao/array-ify.svg?theme=shields.io
+    [daviddm-url]: https://david-dm.org/stevemao/array-ify
+    [coveralls-image]: https://coveralls.io/repos/stevemao/array-ify/badge.svg
+    [coveralls-url]: https://coveralls.io/r/stevemao/array-ify
+notices: []

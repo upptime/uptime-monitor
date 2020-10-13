@@ -1,0 +1,19 @@
+name: Hotfix Branch Pull Request
+on:
+  push:
+    branches-ignore:
+      - master
+      - production
+jobs:
+  auto-pull-request:
+    name: PullRequestAction
+    runs-on: ubuntu-latest
+    steps:
+      - name: pull-request-action
+        uses: vsoch/pull-request-action@1.0.10
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          BRANCH_PREFIX: "hotfix-"
+          PULL_REQUEST_BRANCH: "production"
+          PULL_REQUEST_BODY: "🚀 Opening a pull request for this branch"
+          PULL_REQUEST_REVIEWERS: "AnandChowdhary"
