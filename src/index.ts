@@ -19,6 +19,9 @@ export const run = async () => {
     case "graph":
       debug("Starting graph");
       return generateGraphs();
+    case "response-time":
+      debug("Starting response-time");
+      return update(true);
     default:
       debug("Starting update");
       return update();
