@@ -7,9 +7,7 @@ import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
 import { generateSummary } from "./summary";
 
-const shouldCommit = process.argv[2] === "commit";
-
-export const update = async () => {
+export const update = async (shouldCommit = false) => {
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as {
     sites: Array<{
       name: string;
