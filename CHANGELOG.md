@@ -1,3 +1,9 @@
+# [v1.3.0](https://github.com/upptime/uptime-monitor/compare/v1.2.0...v1.3.0) (2020-10-13)
+
+## ✨ New features
+
+- [`e03971b`](https://github.com/upptime/uptime-monitor/commit/e03971b)  Add static site generator
+
 # [v1.2.0](https://github.com/upptime/uptime-monitor/compare/v1.1.0...v1.2.0) (2020-10-13)
 
 ## ✨ New features
