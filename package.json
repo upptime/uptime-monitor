@@ -27,6 +27,7 @@
   "homepage": "https://github.com/upptime/uptime-monitor#readme",
   "devDependencies": {
     "@semantic-release/git": "^9.0.0",
+    "@types/chart.js": "^2.9.25",
     "@types/fs-extra": "^9.0.2",
     "@types/jest": "^26.0.14",
     "@types/js-yaml": "^3.12.5",
@@ -43,6 +44,7 @@
     "@koj/config": "^1.2.5",
     "@sindresorhus/slugify": "^1.1.0",
     "axios": "^0.20.0",
+    "chart.js": "^2.9.3",
     "chartjs-node-canvas": "^3.0.6",
     "fs-extra": "^9.0.1",
     "js-yaml": "^3.14.0",
