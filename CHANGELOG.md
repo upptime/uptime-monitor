@@ -1,3 +1,9 @@
+# [v1.0.1](https://github.com/upptime/uptime-monitor/compare/v1.0.0...v1.0.1) (2020-10-13)
+
+## 🔒 Security issues
+
+- [`715a139`](https://github.com/upptime/uptime-monitor/commit/715a139)  Run npm audit fix
+
 # v1.0.0 (2020-10-13)
 
 ## ✨ New features
