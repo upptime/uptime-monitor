@@ -8,6 +8,7 @@ allowed:
   - mit
   - cc0-1.0
   - unlicense
+  - bsd0
 reviewed:
   npm:
     - "@actions/http-client"
@@ -85,3 +86,10 @@ reviewed:
     - wcwidth
     - wordwrap
     - yargs
+    - canvas
+    - lodash.deburr
+    - nan
+    - sax
+    - sprintf-js
+    - tslib
+    - uri-js
