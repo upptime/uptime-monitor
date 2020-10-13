@@ -2,10 +2,10 @@
 
 GitHub Actions starter for TypeScript with automated releases to `dist`, Semantic Release, and auto-PR merges.
 
-[![Build CI](https://github.com/koj-co/action.ts/workflows/Build%20CI/badge.svg)](https://github.com/koj-co/action.ts/actions?query=workflow%3A%22Build+CI%22)
-[![Test CI](https://github.com/koj-co/action.ts/workflows/Test%20CI/badge.svg)](https://github.com/koj-co/action.ts/actions?query=workflow%3A%22Test+CI%22)
-[![Release CI](https://github.com/koj-co/action.ts/workflows/Release%20CI/badge.svg)](https://github.com/koj-co/action.ts/actions?query=workflow%3A%22Release+CI%22)
-[![Node CI](https://github.com/koj-co/action.ts/workflows/Node%20CI/badge.svg)](https://github.com/koj-co/action.ts/actions?query=workflow%3A%22Node+CI%22)
+[![Build CI](https://github.com/upptime/uptime-monitor/workflows/Build%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Build+CI%22)
+[![Test CI](https://github.com/upptime/uptime-monitor/workflows/Test%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Test+CI%22)
+[![Release CI](https://github.com/upptime/uptime-monitor/workflows/Release%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Release+CI%22)
+[![Node CI](https://github.com/upptime/uptime-monitor/workflows/Node%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Node+CI%22)
 
 ## ⭐ Features
 
@@ -14,7 +14,7 @@ GitHub Actions starter for TypeScript with automated releases to `dist`, Semanti
 - Semantic Release to GitHub and npm
 - Includes Actions Core and Octokit
 
-[**Create a repository using this template →**](https://github.com/koj-co/action.ts/generate)
+[**Create a repository using this template →**](https://github.com/upptime/uptime-monitor/generate)
 
 ## 📄 License
 

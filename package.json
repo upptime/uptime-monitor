@@ -1,7 +1,7 @@
 {
-  "name": "github-actions-starter",
-  "version": "1.0.2",
-  "description": "Starter for GitHub Actions with TypeScript and automated releases",
+  "name": "@upptime/uptime-monitor",
+  "version": "0.0.0",
+  "description": "Uptime monitor powered by GitHub Actions",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koj-co/action.ts.git"
+    "url": "git+https://github.com/upptime/uptime-monitor.git"
   },
   "keywords": [
     "github",
@@ -22,9 +22,9 @@
   "author": "Anand Chowdhary <mail@anandchowdhary.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/koj-co/action.ts/issues"
+    "url": "https://github.com/upptime/uptime-monitor/issues"
   },
-  "homepage": "https://github.com/koj-co/action.ts#readme",
+  "homepage": "https://github.com/upptime/uptime-monitor#readme",
   "devDependencies": {
     "@semantic-release/git": "^9.0.0",
     "@types/jest": "^26.0.14",
