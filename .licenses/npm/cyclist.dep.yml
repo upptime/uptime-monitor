@@ -1,0 +1,11 @@
+---
+name: cyclist
+version: 0.2.2
+type: npm
+summary: Cyclist is an efficient cyclic list implemention.
+homepage: https://github.com/mafintosh/cyclist#readme
+license: mit
+licenses:
+- sources: README.md
+  text: MIT
+notices: []

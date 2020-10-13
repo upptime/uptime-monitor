@@ -1,0 +1,11 @@
+---
+name: capture-stack-trace
+version: 1.0.0
+type: npm
+summary: Error.captureStackTrace ponyfill
+homepage: https://github.com/floatdrop/capture-stack-trace#readme
+license: mit
+licenses:
+- sources: readme.md
+  text: MIT © [Vsevolod Strukchinsky](http://github.com/floatdrop)
+notices: []

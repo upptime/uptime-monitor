@@ -1,0 +1,11 @@
+---
+name: is-npm
+version: 1.0.0
+type: npm
+summary: Check if your code is running as an npm script
+homepage: https://github.com/sindresorhus/is-npm#readme
+license: mit
+licenses:
+- sources: readme.md
+  text: MIT © [Sindre Sorhus](http://sindresorhus.com)
+notices: []

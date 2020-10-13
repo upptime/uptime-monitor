@@ -1,0 +1,11 @@
+---
+name: java-properties
+version: 1.0.2
+type: npm
+summary: Reads and interpolates Java .properties files
+homepage: http://github.com/mattdsteele/java-properties
+license: mit
+licenses:
+- sources: README.md
+  text: Licensed under the MIT license.
+notices: []
