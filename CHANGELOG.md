@@ -1,3 +1,9 @@
+# [v1.2.0](https://github.com/upptime/uptime-monitor/compare/v1.1.0...v1.2.0) (2020-10-13)
+
+## ✨ New features
+
+- [`ab036f6`](https://github.com/upptime/uptime-monitor/commit/ab036f6)  Add support for response-time command
+
 # [v1.1.0](https://github.com/upptime/uptime-monitor/compare/v1.0.1...v1.1.0) (2020-10-13)
 
 ## ✨ New features
