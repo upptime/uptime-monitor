@@ -93,3 +93,4 @@ reviewed:
     - sprintf-js
     - tslib
     - uri-js
+    - shelljs
