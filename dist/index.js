@@ -8408,6 +8408,9 @@ exports.run = async () => {
         case "graph":
             core_1.debug("Starting graph");
             return graph_1.generateGraphs();
+        case "response-time":
+            core_1.debug("Starting response-time");
+            return update_1.update(true);
         default:
             core_1.debug("Starting update");
             return update_1.update();
