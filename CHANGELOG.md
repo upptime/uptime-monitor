@@ -1,3 +1,9 @@
+# [v1.3.1](https://github.com/upptime/uptime-monitor/compare/v1.3.0...v1.3.1) (2020-10-20)
+
+## ♻️ Updates
+
+- [`62445d9`](https://github.com/upptime/uptime-monitor/commit/62445d9)  Add generator to file contents
+
 # [v1.3.0](https://github.com/upptime/uptime-monitor/compare/v1.2.0...v1.3.0) (2020-10-13)
 
 ## ✨ New features
