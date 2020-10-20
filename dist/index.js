@@ -33149,6 +33149,7 @@ exports.update = async (shouldCommit = false) => {
 - responseTime: ${responseTime}
 - lastUpdated: ${new Date().toISOString()}
 - startTime: ${startTime}
+- generator: Upptime <https://github.com/upptime/upptime>
 `;
                 let sha = "";
                 try {
