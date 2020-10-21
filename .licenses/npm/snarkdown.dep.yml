@@ -1,6 +1,6 @@
 ---
 name: snarkdown
-version: 1.2.2
+version: 2.0.0
 type: npm
 summary: Transform Markdown into HTML.
 homepage: https://github.com/developit/snarkdown
@@ -28,10 +28,4 @@ licenses:
     COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
     IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-- sources: README.md
-  text: |-
-    MIT
-
-
-    [Markdown]: http://daringfireball.net/projects/markdown/
 notices: []
