@@ -147,6 +147,13 @@ exports.update = async (shouldCommit = false) => {
                                             },
                                         });
                                 }
+                                else if (notification.type === "discord") {
+                                    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+                                    if (webhookUrl)
+                                        await axios_1.default.post(webhookUrl, {
+                                            content: `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`,
+                                        });
+                                }
                             }
                             console.log("Sent notifications");
                         }
@@ -181,6 +188,13 @@ exports.update = async (shouldCommit = false) => {
                                         headers: {
                                             Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}`,
                                         },
+                                    });
+                            }
+                            else if (notification.type === "discord") {
+                                const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+                                if (webhookUrl)
+                                    await axios_1.default.post(webhookUrl, {
+                                        content: `🟩 ${site.name} (${site.url}) is back up.`,
                                     });
                             }
                         }
