@@ -1,6 +1,6 @@
 ---
 name: axios
-version: 0.20.0
+version: 0.21.0
 type: npm
 summary: Promise based HTTP client for the browser and node.js
 homepage: https://github.com/axios/axios
