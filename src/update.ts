@@ -184,6 +184,12 @@ export const update = async (shouldCommit = false) => {
                         },
                       }
                     );
+                } else if (notification.type === "discord") {
+                  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+                  if (webhookUrl)
+                    await axios.post(webhookUrl, {
+                      content: `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`,
+                    });
                 }
               }
               console.log("Sent notifications");
@@ -229,6 +235,12 @@ export const update = async (shouldCommit = false) => {
                       },
                     }
                   );
+              } else if (notification.type === "discord") {
+                const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+                if (webhookUrl)
+                  await axios.post(webhookUrl, {
+                    content: `🟩 ${site.name} (${site.url}) is back up.`,
+                  });
               }
             }
             console.log("Sent notifications");
