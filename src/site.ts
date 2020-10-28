@@ -7,7 +7,6 @@ export const generateSite = async () => {
   exec("npm init -y");
   exec("npm i @upptime/status-page");
   cp("-r", "node_modules/@upptime/status-page", ".");
-  cd("status-page");
   exec("npm i");
   exec("npm run export");
   cd("../..");
