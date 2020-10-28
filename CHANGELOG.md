@@ -1,3 +1,9 @@
+# [v1.3.6](https://github.com/upptime/uptime-monitor/compare/v1.3.5...v1.3.6) (2020-10-28)
+
+## 🐛 Bug fixes
+
+- [`5d5a58b`](https://github.com/upptime/uptime-monitor/commit/5d5a58b)  Ensure dir and copy contents
+
 # [v1.3.5](https://github.com/upptime/uptime-monitor/compare/v1.3.4...v1.3.5) (2020-10-28)
 
 ## 🐛 Bug fixes
