@@ -1,3 +1,9 @@
+# [v1.3.5](https://github.com/upptime/uptime-monitor/compare/v1.3.4...v1.3.5) (2020-10-28)
+
+## 🐛 Bug fixes
+
+- [`3f9d38f`](https://github.com/upptime/uptime-monitor/commit/3f9d38f)  Move export dir to export
+
 # [v1.3.4](https://github.com/upptime/uptime-monitor/compare/v1.3.3...v1.3.4) (2020-10-28)
 
 ## 🐛 Bug fixes
