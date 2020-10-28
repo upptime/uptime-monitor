@@ -12305,7 +12305,7 @@ exports.generateSite = async () => {
     shelljs_1.cd(siteDir);
     shelljs_1.exec("npm init -y");
     shelljs_1.exec("npm i @upptime/status-page");
-    shelljs_1.cp("-r", "node_modules/@upptime/status-page", ".");
+    shelljs_1.cp("-r", "node_modules/@upptime/status-page/*", ".");
     shelljs_1.exec("npm i");
     shelljs_1.exec("npm run export");
     shelljs_1.cd("../..");
