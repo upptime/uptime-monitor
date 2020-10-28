@@ -13,4 +13,3 @@ export const generateSite = async () => {
   cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
   cd("../..");
 };
-generateSite();
