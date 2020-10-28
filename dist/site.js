@@ -12,6 +12,6 @@ exports.generateSite = async () => {
     shelljs_1.exec("npm i");
     shelljs_1.exec("npm run export");
     shelljs_1.mkdir("status-page");
-    shelljs_1.mv("__sapper__/export", "status-page/__sapper__/");
+    shelljs_1.mv("__sapper__/export", "status-page/__sapper__/export");
     shelljs_1.cd("../..");
 };
