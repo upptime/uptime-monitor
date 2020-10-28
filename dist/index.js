@@ -12312,7 +12312,6 @@ exports.generateSite = async () => {
     shelljs_1.cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
     shelljs_1.cd("../..");
 };
-exports.generateSite();
 
 
 /***/ }),
