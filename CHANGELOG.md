@@ -1,3 +1,9 @@
+# [v1.3.2](https://github.com/upptime/uptime-monitor/compare/v1.3.1...v1.3.2) (2020-10-28)
+
+## ♻️ Updates
+
+- [`08abc78`](https://github.com/upptime/uptime-monitor/commit/08abc78)  Don&#x27;t cd into status-page dir
+
 # [v1.3.1](https://github.com/upptime/uptime-monitor/compare/v1.3.0...v1.3.1) (2020-10-20)
 
 ## ♻️ Updates
