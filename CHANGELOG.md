@@ -1,3 +1,9 @@
+# [v1.3.3](https://github.com/upptime/uptime-monitor/compare/v1.3.2...v1.3.3) (2020-10-28)
+
+## 🐛 Bug fixes
+
+- [`389ea20`](https://github.com/upptime/uptime-monitor/commit/389ea20)  Copy status-page contents to dir
+
 # [v1.3.2](https://github.com/upptime/uptime-monitor/compare/v1.3.1...v1.3.2) (2020-10-28)
 
 ## ♻️ Updates
