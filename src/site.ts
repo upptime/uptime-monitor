@@ -10,6 +10,6 @@ export const generateSite = async () => {
   exec("npm i");
   exec("npm run export");
   mkdir("status-page");
-  mv("__sapper__/export", "status-page/__sapper__/");
+  mv("__sapper__/export", "status-page/__sapper__/export");
   cd("../..");
 };
