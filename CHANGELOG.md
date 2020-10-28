@@ -1,3 +1,9 @@
+# [v1.3.7](https://github.com/upptime/uptime-monitor/compare/v1.3.6...v1.3.7) (2020-10-28)
+
+## 🐛 Bug fixes
+
+- [`977a6e0`](https://github.com/upptime/uptime-monitor/commit/977a6e0)  Remove invocation of site function
+
 # [v1.3.6](https://github.com/upptime/uptime-monitor/compare/v1.3.5...v1.3.6) (2020-10-28)
 
 ## 🐛 Bug fixes
