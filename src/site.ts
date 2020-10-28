@@ -1,4 +1,4 @@
-import { cd, cp, exec, mkdir } from "shelljs";
+import { cd, cp, exec, mkdir, mv } from "shelljs";
 
 export const generateSite = async () => {
   const siteDir = "site";
@@ -9,5 +9,7 @@ export const generateSite = async () => {
   cp("-r", "node_modules/@upptime/status-page/*", ".");
   exec("npm i");
   exec("npm run export");
+  mkdir("status-page");
+  mv("__sapper__/export", "status-page/__sapper__/");
   cd("../..");
 };
