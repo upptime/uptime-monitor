@@ -1,3 +1,9 @@
+# [v1.3.4](https://github.com/upptime/uptime-monitor/compare/v1.3.3...v1.3.4) (2020-10-28)
+
+## 🐛 Bug fixes
+
+- [`44c839f`](https://github.com/upptime/uptime-monitor/commit/44c839f)  Put final contents in status-page dir
+
 # [v1.3.3](https://github.com/upptime/uptime-monitor/compare/v1.3.2...v1.3.3) (2020-10-28)
 
 ## 🐛 Bug fixes
