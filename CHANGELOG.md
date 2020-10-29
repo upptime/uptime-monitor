@@ -1,3 +1,9 @@
+## [v1.6.0](https://github.com/upptime/uptime-monitor/compare/v1.5.1...v1.6.0) (2020-10-29)
+
+### ✨ New features
+
+- [`aa8c4b9`](https://github.com/upptime/uptime-monitor/commit/aa8c4b9)  Update license details in README, fetch org name
+
 ## [v1.5.1](https://github.com/upptime/uptime-monitor/compare/v1.5.0...v1.5.1) (2020-10-29)
 
 ### 🐛 Bug fixes
