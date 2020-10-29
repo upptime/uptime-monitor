@@ -128,9 +128,8 @@ ${pageStatuses
     readmeContent = readmeContent
       .split("\n")
       .map((line, index) => {
-        if (index === 0 && line.includes("https://upptime.js.org")) {
-          return `# [📈 Live Status](${website}): <!--live status--> **🟩 All systems operational**`;
-        }
+        if (index === 0 && line.includes("https://upptime.js.org"))
+          return `With [Upptime](https://upptime.js.org), you can get your own unlimited and free uptime monitor and status page, powered entirely by a GitHub repository. We use [Issues](https://github.com/${config.owner}/${config.repo}/issues) as incident reports, [Actions](https://github.com/${config.owner}/${config.repo}/actions) as uptime monitors, and [Pages](${website}) for the status page.\n\n# [📈 Live Status](${website}): <!--live status--> **🟩 All systems operational**`;
         return line;
       })
       .filter((line) => !line.startsWith("## [📈 Live Status]"))
@@ -147,6 +146,12 @@ ${pageStatuses
     const logoEndText = readmeContent.split("<!--end: logo-->")[1];
     if (readmeContent.includes("<!--start: logo-->"))
       readmeContent = `${logoStartText}${logoEndText}`;
+
+    // Remove Koj description
+    const descriptionStartText = readmeContent.split("<!--start: description-->")[0];
+    const descriptionEndText = readmeContent.split("<!--end: description-->")[1];
+    if (readmeContent.includes("<!--start: description-->"))
+      readmeContent = `${descriptionStartText}This repository contains the open-source uptime monitor and status page for [${config.repo}](${website}), powered by [Upptime](https://github.com/upptime/upptime).${descriptionEndText}`;
   }
 
   // Add live status line
