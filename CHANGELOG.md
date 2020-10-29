@@ -1,3 +1,9 @@
+## [v1.5.1](https://github.com/upptime/uptime-monitor/compare/v1.5.0...v1.5.1) (2020-10-29)
+
+### 🐛 Bug fixes
+
+- [`dbdfde0`](https://github.com/upptime/uptime-monitor/commit/dbdfde0)  Add description after badges
+
 ## [v1.5.0](https://github.com/upptime/uptime-monitor/compare/v1.4.0...v1.5.0) (2020-10-29)
 
 ### ✨ New features
