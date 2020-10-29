@@ -1,3 +1,9 @@
+## [v1.8.0](https://github.com/upptime/uptime-monitor/compare/v1.7.1...v1.8.0) (2020-10-29)
+
+### ✨ New features
+
+- [`f572ab1`](https://github.com/upptime/uptime-monitor/commit/f572ab1)  Update repo description, topics, homepage
+
 ## [v1.7.1](https://github.com/upptime/uptime-monitor/compare/v1.7.0...v1.7.1) (2020-10-29)
 
 ### 🐛 Bug fixes
