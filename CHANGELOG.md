@@ -1,3 +1,9 @@
+## [v1.7.1](https://github.com/upptime/uptime-monitor/compare/v1.7.0...v1.7.1) (2020-10-29)
+
+### 🐛 Bug fixes
+
+- [`92c7fea`](https://github.com/upptime/uptime-monitor/commit/92c7fea)  Ensure no duplicate message
+
 ## [v1.7.0](https://github.com/upptime/uptime-monitor/compare/v1.6.0...v1.7.0) (2020-10-29)
 
 ### ✨ New features
