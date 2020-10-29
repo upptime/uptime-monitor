@@ -1,3 +1,10 @@
+# [v1.4.0](https://github.com/upptime/uptime-monitor/compare/v1.3.7...v1.4.0) (2020-10-29)
+
+## ✨ New features
+
+- [`71ec8fb`](https://github.com/upptime/uptime-monitor/commit/71ec8fb)  Update status site title
+- [`351cb96`](https://github.com/upptime/uptime-monitor/commit/351cb96)  Remove default docs, logo from README
+
 # [v1.3.7](https://github.com/upptime/uptime-monitor/compare/v1.3.6...v1.3.7) (2020-10-28)
 
 ## 🐛 Bug fixes
