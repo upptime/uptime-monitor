@@ -21213,11 +21213,22 @@ ${pageStatuses
         const logoEndText = readmeContent.split("<!--end: logo-->")[1];
         if (readmeContent.includes("<!--start: logo-->"))
             readmeContent = `${logoStartText}${logoEndText}`;
-        // Remove Koj description
-        const descriptionStartText = readmeContent.split("<!--start: description-->")[0];
-        const descriptionEndText = readmeContent.split("<!--end: description-->")[1];
-        if (readmeContent.includes("<!--start: description-->"))
-            readmeContent = `${descriptionStartText}This repository contains the open-source uptime monitor and status page for [${config.repo}](${website}), powered by [Upptime](https://github.com/upptime/upptime).${descriptionEndText}`;
+        if (readmeContent.includes("[MIT](./LICENSE) © [Koj](https://koj.co)") ||
+            readmeContent.includes("<!--start: description-->")) {
+            let name = `[${config.owner}](${website})`;
+            try {
+                const org = await octokit.users.getByUsername({ username: config.owner });
+                name = `[${org.data.name || config.owner}](${org.data.blog || website})`;
+            }
+            catch (error) { }
+            // Remove Koj description
+            const descriptionStartText = readmeContent.split("<!--start: description-->")[0];
+            const descriptionEndText = readmeContent.split("<!--end: description-->")[1];
+            if (readmeContent.includes("<!--start: description-->"))
+                readmeContent = `${descriptionStartText}This repository contains the open-source uptime monitor and status page for ${name}, powered by [Upptime](https://github.com/upptime/upptime).${descriptionEndText}`;
+            // Change copyright
+            readmeContent = readmeContent.replace("[MIT](./LICENSE) © [Koj](https://koj.co)", `[MIT](./LICENSE) © ${name}`);
+        }
     }
     // Add live status line
     readmeContent = readmeContent
