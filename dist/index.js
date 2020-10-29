@@ -21196,7 +21196,9 @@ ${pageStatuses
             .split("\n")
             .map((line, index) => {
             if (index === 0 && line.includes("https://upptime.js.org"))
-                return `With [Upptime](https://upptime.js.org), you can get your own unlimited and free uptime monitor and status page, powered entirely by a GitHub repository. We use [Issues](https://github.com/${config.owner}/${config.repo}/issues) as incident reports, [Actions](https://github.com/${config.owner}/${config.repo}/actions) as uptime monitors, and [Pages](${website}) for the status page.\n\n# [📈 Live Status](${website}): <!--live status--> **🟩 All systems operational**`;
+                return `# [📈 Live Status](${website}): <!--live status--> **🟩 All systems operational**`;
+            if (line.includes("[![Summary CI](https://github.com"))
+                return `${line}\n\nWith [Upptime](https://upptime.js.org), you can get your own unlimited and free uptime monitor and status page, powered entirely by a GitHub repository. We use [Issues](https://github.com/${config.owner}/${config.repo}/issues) as incident reports, [Actions](https://github.com/${config.owner}/${config.repo}/actions) as uptime monitors, and [Pages](${website}) for the status page.`;
             return line;
         })
             .filter((line) => !line.startsWith("## [📈 Live Status]"))
