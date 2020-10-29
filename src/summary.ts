@@ -119,6 +119,36 @@ ${pageStatuses
 <!--end: status pages-->${endText}`;
   }
 
+  if (owner !== "uppload" && repo !== "uppload") {
+    let website = `https://${config.owner}.github.io/${config.repo}/`;
+    if (config["status-website"] && config["status-website"].cname)
+      website = `https://${config["status-website"].cname}`;
+
+    // Remove Upptime logo and add heaading
+    readmeContent = readmeContent
+      .split("\n")
+      .map((line, index) => {
+        if (index === 0 && line.includes("https://upptime.js.org")) {
+          return `# [📈 Live Status](${website}): <!--live status--> **🟩 All systems operational**`;
+        }
+        return line;
+      })
+      .filter((line) => !line.startsWith("## [📈 Live Status]"))
+      .join("\n");
+
+    // Remove default documentation
+    const docsStartText = readmeContent.split("<!--start: docs-->")[0];
+    const docsEndText = readmeContent.split("<!--end: docs-->")[1];
+    if (readmeContent.includes("<!--start: docs-->"))
+      readmeContent = `${docsStartText}[**Visit our status website →**](${website})${docsEndText}`;
+
+    // Remove Koj logo
+    const logoStartText = readmeContent.split("<!--start: logo-->")[0];
+    const logoEndText = readmeContent.split("<!--end: logo-->")[1];
+    if (readmeContent.includes("<!--start: logo-->"))
+      readmeContent = `${logoStartText}${logoEndText}`;
+  }
+
   // Add live status line
   readmeContent = readmeContent
     .split("\n")
@@ -135,21 +165,6 @@ ${pageStatuses
       return line;
     })
     .join("\n");
-
-  if (owner !== "uppload" && repo !== "uppload") {
-    // Change logo
-    readmeContent = readmeContent
-      .split("\n")
-      .map((line, index) => {
-        if (index === 0 && line.includes("https://upptime.js.org")) {
-          if (config["status-website"] && config["status-website"].name)
-            return `# ${config["status-website"].name}`;
-          return `# ${config.owner}/${config.repo}`;
-        }
-        return line;
-      })
-      .join("\n");
-  }
 
   const sha = (
     await octokit.repos.getContent({
