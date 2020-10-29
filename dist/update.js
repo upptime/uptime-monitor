@@ -18,7 +18,7 @@ exports.update = async (shouldCommit = false) => {
     const repo = config.repo;
     const octokit = new rest_1.Octokit({
         auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
-        userAgent: config.userAgent || process.env.USER_AGENT || "KojBot",
+        userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
     });
     let hasDelta = false;
     for await (const site of config.sites) {

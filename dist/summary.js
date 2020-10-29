@@ -15,7 +15,7 @@ exports.generateSummary = async () => {
     const repo = config.repo;
     const octokit = new rest_1.Octokit({
         auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
-        userAgent: config.userAgent || process.env.USER_AGENT || "KojBot",
+        userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
     });
     let readmeContent = await fs_extra_1.readFile(path_1.join(".", "README.md"), "utf8");
     const startText = readmeContent.split("<!--start: status pages-->")[0];
@@ -85,6 +85,32 @@ ${pageStatuses
             .map((page) => `| ${page.url.startsWith("$") ? page.name : `[${page.name}](${page.url})`} | ${page.status === "up" ? "🟩 Up" : "🟥 Down"} | [${page.slug}.yml](https://github.com/${owner}/${repo}/commits/master/history/${page.slug}.yml) | <img alt="Response time graph" src="./graphs/${page.slug}.png" height="20"> ${page.time}ms | ![Uptime ${page.uptime}%](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime.json)`)
             .join("\n")}
 <!--end: status pages-->${endText}`;
+    }
+    if (owner !== "uppload" && repo !== "uppload") {
+        let website = `https://${config.owner}.github.io/${config.repo}/`;
+        if (config["status-website"] && config["status-website"].cname)
+            website = `https://${config["status-website"].cname}`;
+        // Remove Upptime logo and add heaading
+        readmeContent = readmeContent
+            .split("\n")
+            .map((line, index) => {
+            if (index === 0 && line.includes("https://upptime.js.org")) {
+                return `# [📈 Live Status](${website}): <!--live status--> **🟩 All systems operational**`;
+            }
+            return line;
+        })
+            .filter((line) => !line.startsWith("## [📈 Live Status]"))
+            .join("\n");
+        // Remove default documentation
+        const docsStartText = readmeContent.split("<!--start: docs-->")[0];
+        const docsEndText = readmeContent.split("<!--end: docs-->")[1];
+        if (readmeContent.includes("<!--start: docs-->"))
+            readmeContent = `${docsStartText}[**Visit our status website →**](${website})${docsEndText}`;
+        // Remove Koj logo
+        const logoStartText = readmeContent.split("<!--start: logo-->")[0];
+        const logoEndText = readmeContent.split("<!--end: logo-->")[1];
+        if (readmeContent.includes("<!--start: logo-->"))
+            readmeContent = `${logoStartText}${logoEndText}`;
     }
     // Add live status line
     readmeContent = readmeContent
