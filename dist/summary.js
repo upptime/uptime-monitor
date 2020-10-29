@@ -128,6 +128,8 @@ ${pageStatuses
             // Change copyright
             readmeContent = readmeContent.replace("[MIT](./LICENSE) © [Koj](https://koj.co)", `[MIT](./LICENSE) © ${name}`);
         }
+        // Change badges
+        readmeContent = readmeContent.replace(new RegExp("upptime/upptime/workflows", "g"), `${config.owner}/${config.repo}/workflows`);
     }
     // Add live status line
     readmeContent = readmeContent
