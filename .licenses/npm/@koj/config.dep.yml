@@ -1,6 +1,6 @@
 ---
 name: "@koj/config"
-version: 1.2.5
+version: 1.2.6
 type: npm
 summary: Configuration for Prettier
 homepage: https://github.com/koj-co/prettierrc#readme
