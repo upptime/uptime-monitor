@@ -1,3 +1,9 @@
+## [v1.7.0](https://github.com/upptime/uptime-monitor/compare/v1.6.0...v1.7.0) (2020-10-29)
+
+### ✨ New features
+
+- [`c367254`](https://github.com/upptime/uptime-monitor/commit/c367254)  Change repo badges in README
+
 ## [v1.6.0](https://github.com/upptime/uptime-monitor/compare/v1.5.1...v1.6.0) (2020-10-29)
 
 ### ✨ New features
