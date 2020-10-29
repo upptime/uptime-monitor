@@ -142,7 +142,9 @@ ${pageStatuses
       .split("\n")
       .map((line, index) => {
         if (index === 0 && line.includes("https://upptime.js.org")) {
-          return `# ${config}`;
+          if (config["status-website"] && config["status-website"].name)
+            return `# ${config["status-website"].name}`;
+          return `# ${config.owner}/${config.repo}`;
         }
         return line;
       })
