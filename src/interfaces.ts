@@ -14,4 +14,7 @@ export interface UpptimeConfig {
     introMessage?: string;
     navbar?: { title: string; url: string }[];
   };
+  skipDescriptionUpdate?: boolean;
+  skipTopicsUpdate?: boolean;
+  skipHomepageUpdate?: boolean;
 }
