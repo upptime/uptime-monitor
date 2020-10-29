@@ -4,8 +4,6 @@
 
 - [`2cb8fb1`](https://github.com/upptime/uptime-monitor/commit/2cb8fb1)  Update README description
 
-# 🆕 Changelog
-
 ## [v1.4.0](https://github.com/upptime/uptime-monitor/compare/v1.3.7...v1.4.0) (2020-10-29)
 
 ### ✨ New features
