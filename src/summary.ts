@@ -171,6 +171,12 @@ ${pageStatuses
         `[MIT](./LICENSE) © ${name}`
       );
     }
+
+    // Change badges
+    readmeContent = readmeContent.replace(
+      new RegExp("upptime/upptime/workflows", "g"),
+      `${config.owner}/${config.repo}/workflows`
+    );
   }
 
   // Add live status line
