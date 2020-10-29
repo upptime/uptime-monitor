@@ -3,22 +3,16 @@ import slugify from "@sindresorhus/slugify";
 import { readFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
+import { UpptimeConfig } from "./interfaces";
 
 export const generateSummary = async () => {
-  const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as {
-    sites: { name: string; url: string }[];
-    owner: string;
-    repo: string;
-    userAgent?: string;
-    PAT?: string;
-    assignees?: string[];
-  };
+  const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   const owner = config.owner;
   const repo = config.repo;
 
   const octokit = new Octokit({
     auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
-    userAgent: config.userAgent || process.env.USER_AGENT || "KojBot",
+    userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
   });
 
   let readmeContent = await readFile(join(".", "README.md"), "utf8");
@@ -141,6 +135,19 @@ ${pageStatuses
       return line;
     })
     .join("\n");
+
+  if (owner !== "uppload" && repo !== "uppload") {
+    // Change logo
+    readmeContent = readmeContent
+      .split("\n")
+      .map((line, index) => {
+        if (index === 0 && line.includes("https://upptime.js.org")) {
+          return `# ${config}`;
+        }
+        return line;
+      })
+      .join("\n");
+  }
 
   const sha = (
     await octokit.repos.getContent({

@@ -6,31 +6,16 @@ import axios from "axios";
 import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
 import { generateSummary } from "./summary";
+import { UpptimeConfig } from "./interfaces";
 
 export const update = async (shouldCommit = false) => {
-  const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as {
-    sites: Array<{
-      name: string;
-      url: string;
-      method?: string;
-      assignees?: string[];
-    }>;
-    notifications?: Array<{
-      type: string;
-      [index: string]: string;
-    }>;
-    owner: string;
-    repo: string;
-    userAgent?: string;
-    PAT?: string;
-    assignees?: string[];
-  };
+  const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   const owner = config.owner;
   const repo = config.repo;
 
   const octokit = new Octokit({
     auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
-    userAgent: config.userAgent || process.env.USER_AGENT || "KojBot",
+    userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
   });
 
   let hasDelta = false;
