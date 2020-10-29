@@ -21214,9 +21214,9 @@ ${pageStatuses
         const logoEndText = readmeContent.split("<!--end: logo-->")[1];
         if (readmeContent.includes("<!--start: logo-->"))
             readmeContent = `${logoStartText}${logoEndText}`;
+        let name = `[${config.owner}](${website})`;
         if (readmeContent.includes("[MIT](./LICENSE) © [Koj](https://koj.co)") ||
             readmeContent.includes("<!--start: description-->")) {
-            let name = `[${config.owner}](${website})`;
             try {
                 const org = await octokit.users.getByUsername({ username: config.owner });
                 name = `[${org.data.name || config.owner}](${org.data.blog || website})`;
@@ -21232,6 +21232,31 @@ ${pageStatuses
         }
         // Change badges
         readmeContent = readmeContent.replace(new RegExp("upptime/upptime/workflows", "g"), `${config.owner}/${config.repo}/workflows`);
+        // Add repo description, topics, etc.
+        try {
+            const repoInfo = await octokit.repos.get({ owner, repo });
+            if (!repoInfo.data.description && !config.skipDescriptionUpdate)
+                await octokit.repos.update({
+                    owner,
+                    repo,
+                    description: `📈 Uptime monitor and status page for ${name
+                        .split("]")[0]
+                        .replace("[", "")}, powered by @upptime`,
+                });
+            if (!repoInfo.data.topics.length && !config.skipTopicsUpdate)
+                await octokit.repos.replaceAllTopics({
+                    owner,
+                    repo,
+                    names: ["uptime-monitor", "status-page", "upptime"],
+                });
+            if (!repoInfo.data.homepage && !config.skipHomepageUpdate)
+                await octokit.repos.update({
+                    owner,
+                    repo,
+                    homepage: website,
+                });
+        }
+        catch (error) { }
     }
     // Add live status line
     readmeContent = readmeContent
