@@ -7,6 +7,7 @@ import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
 import { generateSummary } from "./summary";
 import { UpptimeConfig } from "./interfaces";
+import { sendNotification } from "./notifications";
 
 export const update = async (shouldCommit = false) => {
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
@@ -153,31 +154,10 @@ export const update = async (shouldCommit = false) => {
                 issue_number: newIssue.data.number,
               });
               console.log("Opened and locked a new issue");
-              for await (const notification of config.notifications || []) {
-                if (notification.type === "slack") {
-                  const token = process.env.SLACK_APP_ACCESS_TOKEN;
-                  if (token)
-                    await axios.post(
-                      "https://slack.com/api/chat.postMessage",
-                      {
-                        channel: notification.channel,
-                        text: `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`,
-                      },
-                      {
-                        headers: {
-                          Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}`,
-                        },
-                      }
-                    );
-                } else if (notification.type === "discord") {
-                  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-                  if (webhookUrl)
-                    await axios.post(webhookUrl, {
-                      content: `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`,
-                    });
-                }
-              }
-              console.log("Sent notifications");
+              await sendNotification(
+                config,
+                `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
+              );
             } else {
               console.log("An issue is already open for this");
             }
@@ -204,31 +184,7 @@ export const update = async (shouldCommit = false) => {
               state: "closed",
             });
             console.log("Closed issue");
-            for await (const notification of config.notifications || []) {
-              if (notification.type === "slack") {
-                const token = process.env.SLACK_APP_ACCESS_TOKEN;
-                if (token)
-                  await axios.post(
-                    "https://slack.com/api/chat.postMessage",
-                    {
-                      channel: notification.channel,
-                      text: `🟩 ${site.name} (${site.url}) is back up.`,
-                    },
-                    {
-                      headers: {
-                        Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}`,
-                      },
-                    }
-                  );
-              } else if (notification.type === "discord") {
-                const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-                if (webhookUrl)
-                  await axios.post(webhookUrl, {
-                    content: `🟩 ${site.name} (${site.url}) is back up.`,
-                  });
-              }
-            }
-            console.log("Sent notifications");
+            await sendNotification(config, `🟩 ${site.name} (${site.url}) is back up.`);
           } else {
             console.log("Could not find a relevant issue", issues.data);
           }
