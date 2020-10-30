@@ -39,6 +39,7 @@ export const sendNotification = async (config: UpptimeConfig, text: string) => {
         text: text,
         html: `<p>${text}</p>`,
       });
+      console.log("[debug] Sent notification");
     } else {
       console.log("This notification type is not supported:", notification.type);
     }
