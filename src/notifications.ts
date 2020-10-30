@@ -1,5 +1,7 @@
 import { UpptimeConfig } from "./interfaces";
 import axios from "axios";
+import nodemailer from "nodemailer";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 export const sendNotification = async (config: UpptimeConfig, text: string) => {
   console.log("[debug] Sending notification", text);
@@ -16,9 +18,29 @@ export const sendNotification = async (config: UpptimeConfig, text: string) => {
         );
       console.log("[debug] Slack token found?", !!token);
     } else if (notification.type === "discord") {
-      console.log("[debug] Sendind Discord notification");
+      console.log("[debug] Sending Discord notification");
       const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
       if (webhookUrl) await axios.post(webhookUrl, { content: text });
+    } else if (notification.type === "email") {
+      console.log("[debug] Sending email notification");
+      const transporter = nodemailer.createTransport({
+        host: process.env.NOTIFICATION_SMTP_HOST,
+        port: process.env.NOTIFICATION_SMTP_PORT || 587,
+        secure: !!process.env.NOTIFICATION_SMTP_SECURE,
+        auth: {
+          user: process.env.NOTIFICATION_SMTP_USER,
+          pass: process.env.NOTIFICATION_SMTP_PASSWORD,
+        },
+      } as SMTPTransport.Options);
+      await transporter.sendMail({
+        from: process.env.NOTIFICATION_SMTP_USER,
+        to: process.env.NOTIFICATION_EMAIL || process.env.NOTIFICATION_SMTP_USER,
+        subject: text,
+        text: text,
+        html: `<p>${text}</p>`,
+      });
+    } else {
+      console.log("This notification type is not supported:", notification.type);
     }
   }
   console.log("[debug] Notifications are sent");
