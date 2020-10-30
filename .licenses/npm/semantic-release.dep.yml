@@ -1,6 +1,6 @@
 ---
 name: semantic-release
-version: 17.2.1
+version: 17.2.2
 type: npm
 summary: Automated semver compliant package publishing
 homepage: https://github.com/semantic-release/semantic-release#readme

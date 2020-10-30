@@ -1,6 +1,6 @@
 ---
 name: marked
-version: 1.2.0
+version: 1.2.2
 type: npm
 summary: A markdown parser built for speed
 homepage: https://marked.js.org
