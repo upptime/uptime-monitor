@@ -8,10 +8,10 @@ const rest_1 = require("@octokit/rest");
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
-const axios_1 = __importDefault(require("axios"));
 const node_libcurl_1 = require("node-libcurl");
 const path_1 = require("path");
 const summary_1 = require("./summary");
+const notifications_1 = require("./notifications");
 exports.update = async (shouldCommit = false) => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     const owner = config.owner;
@@ -134,28 +134,7 @@ exports.update = async (shouldCommit = false) => {
                                 issue_number: newIssue.data.number,
                             });
                             console.log("Opened and locked a new issue");
-                            for await (const notification of config.notifications || []) {
-                                if (notification.type === "slack") {
-                                    const token = process.env.SLACK_APP_ACCESS_TOKEN;
-                                    if (token)
-                                        await axios_1.default.post("https://slack.com/api/chat.postMessage", {
-                                            channel: notification.channel,
-                                            text: `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`,
-                                        }, {
-                                            headers: {
-                                                Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}`,
-                                            },
-                                        });
-                                }
-                                else if (notification.type === "discord") {
-                                    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-                                    if (webhookUrl)
-                                        await axios_1.default.post(webhookUrl, {
-                                            content: `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`,
-                                        });
-                                }
-                            }
-                            console.log("Sent notifications");
+                            await notifications_1.sendNotification(config, `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`);
                         }
                         else {
                             console.log("An issue is already open for this");
@@ -177,28 +156,7 @@ exports.update = async (shouldCommit = false) => {
                             state: "closed",
                         });
                         console.log("Closed issue");
-                        for await (const notification of config.notifications || []) {
-                            if (notification.type === "slack") {
-                                const token = process.env.SLACK_APP_ACCESS_TOKEN;
-                                if (token)
-                                    await axios_1.default.post("https://slack.com/api/chat.postMessage", {
-                                        channel: notification.channel,
-                                        text: `🟩 ${site.name} (${site.url}) is back up.`,
-                                    }, {
-                                        headers: {
-                                            Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}`,
-                                        },
-                                    });
-                            }
-                            else if (notification.type === "discord") {
-                                const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-                                if (webhookUrl)
-                                    await axios_1.default.post(webhookUrl, {
-                                        content: `🟩 ${site.name} (${site.url}) is back up.`,
-                                    });
-                            }
-                        }
-                        console.log("Sent notifications");
+                        await notifications_1.sendNotification(config, `🟩 ${site.name} (${site.url}) is back up.`);
                     }
                     else {
                         console.log("Could not find a relevant issue", issues.data);
