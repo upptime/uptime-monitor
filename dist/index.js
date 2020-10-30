@@ -27471,8 +27471,10 @@ exports.sendNotification = async (config, text) => {
         if (notification.type === "slack") {
             console.log("[debug] Sending Slack notification to channel", notification.channel);
             const token = process.env.SLACK_APP_ACCESS_TOKEN;
-            if (token)
-                await axios_1.default.post("https://slack.com/api/chat.postMessage", { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}` } });
+            if (token) {
+                const { data } = await axios_1.default.post("https://slack.com/api/chat.postMessage", { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}` } });
+                console.log("[debug] Slack response", data);
+            }
             console.log("[debug] Slack token found?", !!token);
         }
         else if (notification.type === "discord") {
