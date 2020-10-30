@@ -1,3 +1,19 @@
+## [v1.9.0](https://github.com/upptime/uptime-monitor/compare/v1.8.0...v1.9.0) (2020-10-30)
+
+### ✨ New features
+
+- [`9b75aa6`](https://github.com/upptime/uptime-monitor/commit/9b75aa6)  Add email notifications support
+
+### ♻️ Updates
+
+- [`3bb60ab`](https://github.com/upptime/uptime-monitor/commit/3bb60ab)  Move notification to helper function
+
+### ⬆️ Dependency updates
+
+- [`0f46e58`](https://github.com/upptime/uptime-monitor/commit/0f46e58)  Bump @upptime/status-page from 1.3.0 to 1.3.1
+- [`326822d`](https://github.com/upptime/uptime-monitor/commit/326822d)  Bump @koj/config from 1.2.6 to 1.2.7
+- [`7a25aa7`](https://github.com/upptime/uptime-monitor/commit/7a25aa7)  Bump semantic-release from 17.2.1 to 17.2.2
+
 ## [v1.8.0](https://github.com/upptime/uptime-monitor/compare/v1.7.1...v1.8.0) (2020-10-29)
 
 ### ✨ New features
