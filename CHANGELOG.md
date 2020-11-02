@@ -1,3 +1,15 @@
+## [v1.10.0](https://github.com/upptime/uptime-monitor/compare/v1.9.2...v1.10.0) (2020-11-02)
+
+### ✨ New features
+
+- [`07b1dfe`](https://github.com/upptime/uptime-monitor/commit/07b1dfe)  Support custom commits
+- [`b00a262`](https://github.com/upptime/uptime-monitor/commit/b00a262)  Support for custom commit author
+- [`168d23d`](https://github.com/upptime/uptime-monitor/commit/168d23d)  Add graphs CLI
+
+### ♻️ Updates
+
+- [`06733c5`](https://github.com/upptime/uptime-monitor/commit/06733c5)  Use native git in summary
+
 ## [v1.9.2](https://github.com/upptime/uptime-monitor/compare/v1.9.1...v1.9.2) (2020-11-02)
 
 ### ♻️ Updates
