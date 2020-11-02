@@ -104,7 +104,9 @@ export const update = async (shouldCommit = false) => {
             .replace(new RegExp("$SITE_METHOD", "g"), site.method || "GET")
             .replace(new RegExp("$STATUS", "g"), status)
             .replace(new RegExp("$RESPONSE_CODE", "g"), result.httpCode.toString())
-            .replace(new RegExp("$RESPONSE_TIME", "g"), responseTime)
+            .replace(new RegExp("$RESPONSE_TIME", "g"), responseTime),
+          (config.commitMessages || {}).commitAuthorName,
+          (config.commitMessages || {}).commitAuthorEmail
         );
         const lastCommitSha = lastCommit();
 

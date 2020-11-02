@@ -228,13 +228,17 @@ ${pageStatuses
   await writeFile(join(".", "README.md"), readmeContent);
   commit(
     (config.commitMessages || {}).readmeContent ||
-      ":pencil: Update summary in README [skip ci] [upptime]"
+      ":pencil: Update summary in README [skip ci] [upptime]",
+    (config.commitMessages || {}).commitAuthorName,
+    (config.commitMessages || {}).commitAuthorEmail
   );
 
   await writeFile(join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
   commit(
     (config.commitMessages || {}).summaryJson ||
-      ":card_file_box: Update status summary [skip ci] [upptime]"
+      ":card_file_box: Update status summary [skip ci] [upptime]",
+    (config.commitMessages || {}).commitAuthorName,
+    (config.commitMessages || {}).commitAuthorEmail
   );
 
   push();

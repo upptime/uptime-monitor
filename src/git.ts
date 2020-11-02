@@ -1,9 +1,8 @@
 import { exec } from "shelljs";
 
-exec(`git config --global user.email "upptime@koj.co"`);
-exec(`git config --global user.name "Upptime Bot"`);
-
-export const commit = (message: string) => {
+export const commit = (message: string, name = "Upptime Bot", email = "upptime@koj.co") => {
+  exec(`git config --global user.email "${email}"`);
+  exec(`git config --global user.name "${name}"`);
   exec(`git add .`);
   exec(`git commit -m "${message.replace(/\"/g, "''")}"`);
 };

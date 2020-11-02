@@ -21,5 +21,7 @@ export interface UpptimeConfig {
     readmeContent?: string;
     summaryJson?: string;
     statusChange?: string;
+    commitAuthorName?: string;
+    commitAuthorEmail?: string;
   };
 }
