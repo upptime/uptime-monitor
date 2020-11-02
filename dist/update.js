@@ -161,6 +161,7 @@ exports.update = async (shouldCommit = false) => {
             console.log("ERROR", error);
         }
     }
+    git_1.push();
     if (hasDelta)
         summary_1.generateSummary();
 };
