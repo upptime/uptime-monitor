@@ -31,6 +31,7 @@
     "@types/jest": "^26.0.14",
     "@types/js-yaml": "^3.12.5",
     "@types/nodemailer": "^6.4.0",
+    "@types/prettier": "^2.1.5",
     "@types/shelljs": "^0.8.8",
     "@zeit/ncc": "^0.22.3",
     "jest": "^26.5.2",
@@ -50,6 +51,7 @@
     "js-yaml": "^3.14.0",
     "node-libcurl": "^2.2.0",
     "nodemailer": "^6.4.14",
+    "prettier": "^2.1.2",
     "shelljs": "^0.8.4"
   },
   "jest": {
