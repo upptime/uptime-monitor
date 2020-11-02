@@ -4,7 +4,7 @@ import { readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
-import { commit, lastCommit } from "./git";
+import { commit, lastCommit, push } from "./git";
 import { UpptimeConfig } from "./interfaces";
 import { sendNotification } from "./notifications";
 import { generateSummary } from "./summary";
@@ -181,6 +181,7 @@ export const update = async (shouldCommit = false) => {
       console.log("ERROR", error);
     }
   }
+  push();
 
   if (hasDelta) generateSummary();
 };
