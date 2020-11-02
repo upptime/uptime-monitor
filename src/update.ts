@@ -2,12 +2,11 @@ import { Octokit } from "@octokit/rest";
 import slugify from "@sindresorhus/slugify";
 import { readFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
-import axios from "axios";
 import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
-import { generateSummary } from "./summary";
 import { UpptimeConfig } from "./interfaces";
 import { sendNotification } from "./notifications";
+import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
