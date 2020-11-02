@@ -1,3 +1,9 @@
+## [v1.9.2](https://github.com/upptime/uptime-monitor/compare/v1.9.1...v1.9.2) (2020-11-02)
+
+### ♻️ Updates
+
+- [`9258066`](https://github.com/upptime/uptime-monitor/commit/9258066)  Use native git commits
+
 ## [v1.9.1](https://github.com/upptime/uptime-monitor/compare/v1.9.0...v1.9.1) (2020-11-02)
 
 ### 🐛 Bug fixes
