@@ -9,6 +9,7 @@ const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
+const prettier_1 = require("prettier");
 const git_1 = require("./git");
 exports.generateSummary = async () => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
@@ -172,7 +173,7 @@ ${pageStatuses
         return line;
     })
         .join("\n");
-    await fs_extra_1.writeFile(path_1.join(".", "README.md"), readmeContent);
+    await fs_extra_1.writeFile(path_1.join(".", "README.md"), prettier_1.format(readmeContent));
     git_1.commit((config.commitMessages || {}).readmeContent ||
         ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     await fs_extra_1.writeFile(path_1.join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
