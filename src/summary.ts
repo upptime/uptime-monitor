@@ -226,7 +226,7 @@ ${pageStatuses
     })
     .join("\n");
 
-  await writeFile(join(".", "README.md"), format(readmeContent));
+  await writeFile(join(".", "README.md"), format(readmeContent, { parser: "markdown" }));
   commit(
     (config.commitMessages || {}).readmeContent ||
       ":pencil: Update summary in README [skip ci] [upptime]",
