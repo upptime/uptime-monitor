@@ -1,3 +1,10 @@
+## [v1.10.3](https://github.com/upptime/uptime-monitor/compare/v1.10.2...v1.10.3) (2020-11-02)
+
+### 🐛 Bug fixes
+
+- [`eeecfef`](https://github.com/upptime/uptime-monitor/commit/eeecfef)  Use workflow owner/repo
+(Issues: [`upptime/upptime#48`](https://github.com/upptime/upptime/issues/48))
+
 ## [v1.10.2](https://github.com/upptime/uptime-monitor/compare/v1.10.1...v1.10.2) (2020-11-02)
 
 ### 🐛 Bug fixes
