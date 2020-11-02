@@ -19,7 +19,37 @@ We use the [upptime/upptime](https://github.com/upptime/upptime) repository for 
 
 ## 💻 Usage
 
-When you use Upptime, we automatically add the required workflows.
+When you use Upptime, we automatically add the required workflows. If you want to manually use this package, you can use `npx`:
+
+Generate the `README.md` summary file:
+
+```bash
+npx @upptime/uptime-montor summary
+```
+
+Make network requests to get the response time and commit them to git history:
+
+```bash
+npx @upptime/uptime-montor response-time
+```
+
+Generate the static status website, powered by [upptime/status-page](https://github.com/upptime/status-page):
+
+```bash
+npx @upptime/uptime-montor site
+```
+
+Generate response time graphs, powered by [upptime/graphs](https://github.com/upptime/graphs):
+
+```bash
+npx @upptime/uptime-montor graphs
+```
+
+Check uptime, but don't make git commits with network requests:
+
+```bash
+npx @upptime/uptime-montor
+```
 
 ## 📄 License
 
