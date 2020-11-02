@@ -3,6 +3,7 @@ import slugify from "@sindresorhus/slugify";
 import { readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
+import { format } from "prettier";
 import { commit, push } from "./git";
 import { UpptimeConfig } from "./interfaces";
 
@@ -225,7 +226,7 @@ ${pageStatuses
     })
     .join("\n");
 
-  await writeFile(join(".", "README.md"), readmeContent);
+  await writeFile(join(".", "README.md"), format(readmeContent));
   commit(
     (config.commitMessages || {}).readmeContent ||
       ":pencil: Update summary in README [skip ci] [upptime]",
