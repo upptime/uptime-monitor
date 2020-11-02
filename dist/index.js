@@ -4171,7 +4171,27 @@ module.exports.default = macosRelease;
 
 
 /***/ }),
-/* 119 */,
+/* 119 */
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.lastCommit = exports.push = exports.commit = void 0;
+const shelljs_1 = __webpack_require__(739);
+exports.commit = (message) => {
+    shelljs_1.exec(`git add .`);
+    shelljs_1.exec(`git commit -m "${message.replace(/\"/g, "''")}"`);
+};
+exports.push = () => {
+    shelljs_1.exec("git push");
+};
+exports.lastCommit = () => {
+    return shelljs_1.exec(`git log --format="%H" -n 1`).stdout;
+};
+
+
+/***/ }),
 /* 120 */,
 /* 121 */,
 /* 122 */
@@ -45707,8 +45727,9 @@ const fs_extra_1 = __webpack_require__(226);
 const js_yaml_1 = __webpack_require__(414);
 const node_libcurl_1 = __webpack_require__(268);
 const path_1 = __webpack_require__(622);
-const summary_1 = __webpack_require__(596);
+const git_1 = __webpack_require__(119);
 const notifications_1 = __webpack_require__(553);
+const summary_1 = __webpack_require__(596);
 exports.update = async (shouldCommit = false) => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     const owner = config.owner;
@@ -45780,23 +45801,9 @@ exports.update = async (shouldCommit = false) => {
 - startTime: ${startTime}
 - generator: Upptime <https://github.com/upptime/upptime>
 `;
-                let sha = "";
-                try {
-                    sha = (await octokit.repos.getContent({
-                        owner,
-                        repo,
-                        path: `history/${slug}.yml`,
-                    })).data.sha;
-                }
-                catch (error) { }
-                const fileUpdateResult = await octokit.repos.createOrUpdateFileContents({
-                    owner,
-                    repo,
-                    path: `history/${slug}.yml`,
-                    message: `${status === "up" ? "🟩" : "🟥"} ${site.name} is ${status} (${result.httpCode} in ${responseTime}ms) [skip ci]`,
-                    content: Buffer.from(content).toString("base64"),
-                    sha,
-                });
+                await fs_extra_1.writeFile(path_1.join(".", "history", `${slug}.yml`), content);
+                git_1.commit(`${status === "up" ? "🟩" : "🟥"} ${site.name} is ${status} (${result.httpCode} in ${responseTime}ms) [skip ci] [upptime]`);
+                const lastCommitSha = git_1.lastCommit();
                 if (currentStatus !== status) {
                     console.log("Status is different", currentStatus, "to", status);
                     hasDelta = true;
@@ -45818,7 +45825,7 @@ exports.update = async (shouldCommit = false) => {
                                 owner,
                                 repo,
                                 title: `🛑 ${site.name} is down`,
-                                body: `In [\`${fileUpdateResult.data.commit.sha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${fileUpdateResult.data.commit.sha}), ${site.name} (${site.url}) was **down**:
+                                body: `In [\`${lastCommitSha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}), ${site.name} (${site.url}) was **down**:
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
@@ -45843,7 +45850,7 @@ exports.update = async (shouldCommit = false) => {
                             owner,
                             repo,
                             issue_number: issues.data[0].number,
-                            body: `**Resolved:** ${site.name} is back up in [\`${fileUpdateResult.data.commit.sha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${fileUpdateResult.data.commit.sha}).`,
+                            body: `**Resolved:** ${site.name} is back up in [\`${lastCommitSha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).`,
                         });
                         console.log("Created comment in issue");
                         await octokit.issues.update({
