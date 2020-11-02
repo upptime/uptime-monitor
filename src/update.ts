@@ -94,9 +94,17 @@ export const update = async (shouldCommit = false) => {
 
         await writeFile(join(".", "history", `${slug}.yml`), content);
         commit(
-          `${status === "up" ? "🟩" : "🟥"} ${site.name} is ${status} (${
-            result.httpCode
-          } in ${responseTime}ms) [skip ci] [upptime]`
+          (
+            (config.commitMessages || {}).statusChange ||
+            "$EMOJI $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]"
+          )
+            .replace(new RegExp("$EMOJI", "g"), status === "up" ? "🟩" : "🟥")
+            .replace(new RegExp("$SITE_NAME", "g"), site.name)
+            .replace(new RegExp("$SITE_URL", "g"), site.url)
+            .replace(new RegExp("$SITE_METHOD", "g"), site.method || "GET")
+            .replace(new RegExp("$STATUS", "g"), status)
+            .replace(new RegExp("$RESPONSE_CODE", "g"), result.httpCode.toString())
+            .replace(new RegExp("$RESPONSE_TIME", "g"), responseTime)
         );
         const lastCommitSha = lastCommit();
 

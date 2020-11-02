@@ -17,4 +17,9 @@ export interface UpptimeConfig {
   skipDescriptionUpdate?: boolean;
   skipTopicsUpdate?: boolean;
   skipHomepageUpdate?: boolean;
+  commitMessages?: {
+    readmeContent?: string;
+    summaryJson?: string;
+    statusChange?: string;
+  };
 }
