@@ -1,9 +1,10 @@
 import { Octokit } from "@octokit/rest";
 import slugify from "@sindresorhus/slugify";
-import { readFile } from "fs-extra";
+import { readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
+import { commit, lastCommit } from "./git";
 import { UpptimeConfig } from "./interfaces";
 import { sendNotification } from "./notifications";
 import { generateSummary } from "./summary";
@@ -91,26 +92,13 @@ export const update = async (shouldCommit = false) => {
 - generator: Upptime <https://github.com/upptime/upptime>
 `;
 
-        let sha: string | undefined = "";
-        try {
-          sha = (
-            await octokit.repos.getContent({
-              owner,
-              repo,
-              path: `history/${slug}.yml`,
-            })
-          ).data.sha;
-        } catch (error) {}
-        const fileUpdateResult = await octokit.repos.createOrUpdateFileContents({
-          owner,
-          repo,
-          path: `history/${slug}.yml`,
-          message: `${status === "up" ? "🟩" : "🟥"} ${site.name} is ${status} (${
+        await writeFile(join(".", "history", `${slug}.yml`), content);
+        commit(
+          `${status === "up" ? "🟩" : "🟥"} ${site.name} is ${status} (${
             result.httpCode
-          } in ${responseTime}ms) [skip ci]`,
-          content: Buffer.from(content).toString("base64"),
-          sha,
-        });
+          } in ${responseTime}ms) [skip ci] [upptime]`
+        );
+        const lastCommitSha = lastCommit();
 
         if (currentStatus !== status) {
           console.log("Status is different", currentStatus, "to", status);
@@ -135,12 +123,12 @@ export const update = async (shouldCommit = false) => {
                 owner,
                 repo,
                 title: `🛑 ${site.name} is down`,
-                body: `In [\`${fileUpdateResult.data.commit.sha.substr(
+                body: `In [\`${lastCommitSha.substr(
                   0,
                   7
-                )}\`](https://github.com/${owner}/${repo}/commit/${
-                  fileUpdateResult.data.commit.sha
-                }), ${site.name} (${site.url}) was **down**:
+                )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}), ${site.name} (${
+                  site.url
+                }) was **down**:
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
@@ -166,14 +154,10 @@ export const update = async (shouldCommit = false) => {
               owner,
               repo,
               issue_number: issues.data[0].number,
-              body: `**Resolved:** ${
-                site.name
-              } is back up in [\`${fileUpdateResult.data.commit.sha.substr(
+              body: `**Resolved:** ${site.name} is back up in [\`${lastCommitSha.substr(
                 0,
                 7
-              )}\`](https://github.com/${owner}/${repo}/commit/${
-                fileUpdateResult.data.commit.sha
-              }).`,
+              )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).`,
             });
             console.log("Created comment in issue");
             await octokit.issues.update({
