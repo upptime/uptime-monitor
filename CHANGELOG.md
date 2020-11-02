@@ -1,3 +1,9 @@
+## [v1.9.1](https://github.com/upptime/uptime-monitor/compare/v1.9.0...v1.9.1) (2020-11-02)
+
+### 🐛 Bug fixes
+
+- [`ec06969`](https://github.com/upptime/uptime-monitor/commit/ec06969)  Change uppload -&gt; upptime in owner check
+
 ## [v1.9.0](https://github.com/upptime/uptime-monitor/compare/v1.8.0...v1.9.0) (2020-10-30)
 
 ### ✨ New features
