@@ -9,8 +9,7 @@ import { UpptimeConfig } from "./interfaces";
 
 export const generateSummary = async () => {
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
-  const owner = config.owner;
-  const repo = config.repo;
+  const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
 
   const octokit = new Octokit({
     auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
@@ -122,7 +121,7 @@ ${pageStatuses
   }
 
   if (owner !== "upptime" && repo !== "upptime") {
-    let website = `https://${config.owner}.github.io/${config.repo}/`;
+    let website = `https://${owner}.github.io/${repo}/`;
     if (config["status-website"] && config["status-website"].cname)
       website = `https://${config["status-website"].cname}`;
 
@@ -136,7 +135,7 @@ ${pageStatuses
           line.includes("[![Summary CI](https://github.com") &&
           readmeContent.includes("<!--start: description-->")
         )
-          return `${line}\n\nWith [Upptime](https://upptime.js.org), you can get your own unlimited and free uptime monitor and status page, powered entirely by a GitHub repository. We use [Issues](https://github.com/${config.owner}/${config.repo}/issues) as incident reports, [Actions](https://github.com/${config.owner}/${config.repo}/actions) as uptime monitors, and [Pages](${website}) for the status page.`;
+          return `${line}\n\nWith [Upptime](https://upptime.js.org), you can get your own unlimited and free uptime monitor and status page, powered entirely by a GitHub repository. We use [Issues](https://github.com/${owner}/${repo}/issues) as incident reports, [Actions](https://github.com/${owner}/${repo}/actions) as uptime monitors, and [Pages](${website}) for the status page.`;
         return line;
       })
       .filter((line) => !line.startsWith("## [📈 Live Status]"))
@@ -154,14 +153,14 @@ ${pageStatuses
     if (readmeContent.includes("<!--start: logo-->"))
       readmeContent = `${logoStartText}${logoEndText}`;
 
-    let name = `[${config.owner}](${website})`;
+    let name = `[${owner}](${website})`;
     if (
       readmeContent.includes("[MIT](./LICENSE) © [Koj](https://koj.co)") ||
       readmeContent.includes("<!--start: description-->")
     ) {
       try {
-        const org = await octokit.users.getByUsername({ username: config.owner });
-        name = `[${org.data.name || config.owner}](${org.data.blog || website})`;
+        const org = await octokit.users.getByUsername({ username: owner });
+        name = `[${org.data.name || owner}](${org.data.blog || website})`;
       } catch (error) {}
 
       // Remove Koj description
@@ -180,7 +179,7 @@ ${pageStatuses
     // Change badges
     readmeContent = readmeContent.replace(
       new RegExp("upptime/upptime/workflows", "g"),
-      `${config.owner}/${config.repo}/workflows`
+      `${owner}/${repo}/workflows`
     );
 
     // Add repo description, topics, etc.
