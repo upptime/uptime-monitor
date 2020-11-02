@@ -10,6 +10,6 @@ exports.generateGraphs = async () => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     shelljs_1.exec("npx @upptime/graphs");
     shelljs_1.exec("npx imagemin-cli graphs/* --out-dir=graphs");
-    git_1.commit((config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+    git_1.commit((config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     git_1.push();
 };
