@@ -173,7 +173,7 @@ ${pageStatuses
         return line;
     })
         .join("\n");
-    await fs_extra_1.writeFile(path_1.join(".", "README.md"), prettier_1.format(readmeContent));
+    await fs_extra_1.writeFile(path_1.join(".", "README.md"), prettier_1.format(readmeContent, { parser: "markdown" }));
     git_1.commit((config.commitMessages || {}).readmeContent ||
         ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     await fs_extra_1.writeFile(path_1.join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
