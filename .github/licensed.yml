@@ -95,3 +95,4 @@ reviewed:
     - uri-js
     - shelljs
     - svelte-chartjs
+    - nodemailer
