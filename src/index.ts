@@ -1,4 +1,5 @@
 import { debug, getInput, setFailed } from "@actions/core";
+import { generateGraphs } from "./graphs";
 import { generateSite } from "./site";
 import { generateSummary } from "./summary";
 import { update } from "./update";
@@ -19,6 +20,9 @@ export const run = async () => {
     case "site":
       debug("Starting site");
       return generateSite();
+    case "graphs":
+      debug("Starting site");
+      return generateGraphs();
     case "response-time":
       debug("Starting response-time");
       return update(true);
