@@ -21,6 +21,7 @@ exports.update = async (shouldCommit = false) => {
         auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
         userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
     });
+    console.log("[debug] github object", process.env.github);
     let hasDelta = false;
     for await (const site of config.sites) {
         const slug = slugify_1.default(site.name);
