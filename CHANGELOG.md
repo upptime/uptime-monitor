@@ -1,3 +1,9 @@
+## [v1.10.2](https://github.com/upptime/uptime-monitor/compare/v1.10.1...v1.10.2) (2020-11-02)
+
+### 🐛 Bug fixes
+
+- [`ef8863a`](https://github.com/upptime/uptime-monitor/commit/ef8863a)  Use markdown parser in prettier
+
 ## [v1.10.1](https://github.com/upptime/uptime-monitor/compare/v1.10.0...v1.10.1) (2020-11-02)
 
 ### ♻️ Updates
