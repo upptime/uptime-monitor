@@ -119,7 +119,7 @@ ${pageStatuses
 <!--end: status pages-->${endText}`;
   }
 
-  if (owner !== "uppload" && repo !== "uppload") {
+  if (owner !== "upptime" && repo !== "upptime") {
     let website = `https://${config.owner}.github.io/${config.repo}/`;
     if (config["status-website"] && config["status-website"].cname)
       website = `https://${config["status-website"].cname}`;
