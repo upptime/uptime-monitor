@@ -15,13 +15,11 @@ const notifications_1 = require("./notifications");
 const summary_1 = require("./summary");
 exports.update = async (shouldCommit = false) => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
-    const owner = config.owner;
-    const repo = config.repo;
+    const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
     const octokit = new rest_1.Octokit({
         auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
         userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
     });
-    console.log("[debug] github object", JSON.stringify(process.env));
     let hasDelta = false;
     for await (const site of config.sites) {
         const slug = slugify_1.default(site.name);
