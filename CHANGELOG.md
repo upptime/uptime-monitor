@@ -1,3 +1,14 @@
+## [v1.10.6](https://github.com/upptime/uptime-monitor/compare/v1.10.5...v1.10.6) (2020-11-03)
+
+### ♻️ Updates
+
+- [`dc6a6e5`](https://github.com/upptime/uptime-monitor/commit/dc6a6e5)  Change upptime@koj.co -&gt; forwarder email
+(Issues: [`upptime/upptime#49`](https://github.com/upptime/upptime/issues/49))
+
+### ⬆️ Dependency updates
+
+- [`5b59289`](https://github.com/upptime/uptime-monitor/commit/5b59289)  Bump jest from 26.6.1 to 26.6.2
+
 ## [v1.10.5](https://github.com/upptime/uptime-monitor/compare/v1.10.4...v1.10.5) (2020-11-03)
 
 ### 🐛 Bug fixes
