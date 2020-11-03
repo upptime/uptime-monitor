@@ -11,7 +11,8 @@ import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
-  const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const owner = config.owner;
+  const repo = config.repo;
 
   const octokit = new Octokit({
     auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
@@ -97,13 +98,13 @@ export const update = async (shouldCommit = false) => {
             (config.commitMessages || {}).statusChange ||
             "$EMOJI $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]"
           )
-            .replace(/\$EMOJI/g, status === "up" ? "🟩" : "🟥")
-            .replace(/\$SITE_NAME/g, site.name)
-            .replace(/\$SITE_URL/g, site.url)
-            .replace(/\$SITE_METHOD/g, site.method || "GET")
-            .replace(/\$STATUS/g, status)
-            .replace(/\$RESPONSE_CODE/g, result.httpCode.toString())
-            .replace(/\$RESPONSE_TIME/g, responseTime),
+            .replace(new RegExp("$EMOJI", "g"), status === "up" ? "🟩" : "🟥")
+            .replace(new RegExp("$SITE_NAME", "g"), site.name)
+            .replace(new RegExp("$SITE_URL", "g"), site.url)
+            .replace(new RegExp("$SITE_METHOD", "g"), site.method || "GET")
+            .replace(new RegExp("$STATUS", "g"), status)
+            .replace(new RegExp("$RESPONSE_CODE", "g"), result.httpCode.toString())
+            .replace(new RegExp("$RESPONSE_TIME", "g"), responseTime),
           (config.commitMessages || {}).commitAuthorName,
           (config.commitMessages || {}).commitAuthorEmail
         );
