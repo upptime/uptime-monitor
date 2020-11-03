@@ -10,7 +10,7 @@ export const generateGraphs = async () => {
   exec("npx @upptime/graphs");
   exec("npx imagemin-cli graphs/* --out-dir=graphs");
   commit(
-    (config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci] [upptime]",
+    (config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]",
     (config.commitMessages || {}).commitAuthorName,
     (config.commitMessages || {}).commitAuthorEmail
   );
