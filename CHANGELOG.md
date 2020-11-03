@@ -1,3 +1,10 @@
+## [v1.10.4](https://github.com/upptime/uptime-monitor/compare/v1.10.3...v1.10.4) (2020-11-03)
+
+### 🐛 Bug fixes
+
+- [`91f5698`](https://github.com/upptime/uptime-monitor/commit/91f5698)  Fix broken regex (upptime/upptime#49)
+(Issues: [`upptime/upptime#49`](https://github.com/upptime/upptime/issues/49))
+
 ## [v1.10.3](https://github.com/upptime/uptime-monitor/compare/v1.10.2...v1.10.3) (2020-11-02)
 
 ### 🐛 Bug fixes
