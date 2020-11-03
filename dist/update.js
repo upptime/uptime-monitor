@@ -14,8 +14,6 @@ const git_1 = require("./git");
 const notifications_1 = require("./notifications");
 const summary_1 = require("./summary");
 exports.update = async (shouldCommit = false) => {
-    // TODO REMOVE THIS LINE
-    shouldCommit = true;
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     const owner = config.owner;
     const repo = config.repo;
@@ -172,9 +170,8 @@ exports.update = async (shouldCommit = false) => {
         }
     }
     git_1.push();
-    // if (hasDelta) generateSummary();
-    // TODO REMOVE THIS LINE
-    summary_1.generateSummary();
+    if (hasDelta)
+        summary_1.generateSummary();
 };
 const curl = (url, method = "GET") => new Promise((resolve) => {
     const curl = new node_libcurl_1.Curl();
