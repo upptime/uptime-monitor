@@ -1,3 +1,10 @@
+## [v1.10.5](https://github.com/upptime/uptime-monitor/compare/v1.10.4...v1.10.5) (2020-11-03)
+
+### 🐛 Bug fixes
+
+- [`d036dd9`](https://github.com/upptime/uptime-monitor/commit/d036dd9)  Use plain text replace
+- [`2d3afbc`](https://github.com/upptime/uptime-monitor/commit/2d3afbc)  Force update summaries
+
 ## [v1.10.4](https://github.com/upptime/uptime-monitor/compare/v1.10.3...v1.10.4) (2020-11-03)
 
 ### 🐛 Bug fixes
