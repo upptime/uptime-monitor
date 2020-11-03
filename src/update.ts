@@ -10,6 +10,9 @@ import { sendNotification } from "./notifications";
 import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
+  // TODO REMOVE THIS LINE
+  shouldCommit = true;
+
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   const owner = config.owner;
   const repo = config.repo;
@@ -193,7 +196,9 @@ export const update = async (shouldCommit = false) => {
   }
   push();
 
-  if (hasDelta) generateSummary();
+  // if (hasDelta) generateSummary();
+  // TODO REMOVE THIS LINE
+  generateSummary();
 };
 
 const curl = (url: string, method = "GET"): Promise<{ httpCode: number; totalTime: number }> =>
