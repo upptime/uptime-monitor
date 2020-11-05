@@ -1,3 +1,17 @@
+## [v1.10.7](https://github.com/upptime/uptime-monitor/compare/v1.10.6...v1.10.7) (2020-11-05)
+
+### ♻️ Updates
+
+- [`9882f48`](https://github.com/upptime/uptime-monitor/commit/9882f48)  Use owner/repo from GitHub env
+- [`c802d6f`](https://github.com/upptime/uptime-monitor/commit/c802d6f)  Always add &quot;upptime&quot; label if not there
+- [`aa5d6cf`](https://github.com/upptime/uptime-monitor/commit/aa5d6cf)  Format README with Prettier
+
+### ⬆️ Dependency updates
+
+- [`77fb12c`](https://github.com/upptime/uptime-monitor/commit/77fb12c)  Bump @types/fs-extra from 9.0.2 to 9.0.3
+- [`cf8d64f`](https://github.com/upptime/uptime-monitor/commit/cf8d64f)  Bump jest from 26.6.2 to 26.6.3
+- [`25b4d97`](https://github.com/upptime/uptime-monitor/commit/25b4d97)  Bump @koj/config from 1.2.7 to 1.2.8
+
 ## [v1.10.6](https://github.com/upptime/uptime-monitor/compare/v1.10.5...v1.10.6) (2020-11-03)
 
 ### ♻️ Updates
