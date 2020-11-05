@@ -4,6 +4,7 @@ import { readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
 import { commit, push } from "./git";
+import { format } from "prettier";
 import { UpptimeConfig } from "./interfaces";
 
 export const generateSummary = async () => {
@@ -226,7 +227,7 @@ ${pageStatuses
     })
     .join("\n");
 
-  await writeFile(join(".", "README.md"), readmeContent);
+  await writeFile(join(".", "README.md"), format(readmeContent, { parser: "markdown" }));
   commit(
     (config.commitMessages || {}).readmeContent ||
       ":pencil: Update summary in README [skip ci] [upptime]",
