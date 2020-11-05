@@ -10,10 +10,10 @@ const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const git_1 = require("./git");
+const prettier_1 = require("prettier");
 exports.generateSummary = async () => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
-    const owner = config.owner;
-    const repo = config.repo;
+    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
     const octokit = new rest_1.Octokit({
         auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
         userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
@@ -143,11 +143,11 @@ ${pageStatuses
                         .split("]")[0]
                         .replace("[", "")}, powered by @upptime`,
                 });
-            if (!repoInfo.data.topics.length && !config.skipTopicsUpdate)
+            if (!repoInfo.data.topics.includes("upptime") && !config.skipTopicsUpdate)
                 await octokit.repos.replaceAllTopics({
                     owner,
                     repo,
-                    names: ["uptime-monitor", "status-page", "upptime"],
+                    names: [...repoInfo.data.topics, "uptime-monitor", "status-page", "upptime"].filter((value, index, array) => array.indexOf(value) === index),
                 });
             if (!repoInfo.data.homepage && !config.skipHomepageUpdate)
                 await octokit.repos.update({
@@ -172,7 +172,7 @@ ${pageStatuses
         return line;
     })
         .join("\n");
-    await fs_extra_1.writeFile(path_1.join(".", "README.md"), readmeContent);
+    await fs_extra_1.writeFile(path_1.join(".", "README.md"), prettier_1.format(readmeContent, { parser: "markdown" }));
     git_1.commit((config.commitMessages || {}).readmeContent ||
         ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     await fs_extra_1.writeFile(path_1.join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
