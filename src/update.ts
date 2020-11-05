@@ -11,8 +11,7 @@ import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
-  const owner = config.owner;
-  const repo = config.repo;
+  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
 
   const octokit = new Octokit({
     auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
