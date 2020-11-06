@@ -156,7 +156,9 @@ ${pageStatuses
                     homepage: website,
                 });
         }
-        catch (error) { }
+        catch (error) {
+            console.log(error);
+        }
     }
     // Add live status line
     readmeContent = readmeContent
