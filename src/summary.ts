@@ -193,13 +193,16 @@ ${pageStatuses
             .split("]")[0]
             .replace("[", "")}, powered by @upptime`,
         });
-      if (!repoInfo.data.topics.includes("upptime") && !config.skipTopicsUpdate)
+      if (!(repoInfo.data.topics || []).includes("upptime") && !config.skipTopicsUpdate)
         await octokit.repos.replaceAllTopics({
           owner,
           repo,
-          names: [...repoInfo.data.topics, "uptime-monitor", "status-page", "upptime"].filter(
-            (value, index, array) => array.indexOf(value) === index
-          ),
+          names: [
+            ...(repoInfo.data.topics || []),
+            "uptime-monitor",
+            "status-page",
+            "upptime",
+          ].filter((value, index, array) => array.indexOf(value) === index),
         });
       if (!repoInfo.data.homepage && !config.skipHomepageUpdate)
         await octokit.repos.update({
