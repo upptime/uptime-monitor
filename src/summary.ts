@@ -97,6 +97,10 @@ export const generateSummary = async () => {
     }
   }
 
+  let website = `https://${config.owner}.github.io/${config.repo}/`;
+  if (config["status-website"] && config["status-website"].cname)
+    website = `https://${config["status-website"].cname}`;
+
   if (readmeContent.includes("<!--start: status pages-->")) {
     readmeContent = `${startText}<!--start: status pages-->
 | URL | Status | History | Response Time | Uptime |
@@ -110,21 +114,17 @@ ${pageStatuses
         page.slug
       }.yml) | <img alt="Response time graph" src="./graphs/${page.slug}.png" height="20"> ${
         page.time
-      }ms | ![Uptime ${
+      }ms | [![Uptime ${
         page.uptime
       }%](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
         page.slug
-      }%2Fuptime.json)`
+      }%2Fuptime.json)](${website}/history/${page.slug})`
   )
   .join("\n")}
 <!--end: status pages-->${endText}`;
   }
 
-  if (owner !== "upptime" && repo !== "upptime") {
-    let website = `https://${config.owner}.github.io/${config.repo}/`;
-    if (config["status-website"] && config["status-website"].cname)
-      website = `https://${config["status-website"].cname}`;
-
+  if (`${owner}/${repo}` !== "upptime/upptime") {
     // Remove Upptime logo and add heaading
     readmeContent = readmeContent
       .split("\n")
