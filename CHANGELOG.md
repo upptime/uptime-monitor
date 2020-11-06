@@ -1,3 +1,9 @@
+## [v1.10.10](https://github.com/upptime/uptime-monitor/compare/v1.10.9...v1.10.10) (2020-11-06)
+
+### 🐛 Bug fixes
+
+- [`633e43e`](https://github.com/upptime/uptime-monitor/commit/633e43e)  Ensure repo topics exists
+
 ## [v1.10.9](https://github.com/upptime/uptime-monitor/compare/v1.10.8...v1.10.9) (2020-11-06)
 
 ### ♻️ Updates
