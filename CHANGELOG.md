@@ -1,3 +1,10 @@
+## [v1.10.9](https://github.com/upptime/uptime-monitor/compare/v1.10.8...v1.10.9) (2020-11-06)
+
+### ♻️ Updates
+
+- [`1dfaa28`](https://github.com/upptime/uptime-monitor/commit/1dfaa28)  Link to uptime history in README
+- [`8046351`](https://github.com/upptime/uptime-monitor/commit/8046351)  Inject manual editing note to README
+
 ## [v1.10.8](https://github.com/upptime/uptime-monitor/compare/v1.10.7...v1.10.8) (2020-11-06)
 
 ## [v1.10.7](https://github.com/upptime/uptime-monitor/compare/v1.10.6...v1.10.7) (2020-11-05)
