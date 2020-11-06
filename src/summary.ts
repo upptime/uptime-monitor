@@ -207,7 +207,9 @@ ${pageStatuses
           repo,
           homepage: website,
         });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // Add live status line
