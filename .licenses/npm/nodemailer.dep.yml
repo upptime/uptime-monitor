@@ -1,6 +1,6 @@
 ---
 name: nodemailer
-version: 6.4.14
+version: 6.4.15
 type: npm
 summary: Easy as cake e-mail sending from your Node.js applications
 homepage: https://nodemailer.com/
