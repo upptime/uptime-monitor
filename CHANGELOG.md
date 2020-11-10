@@ -1,3 +1,14 @@
+## [v1.11.0](https://github.com/upptime/uptime-monitor/compare/v1.10.10...v1.11.0) (2020-11-10)
+
+### ✨ New features
+
+- [`24fb8a1`](https://github.com/upptime/uptime-monitor/commit/24fb8a1)  Add support for customer headers, env
+
+### ⬆️ Dependency updates
+
+- [`d1131d9`](https://github.com/upptime/uptime-monitor/commit/d1131d9)  Bump nodemailer from 6.4.14 to 6.4.15
+- [`eff222d`](https://github.com/upptime/uptime-monitor/commit/eff222d)  Bump ts-jest from 26.4.3 to 26.4.4
+
 ## [v1.10.10](https://github.com/upptime/uptime-monitor/compare/v1.10.9...v1.10.10) (2020-11-06)
 
 ### 🐛 Bug fixes
