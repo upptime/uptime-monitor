@@ -1,3 +1,9 @@
+## [v1.11.1](https://github.com/upptime/uptime-monitor/compare/v1.11.0...v1.11.1) (2020-11-10)
+
+### 🐛 Bug fixes
+
+- [`29a1407`](https://github.com/upptime/uptime-monitor/commit/29a1407)  Replace environment variables prefixed with $
+
 ## [v1.11.0](https://github.com/upptime/uptime-monitor/compare/v1.10.10...v1.11.0) (2020-11-10)
 
 ### ✨ New features
