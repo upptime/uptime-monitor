@@ -172,7 +172,7 @@ exports.update = async (shouldCommit = false) => {
 };
 const replaceEnvironmentVariables = (str) => {
     Object.keys(process.env).forEach((key) => {
-        str = str.replace(`${key}`, process.env[key] || `${key}`);
+        str = str.replace(`$${key}`, process.env[key] || `$${key}`);
     });
     return str;
 };
