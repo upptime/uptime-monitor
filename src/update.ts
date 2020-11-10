@@ -45,12 +45,7 @@ export const update = async (shouldCommit = false) => {
     } catch (error) {}
 
     const performTestOnce = async () => {
-      const result = await curl(
-        site.url.startsWith("$")
-          ? process.env[site.url.substr(1, site.url.length)] || ""
-          : site.url,
-        site.method
-      );
+      const result = await curl(site);
       console.log("Result", result);
       const responseTime = (result.totalTime * 1000).toFixed(0);
       const status: "up" | "down" = result.httpCode >= 400 || result.httpCode < 200 ? "down" : "up";
@@ -195,11 +190,22 @@ export const update = async (shouldCommit = false) => {
   if (hasDelta) generateSummary();
 };
 
-const curl = (url: string, method = "GET"): Promise<{ httpCode: number; totalTime: number }> =>
+const replaceEnvironmentVariables = (str: string) => {
+  Object.keys(process.env).forEach((key) => {
+    str = str.replace(`${key}`, process.env[key] || `${key}`);
+  });
+  return str;
+};
+
+const curl = (site: UpptimeConfig["sites"][0]): Promise<{ httpCode: number; totalTime: number }> =>
   new Promise((resolve) => {
+    const url = replaceEnvironmentVariables(site.url);
+    const method = site.method || "GET";
     const curl = new Curl();
     curl.enable(CurlFeature.Raw);
     curl.setOpt("URL", url);
+    if (site.headers)
+      curl.setOpt(Curl.option.HTTPHEADER, site.headers.map(replaceEnvironmentVariables));
     curl.setOpt("FOLLOWLOCATION", 1);
     curl.setOpt("MAXREDIRS", 3);
     curl.setOpt("USERAGENT", "Koj Bot");

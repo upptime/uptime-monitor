@@ -2,7 +2,13 @@ export interface UpptimeConfig {
   owner: string;
   repo: string;
   "user-agent"?: string;
-  sites: { method?: string; name: string; url: string; assignees?: string[] }[];
+  sites: {
+    method?: string;
+    name: string;
+    url: string;
+    assignees?: string[];
+    headers?: string[];
+  }[];
   notifications?: { type: string; [index: string]: string }[];
   assignees: string[];
   PAT?: string;
