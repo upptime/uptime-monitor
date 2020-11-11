@@ -144,6 +144,7 @@ ${pageStatuses
                         .split("]")[0]
                         .replace("[", "")}, powered by @upptime`,
                 });
+            console.log("Current topics are", repoInfo.data.topics);
             if (!(repoInfo.data.topics || []).includes("upptime") && !config.skipTopicsUpdate)
                 await octokit.repos.replaceAllTopics({
                     owner,
@@ -155,6 +156,8 @@ ${pageStatuses
                         "upptime",
                     ].filter((value, index, array) => array.indexOf(value) === index),
                 });
+            console.log("Possibly updated to to", [...(repoInfo.data.topics || []), "uptime-monitor", "status-page", "upptime"].filter((value, index, array) => array.indexOf(value) === index));
+            console.log("Topics are", (await octokit.repos.get({ owner, repo })).data.topics);
             if (!repoInfo.data.homepage && !config.skipHomepageUpdate)
                 await octokit.repos.update({
                     owner,
