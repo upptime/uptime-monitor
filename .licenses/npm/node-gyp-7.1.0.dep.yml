@@ -1,6 +1,6 @@
 ---
 name: node-gyp
-version: 7.0.0
+version: 7.1.0
 type: npm
 summary: Node.js native addon build tool
 homepage: https://github.com/nodejs/node-gyp#readme
