@@ -1,3 +1,10 @@
+## [v1.12.0](https://github.com/upptime/uptime-monitor/compare/v1.11.3...v1.12.0) (2020-11-17)
+
+### ✨ New features
+
+- [`49ea215`](https://github.com/upptime/uptime-monitor/commit/49ea215)  Add support for insecure HTTPS (fixed upptime/upptime#57)
+(Issues: [`upptime/upptime#57`](https://github.com/upptime/upptime/issues/57))
+
 ## [v1.11.3](https://github.com/upptime/uptime-monitor/compare/v1.11.2...v1.11.3) (2020-11-17)
 
 ### 🐛 Bug fixes
