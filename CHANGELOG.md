@@ -1,3 +1,11 @@
+## [v1.12.1](https://github.com/upptime/uptime-monitor/compare/v1.12.0...v1.12.1) (2020-11-17)
+
+### ⬆️ Dependency updates
+
+- [`9e6c6c6`](https://github.com/upptime/uptime-monitor/commit/9e6c6c6)  Bump @upptime/status-page from 1.3.1 to 1.4.1
+- [`bc366c1`](https://github.com/upptime/uptime-monitor/commit/bc366c1)  Bump semantic-release from 17.2.2 to 17.2.3
+- [`d60ca97`](https://github.com/upptime/uptime-monitor/commit/d60ca97)  Update koj-co/github-actions-starter
+
 ## [v1.12.0](https://github.com/upptime/uptime-monitor/compare/v1.11.3...v1.12.0) (2020-11-17)
 
 ### ✨ New features
