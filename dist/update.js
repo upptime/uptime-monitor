@@ -214,3 +214,4 @@ const curl = (site) => new Promise((resolve) => {
     curl.perform();
 });
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+//# sourceMappingURL=update.js.map

@@ -15,3 +15,4 @@ exports.generateGraphs = async () => {
     git_1.commit((config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     git_1.push();
 };
+//# sourceMappingURL=graphs.js.map

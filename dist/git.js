@@ -14,3 +14,4 @@ exports.push = () => {
 exports.lastCommit = () => {
     return shelljs_1.exec(`git log --format="%H" -n 1`).stdout;
 };
+//# sourceMappingURL=git.js.map

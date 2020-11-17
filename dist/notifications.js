@@ -51,3 +51,4 @@ exports.sendNotification = async (config, text) => {
     }
     console.log("[debug] Notifications are sent");
 };
+//# sourceMappingURL=notifications.js.map
