@@ -1,3 +1,16 @@
+## [v1.11.3](https://github.com/upptime/uptime-monitor/compare/v1.11.2...v1.11.3) (2020-11-17)
+
+### 🐛 Bug fixes
+
+- [`c6f6376`](https://github.com/upptime/uptime-monitor/commit/c6f6376)  Add temporary bug fix (upptime/upptime#56)
+(Issues: [`upptime/upptime#56`](https://github.com/upptime/upptime/issues/56))
+
+### ⬆️ Dependency updates
+
+- [`9bb7251`](https://github.com/upptime/uptime-monitor/commit/9bb7251)  Bump @types/fs-extra from 9.0.3 to 9.0.4
+- [`e51b980`](https://github.com/upptime/uptime-monitor/commit/e51b980)  Bump nodemailer from 6.4.15 to 6.4.16
+- [`bcfb856`](https://github.com/upptime/uptime-monitor/commit/bcfb856)  Bump node-libcurl from 2.2.0 to 2.3.0
+
 ## [v1.11.2](https://github.com/upptime/uptime-monitor/compare/v1.11.1...v1.11.2) (2020-11-11)
 
 ## [v1.11.1](https://github.com/upptime/uptime-monitor/compare/v1.11.0...v1.11.1) (2020-11-10)
