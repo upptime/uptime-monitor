@@ -1,3 +1,5 @@
+## [v1.12.2](https://github.com/upptime/uptime-monitor/compare/v1.12.1...v1.12.2) (2020-11-17)
+
 ## [v1.12.1](https://github.com/upptime/uptime-monitor/compare/v1.12.0...v1.12.1) (2020-11-17)
 
 ### ⬆️ Dependency updates
