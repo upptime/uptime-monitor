@@ -206,6 +206,7 @@ const curl = (site: UpptimeConfig["sites"][0]): Promise<{ httpCode: number; tota
     curl.setOpt("URL", url);
     if (site.headers)
       curl.setOpt(Curl.option.HTTPHEADER, site.headers.map(replaceEnvironmentVariables));
+    if (site.__dangerous__insecure) curl.setOpt("SSL_VERIFYPEER", false);
     curl.setOpt("FOLLOWLOCATION", 1);
     curl.setOpt("MAXREDIRS", 3);
     curl.setOpt("USERAGENT", "Koj Bot");

@@ -8,6 +8,7 @@ export interface UpptimeConfig {
     url: string;
     assignees?: string[];
     headers?: string[];
+    __dangerous__insecure?: boolean;
   }[];
   notifications?: { type: string; [index: string]: string }[];
   assignees: string[];
