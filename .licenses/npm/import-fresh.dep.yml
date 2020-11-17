@@ -1,6 +1,6 @@
 ---
 name: import-fresh
-version: 3.2.1
+version: 3.2.2
 type: npm
 summary: Import a module while bypassing the cache
 homepage: https://github.com/sindresorhus/import-fresh#readme

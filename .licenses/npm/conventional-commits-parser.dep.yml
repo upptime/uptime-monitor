@@ -1,6 +1,6 @@
 ---
 name: conventional-commits-parser
-version: 3.1.0
+version: 3.2.0
 type: npm
 summary: Parse raw conventional commits
 homepage: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-commits-parser#readme

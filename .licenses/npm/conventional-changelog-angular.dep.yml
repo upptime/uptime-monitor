@@ -1,6 +1,6 @@
 ---
 name: conventional-changelog-angular
-version: 5.0.11
+version: 5.0.12
 type: npm
 summary: conventional-changelog angular preset
 homepage: https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular#readme
