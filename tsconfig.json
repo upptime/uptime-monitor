@@ -5,14 +5,16 @@
     "module": "commonjs",
     "lib": ["dom", "esnext"],
     "strict": true,
-    "sourceMap": false,
-    "declaration": false,
+    "sourceMap": true,
+    "declaration": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declarationDir": "./dist",
     "outDir": "./dist",
     "typeRoots": ["node_modules/@types", "@types"]
   },
-  "include": ["src"],
+  "include": ["src", "tooling"],
   "exclude": ["node_modules"]
 }

@@ -8,7 +8,7 @@ allowed:
   - mit
   - cc0-1.0
   - unlicense
-  - bsd0
+  - 0bsd
 reviewed:
   npm:
     - "@actions/http-client"

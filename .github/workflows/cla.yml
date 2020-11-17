@@ -16,11 +16,11 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PAT }}
         with:
           path-to-signatures: cla-signatures.json
-          path-to-cla-document: https://github.com/koj-co/.github/blob/master/CLA.md
+          path-to-document: https://github.com/koj-co/.github/blob/master/CLA.md
           allowlist: dependabot-preview[bot], dependabot[bot], greenkeeper[bot], *bot, bot*
           remote-organization-name: koj-co
           remote-repository-name: .github
-          signed-commit-message: ":wrench: @$contributorName has signed the CLA in #$pullRequestNo"
           create-file-commit-message: ":wrench: Creating a file for storing CLA signatures"
+          signed-commit-message: ":wrench: @$contributorName has signed the CLA in #$pullRequestNo"
           custom-allsigned-prcomment: "✍️ All contributors have signed the CLA"
-          custom-notsigned-prcomment: "Thanks for your submission! We ask that $you sign our [Contributor License Agreement]($pathToCLADocument) before we can accept your contribution. You can sign the CLA by adding a comment below using this text:"
+          custom-notsigned-prcomment: "Thanks for your submission! We ask that $you sign our [Contributor License Agreement](https://github.com/koj-co/.github/blob/master/CLA.md) before we can accept your contribution. You can sign the CLA by adding a comment below using this text:"
