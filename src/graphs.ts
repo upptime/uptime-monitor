@@ -1,4 +1,4 @@
-import { readFile } from "fs-extra";
+import { mkdirp, readFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
 import { exec } from "shelljs";
@@ -7,6 +7,8 @@ import { UpptimeConfig } from "./interfaces";
 import { tempFixes } from "./temp";
 
 export const generateGraphs = async () => {
+  await mkdirp("graphs");
+  await mkdirp("api");
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   exec("npx @upptime/graphs");
   exec("npx imagemin-cli graphs/* --out-dir=graphs");

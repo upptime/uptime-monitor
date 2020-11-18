@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest";
 import slugify from "@sindresorhus/slugify";
-import { readFile, writeFile } from "fs-extra";
+import { mkdirp, readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
@@ -10,6 +10,7 @@ import { sendNotification } from "./notifications";
 import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
+  await mkdirp("history");
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
 

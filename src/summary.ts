@@ -1,6 +1,6 @@
 import { Octokit } from "@octokit/rest";
 import slugify from "@sindresorhus/slugify";
-import { readFile, writeFile } from "fs-extra";
+import { mkdirp, readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
 import { commit, push } from "./git";
@@ -8,6 +8,7 @@ import { format } from "prettier";
 import { UpptimeConfig } from "./interfaces";
 
 export const generateSummary = async () => {
+  await mkdirp("history");
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
 
