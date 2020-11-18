@@ -1,3 +1,15 @@
+## [v1.12.3](https://github.com/upptime/uptime-monitor/compare/v1.12.2...v1.12.3) (2020-11-18)
+
+### 🐛 Bug fixes
+
+- [`53ce1d0`](https://github.com/upptime/uptime-monitor/commit/53ce1d0)  Ensure that required dirs exist
+
+### ⬆️ Dependency updates
+
+- [`83e4b4d`](https://github.com/upptime/uptime-monitor/commit/83e4b4d)  Bump vsoch/pull-request-action from 1.0.11 to 1.0.12
+- [`c5f3a2c`](https://github.com/upptime/uptime-monitor/commit/c5f3a2c)  Bump @koj/config from 1.2.8 to 1.2.9
+- [`7a9ef13`](https://github.com/upptime/uptime-monitor/commit/7a9ef13)  Bump @upptime/status-page from 1.4.1 to 1.5.1
+
 ## [v1.12.2](https://github.com/upptime/uptime-monitor/compare/v1.12.1...v1.12.2) (2020-11-17)
 
 ## [v1.12.1](https://github.com/upptime/uptime-monitor/compare/v1.12.0...v1.12.1) (2020-11-17)
