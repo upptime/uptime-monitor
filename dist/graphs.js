@@ -8,6 +8,8 @@ const shelljs_1 = require("shelljs");
 const git_1 = require("./git");
 const temp_1 = require("./temp");
 exports.generateGraphs = async () => {
+    await fs_extra_1.mkdirp("graphs");
+    await fs_extra_1.mkdirp("api");
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     shelljs_1.exec("npx @upptime/graphs");
     shelljs_1.exec("npx imagemin-cli graphs/* --out-dir=graphs");

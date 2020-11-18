@@ -12,6 +12,7 @@ const path_1 = require("path");
 const git_1 = require("./git");
 const prettier_1 = require("prettier");
 exports.generateSummary = async () => {
+    await fs_extra_1.mkdirp("history");
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
     const octokit = new rest_1.Octokit({
