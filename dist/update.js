@@ -69,7 +69,9 @@ exports.update = async (shouldCommit = false) => {
                 308,
             ]).map(Number);
             console.log("Expected status codes", expectedStatusCodes);
-            const status = expectedStatusCodes.includes(result.httpCode) ? "down" : "up";
+            const status = expectedStatusCodes.includes(Number(result.httpCode))
+                ? "up"
+                : "down";
             return { result, responseTime, status };
         };
         let { result, responseTime, status } = await performTestOnce();
