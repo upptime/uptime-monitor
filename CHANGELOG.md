@@ -1,3 +1,9 @@
+## [v1.14.0](https://github.com/upptime/uptime-monitor/compare/v1.13.1...v1.14.0) (2020-11-19)
+
+### ✨ New features
+
+- [`8f75e5b`](https://github.com/upptime/uptime-monitor/commit/8f75e5b)  Delete unnecessary issues automatically
+
 ## [v1.13.1](https://github.com/upptime/uptime-monitor/compare/v1.13.0...v1.13.1) (2020-11-19)
 
 ### 🐛 Bug fixes
