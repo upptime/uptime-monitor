@@ -6,6 +6,7 @@ export interface UpptimeConfig {
     method?: string;
     name: string;
     url: string;
+    expectedStatusCodes?: number[];
     assignees?: string[];
     headers?: string[];
     __dangerous__insecure?: boolean;

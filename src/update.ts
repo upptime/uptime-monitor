@@ -49,7 +49,32 @@ export const update = async (shouldCommit = false) => {
       const result = await curl(site);
       console.log("Result", result);
       const responseTime = (result.totalTime * 1000).toFixed(0);
-      const status: "up" | "down" = result.httpCode >= 400 || result.httpCode < 200 ? "down" : "up";
+      const expectedStatusCodes = (
+        site.expectedStatusCodes || [
+          200,
+          201,
+          202,
+          203,
+          200,
+          204,
+          205,
+          206,
+          207,
+          208,
+          226,
+          300,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          308,
+        ]
+      ).map(Number);
+      console.log("Expected status codes", expectedStatusCodes);
+      const status: "up" | "down" = expectedStatusCodes.includes(result.httpCode) ? "down" : "up";
       return { result, responseTime, status };
     };
 
