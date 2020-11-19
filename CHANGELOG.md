@@ -1,3 +1,10 @@
+## [v1.13.1](https://github.com/upptime/uptime-monitor/compare/v1.13.0...v1.13.1) (2020-11-19)
+
+### 🐛 Bug fixes
+
+- [`6a17167`](https://github.com/upptime/uptime-monitor/commit/6a17167)  Ensure result.httpCode is a number
+- [`27c0d30`](https://github.com/upptime/uptime-monitor/commit/27c0d30)  Fix down/up interchange
+
 ## [v1.13.0](https://github.com/upptime/uptime-monitor/compare/v1.12.3...v1.13.0) (2020-11-19)
 
 ### ✨ New features
