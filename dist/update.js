@@ -193,6 +193,39 @@ exports.update = async (shouldCommit = false) => {
         }
     }
     git_1.push();
+    if (!config.skipDeleteIssues) {
+        // Find all the opened issues that shouldn't have opened
+        // Say, Upptime found a down monitor and it was back up within 5 min
+        const issuesRecentlyClosed = await octokit.issues.listForRepo({
+            owner,
+            repo,
+            state: "closed",
+            labels: "status",
+            per_page: 10,
+        });
+        console.log("Found recently closed issues", issuesRecentlyClosed.data.length);
+        for await (const issue of issuesRecentlyClosed.data) {
+            if (
+            // If this issue was closed within 15 minutes
+            new Date(issue.closed_at).getTime() - new Date(issue.created_at).getTime() < 900000 &&
+                // It has 1 comment (the default Upptime one)
+                issue.comments === 1) {
+                try {
+                    console.log("Trying to delete issue", issue.number, issue.node_id);
+                    const result = await octokit.graphql(`
+      mutation deleteIssue {
+        deleteIssue(input:{issueId:"${issue.node_id}"}) {
+          clientMutationId
+        }
+      }`);
+                    console.log("Success", result);
+                }
+                catch (error) {
+                    console.log("Error deleting this issue", error);
+                }
+            }
+        }
+    }
     if (hasDelta)
         summary_1.generateSummary();
 };
