@@ -75,8 +75,8 @@ export const update = async (shouldCommit = false) => {
       ).map(Number);
       console.log("Expected status codes", expectedStatusCodes);
       const status: "up" | "down" = expectedStatusCodes.includes(Number(result.httpCode))
-        ? "down"
-        : "up";
+        ? "up"
+        : "down";
       return { result, responseTime, status };
     };
 
