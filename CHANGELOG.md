@@ -1,3 +1,9 @@
+## [v1.13.0](https://github.com/upptime/uptime-monitor/compare/v1.12.3...v1.13.0) (2020-11-19)
+
+### ✨ New features
+
+- [`010d02c`](https://github.com/upptime/uptime-monitor/commit/010d02c)  Add support for expected status codes (fixed com/upptime/upptime#60)
+
 ## [v1.12.3](https://github.com/upptime/uptime-monitor/compare/v1.12.2...v1.12.3) (2020-11-18)
 
 ### 🐛 Bug fixes
