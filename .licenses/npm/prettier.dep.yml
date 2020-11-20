@@ -1,6 +1,6 @@
 ---
 name: prettier
-version: 2.1.2
+version: 2.2.0
 type: npm
 summary: Prettier is an opinionated code formatter
 homepage: https://prettier.io
