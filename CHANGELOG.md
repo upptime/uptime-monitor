@@ -1,3 +1,16 @@
+## [v1.14.1](https://github.com/upptime/uptime-monitor/compare/v1.14.0...v1.14.1) (2020-11-21)
+
+### ♻️ Updates
+
+- [`c000ab2`](https://github.com/upptime/uptime-monitor/commit/c000ab2)  Skip running workflows if the config is same
+(Issues: [`upptime/upptime#61`](https://github.com/upptime/upptime/issues/61) [`upptime/upptime#62`](https://github.com/upptime/upptime/issues/62))
+
+### ⬆️ Dependency updates
+
+- [`3877c5c`](https://github.com/upptime/uptime-monitor/commit/3877c5c)  Bump prettier from 2.1.2 to 2.2.0
+- [`fae3530`](https://github.com/upptime/uptime-monitor/commit/fae3530)  Bump semantic-release from 17.2.3 to 17.2.4
+- [`baca79b`](https://github.com/upptime/uptime-monitor/commit/baca79b)  Bump typescript from 4.0.5 to 4.1.2
+
 ## [v1.14.0](https://github.com/upptime/uptime-monitor/compare/v1.13.1...v1.14.0) (2020-11-19)
 
 ### ✨ New features
