@@ -5,7 +5,7 @@ import { safeLoad } from "js-yaml";
 import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
 import { commit, lastCommit, push } from "./helpers/git";
-import { shouldContinue } from "./init-check";
+import { shouldContinue } from "./helpers/init-check";
 import { UpptimeConfig } from "./interfaces";
 import { sendNotification } from "./notifications";
 import { generateSummary } from "./summary";

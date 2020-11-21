@@ -3,7 +3,7 @@ import { safeLoad } from "js-yaml";
 import { join } from "path";
 import { exec } from "shelljs";
 import { commit, push } from "./helpers/git";
-import { shouldContinue } from "./init-check";
+import { shouldContinue } from "./helpers/init-check";
 import { UpptimeConfig } from "./interfaces";
 import { tempFixes } from "./temp";
 

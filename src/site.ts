@@ -1,5 +1,5 @@
 import { cd, cp, exec, mkdir } from "shelljs";
-import { shouldContinue } from "./init-check";
+import { shouldContinue } from "./helpers/init-check";
 
 export const generateSite = async () => {
   if (!(await shouldContinue())) return;

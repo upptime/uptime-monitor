@@ -6,7 +6,7 @@ import { join } from "path";
 import { commit, push } from "./helpers/git";
 import { format } from "prettier";
 import { UpptimeConfig } from "./interfaces";
-import { shouldContinue } from "./init-check";
+import { shouldContinue } from "./helpers/init-check";
 
 export const generateSummary = async () => {
   if (!(await shouldContinue())) return;
