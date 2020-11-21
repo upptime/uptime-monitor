@@ -3,7 +3,7 @@ import slugify from "@sindresorhus/slugify";
 import { mkdirp, readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
-import { commit, push } from "./git";
+import { commit, push } from "./helpers/git";
 import { format } from "prettier";
 import { UpptimeConfig } from "./interfaces";
 import { shouldContinue } from "./init-check";
