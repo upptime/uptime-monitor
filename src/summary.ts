@@ -6,8 +6,10 @@ import { join } from "path";
 import { commit, push } from "./git";
 import { format } from "prettier";
 import { UpptimeConfig } from "./interfaces";
+import { shouldContinue } from "./init-check";
 
 export const generateSummary = async () => {
+  if (!(await shouldContinue())) return;
   await mkdirp("history");
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");

@@ -3,10 +3,12 @@ import { safeLoad } from "js-yaml";
 import { join } from "path";
 import { exec } from "shelljs";
 import { commit, push } from "./git";
+import { shouldContinue } from "./init-check";
 import { UpptimeConfig } from "./interfaces";
 import { tempFixes } from "./temp";
 
 export const generateGraphs = async () => {
+  if (!(await shouldContinue())) return;
   await mkdirp("graphs");
   await mkdirp("api");
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;

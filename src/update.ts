@@ -5,11 +5,13 @@ import { safeLoad } from "js-yaml";
 import { Curl, CurlFeature } from "node-libcurl";
 import { join } from "path";
 import { commit, lastCommit, push } from "./git";
+import { shouldContinue } from "./init-check";
 import { UpptimeConfig } from "./interfaces";
 import { sendNotification } from "./notifications";
 import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
+  if (!(await shouldContinue())) return;
   await mkdirp("history");
   const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");

@@ -1,6 +1,8 @@
 import { cd, cp, exec, mkdir } from "shelljs";
+import { shouldContinue } from "./init-check";
 
 export const generateSite = async () => {
+  if (!(await shouldContinue())) return;
   const siteDir = "site";
   mkdir(siteDir);
   cd(siteDir);
