@@ -23,7 +23,7 @@ export const update = async (shouldCommit = false) => {
 
   let hasDelta = false;
   for await (const site of config.sites) {
-    const slug = slugify(site.name);
+    const slug = site.slug || slugify(site.name);
     console.log("Checking", site.url);
     let currentStatus = "unknown";
     let startTime = new Date().toISOString();
