@@ -2,7 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateSite = void 0;
 const shelljs_1 = require("shelljs");
-exports.generateSite = async () => {
+const init_check_1 = require("./init-check");
+const generateSite = async () => {
+    if (!(await init_check_1.shouldContinue()))
+        return;
     const siteDir = "site";
     shelljs_1.mkdir(siteDir);
     shelljs_1.cd(siteDir);
@@ -15,4 +18,5 @@ exports.generateSite = async () => {
     shelljs_1.cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
     shelljs_1.cd("../..");
 };
+exports.generateSite = generateSite;
 //# sourceMappingURL=site.js.map

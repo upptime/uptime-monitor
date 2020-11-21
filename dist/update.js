@@ -11,9 +11,12 @@ const js_yaml_1 = require("js-yaml");
 const node_libcurl_1 = require("node-libcurl");
 const path_1 = require("path");
 const git_1 = require("./git");
+const init_check_1 = require("./init-check");
 const notifications_1 = require("./notifications");
 const summary_1 = require("./summary");
-exports.update = async (shouldCommit = false) => {
+const update = async (shouldCommit = false) => {
+    if (!(await init_check_1.shouldContinue()))
+        return;
     await fs_extra_1.mkdirp("history");
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
@@ -229,6 +232,7 @@ exports.update = async (shouldCommit = false) => {
     if (hasDelta)
         summary_1.generateSummary();
 };
+exports.update = update;
 const replaceEnvironmentVariables = (str) => {
     Object.keys(process.env).forEach((key) => {
         str = str.replace(`$${key}`, process.env[key] || `$${key}`);

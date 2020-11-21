@@ -6,8 +6,11 @@ const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const shelljs_1 = require("shelljs");
 const git_1 = require("./git");
+const init_check_1 = require("./init-check");
 const temp_1 = require("./temp");
-exports.generateGraphs = async () => {
+const generateGraphs = async () => {
+    if (!(await init_check_1.shouldContinue()))
+        return;
     await fs_extra_1.mkdirp("graphs");
     await fs_extra_1.mkdirp("api");
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
@@ -17,4 +20,5 @@ exports.generateGraphs = async () => {
     git_1.commit((config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     git_1.push();
 };
+exports.generateGraphs = generateGraphs;
 //# sourceMappingURL=graphs.js.map

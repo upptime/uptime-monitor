@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendNotification = void 0;
 const axios_1 = __importDefault(require("axios"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
-exports.sendNotification = async (config, text) => {
+const sendNotification = async (config, text) => {
     console.log("[debug] Sending notification", text);
     console.log(`[debug] Notification config has ${(config.notifications || []).length} keys`);
     for await (const notification of config.notifications || []) {
@@ -51,4 +51,5 @@ exports.sendNotification = async (config, text) => {
     }
     console.log("[debug] Notifications are sent");
 };
+exports.sendNotification = sendNotification;
 //# sourceMappingURL=notifications.js.map

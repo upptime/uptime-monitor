@@ -11,7 +11,10 @@ const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const git_1 = require("./git");
 const prettier_1 = require("prettier");
-exports.generateSummary = async () => {
+const init_check_1 = require("./init-check");
+const generateSummary = async () => {
+    if (!(await init_check_1.shouldContinue()))
+        return;
     await fs_extra_1.mkdirp("history");
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
@@ -192,4 +195,5 @@ ${pageStatuses
         ":card_file_box: Update status summary [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     git_1.push();
 };
+exports.generateSummary = generateSummary;
 //# sourceMappingURL=summary.js.map
