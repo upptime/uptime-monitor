@@ -7,7 +7,7 @@ import { join } from "path";
 import { commit, lastCommit, push } from "./helpers/git";
 import { shouldContinue } from "./helpers/init-check";
 import { UpptimeConfig } from "./interfaces";
-import { sendNotification } from "./notifications";
+import { sendNotification } from "./helpers/notifications";
 import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {

@@ -1,4 +1,4 @@
-import { UpptimeConfig } from "./interfaces";
+import { UpptimeConfig } from "../interfaces";
 import axios from "axios";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
