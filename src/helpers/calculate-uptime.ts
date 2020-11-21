@@ -40,7 +40,12 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<number> => {
  * @param slug - Slug of the site
  */
 export const getUptimePercentForSite = async (slug: string): Promise<string> => {
-  const site = safeLoad(await readFile(join(".", "history", `${slug}.yml`), "utf8")) as SiteHistory;
+  const site = safeLoad(
+    (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
+      .split("\n")
+      .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
+      .join("\n")
+  ) as SiteHistory;
   // Time when we started tracking this website's downtime
   const startDate = new Date(site.startTime ?? new Date());
 

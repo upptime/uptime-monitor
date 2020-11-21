@@ -1,55 +1,57 @@
-import { Octokit } from "@octokit/rest";
 import slugify from "@sindresorhus/slugify";
 import { mkdirp, readFile, writeFile } from "fs-extra";
 import { safeLoad } from "js-yaml";
 import { join } from "path";
+import { getConfig } from "./helpers/config";
 import { commit, lastCommit, push } from "./helpers/git";
+import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
-import { UpptimeConfig } from "./interfaces";
 import { sendNotification } from "./helpers/notifications";
-import { generateSummary } from "./summary";
 import { curl } from "./helpers/request";
+import { SiteHistory } from "./interfaces";
+import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
-  const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
 
-  const octokit = new Octokit({
-    auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
-    userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
-  });
+  const config = await getConfig();
+  const octokit = await getOctokit();
 
   let hasDelta = false;
   for await (const site of config.sites) {
-    const slug = site.slug || slugify(site.name);
     console.log("Checking", site.url);
+
+    const slug = site.slug || slugify(site.name);
     let currentStatus = "unknown";
-    let startTime = new Date().toISOString();
+    let startTime = new Date();
+    const siteHistory = safeLoad(
+      (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
+        .split("\n")
+        .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
+        .join("\n")
+    ) as SiteHistory;
 
     try {
-      currentStatus =
-        (
-          (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
-            .split("\n")
-            .find((line) => line.toLocaleLowerCase().includes("- status")) || ""
-        )
-          .split(":")[1]
-          .trim() || "unknown";
-      startTime =
-        (
-          (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
-            .split("\n")
-            .find((line) => line.toLocaleLowerCase().includes("- starttime")) || ""
-        )
-          .split("startTime:")[1]
-          .trim() || new Date().toISOString();
+      currentStatus = siteHistory.status || "unknown";
+      startTime = new Date(siteHistory.startTime || new Date());
     } catch (error) {}
+    console.log("Current status", site.slug, currentStatus, startTime);
 
-    const performTestOnce = async () => {
+    /**
+     * Check whether the site is online
+     */
+    const performTestOnce = async (): Promise<{
+      result: {
+        httpCode: number;
+        totalTime: number;
+      };
+      responseTime: string;
+      status: "up" | "down";
+    }> => {
       const result = await curl(site);
-      console.log("Result", result);
+      console.log("Result from test", result);
       const responseTime = (result.totalTime * 1000).toFixed(0);
       const expectedStatusCodes = (
         site.expectedStatusCodes || [
@@ -75,7 +77,6 @@ export const update = async (shouldCommit = false) => {
           308,
         ]
       ).map(Number);
-      console.log("Expected status codes", expectedStatusCodes);
       const status: "up" | "down" = expectedStatusCodes.includes(Number(result.httpCode))
         ? "up"
         : "down";
@@ -107,16 +108,17 @@ export const update = async (shouldCommit = false) => {
 
     try {
       if (shouldCommit || currentStatus !== status) {
-        const content = `- url: ${site.url}
-- status: ${status}
-- code: ${result.httpCode}
-- responseTime: ${responseTime}
-- lastUpdated: ${new Date().toISOString()}
-- startTime: ${startTime}
-- generator: Upptime <https://github.com/upptime/upptime>
-`;
-
-        await writeFile(join(".", "history", `${slug}.yml`), content);
+        await writeFile(
+          join(".", "history", `${slug}.yml`),
+          `url: ${site.url}  
+status: ${status}
+code: ${result.httpCode}
+responseTime: ${responseTime}
+lastUpdated: ${new Date().toISOString()}
+startTime: ${startTime}
+generator: Upptime <https://github.com/upptime/upptime>
+`
+        );
         commit(
           (
             (config.commitMessages || {}).statusChange ||
