@@ -115,13 +115,16 @@ ${pageStatuses
 ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
   }
 
+  // Skip running this in the template repository
   if (`${owner}/${repo}` !== "upptime/upptime") {
     // Remove Upptime logo and add heaading
     readmeContent = readmeContent
       .split("\n")
       .map((line, index) => {
         if (index === 0 && line.includes("https://upptime.js.org"))
-          return `# [📈 Live Status](${website}): <!--live status--> **🟩 All systems operational**`;
+          return `# [📈 ${i18n.liveStatus || "Live Status"}](${website}): ${
+            i18n.liveStatusHtmlComment || "<!--live status-->"
+          } **${i18n.allSystemsOperational || "🟩 All systems operational"}**`;
         if (
           line.includes("[![Summary CI](https://github.com") &&
           readmeContent.includes("<!--start: description-->")
@@ -129,7 +132,7 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
           return `${line}\n\nWith [Upptime](https://upptime.js.org), you can get your own unlimited and free uptime monitor and status page, powered entirely by a GitHub repository. We use [Issues](https://github.com/${config.owner}/${config.repo}/issues) as incident reports, [Actions](https://github.com/${config.owner}/${config.repo}/actions) as uptime monitors, and [Pages](${website}) for the status page.`;
         return line;
       })
-      .filter((line) => !line.startsWith("## [📈 Live Status]"))
+      .filter((line) => !line.startsWith(`## [📈 ${i18n.liveStatus || "Live Status"}]`))
       .join("\n");
 
     // Remove default documentation
@@ -221,10 +224,10 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
       if (line.includes("<!--live status-->")) {
         line = `${line.split("<!--live status-->")[0]}<!--live status--> **${
           numberOfDown === 0
-            ? "🟩 All systems operational"
+            ? i18n.allSystemsOperational || "🟩 All systems operational"
             : numberOfDown === config.sites.length
-            ? "🟥 Complete outage"
-            : "🟨 Partial outage"
+            ? i18n.completeOutage || "🟥 Complete outage"
+            : i18n.partialOutage || "🟨 Partial outage"
         }**`;
       }
       return line;
