@@ -47,24 +47,28 @@ export interface UpptimeConfig {
     liveStatusHtmlComment?: string;
     commitPrefixStatusUp?: string;
     commitPrefixStatusDown?: string;
+    commitPrefixStatusDegraded?: string;
     i18n?: {
         up?: string;
         down?: string;
+        degraded?: string;
         url?: string;
         status?: string;
         history?: string;
+        ms?: string;
         responseTime?: string;
         uptime?: string;
         responseTimeGraphAlt?: string;
         liveStatus?: string;
         allSystemsOperational?: string;
+        degradedPerformance?: string;
         completeOutage?: string;
         partialOutage?: string;
     } & Record<string, string>;
 }
 export interface SiteHistory {
     url: string;
-    status: "up" | "down";
+    status: "up" | "down" | "degraded";
     code: number;
     responseTime: number;
     lastUpdated?: string;
@@ -79,7 +83,7 @@ export interface SiteStatus {
     /** Full URL of the site */
     url: string;
     /** Current status, up or down */
-    status: "up" | "down";
+    status: "up" | "down" | "degraded";
     /** Current response time (ms) */
     time: number;
     /** Total uptime percentage */

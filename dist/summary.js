@@ -25,9 +25,10 @@ const generateSummary = async () => {
     const endText = readmeContent.split(config.summaryEndHtmlComment || "<!--end: status pages-->")[1];
     // This object will track the summary data of all sites
     const pageStatuses = [];
-    // We'll keep incrementing this if there are down sites
+    // We'll keep incrementing this if there are down/degraded sites
     // This is used to show the overall status later
     let numberOfDown = 0;
+    let numberOfDegraded = 0;
     // Loop through each site and add compute the current status
     for await (const site of config.sites) {
         const slug = site.slug || slugify_1.default(site.name);
@@ -53,12 +54,16 @@ const generateSummary = async () => {
             .map((item) => Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()))
             .filter((item) => item && !isNaN(item))
             .reduce((p, c) => p + c, 0) / history.data.length;
-        // Current status is "up" or "down" based on the emoji prefix of the commit message
+        // Current status is "up", "down", or "degraded" based on the emoji prefix of the commit message
         const status = history.data[0].commit.message
             .split(" ")[0]
             .includes(config.commitPrefixStatusUp || "🟩")
             ? "up"
-            : "down";
+            : history.data[0].commit.message
+                .split(" ")[0]
+                .includes(config.commitPrefixStatusDegraded || "🟨")
+                ? "degraded"
+                : "down";
         pageStatuses.push({
             name: site.name,
             url: site.url,
@@ -69,6 +74,8 @@ const generateSummary = async () => {
         });
         if (status === "down")
             numberOfDown++;
+        if (status === "degraded")
+            numberOfDegraded++;
     }
     let website = `https://${config.owner}.github.io/${config.repo}`;
     if (config["status-website"] && config["status-website"].cname)
@@ -81,7 +88,11 @@ const generateSummary = async () => {
 | ${i18n.url || "URL"} | ${i18n.status || "Status"} | ${i18n.history || "History"} | ${i18n.responseTime || "Response Time"} | ${i18n.uptime || "Uptime"} |
 | --- | ------ | ------- | ------------- | ------ |
 ${pageStatuses
-            .map((page) => `| ${page.url.includes("$") ? page.name : `[${page.name}](${page.url})`} | ${page.status === "up" ? i18n.up || "🟩 Up" : i18n.down || "🟥 Down"} | [${page.slug}.yml](https://github.com/${owner}/${repo}/commits/master/history/${page.slug}.yml) | <img alt="${i18n.responseTimeGraphAlt || "Response time graph"}" src="./graphs/${page.slug}.png" height="20"> ${page.time}ms | [![${i18n.uptime || "Uptime"} ${page.uptime}%](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime.json)](${website}/history/${page.slug})`)
+            .map((page) => `| ${page.url.includes("$") ? page.name : `[${page.name}](${page.url})`} | ${page.status === "up"
+            ? i18n.up || "🟩 Up"
+            : page.status === "degraded"
+                ? i18n.degraded || "🟨 Degraded"
+                : i18n.down || "🟥 Down"} | [${page.slug}.yml](https://github.com/${owner}/${repo}/commits/master/history/${page.slug}.yml) | <img alt="${i18n.responseTimeGraphAlt || "Response time graph"}" src="./graphs/${page.slug}.png" height="20"> ${page.time}${i18n.ms || "ms"} | [![${i18n.uptime || "Uptime"} ${page.uptime}%](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime.json)](${website}/history/${page.slug})`)
             .join("\n")}
 ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     }
@@ -170,10 +181,12 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
         .map((line) => {
         if (line.includes("<!--live status-->")) {
             line = `${line.split("<!--live status-->")[0]}<!--live status--> **${numberOfDown === 0
-                ? i18n.allSystemsOperational || "🟩 All systems operational"
+                ? numberOfDegraded === 0
+                    ? i18n.allSystemsOperational || "🟩 All systems operational"
+                    : i18n.degradedPerformance || "🟨 Degraded performance"
                 : numberOfDown === config.sites.length
                     ? i18n.completeOutage || "🟥 Complete outage"
-                    : i18n.partialOutage || "🟨 Partial outage"}**`;
+                    : i18n.partialOutage || "🟧 Partial outage"}**`;
         }
         return line;
     })
