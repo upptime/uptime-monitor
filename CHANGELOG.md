@@ -1,3 +1,9 @@
+## [v1.14.4](https://github.com/upptime/uptime-monitor/compare/v1.14.3...v1.14.4) (2020-11-22)
+
+### 🐛 Bug fixes
+
+- [`bcfeefc`](https://github.com/upptime/uptime-monitor/commit/bcfeefc)  Use state: all when looking for issues
+
 ## [v1.14.3](https://github.com/upptime/uptime-monitor/compare/v1.14.2...v1.14.3) (2020-11-22)
 
 ### 🐛 Bug fixes
