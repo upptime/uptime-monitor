@@ -3,6 +3,8 @@ import { readFile } from "fs-extra";
 import { join } from "path";
 
 export const shouldContinue = async (): Promise<boolean> => {
+  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  if (`${owner}/${repo}` === "upptime/upptime") return true;
   try {
     const upptimeDefaultConfig = await axios.get(
       "https://raw.githubusercontent.com/upptime/upptime/master/.upptimerc.yml"
