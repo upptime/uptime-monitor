@@ -19,6 +19,7 @@ const getDowntimeSecondsForSite = async (slug) => {
         repo,
         labels: `status,${slug}`,
         filter: "all",
+        state: "all",
         per_page: 100,
     });
     // If this issue has been closed already, calculate the difference
