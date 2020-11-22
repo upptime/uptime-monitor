@@ -143,7 +143,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                                 repo,
                                 title: status === "down"
                                     ? `🛑 ${site.name} is down`
-                                    : `🟨 ${site.name} has degraded performance`,
+                                    : `⚠️ ${site.name} has degraded performance`,
                                 body: `In [\`${lastCommitSha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}), ${site.name} (${site.url}) ${status === "down" ? "was **down**" : "experienced **degraded performance**"}:
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
