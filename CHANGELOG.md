@@ -1,3 +1,10 @@
+## [v1.15.2](https://github.com/upptime/uptime-monitor/compare/v1.15.1...v1.15.2) (2020-11-22)
+
+### 🐛 Bug fixes
+
+- [`f892d8d`](https://github.com/upptime/uptime-monitor/commit/f892d8d)  Fix upptime/upptime#75
+(Issues: [`upptime/upptime#75`](https://github.com/upptime/upptime/issues/75))
+
 ## [v1.15.1](https://github.com/upptime/uptime-monitor/compare/v1.15.0...v1.15.1) (2020-11-22)
 
 ### 🐛 Bug fixes
