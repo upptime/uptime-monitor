@@ -1,3 +1,9 @@
+## [v1.14.3](https://github.com/upptime/uptime-monitor/compare/v1.14.2...v1.14.3) (2020-11-22)
+
+### 🐛 Bug fixes
+
+- [`8af0eb2`](https://github.com/upptime/uptime-monitor/commit/8af0eb2)  All workflows should run in upptime/upptime
+
 ## [v1.14.2](https://github.com/upptime/uptime-monitor/compare/v1.14.1...v1.14.2) (2020-11-22)
 
 ### ♻️ Updates
