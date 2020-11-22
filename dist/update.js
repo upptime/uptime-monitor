@@ -4,50 +4,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.update = void 0;
-const rest_1 = require("@octokit/rest");
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
-const node_libcurl_1 = require("node-libcurl");
 const path_1 = require("path");
-const git_1 = require("./git");
-const init_check_1 = require("./init-check");
-const notifications_1 = require("./notifications");
+const config_1 = require("./helpers/config");
+const git_1 = require("./helpers/git");
+const github_1 = require("./helpers/github");
+const init_check_1 = require("./helpers/init-check");
+const notifications_1 = require("./helpers/notifications");
+const request_1 = require("./helpers/request");
 const summary_1 = require("./summary");
 const update = async (shouldCommit = false) => {
     if (!(await init_check_1.shouldContinue()))
         return;
     await fs_extra_1.mkdirp("history");
-    const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
-    const octokit = new rest_1.Octokit({
-        auth: config.PAT || process.env.GH_PAT || process.env.GITHUB_TOKEN,
-        userAgent: config["user-agent"] || process.env.USER_AGENT || "KojBot",
-    });
+    const config = await config_1.getConfig();
+    const octokit = await github_1.getOctokit();
     let hasDelta = false;
     for await (const site of config.sites) {
-        const slug = slugify_1.default(site.name);
         console.log("Checking", site.url);
+        const slug = site.slug || slugify_1.default(site.name);
         let currentStatus = "unknown";
-        let startTime = new Date().toISOString();
+        let startTime = new Date();
+        const siteHistory = js_yaml_1.safeLoad((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
+            .split("\n")
+            .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
+            .join("\n"));
         try {
-            currentStatus =
-                ((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
-                    .split("\n")
-                    .find((line) => line.toLocaleLowerCase().includes("- status")) || "")
-                    .split(":")[1]
-                    .trim() || "unknown";
-            startTime =
-                ((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
-                    .split("\n")
-                    .find((line) => line.toLocaleLowerCase().includes("- starttime")) || "")
-                    .split("startTime:")[1]
-                    .trim() || new Date().toISOString();
+            currentStatus = siteHistory.status || "unknown";
+            startTime = new Date(siteHistory.startTime || new Date());
         }
         catch (error) { }
+        console.log("Current status", site.slug, currentStatus, startTime);
+        /**
+         * Check whether the site is online
+         */
         const performTestOnce = async () => {
-            const result = await curl(site);
-            console.log("Result", result);
+            const result = await request_1.curl(site);
+            console.log("Result from test", result);
             const responseTime = (result.totalTime * 1000).toFixed(0);
             const expectedStatusCodes = (site.expectedStatusCodes || [
                 200,
@@ -71,7 +67,6 @@ const update = async (shouldCommit = false) => {
                 307,
                 308,
             ]).map(Number);
-            console.log("Expected status codes", expectedStatusCodes);
             const status = expectedStatusCodes.includes(Number(result.httpCode))
                 ? "up"
                 : "down";
@@ -102,15 +97,14 @@ const update = async (shouldCommit = false) => {
         }
         try {
             if (shouldCommit || currentStatus !== status) {
-                const content = `- url: ${site.url}
-- status: ${status}
-- code: ${result.httpCode}
-- responseTime: ${responseTime}
-- lastUpdated: ${new Date().toISOString()}
-- startTime: ${startTime}
-- generator: Upptime <https://github.com/upptime/upptime>
-`;
-                await fs_extra_1.writeFile(path_1.join(".", "history", `${slug}.yml`), content);
+                await fs_extra_1.writeFile(path_1.join(".", "history", `${slug}.yml`), `url: ${site.url}  
+status: ${status}
+code: ${result.httpCode}
+responseTime: ${responseTime}
+lastUpdated: ${new Date().toISOString()}
+startTime: ${startTime}
+generator: Upptime <https://github.com/upptime/upptime>
+`);
                 git_1.commit(((config.commitMessages || {}).statusChange ||
                     "$EMOJI $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]")
                     .replace("$EMOJI", status === "up" ? "🟩" : "🟥")
@@ -233,48 +227,5 @@ const update = async (shouldCommit = false) => {
         summary_1.generateSummary();
 };
 exports.update = update;
-const replaceEnvironmentVariables = (str) => {
-    Object.keys(process.env).forEach((key) => {
-        str = str.replace(`$${key}`, process.env[key] || `$${key}`);
-    });
-    return str;
-};
-const curl = (site) => new Promise((resolve) => {
-    const url = replaceEnvironmentVariables(site.url);
-    const method = site.method || "GET";
-    const curl = new node_libcurl_1.Curl();
-    curl.enable(node_libcurl_1.CurlFeature.Raw);
-    curl.setOpt("URL", url);
-    if (site.headers)
-        curl.setOpt(node_libcurl_1.Curl.option.HTTPHEADER, site.headers.map(replaceEnvironmentVariables));
-    if (site.__dangerous__insecure)
-        curl.setOpt("SSL_VERIFYPEER", false);
-    curl.setOpt("FOLLOWLOCATION", 1);
-    curl.setOpt("MAXREDIRS", 3);
-    curl.setOpt("USERAGENT", "Koj Bot");
-    curl.setOpt("CONNECTTIMEOUT", 10);
-    curl.setOpt("TIMEOUT", 30);
-    curl.setOpt("HEADER", 1);
-    curl.setOpt("VERBOSE", false);
-    curl.setOpt("CUSTOMREQUEST", method);
-    curl.on("error", () => {
-        curl.close();
-        return resolve({ httpCode: 0, totalTime: 0 });
-    });
-    curl.on("end", () => {
-        let httpCode = 0;
-        let totalTime = 0;
-        try {
-            httpCode = Number(curl.getInfo("RESPONSE_CODE"));
-            totalTime = Number(curl.getInfo("TOTAL_TIME"));
-        }
-        catch (error) {
-            curl.close();
-            return resolve({ httpCode, totalTime });
-        }
-        return resolve({ httpCode, totalTime });
-    });
-    curl.perform();
-});
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 //# sourceMappingURL=update.js.map

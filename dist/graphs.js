@@ -5,9 +5,9 @@ const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const shelljs_1 = require("shelljs");
-const git_1 = require("./git");
-const init_check_1 = require("./init-check");
-const temp_1 = require("./temp");
+const git_1 = require("./helpers/git");
+const init_check_1 = require("./helpers/init-check");
+const temp_1 = require("./helpers/temp");
 const generateGraphs = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateSite = void 0;
 const shelljs_1 = require("shelljs");
-const init_check_1 = require("./init-check");
+const init_check_1 = require("./helpers/init-check");
 const generateSite = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;
