@@ -8,6 +8,9 @@ const axios_1 = __importDefault(require("axios"));
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const shouldContinue = async () => {
+    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    if (`${owner}/${repo}` === "upptime/upptime")
+        return true;
     try {
         const upptimeDefaultConfig = await axios_1.default.get("https://raw.githubusercontent.com/upptime/upptime/master/.upptimerc.yml");
         const thisRepoConfig = await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8");
