@@ -48,7 +48,7 @@ export const update = async (shouldCommit = false) => {
         totalTime: number;
       };
       responseTime: string;
-      status: "up" | "down";
+      status: "up" | "down" | "degraded";
     }> => {
       const result = await curl(site);
       console.log("Result from test", result);
@@ -77,9 +77,10 @@ export const update = async (shouldCommit = false) => {
           308,
         ]
       ).map(Number);
-      const status: "up" | "down" = expectedStatusCodes.includes(Number(result.httpCode))
+      let status: "up" | "down" | "degraded" = expectedStatusCodes.includes(Number(result.httpCode))
         ? "up"
         : "down";
+      if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
       return { result, responseTime, status };
     };
 
@@ -88,7 +89,7 @@ export const update = async (shouldCommit = false) => {
      * If the site is down, we perform the test 2 more times to make
      * sure that it's not a false alarm
      */
-    if (status === "down") {
+    if (status === "down" || status === "degraded") {
       wait(1000);
       const secondTry = await performTestOnce();
       if (secondTry.status === "up") {
@@ -124,7 +125,7 @@ generator: Upptime <https://github.com/upptime/upptime>
             (config.commitMessages || {}).statusChange ||
             "$EMOJI $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]"
           )
-            .replace("$EMOJI", status === "up" ? "🟩" : "🟥")
+            .replace("$EMOJI", status === "up" ? "🟩" : status === "degraded" ? "🟨" : "🟥")
             .replace("$SITE_NAME", site.name)
             .replace("$SITE_URL", site.url)
             .replace("$SITE_METHOD", site.method || "GET")
@@ -152,19 +153,22 @@ generator: Upptime <https://github.com/upptime/upptime>
           });
           console.log(`Found ${issues.data.length} issues`);
 
-          // If the site was just recorded as down, open an issue
-          if (status === "down") {
+          // If the site was just recorded as down or degraded, open an issue
+          if (status === "down" || status === "degraded") {
             if (!issues.data.length) {
               const newIssue = await octokit.issues.create({
                 owner,
                 repo,
-                title: `🛑 ${site.name} is down`,
+                title:
+                  status === "down"
+                    ? `🛑 ${site.name} is down`
+                    : `🟨 ${site.name} has degraded performance`,
                 body: `In [\`${lastCommitSha.substr(
                   0,
                   7
                 )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}), ${site.name} (${
                   site.url
-                }) was **down**:
+                }) ${status === "down" ? "was **down**" : "experienced **degraded performance**"}:
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
@@ -179,7 +183,9 @@ generator: Upptime <https://github.com/upptime/upptime>
               console.log("Opened and locked a new issue");
               await sendNotification(
                 config,
-                `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
+                status === "down"
+                  ? `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
+                  : `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**: ${newIssue.data.html_url}`
               );
             } else {
               console.log("An issue is already open for this");
@@ -190,7 +196,11 @@ generator: Upptime <https://github.com/upptime/upptime>
               owner,
               repo,
               issue_number: issues.data[0].number,
-              body: `**Resolved:** ${site.name} is back up in [\`${lastCommitSha.substr(
+              body: `**Resolved:** ${site.name} ${
+                issues.data[0].title.includes("degraded")
+                  ? "performance has improved"
+                  : "is back up"
+              } in [\`${lastCommitSha.substr(
                 0,
                 7
               )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).`,
@@ -203,7 +213,14 @@ generator: Upptime <https://github.com/upptime/upptime>
               state: "closed",
             });
             console.log("Closed issue");
-            await sendNotification(config, `🟩 ${site.name} (${site.url}) is back up.`);
+            await sendNotification(
+              config,
+              `🟩 ${site.name} (${site.url}) ${
+                issues.data[0].title.includes("degraded")
+                  ? "performance has improved"
+                  : "is back up"
+              }.`
+            );
           } else {
             console.log("Could not find a relevant issue", issues.data);
           }

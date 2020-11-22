@@ -60,7 +60,7 @@ export interface UpptimeConfig {
 
 export interface SiteHistory {
   url: string;
-  status: "up" | "down";
+  status: "up" | "down" | "degraded";
   code: number;
   responseTime: number;
   lastUpdated?: string;
@@ -76,7 +76,7 @@ export interface SiteStatus {
   /** Full URL of the site */
   url: string;
   /** Current status, up or down */
-  status: "up" | "down";
+  status: "up" | "down" | "degraded";
   /** Current response time (ms) */
   time: number;
   /** Total uptime percentage */
