@@ -46,7 +46,7 @@ const getUptimePercentForSite = async (slug) => {
     // Number of seconds the site has been down
     const downtimeSeconds = await getDowntimeSecondsForSite(slug);
     // Return a percentage string
-    return `${Math.min(0, 100 - (downtimeSeconds / totalSeconds) * 100).toFixed(2)}%`;
+    return `${Math.max(0, 100 - (downtimeSeconds / totalSeconds) * 100).toFixed(2)}%`;
 };
 exports.getUptimePercentForSite = getUptimePercentForSite;
 //# sourceMappingURL=calculate-uptime.js.map
