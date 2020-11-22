@@ -47,7 +47,7 @@ export const getUptimePercentForSite = async (slug: string): Promise<string> => 
       .join("\n")
   ) as SiteHistory;
   // Time when we started tracking this website's downtime
-  const startDate = new Date(site.startTime ?? new Date());
+  const startDate = new Date(site.startTime || new Date());
 
   // Number of seconds we have been tracking this site
   const totalSeconds = (new Date().getTime() - startDate.getTime()) / 1000;
