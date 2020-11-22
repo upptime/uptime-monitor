@@ -47,6 +47,7 @@ export interface UpptimeConfig {
     url?: string;
     status?: string;
     history?: string;
+    ms?: string;
     responseTime?: string;
     uptime?: string;
     responseTimeGraphAlt?: string;
