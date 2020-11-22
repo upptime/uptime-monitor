@@ -123,9 +123,16 @@ generator: Upptime <https://github.com/upptime/upptime>
         commit(
           (
             (config.commitMessages || {}).statusChange ||
-            "$EMOJI $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]"
+            "$PREFIX $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]"
           )
-            .replace("$EMOJI", status === "up" ? "🟩" : status === "degraded" ? "🟨" : "🟥")
+            .replace(
+              "$PREFIX",
+              status === "up"
+                ? config.commitPrefixStatusUp || "🟩"
+                : status === "degraded"
+                ? config.commitPrefixStatusDegraded || "🟨"
+                : config.commitPrefixStatusDown || "🟥"
+            )
             .replace("$SITE_NAME", site.name)
             .replace("$SITE_URL", site.url)
             .replace("$SITE_METHOD", site.method || "GET")
