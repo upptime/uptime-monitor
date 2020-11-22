@@ -41,9 +41,11 @@ export interface UpptimeConfig {
   liveStatusHtmlComment?: string;
   commitPrefixStatusUp?: string;
   commitPrefixStatusDown?: string;
+  commitPrefixStatusDegraded?: string;
   i18n?: {
     up?: string;
     down?: string;
+    degraded?: string;
     url?: string;
     status?: string;
     history?: string;
@@ -53,6 +55,7 @@ export interface UpptimeConfig {
     responseTimeGraphAlt?: string;
     liveStatus?: string;
     allSystemsOperational?: string;
+    degradedPerformance?: string;
     completeOutage?: string;
     partialOutage?: string;
   } & Record<string, string>;
