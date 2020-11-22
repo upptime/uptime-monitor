@@ -19,6 +19,7 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<number> => {
     repo,
     labels: `status,${slug}`,
     filter: "all",
+    state: "all",
     per_page: 100,
   });
 
