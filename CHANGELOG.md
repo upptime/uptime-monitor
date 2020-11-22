@@ -1,3 +1,15 @@
+## [v1.14.2](https://github.com/upptime/uptime-monitor/compare/v1.14.1...v1.14.2) (2020-11-22)
+
+### ♻️ Updates
+
+- [`45e0612`](https://github.com/upptime/uptime-monitor/commit/45e0612)  Add helpers for uptime, config, octokit
+- [`02b4a67`](https://github.com/upptime/uptime-monitor/commit/02b4a67)  Add comments, use helpers in summary
+- [`22fec40`](https://github.com/upptime/uptime-monitor/commit/22fec40)  Use valid YAML for status history
+
+### 🐛 Bug fixes
+
+- [`e171951`](https://github.com/upptime/uptime-monitor/commit/e171951)  Use || instead of ??
+
 ## [v1.14.1](https://github.com/upptime/uptime-monitor/compare/v1.14.0...v1.14.1) (2020-11-21)
 
 ### ♻️ Updates
