@@ -169,7 +169,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                 title:
                   status === "down"
                     ? `🛑 ${site.name} is down`
-                    : `🟨 ${site.name} has degraded performance`,
+                    : `⚠️ ${site.name} has degraded performance`,
                 body: `In [\`${lastCommitSha.substr(
                   0,
                   7
