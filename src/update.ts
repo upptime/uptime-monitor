@@ -26,14 +26,13 @@ export const update = async (shouldCommit = false) => {
     const slug = site.slug || slugify(site.name);
     let currentStatus = "unknown";
     let startTime = new Date();
-    const siteHistory = safeLoad(
-      (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
-        .split("\n")
-        .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
-        .join("\n")
-    ) as SiteHistory;
-
     try {
+      const siteHistory = safeLoad(
+        (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
+          .split("\n")
+          .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
+          .join("\n")
+      ) as SiteHistory;
       currentStatus = siteHistory.status || "unknown";
       startTime = new Date(siteHistory.startTime || new Date());
     } catch (error) {}
