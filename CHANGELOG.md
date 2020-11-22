@@ -1,3 +1,9 @@
+## [v1.14.5](https://github.com/upptime/uptime-monitor/compare/v1.14.4...v1.14.5) (2020-11-22)
+
+### 🐛 Bug fixes
+
+- [`39db97c`](https://github.com/upptime/uptime-monitor/commit/39db97c)  100- for percentage
+
 ## [v1.14.4](https://github.com/upptime/uptime-monitor/compare/v1.14.3...v1.14.4) (2020-11-22)
 
 ### 🐛 Bug fixes
