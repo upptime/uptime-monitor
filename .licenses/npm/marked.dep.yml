@@ -5,7 +5,6 @@ type: npm
 summary: A markdown parser built for speed
 homepage: https://marked.js.org
 license: other
-review_changed_license: true
 licenses:
 - sources: LICENSE.md
   text: |
