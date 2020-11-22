@@ -1,3 +1,19 @@
+## [v1.15.0](https://github.com/upptime/uptime-monitor/compare/v1.14.5...v1.15.0) (2020-11-22)
+
+### ✨ New features
+
+- [`ee91b1e`](https://github.com/upptime/uptime-monitor/commit/ee91b1e)  Add support for degraded performance check
+(Issues: [`upptime/upptime#72`](https://github.com/upptime/upptime/issues/72))
+
+### ♻️ Updates
+
+- [`04d39fb`](https://github.com/upptime/uptime-monitor/commit/04d39fb)  Show degraded performance in README
+- [`83c286c`](https://github.com/upptime/uptime-monitor/commit/83c286c)  Use config prefix instead of emoji
+
+### 🐛 Bug fixes
+
+- [`fd02605`](https://github.com/upptime/uptime-monitor/commit/fd02605)  Minimum uptime has to be +0
+
 ## [v1.14.5](https://github.com/upptime/uptime-monitor/compare/v1.14.4...v1.14.5) (2020-11-22)
 
 ### 🐛 Bug fixes
