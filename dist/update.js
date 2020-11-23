@@ -12,7 +12,7 @@ const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
-const notifications_1 = require("./helpers/notifications");
+const notifme_1 = require("./helpers/notifme");
 const request_1 = require("./helpers/request");
 const summary_1 = require("./summary");
 const update = async (shouldCommit = false) => {
@@ -157,7 +157,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                                 issue_number: newIssue.data.number,
                             });
                             console.log("Opened and locked a new issue");
-                            await notifications_1.sendNotification(config, status === "down"
+                            await notifme_1.sendNotification(status === "down"
                                 ? `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
                                 : `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**: ${newIssue.data.html_url}`);
                         }
@@ -183,7 +183,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                             state: "closed",
                         });
                         console.log("Closed issue");
-                        await notifications_1.sendNotification(config, `🟩 ${site.name} (${site.url}) ${issues.data[0].title.includes("degraded")
+                        await notifme_1.sendNotification(`🟩 ${site.name} (${site.url}) ${issues.data[0].title.includes("degraded")
                             ? "performance has improved"
                             : "is back up"}.`);
                     }
