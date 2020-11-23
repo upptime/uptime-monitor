@@ -19,6 +19,13 @@ export const sendNotification = async (config: UpptimeConfig, text: string) => {
         console.log("[debug] Slack response", data);
       }
       console.log("[debug] Slack token found?", !!token);
+      if (config.owner === "AnandChowdhary" && config.repo === "status")
+        console.log(
+          "[debug] Slack token",
+          token,
+          { channel: notification.channel, text },
+          { headers: { Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}` } }
+        );
     } else if (notification.type === "discord") {
       console.log("[debug] Sending Discord notification");
       const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
