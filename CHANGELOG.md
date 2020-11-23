@@ -1,3 +1,15 @@
+## [v1.15.3](https://github.com/upptime/uptime-monitor/compare/v1.15.2...v1.15.3) (2020-11-23)
+
+### ♻️ Updates
+
+- [`0415b87`](https://github.com/upptime/uptime-monitor/commit/0415b87)  Setup new notification system
+- [`40ec8ca`](https://github.com/upptime/uptime-monitor/commit/40ec8ca)  Support legacy Discord env
+
+### ⬆️ Dependency updates
+
+- [`dc8f119`](https://github.com/upptime/uptime-monitor/commit/dc8f119)  Bump @upptime/status-page from 1.5.1 to 1.5.2
+- [`8293c4c`](https://github.com/upptime/uptime-monitor/commit/8293c4c)  Bump semantic-release from 17.2.4 to 17.3.0
+
 ## [v1.15.2](https://github.com/upptime/uptime-monitor/compare/v1.15.1...v1.15.2) (2020-11-22)
 
 ### 🐛 Bug fixes
