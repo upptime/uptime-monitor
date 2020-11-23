@@ -1,3 +1,10 @@
+## [v1.16.0](https://github.com/upptime/uptime-monitor/compare/v1.15.3...v1.16.0) (2020-11-23)
+
+### ✨ New features
+
+- [`f21eaad`](https://github.com/upptime/uptime-monitor/commit/f21eaad)  Add support for disabling host verify
+(Issues: [`upptime/upptime#57`](https://github.com/upptime/upptime/issues/57))
+
 ## [v1.15.3](https://github.com/upptime/uptime-monitor/compare/v1.15.2...v1.15.3) (2020-11-23)
 
 ### ♻️ Updates
