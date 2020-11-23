@@ -12,6 +12,7 @@ export interface UpptimeConfig {
         slug?: string;
         maxResponseTime?: number;
         __dangerous__insecure?: boolean;
+        __dangerous__disable_verify_host?: boolean;
     }[];
     notifications?: {
         type: string;
