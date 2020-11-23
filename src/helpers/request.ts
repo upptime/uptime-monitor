@@ -14,6 +14,7 @@ export const curl = (
     if (site.headers)
       curl.setOpt(Curl.option.HTTPHEADER, site.headers.map(replaceEnvironmentVariables));
     if (site.__dangerous__insecure) curl.setOpt("SSL_VERIFYPEER", false);
+    if (site.__dangerous__disable_verify_host) curl.setOpt("SSL_VERIFYHOST", false);
     curl.setOpt("FOLLOWLOCATION", 1);
     curl.setOpt("MAXREDIRS", 3);
     curl.setOpt("USERAGENT", "Koj Bot");
