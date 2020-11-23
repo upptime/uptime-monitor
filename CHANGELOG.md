@@ -1,3 +1,9 @@
+## [v1.16.1](https://github.com/upptime/uptime-monitor/compare/v1.16.0...v1.16.1) (2020-11-23)
+
+### ♻️ Updates
+
+- [`2616a42`](https://github.com/upptime/uptime-monitor/commit/2616a42)  Add support for general insecure option
+
 ## [v1.16.0](https://github.com/upptime/uptime-monitor/compare/v1.15.3...v1.16.0) (2020-11-23)
 
 ### ✨ New features
