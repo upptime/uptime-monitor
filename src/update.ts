@@ -6,7 +6,7 @@ import { getConfig } from "./helpers/config";
 import { commit, lastCommit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
-import { sendNotification } from "./helpers/notifications";
+import { sendNotification } from "./helpers/notifme";
 import { curl } from "./helpers/request";
 import { SiteHistory } from "./interfaces";
 import { generateSummary } from "./summary";
@@ -188,7 +188,6 @@ generator: Upptime <https://github.com/upptime/upptime>
               });
               console.log("Opened and locked a new issue");
               await sendNotification(
-                config,
                 status === "down"
                   ? `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
                   : `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**: ${newIssue.data.html_url}`
@@ -220,7 +219,6 @@ generator: Upptime <https://github.com/upptime/upptime>
             });
             console.log("Closed issue");
             await sendNotification(
-              config,
               `🟩 ${site.name} (${site.url}) ${
                 issues.data[0].title.includes("degraded")
                   ? "performance has improved"
