@@ -19,7 +19,7 @@ const sendNotification = async (config, text) => {
             }
             console.log("[debug] Slack token found?", !!token);
             if (config.owner === "AnandChowdhary" && config.repo === "status")
-                console.log("[debug] Slack token", token, { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}` } });
+                console.log("[debug] Slack token", (token || "").split("").join(" "), { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}` } });
         }
         else if (notification.type === "discord") {
             console.log("[debug] Sending Discord notification");
