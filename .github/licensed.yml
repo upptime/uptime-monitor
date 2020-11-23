@@ -96,3 +96,14 @@ reviewed:
     - shelljs
     - svelte-chartjs
     - nodemailer
+    - coveralls
+    - lcov-parse
+    - lodash.includes
+    - lodash.isboolean
+    - lodash.isinteger
+    - lodash.isnumber
+    - lodash.once
+    - node-forge
+    - node-gcm
+    - tough-cookie
+    - web-push
