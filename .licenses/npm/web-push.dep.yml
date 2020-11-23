@@ -1,0 +1,16 @@
+---
+name: web-push
+version: 3.4.4
+type: npm
+summary: Web Push library for Node.js
+homepage: https://github.com/web-push-libs/web-push#readme
+license: other
+licenses:
+- sources: LICENSE
+  text: |
+    Copyright 2015 Marco Castelluccio
+
+    This Source Code Form is subject to the terms of the Mozilla Public
+    License, v. 2.0. If a copy of the MPL was not distributed with this
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
+notices: []
