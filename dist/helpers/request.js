@@ -11,9 +11,9 @@ const curl = (site) => new Promise((resolve) => {
     curl.setOpt("URL", url);
     if (site.headers)
         curl.setOpt(node_libcurl_1.Curl.option.HTTPHEADER, site.headers.map(environment_1.replaceEnvironmentVariables));
-    if (site.__dangerous__insecure)
+    if (site.__dangerous__insecure || site.__dangerous__disable_verify_peer)
         curl.setOpt("SSL_VERIFYPEER", false);
-    if (site.__dangerous__disable_verify_host)
+    if (site.__dangerous__insecure || site.__dangerous__disable_verify_host)
         curl.setOpt("SSL_VERIFYHOST", false);
     curl.setOpt("FOLLOWLOCATION", 1);
     curl.setOpt("MAXREDIRS", 3);
