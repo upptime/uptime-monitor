@@ -8,6 +8,10 @@ const channels: {
   slack?: Channel<SlackProvider>;
 } = {};
 
+// Support legacy environment variables for Discord
+if (process.env.DISCORD_WEBHOOK_URL)
+  process.env.NOTIFICATION_DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+
 if (
   process.env.NOTIFICATION_EMAIL_SENDGRID ||
   process.env.NOTIFICATION_EMAIL_SES ||
@@ -200,9 +204,11 @@ export const sendNotification = async (message: string) => {
       console.log("Got an error", error);
     }
   }
-  if (process.env.DISCORD_WEBHOOK_URL) {
+  if (process.env.NOTIFICATION_DISCORD_WEBHOOK_URL) {
     try {
-      await axios.post(process.env.DISCORD_WEBHOOK_URL, { content: message });
+      await axios.post(process.env.NOTIFICATION_DISCORD_WEBHOOK_URL as string, {
+        content: message,
+      });
     } catch (error) {
       console.log("Got an error", error);
     }
