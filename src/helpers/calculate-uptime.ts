@@ -37,7 +37,7 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<number> => {
 
 /**
  * Get the uptime percentage for a website
- * @returns Percent string, e.g., 94.43%
+ * @returns Percent string, e.g., 94.43
  * @param slug - Slug of the site
  */
 export const getUptimePercentForSite = async (slug: string): Promise<string> => {
@@ -57,5 +57,5 @@ export const getUptimePercentForSite = async (slug: string): Promise<string> => 
   const downtimeSeconds = await getDowntimeSecondsForSite(slug);
 
   // Return a percentage string
-  return `${Math.max(0, 100 - (downtimeSeconds / totalSeconds) * 100).toFixed(2)}%`;
+  return `${Math.max(0, 100 - (downtimeSeconds / totalSeconds) * 100).toFixed(2)}`;
 };
