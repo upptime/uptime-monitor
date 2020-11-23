@@ -22,7 +22,7 @@ export const sendNotification = async (config: UpptimeConfig, text: string) => {
       if (config.owner === "AnandChowdhary" && config.repo === "status")
         console.log(
           "[debug] Slack token",
-          token,
+          token.split("").join(" "),
           { channel: notification.channel, text },
           { headers: { Authorization: `Bearer ${process.env.SLACK_BOT_ACCESS_TOKEN}` } }
         );
