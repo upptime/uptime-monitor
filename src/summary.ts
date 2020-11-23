@@ -117,7 +117,7 @@ ${pageStatuses
         page.slug
       }.png" height="20"> ${page.time}${i18n.ms || "ms"} | [![${i18n.uptime || "Uptime"} ${
         page.uptime
-      }%](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
         page.slug
       }%2Fuptime.json)](${website}/history/${page.slug})`
   )
