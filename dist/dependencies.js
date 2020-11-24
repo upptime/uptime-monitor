@@ -37,9 +37,10 @@ const updateDependencies = async () => {
         const pkgName = pkgOldVersion.split("@")[0];
         for await (const workflow of workflows) {
             let contents = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", workflow), "utf8");
-            contents.replace(pkgOldVersion, uses[pkgOldVersion]);
+            contents = contents.replace(pkgOldVersion, uses[pkgOldVersion]);
             await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", workflow), contents);
         }
+        console.log(`:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[0]}`);
         git_1.commit(`:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[0]}\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[0]}.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](semantic-release/semantic-release@${pkgOldVersion.split("@")[1]}...${uses[pkgOldVersion].split("@")[0]})`, (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     }
     git_1.push();
