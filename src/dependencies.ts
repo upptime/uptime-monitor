@@ -11,6 +11,8 @@ export const updateDependencies = async () => {
   const config = await getConfig();
   const octokit = await getOctokit();
 
+  let changes = 0;
+
   await ensureDir(join(".", ".github", "workflows"));
   const workflows = (await readdir(join(".", ".github", "workflows"))).filter(
     (file) => file.endsWith(".yml") || file.endsWith(".yaml")
@@ -42,11 +44,7 @@ export const updateDependencies = async () => {
       contents = contents.replace(pkgOldVersion, uses[pkgOldVersion]);
       await writeFile(join(".", ".github", "workflows", workflow), contents);
     }
-    console.log(
-      `:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
-        uses[pkgOldVersion].split("@")[1]
-      }`
-    );
+    if (pkgOldVersion.split("@")[1] !== uses[pkgOldVersion].split("@")[1]) changes++;
     commit(
       `:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
         uses[pkgOldVersion].split("@")[1]
@@ -64,4 +62,16 @@ export const updateDependencies = async () => {
     );
   }
   push();
+
+  if (changes) {
+    const contents = await octokit.repos.getContent({ owner, repo, path: "README.md" });
+    await octokit.repos.createOrUpdateFileContents({
+      owner,
+      repo,
+      path: "README.md",
+      content: contents.data.content,
+      sha: contents.data.sha,
+      message: ":package: Release dependency updates",
+    });
+  }
 };
