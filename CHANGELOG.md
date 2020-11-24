@@ -1,3 +1,9 @@
+## [v1.17.1](https://github.com/upptime/uptime-monitor/compare/v1.17.0...v1.17.1) (2020-11-24)
+
+### 🐛 Bug fixes
+
+- [`d651e75`](https://github.com/upptime/uptime-monitor/commit/d651e75)  Replace contents after bumping
+
 ## [v1.17.0](https://github.com/upptime/uptime-monitor/compare/v1.16.1...v1.17.0) (2020-11-24)
 
 ### ✨ New features
