@@ -1,3 +1,9 @@
+## [v1.17.3](https://github.com/upptime/uptime-monitor/compare/v1.17.2...v1.17.3) (2020-11-24)
+
+### ♻️ Updates
+
+- [`218eb06`](https://github.com/upptime/uptime-monitor/commit/218eb06)  Add powered by in license
+
 ## [v1.17.2](https://github.com/upptime/uptime-monitor/compare/v1.17.1...v1.17.2) (2020-11-24)
 
 ### 🐛 Bug fixes
