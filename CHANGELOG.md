@@ -1,3 +1,9 @@
+## [v1.17.0](https://github.com/upptime/uptime-monitor/compare/v1.16.1...v1.17.0) (2020-11-24)
+
+### ✨ New features
+
+- [`8127d55`](https://github.com/upptime/uptime-monitor/commit/8127d55)  Add dependency updater
+
 ## [v1.16.1](https://github.com/upptime/uptime-monitor/compare/v1.16.0...v1.16.1) (2020-11-23)
 
 ### ♻️ Updates
