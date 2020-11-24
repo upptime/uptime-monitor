@@ -39,9 +39,14 @@ export const updateDependencies = async () => {
     const pkgName = pkgOldVersion.split("@")[0];
     for await (const workflow of workflows) {
       let contents = await readFile(join(".", ".github", "workflows", workflow), "utf8");
-      contents.replace(pkgOldVersion, uses[pkgOldVersion]);
+      contents = contents.replace(pkgOldVersion, uses[pkgOldVersion]);
       await writeFile(join(".", ".github", "workflows", workflow), contents);
     }
+    console.log(
+      `:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
+        uses[pkgOldVersion].split("@")[0]
+      }`
+    );
     commit(
       `:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
         uses[pkgOldVersion].split("@")[0]
