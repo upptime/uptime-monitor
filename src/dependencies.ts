@@ -43,20 +43,22 @@ export const updateDependencies = async () => {
       await writeFile(join(".", ".github", "workflows", workflow), contents);
     }
     console.log(
-      `:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
-        uses[pkgOldVersion].split("@")[0]
+      `:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
+        uses[pkgOldVersion].split("@")[1]
       }`
     );
     commit(
-      `:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
-        uses[pkgOldVersion].split("@")[0]
+      `:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${
+        uses[pkgOldVersion].split("@")[1]
       }\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${
         pkgOldVersion.split("@")[1]
       } to ${
-        uses[pkgOldVersion].split("@")[0]
-      }.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](semantic-release/semantic-release@${
+        uses[pkgOldVersion].split("@")[1]
+      }.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](https://github.com/${pkgName}@${
         pkgOldVersion.split("@")[1]
-      }...${uses[pkgOldVersion].split("@")[0]})`,
+      }...${
+        uses[pkgOldVersion].split("@")[1]
+      })\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>`,
       (config.commitMessages || {}).commitAuthorName,
       (config.commitMessages || {}).commitAuthorEmail
     );
