@@ -1,4 +1,5 @@
 import { debug, getInput, setFailed } from "@actions/core";
+import { updateDependencies } from "./dependencies";
 import { generateGraphs } from "./graphs";
 import { generateSite } from "./site";
 import { generateSummary } from "./summary";
@@ -26,6 +27,9 @@ export const run = async () => {
     case "response-time":
       debug("Starting response-time");
       return update(true);
+    case "update-dependencies":
+      debug("Starting update-dependencies");
+      return updateDependencies();
     default:
       debug("Starting update");
       return update();
