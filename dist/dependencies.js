@@ -40,8 +40,8 @@ const updateDependencies = async () => {
             contents = contents.replace(pkgOldVersion, uses[pkgOldVersion]);
             await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", workflow), contents);
         }
-        console.log(`:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[0]}`);
-        git_1.commit(`:up_arrow: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[0]}\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[0]}.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](semantic-release/semantic-release@${pkgOldVersion.split("@")[1]}...${uses[pkgOldVersion].split("@")[0]})`, (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+        console.log(`:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}`);
+        git_1.commit(`:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](https://github.com/${pkgName}@${pkgOldVersion.split("@")[1]}...${uses[pkgOldVersion].split("@")[1]})\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>`, (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     }
     git_1.push();
 };
