@@ -136,6 +136,10 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
                 readmeContent = `${descriptionStartText}This repository contains the open-source uptime monitor and status page for ${name}, powered by [Upptime](https://github.com/upptime/upptime).${descriptionEndText}`;
             // Change copyright
             readmeContent = readmeContent.replace("[MIT](./LICENSE) © [Koj](https://koj.co)", `[MIT](./LICENSE) © ${name}`);
+            // Add powered by Upptime
+            if (!config.skipPoweredByReadme) {
+                readmeContent = readmeContent.replace("## 📄 License\n\n- Code: [MIT](./LICENSE)", "## 📄 License\n\n- Powered by: [Upptime](https://github.com/upptime/upptime)\n- Code: [MIT](./LICENSE)");
+            }
         }
         // Change badges
         readmeContent = readmeContent.replace(new RegExp("upptime/upptime/workflows", "g"), `${config.owner}/${config.repo}/workflows`);
