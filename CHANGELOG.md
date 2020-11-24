@@ -1,3 +1,9 @@
+## [v1.17.4](https://github.com/upptime/uptime-monitor/compare/v1.17.3...v1.17.4) (2020-11-24)
+
+### ♻️ Updates
+
+- [`bc90d49`](https://github.com/upptime/uptime-monitor/commit/bc90d49)  Add commit to trigger semantic release
+
 ## [v1.17.3](https://github.com/upptime/uptime-monitor/compare/v1.17.2...v1.17.3) (2020-11-24)
 
 ### ♻️ Updates
