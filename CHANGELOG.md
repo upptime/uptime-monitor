@@ -1,3 +1,9 @@
+## [v1.17.2](https://github.com/upptime/uptime-monitor/compare/v1.17.1...v1.17.2) (2020-11-24)
+
+### 🐛 Bug fixes
+
+- [`b2e7bfa`](https://github.com/upptime/uptime-monitor/commit/b2e7bfa)  Use arrow_up, fix commit message
+
 ## [v1.17.1](https://github.com/upptime/uptime-monitor/compare/v1.17.0...v1.17.1) (2020-11-24)
 
 ### 🐛 Bug fixes
