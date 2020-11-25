@@ -1,3 +1,13 @@
+## [v1.17.5](https://github.com/upptime/uptime-monitor/compare/v1.17.4...v1.17.5) (2020-11-25)
+
+### 🐛 Bug fixes
+
+- [`5361b8a`](https://github.com/upptime/uptime-monitor/commit/5361b8a)  SMS notification for Plivio
+
+### ⬆️ Dependency updates
+
+- [`82bc348`](https://github.com/upptime/uptime-monitor/commit/82bc348)  Bump @upptime/status-page from 1.5.2 to 1.5.3
+
 ## [v1.17.4](https://github.com/upptime/uptime-monitor/compare/v1.17.3...v1.17.4) (2020-11-24)
 
 ### ♻️ Updates
