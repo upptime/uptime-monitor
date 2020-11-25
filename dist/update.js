@@ -157,9 +157,14 @@ generator: Upptime <https://github.com/upptime/upptime>
                                 issue_number: newIssue.data.number,
                             });
                             console.log("Opened and locked a new issue");
-                            await notifme_1.sendNotification(status === "down"
-                                ? `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
-                                : `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**: ${newIssue.data.html_url}`);
+                            try {
+                                await notifme_1.sendNotification(status === "down"
+                                    ? `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
+                                    : `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**: ${newIssue.data.html_url}`);
+                            }
+                            catch (error) {
+                                console.log(error);
+                            }
                         }
                         else {
                             console.log("An issue is already open for this");
@@ -183,9 +188,14 @@ generator: Upptime <https://github.com/upptime/upptime>
                             state: "closed",
                         });
                         console.log("Closed issue");
-                        await notifme_1.sendNotification(`🟩 ${site.name} (${site.url}) ${issues.data[0].title.includes("degraded")
-                            ? "performance has improved"
-                            : "is back up"}.`);
+                        try {
+                            await notifme_1.sendNotification(`🟩 ${site.name} (${site.url}) ${issues.data[0].title.includes("degraded")
+                                ? "performance has improved"
+                                : "is back up"}.`);
+                        }
+                        catch (error) {
+                            console.log(error);
+                        }
                     }
                     else {
                         console.log("Could not find a relevant issue", issues.data);
