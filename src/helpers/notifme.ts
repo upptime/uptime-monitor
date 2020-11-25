@@ -166,7 +166,10 @@ const notifier = new NotifmeSdk({
 });
 
 export const sendNotification = async (message: string) => {
+  console.log("Sending notification", message);
+
   if (channels.email) {
+    console.log("Sending email");
     try {
       await notifier.send({
         email: {
@@ -176,11 +179,14 @@ export const sendNotification = async (message: string) => {
           html: message,
         },
       });
+      console.log("Success email");
     } catch (error) {
       console.log("Got an error", error);
     }
+    console.log("Finished sending email");
   }
   if (channels.sms) {
+    console.log("Sending SMS");
     try {
       await notifier.send({
         sms: {
@@ -189,28 +195,36 @@ export const sendNotification = async (message: string) => {
           text: message,
         },
       });
+      console.log("Success SMS");
     } catch (error) {
       console.log("Got an error", error);
     }
+    console.log("Finished sending SMS");
   }
   if (channels.slack) {
+    console.log("Sending Slack");
     try {
       await notifier.send({
         slack: {
           text: message,
         },
       });
+      console.log("Success Slack");
     } catch (error) {
       console.log("Got an error", error);
     }
+    console.log("Finished sending Slack");
   }
   if (process.env.NOTIFICATION_DISCORD_WEBHOOK_URL) {
+    console.log("Sending Discord");
     try {
       await axios.post(process.env.NOTIFICATION_DISCORD_WEBHOOK_URL as string, {
         content: message,
       });
+      console.log("Success Discord");
     } catch (error) {
       console.log("Got an error", error);
     }
+    console.log("Finished sending Discord");
   }
 };
