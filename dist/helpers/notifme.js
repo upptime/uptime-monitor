@@ -122,8 +122,8 @@ if (process.env.NOTIFICATION_SMS_46ELKS ||
     if (process.env.NOTIFICATION_SMS_PLIVO) {
         channels.sms.providers.push({
             type: "plivo",
-            authId: process.env.NOTIFICATION_SMS_AUTH_ID,
-            authToken: process.env.NOTIFICATION_SMS_AUTH_TOKEN,
+            authId: process.env.NOTIFICATION_SMS_PLIVO_AUTH_ID,
+            authToken: process.env.NOTIFICATION_SMS_PLIVO_AUTH_TOKEN,
         });
     }
     if (process.env.NOTIFICATION_SMS_TWILIO) {
