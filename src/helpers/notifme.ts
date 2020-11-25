@@ -132,8 +132,8 @@ if (
   if (process.env.NOTIFICATION_SMS_PLIVO) {
     channels.sms.providers.push({
       type: "plivo",
-      authId: process.env.NOTIFICATION_SMS_AUTH_ID as string,
-      authToken: process.env.NOTIFICATION_SMS_AUTH_TOKEN as string,
+      authId: process.env.NOTIFICATION_SMS_PLIVO_AUTH_ID as string,
+      authToken: process.env.NOTIFICATION_SMS_PLIVO_AUTH_TOKEN as string,
     });
   }
   if (process.env.NOTIFICATION_SMS_TWILIO) {
