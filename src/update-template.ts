@@ -3,12 +3,22 @@ import { execSync } from "child_process";
 import { copy, readdir, readFile, remove, writeFile } from "fs-extra";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
+import {
+  GRAPHS_CI_SCHEDULE,
+  RESPONSE_TIME_CI_SCHEDULE,
+  STATIC_SITE_CI_SCHEDULE,
+  SUMMARY_CI_SCHEDULE,
+  UPDATE_TEMPLATE_CI_SCHEDULE,
+  UPDATES_CI_SCHEDULE,
+  UPTIME_CI_SCHEDULE,
+} from "./helpers/constants";
 import { commit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
 
 export const updateTemplate = async () => {
   const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
   const octokit = await getOctokit();
+  const config = await getConfig();
 
   // Remove the .github/workflows directory completely
   await remove(join(".", ".github", "workflows"));
@@ -28,6 +38,7 @@ export const updateTemplate = async () => {
   await copy(join(".", "__upptime", "src", "workflows"), join(".", ".github", "workflows"));
   await remove(join(".", "__upptime"));
   const workflowFiles = await readdir(join(".", ".github", "workflows"));
+  const workflowSchedule = config.workflowSchedule || {};
   for await (const file of workflowFiles) {
     const contents = await readFile(join(".", ".github", "workflows", file), "utf8");
     await writeFile(
@@ -35,6 +46,34 @@ export const updateTemplate = async () => {
       contents
         .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
         .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString())
+        .replace(
+          new RegExp("GRAPHS_CI_SCHEDULE", "g"),
+          workflowSchedule.graphs || GRAPHS_CI_SCHEDULE
+        )
+        .replace(
+          new RegExp("RESPONSE_TIME_CI_SCHEDULE", "g"),
+          workflowSchedule.responseTime || RESPONSE_TIME_CI_SCHEDULE
+        )
+        .replace(
+          new RegExp("STATIC_SITE_CI_SCHEDULE", "g"),
+          workflowSchedule.staticSite || STATIC_SITE_CI_SCHEDULE
+        )
+        .replace(
+          new RegExp("SUMMARY_CI_SCHEDULE", "g"),
+          workflowSchedule.summary || SUMMARY_CI_SCHEDULE
+        )
+        .replace(
+          new RegExp("UPDATE_TEMPLATE_CI_SCHEDULE", "g"),
+          workflowSchedule.updateTemplate || UPDATE_TEMPLATE_CI_SCHEDULE
+        )
+        .replace(
+          new RegExp("UPDATES_CI_SCHEDULE", "g"),
+          workflowSchedule.updates || UPDATES_CI_SCHEDULE
+        )
+        .replace(
+          new RegExp("UPTIME_CI_SCHEDULE", "g"),
+          workflowSchedule.uptime || UPTIME_CI_SCHEDULE
+        )
     );
   }
   console.log("Added new .github/workflows");
@@ -47,7 +86,6 @@ export const updateTemplate = async () => {
     } catch (error) {}
   console.log("Removed template files");
 
-  const config = await getConfig();
   const slugs = config.sites.map((site) => site.slug || slugify(site.name));
   const filesToKeep = ["LICENSE"];
 

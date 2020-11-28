@@ -62,6 +62,15 @@ export interface UpptimeConfig {
     completeOutage?: string;
     partialOutage?: string;
   } & Record<string, string>;
+  workflowSchedule: {
+    graphs?: string;
+    responseTime?: string;
+    staticSite?: string;
+    summary?: string;
+    updateTemplate?: string;
+    updates?: string;
+    uptime?: string;
+  };
 }
 
 export interface SiteHistory {
