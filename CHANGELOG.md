@@ -1,3 +1,9 @@
+## [v1.18.1](https://github.com/upptime/uptime-monitor/compare/v1.18.0...v1.18.1) (2020-11-28)
+
+### 🐛 Bug fixes
+
+- [`9298ed3`](https://github.com/upptime/uptime-monitor/commit/9298ed3)  Fix __uptime -&gt; __upptime
+
 ## [v1.18.0](https://github.com/upptime/uptime-monitor/compare/v1.17.5...v1.18.0) (2020-11-28)
 
 ### ✨ New features
