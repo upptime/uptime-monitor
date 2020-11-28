@@ -1,3 +1,10 @@
+## [v1.20.1](https://github.com/upptime/uptime-monitor/compare/v1.20.0...v1.20.1) (2020-11-28)
+
+### 🐛 Bug fixes
+
+- [`eec90af`](https://github.com/upptime/uptime-monitor/commit/eec90af)  Fix upptime/upptime#94 by using string replace
+(Issues: [`upptime/upptime#94`](https://github.com/upptime/upptime/issues/94))
+
 ## [v1.20.0](https://github.com/upptime/uptime-monitor/compare/v1.19.0...v1.20.0) (2020-11-28)
 
 ### ✨ New features
