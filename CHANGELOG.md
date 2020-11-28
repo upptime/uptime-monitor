@@ -1,3 +1,9 @@
+## [v1.18.3](https://github.com/upptime/uptime-monitor/compare/v1.18.2...v1.18.3) (2020-11-28)
+
+### 🐛 Bug fixes
+
+- [`74dd5ce`](https://github.com/upptime/uptime-monitor/commit/74dd5ce)  Don&#x27;t delete files from upptime/upptime
+
 ## [v1.18.2](https://github.com/upptime/uptime-monitor/compare/v1.18.1...v1.18.2) (2020-11-28)
 
 ### ♻️ Updates
