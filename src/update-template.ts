@@ -47,31 +47,31 @@ export const updateTemplate = async () => {
         .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
         .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString())
         .replace(
-          new RegExp("GRAPHS_CI_SCHEDULE", "g"),
+          "GRAPHS_CI_SCHEDULE",
           workflowSchedule.graphs || GRAPHS_CI_SCHEDULE
         )
         .replace(
-          new RegExp("RESPONSE_TIME_CI_SCHEDULE", "g"),
+          "RESPONSE_TIME_CI_SCHEDULE",
           workflowSchedule.responseTime || RESPONSE_TIME_CI_SCHEDULE
         )
         .replace(
-          new RegExp("STATIC_SITE_CI_SCHEDULE", "g"),
+          "STATIC_SITE_CI_SCHEDULE",
           workflowSchedule.staticSite || STATIC_SITE_CI_SCHEDULE
         )
         .replace(
-          new RegExp("SUMMARY_CI_SCHEDULE", "g"),
+          "SUMMARY_CI_SCHEDULE",
           workflowSchedule.summary || SUMMARY_CI_SCHEDULE
         )
         .replace(
-          new RegExp("UPDATE_TEMPLATE_CI_SCHEDULE", "g"),
+          "UPDATE_TEMPLATE_CI_SCHEDULE",
           workflowSchedule.updateTemplate || UPDATE_TEMPLATE_CI_SCHEDULE
         )
         .replace(
-          new RegExp("UPDATES_CI_SCHEDULE", "g"),
+          "UPDATES_CI_SCHEDULE",
           workflowSchedule.updates || UPDATES_CI_SCHEDULE
         )
         .replace(
-          new RegExp("UPTIME_CI_SCHEDULE", "g"),
+          "UPTIME_CI_SCHEDULE",
           workflowSchedule.uptime || UPTIME_CI_SCHEDULE
         )
     );
