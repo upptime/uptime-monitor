@@ -1,19 +1,39 @@
 import slugify from "@sindresorhus/slugify";
 import { execSync } from "child_process";
-import { copy, readdir, remove } from "fs-extra";
+import { copy, readdir, readFile, remove, writeFile } from "fs-extra";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
 import { commit, push } from "./helpers/git";
+import { getOctokit } from "./helpers/github";
 
 export const updateTemplate = async () => {
+  const octokit = await getOctokit();
+
   // Remove the .github/workflows directory completely
   await remove(join(".", ".github", "workflows"));
   console.log("Removed legacy .github/workflows");
 
-  // Clone and copy workflows from template
-  execSync("git clone https://github.com/upptime/upptime __upptime");
-  await copy(join(".", "__upptime", ".github", "workflows"), join(".", ".github", "workflows"));
+  // Get most recent release
+  const releases = await octokit.repos.listReleases({
+    owner: "upptime",
+    repo: "uptime-monitor",
+    per_page: 1,
+  });
+  const latestRelease = releases.data[0].tag_name;
+  console.log("Got @upptime/uptime-monitor release", latestRelease);
+
+  // Clone and copy workflows from this repo
+  execSync("git clone https://github.com/upptime/uptime-monitor __upptime");
+  await copy(join(".", "__upptime", "src", "workflows"), join(".", ".github", "workflows"));
   await remove(join(".", "__upptime"));
+  const workflowFiles = await readdir(join(".", ".github", "workflows"));
+  for await (const file of workflowFiles) {
+    const contents = await readFile(join(".", ".github", "workflows", file), "utf8");
+    await writeFile(
+      join(".", ".github", "workflows", file),
+      contents.replace(/\$UPTIME_MONITOR_VERSION/g, latestRelease)
+    );
+  }
   console.log("Added new .github/workflows");
 
   // Delete these specific template files
