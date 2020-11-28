@@ -12,6 +12,7 @@ const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const updateTemplate = async () => {
+    const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
     const octokit = await github_1.getOctokit();
     // Remove the .github/workflows directory completely
     await fs_extra_1.remove(path_1.join(".", ".github", "workflows"));
@@ -40,7 +41,8 @@ const updateTemplate = async () => {
     const delteFiles = ["README.pt-br.md", ".templaterc.json"];
     for await (const file of delteFiles)
         try {
-            await fs_extra_1.remove(path_1.join(".", file));
+            if (`${owner}/${repo}` !== "upptime/upptime")
+                await fs_extra_1.remove(path_1.join(".", file));
         }
         catch (error) { }
     console.log("Removed template files");
