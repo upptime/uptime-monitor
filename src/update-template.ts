@@ -7,6 +7,7 @@ import { commit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
 
 export const updateTemplate = async () => {
+  const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
   const octokit = await getOctokit();
 
   // Remove the .github/workflows directory completely
@@ -42,7 +43,7 @@ export const updateTemplate = async () => {
   const delteFiles = ["README.pt-br.md", ".templaterc.json"];
   for await (const file of delteFiles)
     try {
-      await remove(join(".", file));
+      if (`${owner}/${repo}` !== "upptime/upptime") await remove(join(".", file));
     } catch (error) {}
   console.log("Removed template files");
 
