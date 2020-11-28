@@ -4,6 +4,7 @@ import { generateGraphs } from "./graphs";
 import { generateSite } from "./site";
 import { generateSummary } from "./summary";
 import { update } from "./update";
+import { updateTemplate } from "./update-template";
 
 const token = getInput("token") || process.env.GH_PAT || process.env.GITHUB_TOKEN;
 
@@ -30,6 +31,9 @@ export const run = async () => {
     case "update-dependencies":
       debug("Starting update-dependencies");
       return updateDependencies();
+    case "update-template":
+      debug("Starting update-template");
+      return updateTemplate();
     default:
       debug("Starting update");
       return update();
