@@ -24,13 +24,13 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_PAT }}
       - name: Update template
-        uses: upptime/uptime-monitor@$UPTIME_MONITOR_VERSION
+        uses: upptime/uptime-monitor@UPTIME_MONITOR_VERSION
         with:
           command: "update-template"
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
       - name: Update response time
-        uses: upptime/uptime-monitor@$UPTIME_MONITOR_VERSION
+        uses: upptime/uptime-monitor@UPTIME_MONITOR_VERSION
         with:
           command: "response-time"
         env:
@@ -104,7 +104,7 @@ jobs:
           NOTIFICATION_SMS_TO: ${{ secrets.NOTIFICATION_SMS_TO }}
           NOTIFICATION_DISCORD_WEBHOOK_URL: ${{ secrets.NOTIFICATION_DISCORD_WEBHOOK_URL }}
       - name: Update summary in README
-        uses: upptime/uptime-monitor@$UPTIME_MONITOR_VERSION
+        uses: upptime/uptime-monitor@UPTIME_MONITOR_VERSION
         with:
           command: "readme"
         env:
@@ -115,7 +115,7 @@ jobs:
           workflow: Graphs CI
           token: ${{ secrets.GH_PAT }}
       - name: Generate site
-        uses: upptime/uptime-monitor@$UPTIME_MONITOR_VERSION
+        uses: upptime/uptime-monitor@UPTIME_MONITOR_VERSION
         with:
           command: "site"
         env:

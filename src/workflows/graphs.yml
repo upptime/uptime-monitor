@@ -23,7 +23,7 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_PAT }}
       - name: Generate graphs
-        uses: upptime/uptime-monitor@$UPTIME_MONITOR_VERSION
+        uses: upptime/uptime-monitor@UPTIME_MONITOR_VERSION
         with:
           command: "graphs"
         env:
