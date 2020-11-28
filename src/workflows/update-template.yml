@@ -11,7 +11,7 @@
 name: Update Template CI
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: UPDATE_TEMPLATE_CI_SCHEDULE
   repository_dispatch:
     types: [update_template]
   workflow_dispatch:
