@@ -38,13 +38,13 @@ const updateTemplate = async () => {
         await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", file), contents
             .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
             .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString())
-            .replace(new RegExp("GRAPHS_CI_SCHEDULE", "g"), workflowSchedule.graphs || constants_1.GRAPHS_CI_SCHEDULE)
-            .replace(new RegExp("RESPONSE_TIME_CI_SCHEDULE", "g"), workflowSchedule.responseTime || constants_1.RESPONSE_TIME_CI_SCHEDULE)
-            .replace(new RegExp("STATIC_SITE_CI_SCHEDULE", "g"), workflowSchedule.staticSite || constants_1.STATIC_SITE_CI_SCHEDULE)
-            .replace(new RegExp("SUMMARY_CI_SCHEDULE", "g"), workflowSchedule.summary || constants_1.SUMMARY_CI_SCHEDULE)
-            .replace(new RegExp("UPDATE_TEMPLATE_CI_SCHEDULE", "g"), workflowSchedule.updateTemplate || constants_1.UPDATE_TEMPLATE_CI_SCHEDULE)
-            .replace(new RegExp("UPDATES_CI_SCHEDULE", "g"), workflowSchedule.updates || constants_1.UPDATES_CI_SCHEDULE)
-            .replace(new RegExp("UPTIME_CI_SCHEDULE", "g"), workflowSchedule.uptime || constants_1.UPTIME_CI_SCHEDULE));
+            .replace("GRAPHS_CI_SCHEDULE", workflowSchedule.graphs || constants_1.GRAPHS_CI_SCHEDULE)
+            .replace("RESPONSE_TIME_CI_SCHEDULE", workflowSchedule.responseTime || constants_1.RESPONSE_TIME_CI_SCHEDULE)
+            .replace("STATIC_SITE_CI_SCHEDULE", workflowSchedule.staticSite || constants_1.STATIC_SITE_CI_SCHEDULE)
+            .replace("SUMMARY_CI_SCHEDULE", workflowSchedule.summary || constants_1.SUMMARY_CI_SCHEDULE)
+            .replace("UPDATE_TEMPLATE_CI_SCHEDULE", workflowSchedule.updateTemplate || constants_1.UPDATE_TEMPLATE_CI_SCHEDULE)
+            .replace("UPDATES_CI_SCHEDULE", workflowSchedule.updates || constants_1.UPDATES_CI_SCHEDULE)
+            .replace("UPTIME_CI_SCHEDULE", workflowSchedule.uptime || constants_1.UPTIME_CI_SCHEDULE));
     }
     console.log("Added new .github/workflows");
     // Delete these specific template files
