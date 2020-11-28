@@ -31,7 +31,9 @@ export const updateTemplate = async () => {
     const contents = await readFile(join(".", ".github", "workflows", file), "utf8");
     await writeFile(
       join(".", ".github", "workflows", file),
-      contents.replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
+      contents
+        .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
+        .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString())
     );
   }
   console.log("Added new .github/workflows");
