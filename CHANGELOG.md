@@ -1,3 +1,14 @@
+## [v1.19.0](https://github.com/upptime/uptime-monitor/compare/v1.18.3...v1.19.0) (2020-11-28)
+
+### ✨ New features
+
+- [`3d93e8c`](https://github.com/upptime/uptime-monitor/commit/3d93e8c)  Add support for custom CI schedule (fixed #71)
+(Issues: [`#71`](https://github.com/upptime/uptime-monitor/issues/71))
+
+### ♻️ Updates
+
+- [`8c78d77`](https://github.com/upptime/uptime-monitor/commit/8c78d77)  Use constants for CI scheduling
+
 ## [v1.18.3](https://github.com/upptime/uptime-monitor/compare/v1.18.2...v1.18.3) (2020-11-28)
 
 ### 🐛 Bug fixes
