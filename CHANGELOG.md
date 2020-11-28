@@ -1,3 +1,10 @@
+## [v1.20.0](https://github.com/upptime/uptime-monitor/compare/v1.19.0...v1.20.0) (2020-11-28)
+
+### ✨ New features
+
+- [`75f7a59`](https://github.com/upptime/uptime-monitor/commit/75f7a59)  Add Telegram notifications (fixed upptime/upptime#88)
+(Issues: [`upptime/upptime#88`](https://github.com/upptime/upptime/issues/88))
+
 ## [v1.19.0](https://github.com/upptime/uptime-monitor/compare/v1.18.3...v1.19.0) (2020-11-28)
 
 ### ✨ New features
