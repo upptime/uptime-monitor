@@ -9,11 +9,13 @@ const child_process_1 = require("child_process");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("./helpers/config");
+const constants_1 = require("./helpers/constants");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const updateTemplate = async () => {
     const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
     const octokit = await github_1.getOctokit();
+    const config = await config_1.getConfig();
     // Remove the .github/workflows directory completely
     await fs_extra_1.remove(path_1.join(".", ".github", "workflows"));
     console.log("Removed legacy .github/workflows");
@@ -30,11 +32,19 @@ const updateTemplate = async () => {
     await fs_extra_1.copy(path_1.join(".", "__upptime", "src", "workflows"), path_1.join(".", ".github", "workflows"));
     await fs_extra_1.remove(path_1.join(".", "__upptime"));
     const workflowFiles = await fs_extra_1.readdir(path_1.join(".", ".github", "workflows"));
+    const workflowSchedule = config.workflowSchedule || {};
     for await (const file of workflowFiles) {
         const contents = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", file), "utf8");
         await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", file), contents
             .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
-            .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString()));
+            .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString())
+            .replace(new RegExp("GRAPHS_CI_SCHEDULE", "g"), workflowSchedule.graphs || constants_1.GRAPHS_CI_SCHEDULE)
+            .replace(new RegExp("RESPONSE_TIME_CI_SCHEDULE", "g"), workflowSchedule.responseTime || constants_1.RESPONSE_TIME_CI_SCHEDULE)
+            .replace(new RegExp("STATIC_SITE_CI_SCHEDULE", "g"), workflowSchedule.staticSite || constants_1.STATIC_SITE_CI_SCHEDULE)
+            .replace(new RegExp("SUMMARY_CI_SCHEDULE", "g"), workflowSchedule.summary || constants_1.SUMMARY_CI_SCHEDULE)
+            .replace(new RegExp("UPDATE_TEMPLATE_CI_SCHEDULE", "g"), workflowSchedule.updateTemplate || constants_1.UPDATE_TEMPLATE_CI_SCHEDULE)
+            .replace(new RegExp("UPDATES_CI_SCHEDULE", "g"), workflowSchedule.updates || constants_1.UPDATES_CI_SCHEDULE)
+            .replace(new RegExp("UPTIME_CI_SCHEDULE", "g"), workflowSchedule.uptime || constants_1.UPTIME_CI_SCHEDULE));
     }
     console.log("Added new .github/workflows");
     // Delete these specific template files
@@ -46,7 +56,6 @@ const updateTemplate = async () => {
         }
         catch (error) { }
     console.log("Removed template files");
-    const config = await config_1.getConfig();
     const slugs = config.sites.map((site) => site.slug || slugify_1.default(site.name));
     const filesToKeep = ["LICENSE"];
     // Remove old data from ./api
