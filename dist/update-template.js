@@ -16,7 +16,7 @@ const updateTemplate = async () => {
     console.log("Removed legacy .github/workflows");
     // Clone and copy workflows from template
     child_process_1.execSync("git clone https://github.com/upptime/upptime __upptime");
-    await fs_extra_1.copy(path_1.join(".", "__uptime", ".github", "workflows"), path_1.join(".", ".github", "workflows"));
+    await fs_extra_1.copy(path_1.join(".", "__upptime", ".github", "workflows"), path_1.join(".", ".github", "workflows"));
     await fs_extra_1.remove(path_1.join(".", "__upptime"));
     console.log("Added new .github/workflows");
     // Delete these specific template files
