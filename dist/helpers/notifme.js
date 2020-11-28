@@ -215,6 +215,22 @@ const sendNotification = async (message) => {
         }
         console.log("Finished sending Discord");
     }
+    if (process.env.NOTIFICATION_TELEGRAM && process.env.NOTIFICATION_TELEGRAM_BOT_KEY) {
+        console.log("Sending Telegram");
+        try {
+            await axios_1.default.post(`https://api.telegram.org/bot${process.env.NOTIFICATION_TELEGRAM_BOT_KEY}/sendMessage`, {
+                parse_mode: "Markdown",
+                disable_web_page_preview: true,
+                chat_id: process.env.NOTIFICATION_TELEGRAM_CHAT_ID,
+                text: message,
+            });
+            console.log("Success Telegram");
+        }
+        catch (error) {
+            console.log("Got an error", error);
+        }
+        console.log("Finished sending Telegram");
+    }
 };
 exports.sendNotification = sendNotification;
 //# sourceMappingURL=notifme.js.map
