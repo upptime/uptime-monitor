@@ -1,3 +1,12 @@
+## [v1.18.2](https://github.com/upptime/uptime-monitor/compare/v1.18.1...v1.18.2) (2020-11-28)
+
+### ♻️ Updates
+
+- [`cd09cef`](https://github.com/upptime/uptime-monitor/commit/cd09cef)  Add workflows from this repo
+- [`2bb055d`](https://github.com/upptime/uptime-monitor/commit/2bb055d)  Use version variable in workflows
+- [`5530fd3`](https://github.com/upptime/uptime-monitor/commit/5530fd3)  Remove $ prefix from latest version
+- [`955db6e`](https://github.com/upptime/uptime-monitor/commit/955db6e)  Add current date to workflows
+
 ## [v1.18.1](https://github.com/upptime/uptime-monitor/compare/v1.18.0...v1.18.1) (2020-11-28)
 
 ### 🐛 Bug fixes
