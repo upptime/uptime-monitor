@@ -12,7 +12,7 @@ export const updateTemplate = async () => {
 
   // Clone and copy workflows from template
   execSync("git clone https://github.com/upptime/upptime __upptime");
-  await copy(join(".", "__uptime", ".github", "workflows"), join(".", ".github", "workflows"));
+  await copy(join(".", "__upptime", ".github", "workflows"), join(".", ".github", "workflows"));
   await remove(join(".", "__upptime"));
   console.log("Added new .github/workflows");
 
