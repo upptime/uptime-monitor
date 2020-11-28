@@ -10,14 +10,31 @@ const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
+const github_1 = require("./helpers/github");
 const updateTemplate = async () => {
+    const octokit = await github_1.getOctokit();
     // Remove the .github/workflows directory completely
     await fs_extra_1.remove(path_1.join(".", ".github", "workflows"));
     console.log("Removed legacy .github/workflows");
-    // Clone and copy workflows from template
-    child_process_1.execSync("git clone https://github.com/upptime/upptime __upptime");
-    await fs_extra_1.copy(path_1.join(".", "__upptime", ".github", "workflows"), path_1.join(".", ".github", "workflows"));
+    // Get most recent release
+    const releases = await octokit.repos.listReleases({
+        owner: "upptime",
+        repo: "uptime-monitor",
+        per_page: 1,
+    });
+    const latestRelease = releases.data[0].tag_name;
+    console.log("Got @upptime/uptime-monitor release", latestRelease);
+    // Clone and copy workflows from this repo
+    child_process_1.execSync("git clone https://github.com/upptime/uptime-monitor __upptime");
+    await fs_extra_1.copy(path_1.join(".", "__upptime", "src", "workflows"), path_1.join(".", ".github", "workflows"));
     await fs_extra_1.remove(path_1.join(".", "__upptime"));
+    const workflowFiles = await fs_extra_1.readdir(path_1.join(".", ".github", "workflows"));
+    for await (const file of workflowFiles) {
+        const contents = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", file), "utf8");
+        await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", file), contents
+            .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
+            .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString()));
+    }
     console.log("Added new .github/workflows");
     // Delete these specific template files
     const delteFiles = ["README.pt-br.md", ".templaterc.json"];
