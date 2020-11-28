@@ -11,7 +11,7 @@
 name: Static Site CI
 on:
   schedule:
-    - cron: STATIC_SITE_CI_SCHEDULE
+    - cron: "STATIC_SITE_CI_SCHEDULE"
   workflow_dispatch:
 jobs:
   release:

@@ -11,7 +11,7 @@
 name: Updates CI
 on:
   schedule:
-    - cron: UPDATES_CI_SCHEDULE
+    - cron: "UPDATES_CI_SCHEDULE"
   workflow_dispatch:
 jobs:
   release:

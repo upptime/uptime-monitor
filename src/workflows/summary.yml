@@ -11,7 +11,7 @@
 name: Summary CI
 on:
   schedule:
-    - cron: SUMMARY_CI_SCHEDULE
+    - cron: "SUMMARY_CI_SCHEDULE"
   repository_dispatch:
     types: [summary]
   workflow_dispatch:

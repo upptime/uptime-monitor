@@ -11,7 +11,7 @@
 name: Uptime CI
 on:
   schedule:
-    - cron: UPTIME_CI_SCHEDULE
+    - cron: "UPTIME_CI_SCHEDULE"
   workflow_dispatch:
 jobs:
   release:
