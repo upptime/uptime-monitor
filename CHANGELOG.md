@@ -1,3 +1,13 @@
+## [v1.18.0](https://github.com/upptime/uptime-monitor/compare/v1.17.5...v1.18.0) (2020-11-28)
+
+### ✨ New features
+
+- [`f2c3ffa`](https://github.com/upptime/uptime-monitor/commit/f2c3ffa)  Add update template
+
+### ⬆️ Dependency updates
+
+- [`325e40d`](https://github.com/upptime/uptime-monitor/commit/325e40d)  Bump @upptime/status-page from 1.5.3 to 1.5.4
+
 ## [v1.17.5](https://github.com/upptime/uptime-monitor/compare/v1.17.4...v1.17.5) (2020-11-25)
 
 ### 🐛 Bug fixes
