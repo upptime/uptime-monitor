@@ -1,3 +1,10 @@
+## [v1.20.2](https://github.com/upptime/uptime-monitor/compare/v1.20.1...v1.20.2) (2020-11-29)
+
+### 🐛 Bug fixes
+
+- [`4765574`](https://github.com/upptime/uptime-monitor/commit/4765574)  Use quotes for YAML syntax
+- [`5fd7bcb`](https://github.com/upptime/uptime-monitor/commit/5fd7bcb)  Add summary.json to files to keep
+
 ## [v1.20.1](https://github.com/upptime/uptime-monitor/compare/v1.20.0...v1.20.1) (2020-11-28)
 
 ### 🐛 Bug fixes
