@@ -57,7 +57,7 @@ const updateTemplate = async () => {
         catch (error) { }
     console.log("Removed template files");
     const slugs = config.sites.map((site) => site.slug || slugify_1.default(site.name));
-    const filesToKeep = ["LICENSE"];
+    const filesToKeep = ["LICENSE", "summary.json"];
     // Remove old data from ./api
     const apiData = await fs_extra_1.readdir(path_1.join(".", "api"));
     for await (const file of apiData)
