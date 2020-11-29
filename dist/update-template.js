@@ -5,47 +5,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateTemplate = void 0;
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
-const child_process_1 = require("child_process");
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("./helpers/config");
-const constants_1 = require("./helpers/constants");
 const git_1 = require("./helpers/git");
-const github_1 = require("./helpers/github");
+const workflows_1 = require("./helpers/workflows");
 const updateTemplate = async () => {
     const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
-    const octokit = await github_1.getOctokit();
     const config = await config_1.getConfig();
     // Remove the .github/workflows directory completely
     await fs_extra_1.remove(path_1.join(".", ".github", "workflows"));
     console.log("Removed legacy .github/workflows");
-    // Get most recent release
-    const releases = await octokit.repos.listReleases({
-        owner: "upptime",
-        repo: "uptime-monitor",
-        per_page: 1,
-    });
-    const latestRelease = releases.data[0].tag_name;
-    console.log("Got @upptime/uptime-monitor release", latestRelease);
-    // Clone and copy workflows from this repo
-    child_process_1.execSync("git clone https://github.com/upptime/uptime-monitor __upptime");
-    await fs_extra_1.copy(path_1.join(".", "__upptime", "src", "workflows"), path_1.join(".", ".github", "workflows"));
-    await fs_extra_1.remove(path_1.join(".", "__upptime"));
-    const workflowFiles = await fs_extra_1.readdir(path_1.join(".", ".github", "workflows"));
-    const workflowSchedule = config.workflowSchedule || {};
-    for await (const file of workflowFiles) {
-        const contents = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", file), "utf8");
-        await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", file), contents
-            .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
-            .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString())
-            .replace("GRAPHS_CI_SCHEDULE", workflowSchedule.graphs || constants_1.GRAPHS_CI_SCHEDULE)
-            .replace("RESPONSE_TIME_CI_SCHEDULE", workflowSchedule.responseTime || constants_1.RESPONSE_TIME_CI_SCHEDULE)
-            .replace("STATIC_SITE_CI_SCHEDULE", workflowSchedule.staticSite || constants_1.STATIC_SITE_CI_SCHEDULE)
-            .replace("SUMMARY_CI_SCHEDULE", workflowSchedule.summary || constants_1.SUMMARY_CI_SCHEDULE)
-            .replace("UPDATE_TEMPLATE_CI_SCHEDULE", workflowSchedule.updateTemplate || constants_1.UPDATE_TEMPLATE_CI_SCHEDULE)
-            .replace("UPDATES_CI_SCHEDULE", workflowSchedule.updates || constants_1.UPDATES_CI_SCHEDULE)
-            .replace("UPTIME_CI_SCHEDULE", workflowSchedule.uptime || constants_1.UPTIME_CI_SCHEDULE));
-    }
+    // Clone and create workflows from this repo
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "graphs.yml"), await workflows_1.graphsCiWorkflow());
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "response-time.yml"), await workflows_1.responseTimeCiWorkflow());
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "setup.yml"), await workflows_1.setupCiWorkflow());
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "site.yml"), await workflows_1.siteCiWorkflow());
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "summary.yml"), await workflows_1.summaryCiWorkflow());
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "update-template.yml"), await workflows_1.updateTemplateCiWorkflow());
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "updates.yml"), await workflows_1.updatesCiWorkflow());
+    await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "uptime.yml"), await workflows_1.uptimeCiWorkflow());
     console.log("Added new .github/workflows");
     // Delete these specific template files
     const delteFiles = ["README.pt-br.md", ".templaterc.json"];
