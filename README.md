@@ -23,31 +23,31 @@ When you use Upptime, we automatically add the required workflows. If you want t
 Generate the `README.md` summary file:
 
 ```bash
-npx @upptime/uptime-montor summary
+npx @upptime/uptime-monitor summary
 ```
 
 Make network requests to get the response time and commit them to git history:
 
 ```bash
-npx @upptime/uptime-montor response-time
+npx @upptime/uptime-monitor response-time
 ```
 
 Generate the static status website, powered by [upptime/status-page](https://github.com/upptime/status-page):
 
 ```bash
-npx @upptime/uptime-montor site
+npx @upptime/uptime-monitor site
 ```
 
 Generate response time graphs, powered by [upptime/graphs](https://github.com/upptime/graphs):
 
 ```bash
-npx @upptime/uptime-montor graphs
+npx @upptime/uptime-monitor graphs
 ```
 
 Check uptime, but don't make git commits with network requests:
 
 ```bash
-npx @upptime/uptime-montor
+npx @upptime/uptime-monitor
 ```
 
 ## 📄 License
