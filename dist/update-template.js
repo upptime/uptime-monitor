@@ -17,6 +17,7 @@ const updateTemplate = async () => {
     await fs_extra_1.remove(path_1.join(".", ".github", "workflows"));
     console.log("Removed legacy .github/workflows");
     // Clone and create workflows from this repo
+    await fs_extra_1.ensureDir(path_1.join(".", ".github", "workflows"));
     await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "graphs.yml"), await workflows_1.graphsCiWorkflow());
     await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "response-time.yml"), await workflows_1.responseTimeCiWorkflow());
     await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", "setup.yml"), await workflows_1.setupCiWorkflow());
