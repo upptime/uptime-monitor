@@ -36,7 +36,7 @@ export const graphsCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Graphs CI
 on:
@@ -68,7 +68,7 @@ export const responseTimeCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Response Time CI
 on:
@@ -101,7 +101,7 @@ export const setupCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Setup CI
 on:
@@ -163,7 +163,7 @@ export const siteCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Static Site CI
 on:
@@ -199,7 +199,7 @@ export const summaryCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Summary CI
 on:
@@ -239,7 +239,7 @@ export const updateTemplateCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Update Template CI
 on:
@@ -271,7 +271,7 @@ export const updatesCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Updates CI
 on:
@@ -299,7 +299,7 @@ export const uptimeCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
 
-  return `${introComment()}
+  return `${await introComment()}
 
 name: Uptime CI
 on:
