@@ -1,66 +1,42 @@
 import slugify from "@sindresorhus/slugify";
-import { execSync } from "child_process";
-import { copy, readdir, readFile, remove, writeFile } from "fs-extra";
+import { readdir, remove, writeFile } from "fs-extra";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
-import {
-  GRAPHS_CI_SCHEDULE,
-  RESPONSE_TIME_CI_SCHEDULE,
-  STATIC_SITE_CI_SCHEDULE,
-  SUMMARY_CI_SCHEDULE,
-  UPDATE_TEMPLATE_CI_SCHEDULE,
-  UPDATES_CI_SCHEDULE,
-  UPTIME_CI_SCHEDULE,
-} from "./helpers/constants";
 import { commit, push } from "./helpers/git";
-import { getOctokit } from "./helpers/github";
+import {
+  graphsCiWorkflow,
+  responseTimeCiWorkflow,
+  setupCiWorkflow,
+  siteCiWorkflow,
+  summaryCiWorkflow,
+  updatesCiWorkflow,
+  updateTemplateCiWorkflow,
+  uptimeCiWorkflow,
+} from "./helpers/workflows";
 
 export const updateTemplate = async () => {
   const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
-  const octokit = await getOctokit();
   const config = await getConfig();
 
   // Remove the .github/workflows directory completely
   await remove(join(".", ".github", "workflows"));
   console.log("Removed legacy .github/workflows");
 
-  // Get most recent release
-  const releases = await octokit.repos.listReleases({
-    owner: "upptime",
-    repo: "uptime-monitor",
-    per_page: 1,
-  });
-  const latestRelease = releases.data[0].tag_name;
-  console.log("Got @upptime/uptime-monitor release", latestRelease);
-
-  // Clone and copy workflows from this repo
-  execSync("git clone https://github.com/upptime/uptime-monitor __upptime");
-  await copy(join(".", "__upptime", "src", "workflows"), join(".", ".github", "workflows"));
-  await remove(join(".", "__upptime"));
-  const workflowFiles = await readdir(join(".", ".github", "workflows"));
-  const workflowSchedule = config.workflowSchedule || {};
-  for await (const file of workflowFiles) {
-    const contents = await readFile(join(".", ".github", "workflows", file), "utf8");
-    await writeFile(
-      join(".", ".github", "workflows", file),
-      contents
-        .replace(new RegExp("UPTIME_MONITOR_VERSION", "g"), latestRelease)
-        .replace(new RegExp("CURRENT_DATE", "g"), new Date().toISOString())
-        .replace("GRAPHS_CI_SCHEDULE", workflowSchedule.graphs || GRAPHS_CI_SCHEDULE)
-        .replace(
-          "RESPONSE_TIME_CI_SCHEDULE",
-          workflowSchedule.responseTime || RESPONSE_TIME_CI_SCHEDULE
-        )
-        .replace("STATIC_SITE_CI_SCHEDULE", workflowSchedule.staticSite || STATIC_SITE_CI_SCHEDULE)
-        .replace("SUMMARY_CI_SCHEDULE", workflowSchedule.summary || SUMMARY_CI_SCHEDULE)
-        .replace(
-          "UPDATE_TEMPLATE_CI_SCHEDULE",
-          workflowSchedule.updateTemplate || UPDATE_TEMPLATE_CI_SCHEDULE
-        )
-        .replace("UPDATES_CI_SCHEDULE", workflowSchedule.updates || UPDATES_CI_SCHEDULE)
-        .replace("UPTIME_CI_SCHEDULE", workflowSchedule.uptime || UPTIME_CI_SCHEDULE)
-    );
-  }
+  // Clone and create workflows from this repo
+  await writeFile(join(".", ".github", "workflows", "graphs.yml"), await graphsCiWorkflow());
+  await writeFile(
+    join(".", ".github", "workflows", "response-time.yml"),
+    await responseTimeCiWorkflow()
+  );
+  await writeFile(join(".", ".github", "workflows", "setup.yml"), await setupCiWorkflow());
+  await writeFile(join(".", ".github", "workflows", "site.yml"), await siteCiWorkflow());
+  await writeFile(join(".", ".github", "workflows", "summary.yml"), await summaryCiWorkflow());
+  await writeFile(
+    join(".", ".github", "workflows", "update-template.yml"),
+    await updateTemplateCiWorkflow()
+  );
+  await writeFile(join(".", ".github", "workflows", "updates.yml"), await updatesCiWorkflow());
+  await writeFile(join(".", ".github", "workflows", "uptime.yml"), await uptimeCiWorkflow());
   console.log("Added new .github/workflows");
 
   // Delete these specific template files
