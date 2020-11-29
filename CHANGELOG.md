@@ -1,3 +1,9 @@
+## [v1.20.5](https://github.com/upptime/uptime-monitor/compare/v1.20.4...v1.20.5) (2020-11-29)
+
+### 🐛 Bug fixes
+
+- [`d9ae9bd`](https://github.com/upptime/uptime-monitor/commit/d9ae9bd)  Wait for intro comment promise
+
 ## [v1.20.4](https://github.com/upptime/uptime-monitor/compare/v1.20.3...v1.20.4) (2020-11-29)
 
 ### 🐛 Bug fixes
