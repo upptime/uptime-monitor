@@ -1,3 +1,9 @@
+## [v1.20.4](https://github.com/upptime/uptime-monitor/compare/v1.20.3...v1.20.4) (2020-11-29)
+
+### 🐛 Bug fixes
+
+- [`980c17a`](https://github.com/upptime/uptime-monitor/commit/980c17a)  Ensure .github/workflows exists
+
 ## [v1.20.3](https://github.com/upptime/uptime-monitor/compare/v1.20.2...v1.20.3) (2020-11-29)
 
 ### ♻️ Updates
