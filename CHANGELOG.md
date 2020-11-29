@@ -1,3 +1,15 @@
+## [v1.20.3](https://github.com/upptime/uptime-monitor/compare/v1.20.2...v1.20.3) (2020-11-29)
+
+### ♻️ Updates
+
+- [`b9c3666`](https://github.com/upptime/uptime-monitor/commit/b9c3666)  Use secrets context
+- [`3042c6b`](https://github.com/upptime/uptime-monitor/commit/3042c6b)  Generate workflows from JS
+- [`bd45ff7`](https://github.com/upptime/uptime-monitor/commit/bd45ff7)  Set env from context
+
+### 🐛 Bug fixes
+
+- [`08150f3`](https://github.com/upptime/uptime-monitor/commit/08150f3)  Fix typo in README.md(montor -&gt; monitor)
+
 ## [v1.20.2](https://github.com/upptime/uptime-monitor/compare/v1.20.1...v1.20.2) (2020-11-29)
 
 ### 🐛 Bug fixes
