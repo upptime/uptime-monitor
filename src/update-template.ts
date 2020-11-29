@@ -1,5 +1,5 @@
 import slugify from "@sindresorhus/slugify";
-import { readdir, remove, writeFile } from "fs-extra";
+import { ensureDir, readdir, remove, writeFile } from "fs-extra";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
 import { commit, push } from "./helpers/git";
@@ -23,6 +23,7 @@ export const updateTemplate = async () => {
   console.log("Removed legacy .github/workflows");
 
   // Clone and create workflows from this repo
+  await ensureDir(join(".", ".github", "workflows"));
   await writeFile(join(".", ".github", "workflows", "graphs.yml"), await graphsCiWorkflow());
   await writeFile(
     join(".", ".github", "workflows", "response-time.yml"),
