@@ -1,6 +1,7 @@
 import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
 import axios from "axios";
 import type { Channel } from "notifme-sdk";
+import { replaceEnvironmentVariables } from "./environment";
 
 const channels: {
   email?: Channel<EmailProvider>;
@@ -167,6 +168,7 @@ const notifier = new NotifmeSdk({
 
 export const sendNotification = async (message: string) => {
   console.log("Sending notification", message);
+  message = replaceEnvironmentVariables(message);
 
   if (channels.email) {
     console.log("Sending email");
