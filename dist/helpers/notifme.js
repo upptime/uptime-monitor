@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendNotification = void 0;
 const notifme_sdk_1 = __importDefault(require("notifme-sdk"));
 const axios_1 = __importDefault(require("axios"));
+const environment_1 = require("./environment");
 const channels = {};
 // Support legacy environment variables for Discord
 if (process.env.DISCORD_WEBHOOK_URL)
@@ -152,6 +153,7 @@ const notifier = new notifme_sdk_1.default({
 });
 const sendNotification = async (message) => {
     console.log("Sending notification", message);
+    message = environment_1.replaceEnvironmentVariables(message);
     if (channels.email) {
         console.log("Sending email");
         try {
