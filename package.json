@@ -1,6 +1,6 @@
 {
   "name": "@upptime/uptime-monitor",
-  "version": "1.20.5",
+  "version": "1.20.6",
   "description": "Uptime monitor powered by GitHub Actions",
   "main": "dist/index.js",
   "scripts": {

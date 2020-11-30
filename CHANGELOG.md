@@ -1,3 +1,10 @@
+## [v1.20.6](https://github.com/upptime/uptime-monitor/compare/v1.20.5...v1.20.6) (2020-11-30)
+
+### 🐛 Bug fixes
+
+- [`a1aa9a4`](https://github.com/upptime/uptime-monitor/commit/a1aa9a4)  Add URLs in notifications (fixed upptime/upptime#97)
+(Issues: [`upptime/upptime#97`](https://github.com/upptime/upptime/issues/97))
+
 ## [v1.20.5](https://github.com/upptime/uptime-monitor/compare/v1.20.4...v1.20.5) (2020-11-29)
 
 ### 🐛 Bug fixes
