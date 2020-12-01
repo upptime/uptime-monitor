@@ -11,6 +11,8 @@ const curl = (site) => new Promise((resolve) => {
     curl.setOpt("URL", url);
     if (site.headers)
         curl.setOpt(node_libcurl_1.Curl.option.HTTPHEADER, site.headers.map(environment_1.replaceEnvironmentVariables));
+    if (site.data)
+        curl.setOpt("POSTFIELDS", site.data);
     if (site.__dangerous__insecure || site.__dangerous__disable_verify_peer)
         curl.setOpt("SSL_VERIFYPEER", false);
     if (site.__dangerous__insecure || site.__dangerous__disable_verify_host)

@@ -10,6 +10,7 @@ export interface UpptimeConfig {
         assignees?: string[];
         headers?: string[];
         slug?: string;
+        data?: string;
         maxResponseTime?: number;
         __dangerous__insecure?: boolean;
         __dangerous__disable_verify_peer?: boolean;
