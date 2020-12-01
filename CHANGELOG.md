@@ -1,3 +1,15 @@
+## [v1.21.0](https://github.com/upptime/uptime-monitor/compare/v1.20.6...v1.21.0) (2020-12-01)
+
+### ✨ New features
+
+- [`42fa5dc`](https://github.com/upptime/uptime-monitor/commit/42fa5dc)  Add support for CURL body (fixed upptime/upptime#99)
+(Issues: [`upptime/upptime#99`](https://github.com/upptime/upptime/issues/99))
+
+### ⬆️ Dependency updates
+
+- [`708561f`](https://github.com/upptime/uptime-monitor/commit/708561f)  Bump @upptime/status-page from 1.5.4 to 1.5.5
+- [`913ea86`](https://github.com/upptime/uptime-monitor/commit/913ea86)  Bump prettier from 2.2.0 to 2.2.1
+
 ## [v1.20.6](https://github.com/upptime/uptime-monitor/compare/v1.20.5...v1.20.6) (2020-11-30)
 
 ### 🐛 Bug fixes
