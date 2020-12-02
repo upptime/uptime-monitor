@@ -3,6 +3,9 @@ import { Downtimes } from "../interfaces";
 import { getConfig } from "./config";
 import { getOctokit } from "./github";
 
+/** Calculate the average of some numbers */
+const avg = (array: number[]) => (array.length ? array.reduce((a, b) => a + b) / array.length : 0);
+
 export const getResponseTimeForSite = async (
   slug: string
 ): Promise<Downtimes & { currentStatus: "up" | "down" | "degraded" }> => {
@@ -32,7 +35,7 @@ export const getResponseTimeForSite = async (
       (item) =>
         [
           item.commit.author.date,
-          Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()),
+          parseInt(item.commit.message.split(" in ")[1].split("ms")[0].trim()),
         ] as [string, number]
     )
     .filter((item) => item[1] && !isNaN(item[1]));
@@ -50,6 +53,7 @@ export const getResponseTimeForSite = async (
     .filter((i) => dayjs(i[0]).isAfter(dayjs().subtract(1, "year")))
     .map((i) => i[1]);
   const allSum: number[] = responseTimes.map((i) => i[1]);
+  console.log("weekSum", weekSum, avg(weekSum));
 
   // Current status is "up", "down", or "degraded" based on the emoji prefix of the commit message
   const currentStatus: "up" | "down" | "degraded" = history.data[0].commit.message
@@ -63,11 +67,11 @@ export const getResponseTimeForSite = async (
     : "down";
 
   return {
-    day: parseInt(Number(daySum.reduce((p, c) => p + c, 0) / daySum.length).toFixed(0)) || 0,
-    week: parseInt(Number(weekSum.reduce((p, c) => p + c, 0) / weekSum.length).toFixed(0)) || 0,
-    month: parseInt(Number(monthSum.reduce((p, c) => p + c, 0) / monthSum.length).toFixed(0)) || 0,
-    year: parseInt(Number(yearSum.reduce((p, c) => p + c, 0) / yearSum.length).toFixed(0)) || 0,
-    all: parseInt(Number(allSum.reduce((p, c) => p + c, 0) / allSum.length).toFixed(0)) || 0,
+    day: avg(daySum) || 0,
+    week: avg(weekSum) || 0,
+    month: avg(monthSum) || 0,
+    year: avg(yearSum) || 0,
+    all: avg(allSum) || 0,
     currentStatus,
   };
 };

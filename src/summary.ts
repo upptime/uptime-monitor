@@ -95,13 +95,13 @@ ${pageStatuses
         i18n.responseTimeGraphAlt || "Response time graph"
       }" src="./graphs/${page.slug}.png" height="20"> ${page.time}${
         i18n.ms || "ms"
-      }</summary><a href="${website}/history/${page.slug}"><img alt="${
+      }</summary><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.responseTime || "Response time"
       } ${
         page.time
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
         page.slug
-      }%2Fresponse-time.json"></a></summary><a href="${website}/history/${page.slug}"><img alt="${
+      }%2Fresponse-time.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.responseTimeDay || "24-hour response time"
       } ${
         page.timeDay
