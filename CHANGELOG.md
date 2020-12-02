@@ -1,3 +1,9 @@
+## [v1.22.7](https://github.com/upptime/uptime-monitor/compare/v1.22.6...v1.22.7) (2020-12-02)
+
+### 🐛 Bug fixes
+
+- [`502b32f`](https://github.com/upptime/uptime-monitor/commit/502b32f)  Use 0 if NaN
+
 ## [v1.22.6](https://github.com/upptime/uptime-monitor/compare/v1.22.5...v1.22.6) (2020-12-02)
 
 ### 🐛 Bug fixes
