@@ -4,6 +4,7 @@ import { safeLoad } from "js-yaml";
 import { join } from "path";
 import { DownPecentages, Downtimes, SiteHistory } from "../interfaces";
 import { getOctokit } from "./github";
+import { checkOverlap } from "./overlap";
 
 /**
  * Get the number of seconds a website has been down
@@ -34,12 +35,29 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
   data.forEach((issue) => {
     const issueDowntime =
       new Date(issue.closed_at || new Date()).getTime() - new Date(issue.created_at).getTime();
-    const issueCloseTime = dayjs(issue.closed_at);
-    if (issueCloseTime.isAfter(dayjs().subtract(1, "day"))) day += issueDowntime;
-    if (issueCloseTime.isAfter(dayjs().subtract(1, "week"))) week += issueDowntime;
-    if (issueCloseTime.isAfter(dayjs().subtract(1, "month"))) month += issueDowntime;
-    if (issueCloseTime.isAfter(dayjs().subtract(1, "year"))) year += issueDowntime;
     all += issueDowntime;
+    const issueOverlap = {
+      start: new Date(issue.created_at).getTime(),
+      end: new Date(issue.closed_at || new Date()).getTime(),
+    };
+    const end = dayjs().toDate().getTime();
+
+    day += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, "day").toDate().getTime(),
+      end,
+    });
+    week += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, "week").toDate().getTime(),
+      end,
+    });
+    month += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, "month").toDate().getTime(),
+      end,
+    });
+    year += checkOverlap(issueOverlap, {
+      start: dayjs().subtract(1, "year").toDate().getTime(),
+      end,
+    });
   });
 
   return {
