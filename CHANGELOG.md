@@ -1,3 +1,14 @@
+## [v1.22.1](https://github.com/upptime/uptime-monitor/compare/v1.22.0...v1.22.1) (2020-12-02)
+
+### ♻️ Updates
+
+- [`24ee219`](https://github.com/upptime/uptime-monitor/commit/24ee219)  Get uptime percent for day, month, week, year
+
+### ⬆️ Dependency updates
+
+- [`248e8a5`](https://github.com/upptime/uptime-monitor/commit/248e8a5)  Bump @upptime/status-page from 1.5.6 to 1.5.7
+- [`77f3838`](https://github.com/upptime/uptime-monitor/commit/77f3838)  Bump @types/jest from 26.0.15 to 26.0.16
+
 ## [v1.22.0](https://github.com/upptime/uptime-monitor/compare/v1.21.0...v1.22.0) (2020-12-02)
 
 ### ✨ New features
