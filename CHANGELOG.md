@@ -1,3 +1,9 @@
+## [v1.22.4](https://github.com/upptime/uptime-monitor/compare/v1.22.3...v1.22.4) (2020-12-02)
+
+### ♻️ Updates
+
+- [`55fcbb9`](https://github.com/upptime/uptime-monitor/commit/55fcbb9)  Add response time for intervals
+
 ## [v1.22.3](https://github.com/upptime/uptime-monitor/compare/v1.22.2...v1.22.3) (2020-12-02)
 
 ### ♻️ Updates
