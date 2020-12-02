@@ -27,9 +27,11 @@ const curl = (site) => new Promise((resolve) => {
     curl.setOpt("CUSTOMREQUEST", method);
     curl.on("error", () => {
         curl.close();
-        return resolve({ httpCode: 0, totalTime: 0 });
+        return resolve({ httpCode: 0, totalTime: 0, data: "" });
     });
-    curl.on("end", () => {
+    curl.on("end", (_, data) => {
+        if (typeof data !== "string")
+            data = data.toString();
         let httpCode = 0;
         let totalTime = 0;
         try {
@@ -38,9 +40,9 @@ const curl = (site) => new Promise((resolve) => {
         }
         catch (error) {
             curl.close();
-            return resolve({ httpCode, totalTime });
+            return resolve({ httpCode, totalTime, data });
         }
-        return resolve({ httpCode, totalTime });
+        return resolve({ httpCode, totalTime, data });
     });
     curl.perform();
 });

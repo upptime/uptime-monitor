@@ -43,7 +43,7 @@ const update = async (shouldCommit = false) => {
          */
         const performTestOnce = async () => {
             const result = await request_1.curl(site);
-            console.log("Result from test", result);
+            console.log("Result from test", result.httpCode, result.totalTime);
             const responseTime = (result.totalTime * 1000).toFixed(0);
             const expectedStatusCodes = (site.expectedStatusCodes || [
                 200,
@@ -72,6 +72,13 @@ const update = async (shouldCommit = false) => {
                 : "down";
             if (parseInt(responseTime) > (site.maxResponseTime || 60000))
                 status = "degraded";
+            if (status === "up" && typeof result.data === "string") {
+                if (site.__dangerous__body_down && result.data.includes(site.__dangerous__body_down))
+                    status = "down";
+                if (site.__dangerous__body_degraded &&
+                    result.data.includes(site.__dangerous__body_degraded))
+                    status = "degraded";
+            }
             return { result, responseTime, status };
         };
         let { result, responseTime, status } = await performTestOnce();
@@ -214,39 +221,6 @@ generator: Upptime <https://github.com/upptime/upptime>
         }
     }
     git_1.push();
-    if (!config.skipDeleteIssues) {
-        // Find all the opened issues that shouldn't have opened
-        // Say, Upptime found a down monitor and it was back up within 5 min
-        const issuesRecentlyClosed = await octokit.issues.listForRepo({
-            owner,
-            repo,
-            state: "closed",
-            labels: "status",
-            per_page: 10,
-        });
-        console.log("Found recently closed issues", issuesRecentlyClosed.data.length);
-        for await (const issue of issuesRecentlyClosed.data) {
-            if (
-            // If this issue was closed within 15 minutes
-            new Date(issue.closed_at).getTime() - new Date(issue.created_at).getTime() < 900000 &&
-                // It has 1 comment (the default Upptime one)
-                issue.comments === 1) {
-                try {
-                    console.log("Trying to delete issue", issue.number, issue.node_id);
-                    const result = await octokit.graphql(`
-      mutation deleteIssue {
-        deleteIssue(input:{issueId:"${issue.node_id}"}) {
-          clientMutationId
-        }
-      }`);
-                    console.log("Success", result);
-                }
-                catch (error) {
-                    console.log("Error deleting this issue", error);
-                }
-            }
-        }
-    }
     if (hasDelta)
         summary_1.generateSummary();
 };
