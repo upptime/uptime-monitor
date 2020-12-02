@@ -1,3 +1,9 @@
+## [v1.22.8](https://github.com/upptime/uptime-monitor/compare/v1.22.7...v1.22.8) (2020-12-02)
+
+### ♻️ Updates
+
+- [`dc71222`](https://github.com/upptime/uptime-monitor/commit/dc71222)  Add details to uptime summary
+
 ## [v1.22.7](https://github.com/upptime/uptime-monitor/compare/v1.22.6...v1.22.7) (2020-12-02)
 
 ### 🐛 Bug fixes
