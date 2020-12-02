@@ -1,3 +1,9 @@
+## [v1.22.9](https://github.com/upptime/uptime-monitor/compare/v1.22.8...v1.22.9) (2020-12-02)
+
+### 🐛 Bug fixes
+
+- [`b639077`](https://github.com/upptime/uptime-monitor/commit/b639077)  Fix response time avg
+
 ## [v1.22.8](https://github.com/upptime/uptime-monitor/compare/v1.22.7...v1.22.8) (2020-12-02)
 
 ### ♻️ Updates
