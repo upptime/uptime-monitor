@@ -53,9 +53,9 @@ const generateSummary = async () => {
             timeMonth: responseTimes.month,
             timeYear: responseTimes.year,
         });
-        if (status === "down")
+        if (responseTimes.currentStatus === "down")
             numberOfDown++;
-        if (status === "degraded")
+        if (responseTimes.currentStatus === "degraded")
             numberOfDegraded++;
     }
     let website = `https://${config.owner}.github.io/${config.repo}`;
