@@ -15,6 +15,8 @@ export interface UpptimeConfig {
     __dangerous__insecure?: boolean;
     __dangerous__disable_verify_peer?: boolean;
     __dangerous__disable_verify_host?: boolean;
+    __dangerous__body_down?: string;
+    __dangerous__body_degraded?: string;
   }[];
   notifications?: { type: string; [index: string]: string }[];
   assignees: string[];

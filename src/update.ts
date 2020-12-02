@@ -50,7 +50,7 @@ export const update = async (shouldCommit = false) => {
       status: "up" | "down" | "degraded";
     }> => {
       const result = await curl(site);
-      console.log("Result from test", result);
+      console.log("Result from test", result.httpCode, result.totalTime);
       const responseTime = (result.totalTime * 1000).toFixed(0);
       const expectedStatusCodes = (
         site.expectedStatusCodes || [
@@ -80,6 +80,15 @@ export const update = async (shouldCommit = false) => {
         ? "up"
         : "down";
       if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
+      if (status === "up" && typeof result.data === "string") {
+        if (site.__dangerous__body_down && result.data.includes(site.__dangerous__body_down))
+          status = "down";
+        if (
+          site.__dangerous__body_degraded &&
+          result.data.includes(site.__dangerous__body_degraded)
+        )
+          status = "degraded";
+      }
       return { result, responseTime, status };
     };
 
