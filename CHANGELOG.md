@@ -1,3 +1,9 @@
+## [v1.22.10](https://github.com/upptime/uptime-monitor/compare/v1.22.9...v1.22.10) (2020-12-02)
+
+### 🐛 Bug fixes
+
+- [`a1a9cfb`](https://github.com/upptime/uptime-monitor/commit/a1a9cfb)  Round response time to int
+
 ## [v1.22.9](https://github.com/upptime/uptime-monitor/compare/v1.22.8...v1.22.9) (2020-12-02)
 
 ### 🐛 Bug fixes
