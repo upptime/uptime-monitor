@@ -4,7 +4,7 @@ import { replaceEnvironmentVariables } from "./environment";
 
 export const curl = (
   site: UpptimeConfig["sites"][0]
-): Promise<{ httpCode: number; totalTime: number }> =>
+): Promise<{ httpCode: number; totalTime: number; data: string }> =>
   new Promise((resolve) => {
     const url = replaceEnvironmentVariables(site.url);
     const method = site.method || "GET";
@@ -28,9 +28,10 @@ export const curl = (
     curl.setOpt("CUSTOMREQUEST", method);
     curl.on("error", () => {
       curl.close();
-      return resolve({ httpCode: 0, totalTime: 0 });
+      return resolve({ httpCode: 0, totalTime: 0, data: "" });
     });
-    curl.on("end", () => {
+    curl.on("end", (_, data) => {
+      if (typeof data !== "string") data = data.toString();
       let httpCode = 0;
       let totalTime = 0;
       try {
@@ -38,9 +39,9 @@ export const curl = (
         totalTime = Number(curl.getInfo("TOTAL_TIME"));
       } catch (error) {
         curl.close();
-        return resolve({ httpCode, totalTime });
+        return resolve({ httpCode, totalTime, data });
       }
-      return resolve({ httpCode, totalTime });
+      return resolve({ httpCode, totalTime, data });
     });
     curl.perform();
   });
