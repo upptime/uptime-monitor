@@ -229,7 +229,7 @@ jobs:
         with:
           token: \${{ secrets.GH_PAT }}
           query: "topic:upptime"
-          size: 30
+          size: 20
           max: 1000
           one-per-owner: true
 `;
