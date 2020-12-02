@@ -63,7 +63,15 @@ export interface UpptimeConfig {
         history?: string;
         ms?: string;
         responseTime?: string;
+        responseTimeDay?: string;
+        responseTimeWeek?: string;
+        responseTimeMonth?: string;
+        responseTimeYear?: string;
         uptime?: string;
+        uptimeDay?: string;
+        uptimeWeek?: string;
+        uptimeMonth?: string;
+        uptimeYear?: string;
         responseTimeGraphAlt?: string;
         liveStatus?: string;
         allSystemsOperational?: string;
