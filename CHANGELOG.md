@@ -1,3 +1,19 @@
+## [v1.22.0](https://github.com/upptime/uptime-monitor/compare/v1.21.0...v1.22.0) (2020-12-02)
+
+### ✨ New features
+
+- [`78190af`](https://github.com/upptime/uptime-monitor/commit/78190af)  Add support for custom body down/degraded (fixed upptime/upptime#101)
+(Issues: [`upptime/upptime#101`](https://github.com/upptime/upptime/issues/101))
+
+### ♻️ Updates
+
+- [`fcc2514`](https://github.com/upptime/uptime-monitor/commit/fcc2514)  Return CURL data
+- [`c4afb56`](https://github.com/upptime/uptime-monitor/commit/c4afb56)  Move deleting issues to summary
+
+### ⬆️ Dependency updates
+
+- [`9f363b2`](https://github.com/upptime/uptime-monitor/commit/9f363b2)  Bump @upptime/status-page from 1.5.5 to 1.5.6
+
 ## [v1.21.0](https://github.com/upptime/uptime-monitor/compare/v1.20.6...v1.21.0) (2020-12-01)
 
 ### ✨ New features
