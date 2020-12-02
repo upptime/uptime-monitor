@@ -76,12 +76,18 @@ export const generateSummary = async () => {
       ? "degraded"
       : "down";
 
+    const uptimes = await getUptimePercentForSite(slug);
+    console.log("Uptimes", uptimes);
     pageStatuses.push({
       name: site.name,
       url: site.url,
       slug,
       status,
-      uptime: await getUptimePercentForSite(slug),
+      uptime: uptimes.all,
+      uptimeDay: uptimes.day,
+      uptimeWeek: uptimes.week,
+      uptimeMonth: uptimes.month,
+      uptimeYear: uptimes.year,
       time: Math.floor(averageTime),
     });
     if (status === "down") numberOfDown++;
