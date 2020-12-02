@@ -9,6 +9,7 @@ const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const github_1 = require("./github");
+const overlap_1 = require("./overlap");
 /**
  * Get the number of seconds a website has been down
  * @param slug - Slug of the site
@@ -35,16 +36,28 @@ const getDowntimeSecondsForSite = async (slug) => {
     // If this issue is still open, calculate the time since it was opened
     data.forEach((issue) => {
         const issueDowntime = new Date(issue.closed_at || new Date()).getTime() - new Date(issue.created_at).getTime();
-        const issueCloseTime = dayjs_1.default(issue.closed_at);
-        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "day")))
-            day += issueDowntime;
-        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "week")))
-            week += issueDowntime;
-        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "month")))
-            month += issueDowntime;
-        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "year")))
-            year += issueDowntime;
         all += issueDowntime;
+        const issueOverlap = {
+            start: new Date(issue.created_at).getTime(),
+            end: new Date(issue.closed_at || new Date()).getTime(),
+        };
+        const end = dayjs_1.default().toDate().getTime();
+        day += overlap_1.checkOverlap(issueOverlap, {
+            start: dayjs_1.default().subtract(1, "day").toDate().getTime(),
+            end,
+        });
+        week += overlap_1.checkOverlap(issueOverlap, {
+            start: dayjs_1.default().subtract(1, "week").toDate().getTime(),
+            end,
+        });
+        month += overlap_1.checkOverlap(issueOverlap, {
+            start: dayjs_1.default().subtract(1, "month").toDate().getTime(),
+            end,
+        });
+        year += overlap_1.checkOverlap(issueOverlap, {
+            start: dayjs_1.default().subtract(1, "year").toDate().getTime(),
+            end,
+        });
     });
     return {
         day: Math.round(day / 1000),
