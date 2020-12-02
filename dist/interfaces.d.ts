@@ -103,4 +103,22 @@ export interface SiteStatus {
     time: number;
     /** Total uptime percentage */
     uptime: string;
+    uptimeDay: string;
+    uptimeWeek: string;
+    uptimeMonth: string;
+    uptimeYear: string;
+}
+export interface Downtimes {
+    day: number;
+    week: number;
+    month: number;
+    year: number;
+    all: number;
+}
+export interface DownPecentages {
+    day: string;
+    week: string;
+    month: string;
+    year: string;
+    all: string;
 }

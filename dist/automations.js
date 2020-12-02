@@ -61,5 +61,4 @@ const createAutomatedIssue = async () => {
         }
     }
 };
-createAutomatedIssue();
 //# sourceMappingURL=automations.js.map

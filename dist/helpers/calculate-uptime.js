@@ -1,10 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUptimePercentForSite = void 0;
+const dayjs_1 = __importDefault(require("dayjs"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
-const github_1 = require("./github");
 const path_1 = require("path");
+const github_1 = require("./github");
 /**
  * Get the number of seconds a website has been down
  * @param slug - Slug of the site
@@ -12,7 +16,11 @@ const path_1 = require("path");
 const getDowntimeSecondsForSite = async (slug) => {
     let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
     const octokit = await github_1.getOctokit();
-    let msDown = 0;
+    let day = 0;
+    let week = 0;
+    let month = 0;
+    let year = 0;
+    let all = 0;
     // Get all the issues for this website
     const { data } = await octokit.issues.listForRepo({
         owner,
@@ -25,9 +33,26 @@ const getDowntimeSecondsForSite = async (slug) => {
     // If this issue has been closed already, calculate the difference
     // between when it was closed and when it was opened
     // If this issue is still open, calculate the time since it was opened
-    data.forEach((issue) => (msDown +=
-        new Date(issue.closed_at || new Date()).getTime() - new Date(issue.created_at).getTime()));
-    return Math.round(msDown / 1000);
+    data.forEach((issue) => {
+        const issueDowntime = new Date(issue.closed_at || new Date()).getTime() - new Date(issue.created_at).getTime();
+        const issueCloseTime = dayjs_1.default(issue.closed_at);
+        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "day")))
+            day += issueDowntime;
+        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "week")))
+            week += issueDowntime;
+        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "month")))
+            month += issueDowntime;
+        if (issueCloseTime.isAfter(dayjs_1.default().subtract(1, "year")))
+            year += issueDowntime;
+        all += issueDowntime;
+    });
+    return {
+        day: Math.round(day / 1000),
+        week: Math.round(week / 1000),
+        month: Math.round(month / 1000),
+        year: Math.round(year / 1000),
+        all: Math.round(all / 1000),
+    };
 };
 /**
  * Get the uptime percentage for a website
@@ -46,7 +71,13 @@ const getUptimePercentForSite = async (slug) => {
     // Number of seconds the site has been down
     const downtimeSeconds = await getDowntimeSecondsForSite(slug);
     // Return a percentage string
-    return `${Math.max(0, 100 - (downtimeSeconds / totalSeconds) * 100).toFixed(2)}%`;
+    return {
+        day: `${Math.max(0, 100 - (downtimeSeconds.day / 86400) * 100).toFixed(2)}%`,
+        week: `${Math.max(0, 100 - (downtimeSeconds.week / 604800) * 100).toFixed(2)}%`,
+        month: `${Math.max(0, 100 - (downtimeSeconds.month / 2628288) * 100).toFixed(2)}%`,
+        year: `${Math.max(0, 100 - (downtimeSeconds.year / 31536000) * 100).toFixed(2)}%`,
+        all: `${Math.max(0, 100 - (downtimeSeconds.all / totalSeconds) * 100).toFixed(2)}%`,
+    };
 };
 exports.getUptimePercentForSite = getUptimePercentForSite;
 //# sourceMappingURL=calculate-uptime.js.map

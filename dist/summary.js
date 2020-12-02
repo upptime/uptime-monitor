@@ -64,12 +64,18 @@ const generateSummary = async () => {
                 .includes(config.commitPrefixStatusDegraded || "🟨")
                 ? "degraded"
                 : "down";
+        const uptimes = await calculate_uptime_1.getUptimePercentForSite(slug);
+        console.log("Uptimes", uptimes);
         pageStatuses.push({
             name: site.name,
             url: site.url,
             slug,
             status,
-            uptime: await calculate_uptime_1.getUptimePercentForSite(slug),
+            uptime: uptimes.all,
+            uptimeDay: uptimes.day,
+            uptimeWeek: uptimes.week,
+            uptimeMonth: uptimes.month,
+            uptimeYear: uptimes.year,
             time: Math.floor(averageTime),
         });
         if (status === "down")
