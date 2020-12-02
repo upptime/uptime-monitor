@@ -1,3 +1,9 @@
+## [v1.22.5](https://github.com/upptime/uptime-monitor/compare/v1.22.4...v1.22.5) (2020-12-02)
+
+### 🐛 Bug fixes
+
+- [`d73f2bc`](https://github.com/upptime/uptime-monitor/commit/d73f2bc)  Fix current status check
+
 ## [v1.22.4](https://github.com/upptime/uptime-monitor/compare/v1.22.3...v1.22.4) (2020-12-02)
 
 ### ♻️ Updates
