@@ -1,3 +1,9 @@
+## [v1.22.2](https://github.com/upptime/uptime-monitor/compare/v1.22.1...v1.22.2) (2020-12-02)
+
+### 🐛 Bug fixes
+
+- [`88e26a6`](https://github.com/upptime/uptime-monitor/commit/88e26a6)  Use overlapping time for downtime
+
 ## [v1.22.1](https://github.com/upptime/uptime-monitor/compare/v1.22.0...v1.22.1) (2020-12-02)
 
 ### ♻️ Updates
