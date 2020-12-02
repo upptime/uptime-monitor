@@ -1,3 +1,9 @@
+## [v1.22.3](https://github.com/upptime/uptime-monitor/compare/v1.22.2...v1.22.3) (2020-12-02)
+
+### ♻️ Updates
+
+- [`436fdf7`](https://github.com/upptime/uptime-monitor/commit/436fdf7)  Use total seconds for max uptime
+
 ## [v1.22.2](https://github.com/upptime/uptime-monitor/compare/v1.22.1...v1.22.2) (2020-12-02)
 
 ### 🐛 Bug fixes
