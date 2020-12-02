@@ -58,11 +58,11 @@ const getResponseTimeForSite = async (slug) => {
             ? "degraded"
             : "down";
     return {
-        day: avg(daySum) || 0,
-        week: avg(weekSum) || 0,
-        month: avg(monthSum) || 0,
-        year: avg(yearSum) || 0,
-        all: avg(allSum) || 0,
+        day: Math.round(avg(daySum) || 0),
+        week: Math.round(avg(weekSum) || 0),
+        month: Math.round(avg(monthSum) || 0),
+        year: Math.round(avg(yearSum) || 0),
+        all: Math.round(avg(allSum) || 0),
         currentStatus,
     };
 };
