@@ -8,6 +8,7 @@ const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const prettier_1 = require("prettier");
+const calculate_response_time_1 = require("./helpers/calculate-response-time");
 const calculate_uptime_1 = require("./helpers/calculate-uptime");
 const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
@@ -32,51 +33,25 @@ const generateSummary = async () => {
     // Loop through each site and add compute the current status
     for await (const site of config.sites) {
         const slug = site.slug || slugify_1.default(site.name);
-        // Get the git history for this site
-        const history = await octokit.repos.listCommits({
-            owner,
-            repo,
-            path: `history/${slug}.yml`,
-            per_page: 100,
-        });
-        if (!history.data.length)
-            continue;
-        // Calculate the average response time by taking data from commits
-        const averageTime = history.data
-            .filter((item) => item.commit.message.includes(" in ") &&
-            Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()) !== 0 &&
-            !isNaN(Number(item.commit.message.split(" in ")[1].split("ms")[0].trim())))
-            /**
-             * Parse the commit message
-             * @example "🟥 Broken Site is down (500 in 321 ms) [skip ci] [upptime]"
-             * @returns 321
-             */
-            .map((item) => Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()))
-            .filter((item) => item && !isNaN(item))
-            .reduce((p, c) => p + c, 0) / history.data.length;
-        // Current status is "up", "down", or "degraded" based on the emoji prefix of the commit message
-        const status = history.data[0].commit.message
-            .split(" ")[0]
-            .includes(config.commitPrefixStatusUp || "🟩")
-            ? "up"
-            : history.data[0].commit.message
-                .split(" ")[0]
-                .includes(config.commitPrefixStatusDegraded || "🟨")
-                ? "degraded"
-                : "down";
         const uptimes = await calculate_uptime_1.getUptimePercentForSite(slug);
         console.log("Uptimes", uptimes);
+        const responseTimes = await calculate_response_time_1.getResponseTimeForSite(slug);
+        console.log("Response times", responseTimes);
         pageStatuses.push({
             name: site.name,
             url: site.url,
             slug,
-            status,
+            status: responseTimes.currentStatus,
             uptime: uptimes.all,
             uptimeDay: uptimes.day,
             uptimeWeek: uptimes.week,
             uptimeMonth: uptimes.month,
             uptimeYear: uptimes.year,
-            time: Math.floor(averageTime),
+            time: Math.floor(responseTimes.all),
+            timeDay: responseTimes.day,
+            timeWeek: responseTimes.week,
+            timeMonth: responseTimes.month,
+            timeYear: responseTimes.year,
         });
         if (status === "down")
             numberOfDown++;

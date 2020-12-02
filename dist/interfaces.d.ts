@@ -101,6 +101,10 @@ export interface SiteStatus {
     status: "up" | "down" | "degraded";
     /** Current response time (ms) */
     time: number;
+    timeDay: number;
+    timeWeek: number;
+    timeMonth: number;
+    timeYear: number;
     /** Total uptime percentage */
     uptime: string;
     uptimeDay: string;
