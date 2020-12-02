@@ -48,6 +48,7 @@
     "@sindresorhus/slugify": "^1.1.0",
     "@upptime/status-page": "^1.0.2",
     "axios": "^0.21.0",
+    "dayjs": "^1.9.6",
     "fs-extra": "^9.0.1",
     "js-yaml": "^3.14.0",
     "node-libcurl": "^2.2.0",
