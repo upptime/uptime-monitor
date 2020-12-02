@@ -64,10 +64,10 @@ export const getResponseTimeForSite = async (
 
   return {
     day: parseInt(Number(daySum.reduce((p, c) => p + c, 0) / daySum.length).toFixed(0)),
-    week: parseInt(Number(weekSum.reduce((p, c) => p + c, 0) / daySum.length).toFixed(0)),
-    month: parseInt(Number(monthSum.reduce((p, c) => p + c, 0) / daySum.length).toFixed(0)),
-    year: parseInt(Number(yearSum.reduce((p, c) => p + c, 0) / daySum.length).toFixed(0)),
-    all: parseInt(Number(allSum.reduce((p, c) => p + c, 0) / daySum.length).toFixed(0)),
+    week: parseInt(Number(weekSum.reduce((p, c) => p + c, 0) / weekSum.length).toFixed(0)),
+    month: parseInt(Number(monthSum.reduce((p, c) => p + c, 0) / monthSum.length).toFixed(0)),
+    year: parseInt(Number(yearSum.reduce((p, c) => p + c, 0) / yearSum.length).toFixed(0)),
+    all: parseInt(Number(allSum.reduce((p, c) => p + c, 0) / allSum.length).toFixed(0)),
     currentStatus,
   };
 };
