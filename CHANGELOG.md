@@ -1,3 +1,9 @@
+## [v1.22.6](https://github.com/upptime/uptime-monitor/compare/v1.22.5...v1.22.6) (2020-12-02)
+
+### 🐛 Bug fixes
+
+- [`5f37b52`](https://github.com/upptime/uptime-monitor/commit/5f37b52)  Fix calculating average
+
 ## [v1.22.5](https://github.com/upptime/uptime-monitor/compare/v1.22.4...v1.22.5) (2020-12-02)
 
 ### 🐛 Bug fixes
