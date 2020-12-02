@@ -85,10 +85,10 @@ const getUptimePercentForSite = async (slug) => {
     const downtimeSeconds = await getDowntimeSecondsForSite(slug);
     // Return a percentage string
     return {
-        day: `${Math.max(0, 100 - (downtimeSeconds.day / 86400) * 100).toFixed(2)}%`,
-        week: `${Math.max(0, 100 - (downtimeSeconds.week / 604800) * 100).toFixed(2)}%`,
-        month: `${Math.max(0, 100 - (downtimeSeconds.month / 2628288) * 100).toFixed(2)}%`,
-        year: `${Math.max(0, 100 - (downtimeSeconds.year / 31536000) * 100).toFixed(2)}%`,
+        day: `${Math.max(0, 100 - (downtimeSeconds.day / Math.min(86400, totalSeconds)) * 100).toFixed(2)}%`,
+        week: `${Math.max(0, 100 - (downtimeSeconds.week / Math.min(604800, totalSeconds)) * 100).toFixed(2)}%`,
+        month: `${Math.max(0, 100 - (downtimeSeconds.month / Math.min(2628288, totalSeconds)) * 100).toFixed(2)}%`,
+        year: `${Math.max(0, 100 - (downtimeSeconds.year / Math.min(31536000, totalSeconds)) * 100).toFixed(2)}%`,
         all: `${Math.max(0, 100 - (downtimeSeconds.all / totalSeconds) * 100).toFixed(2)}%`,
     };
 };
