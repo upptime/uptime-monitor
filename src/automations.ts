@@ -56,4 +56,3 @@ const createAutomatedIssue = async () => {
     }
   }
 };
-createAutomatedIssue();
