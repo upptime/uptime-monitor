@@ -125,7 +125,7 @@ ${pageStatuses
         page.timeYear
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
         page.slug
-      }%2Fresponse-time-day.json"></a></details> | <details><summary><a href="${website}/history/${
+      }%2Fresponse-time-year.json"></a></details> | <details><summary><a href="${website}/history/${
         page.slug
       }"><img alt="${i18n.uptime || "Uptime"} ${
         page.uptime
@@ -155,7 +155,7 @@ ${pageStatuses
         page.uptimeYear
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
         page.slug
-      }%2Fuptime-day.json"></a></details>`
+      }%2Fuptime-year.json"></a></details>`
   )
   .join("\n")}
 ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
