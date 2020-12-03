@@ -1,3 +1,20 @@
+## v1.22.11 (2020-12-03)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.22.11) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.22.10...v1.22.11) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.22.11) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.22.11.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.22.11.tar.gz))
+
+### ♻️ Updates
+
+- [`a703781`](https://github.com/upptime/uptime-monitor/commit/a703781)  Get all commits for response time
+- [`62a1aed`](https://github.com/upptime/uptime-monitor/commit/62a1aed)  Show version in update commit
+
+### 🐛 Bug fixes
+
+- [`f441af0`](https://github.com/upptime/uptime-monitor/commit/f441af0)  Fix uptime/response time 1 year badge
+
+### ⬆️ Dependency updates
+
+- [`5b4c339`](https://github.com/upptime/uptime-monitor/commit/5b4c339)  Bump @koj/config from 1.2.9 to 1.2.11
+
 ## [v1.22.10](https://github.com/upptime/uptime-monitor/compare/v1.22.9...v1.22.10) (2020-12-02)
 
 ### 🐛 Bug fixes
