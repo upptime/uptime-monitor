@@ -2,9 +2,35 @@ import dayjs from "dayjs";
 import { Downtimes } from "../interfaces";
 import { getConfig } from "./config";
 import { getOctokit } from "./github";
+import { Octokit } from "@octokit/rest";
 
 /** Calculate the average of some numbers */
 const avg = (array: number[]) => (array.length ? array.reduce((a, b) => a + b) / array.length : 0);
+
+/** Get commits for a history file */
+const getHistoryItems = async (
+  octokit: Octokit,
+  owner: string,
+  repo: string,
+  slug: string,
+  page: number
+) => {
+  console.log("Fetching history - page", 1);
+  const results = await octokit.repos.listCommits({
+    owner,
+    repo,
+    path: `history/${slug}.yml`,
+    per_page: 100,
+    page,
+  });
+  let data = results.data;
+  if (
+    data.length === 100 &&
+    !dayjs(data[0].commit.author.date).isBefore(dayjs().subtract(1, "year"))
+  )
+    data.push(...(await getHistoryItems(octokit, owner, repo, slug, page + 1)));
+  return data;
+};
 
 export const getResponseTimeForSite = async (
   slug: string
@@ -13,13 +39,8 @@ export const getResponseTimeForSite = async (
   const octokit = await getOctokit();
   const config = await getConfig();
 
-  const history = await octokit.repos.listCommits({
-    owner,
-    repo,
-    path: `history/${slug}.yml`,
-    per_page: 100,
-  });
-  const responseTimes: [string, number][] = history.data
+  const data = await getHistoryItems(octokit, owner, repo, slug, 1);
+  const responseTimes: [string, number][] = data
     .filter(
       (item) =>
         item.commit.message.includes(" in ") &&
@@ -56,13 +77,11 @@ export const getResponseTimeForSite = async (
   console.log("weekSum", weekSum, avg(weekSum));
 
   // Current status is "up", "down", or "degraded" based on the emoji prefix of the commit message
-  const currentStatus: "up" | "down" | "degraded" = history.data[0].commit.message
+  const currentStatus: "up" | "down" | "degraded" = data[0].commit.message
     .split(" ")[0]
     .includes(config.commitPrefixStatusUp || "🟩")
     ? "up"
-    : history.data[0].commit.message
-        .split(" ")[0]
-        .includes(config.commitPrefixStatusDegraded || "🟨")
+    : data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusDegraded || "🟨")
     ? "degraded"
     : "down";
 
