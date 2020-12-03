@@ -11,7 +11,7 @@ import {
 } from "./constants";
 
 let release: string | undefined = undefined;
-const getUptimeMonitorVersion = async () => {
+export const getUptimeMonitorVersion = async () => {
   if (release) return release;
   const octokit = await getOctokit();
   const releases = await octokit.repos.listReleases({

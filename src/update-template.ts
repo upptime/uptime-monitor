@@ -12,6 +12,7 @@ import {
   updatesCiWorkflow,
   updateTemplateCiWorkflow,
   uptimeCiWorkflow,
+  getUptimeMonitorVersion,
 } from "./helpers/workflows";
 
 export const updateTemplate = async () => {
@@ -71,7 +72,7 @@ export const updateTemplate = async () => {
       await remove(join(".", "history", file));
   console.log("Removed old data from history");
 
-  commit(":arrow_up: Update @upptime to latest");
+  commit(`:arrow_up: Update @upptime to ${await getUptimeMonitorVersion()}`);
   push();
   console.log("All done!");
 };
