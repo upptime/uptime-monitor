@@ -56,7 +56,7 @@ const updateTemplate = async () => {
         if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".yml", "")))
             await fs_extra_1.remove(path_1.join(".", "history", file));
     console.log("Removed old data from history");
-    git_1.commit(":arrow_up: Update @upptime to latest");
+    git_1.commit(`:arrow_up: Update @upptime to ${await workflows_1.getUptimeMonitorVersion()}`);
     git_1.push();
     console.log("All done!");
 };

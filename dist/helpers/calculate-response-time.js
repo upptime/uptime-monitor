@@ -9,17 +9,28 @@ const config_1 = require("./config");
 const github_1 = require("./github");
 /** Calculate the average of some numbers */
 const avg = (array) => (array.length ? array.reduce((a, b) => a + b) / array.length : 0);
-const getResponseTimeForSite = async (slug) => {
-    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
-    const octokit = await github_1.getOctokit();
-    const config = await config_1.getConfig();
-    const history = await octokit.repos.listCommits({
+/** Get commits for a history file */
+const getHistoryItems = async (octokit, owner, repo, slug, page) => {
+    console.log("Fetching history - page", 1);
+    const results = await octokit.repos.listCommits({
         owner,
         repo,
         path: `history/${slug}.yml`,
         per_page: 100,
+        page,
     });
-    const responseTimes = history.data
+    let data = results.data;
+    if (data.length === 100 &&
+        !dayjs_1.default(data[0].commit.author.date).isBefore(dayjs_1.default().subtract(1, "year")))
+        data.push(...(await getHistoryItems(octokit, owner, repo, slug, page + 1)));
+    return data;
+};
+const getResponseTimeForSite = async (slug) => {
+    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const octokit = await github_1.getOctokit();
+    const config = await config_1.getConfig();
+    const data = await getHistoryItems(octokit, owner, repo, slug, 1);
+    const responseTimes = data
         .filter((item) => item.commit.message.includes(" in ") &&
         Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()) !== 0 &&
         !isNaN(Number(item.commit.message.split(" in ")[1].split("ms")[0].trim())))
@@ -48,13 +59,11 @@ const getResponseTimeForSite = async (slug) => {
     const allSum = responseTimes.map((i) => i[1]);
     console.log("weekSum", weekSum, avg(weekSum));
     // Current status is "up", "down", or "degraded" based on the emoji prefix of the commit message
-    const currentStatus = history.data[0].commit.message
+    const currentStatus = data[0].commit.message
         .split(" ")[0]
         .includes(config.commitPrefixStatusUp || "🟩")
         ? "up"
-        : history.data[0].commit.message
-            .split(" ")[0]
-            .includes(config.commitPrefixStatusDegraded || "🟨")
+        : data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusDegraded || "🟨")
             ? "degraded"
             : "down";
     return {

@@ -1,3 +1,4 @@
+export declare const getUptimeMonitorVersion: () => Promise<string>;
 export declare const graphsCiWorkflow: () => Promise<string>;
 export declare const responseTimeCiWorkflow: () => Promise<string>;
 export declare const setupCiWorkflow: () => Promise<string>;
