@@ -37,10 +37,15 @@ const generateSummary = async () => {
         console.log("Uptimes", uptimes);
         const responseTimes = await calculate_response_time_1.getResponseTimeForSite(slug);
         console.log("Response times", responseTimes);
+        let fallbackIcon = "";
+        try {
+            fallbackIcon = `https://favicons.githubusercontent.com/fallback-icon`;
+        }
+        catch (error) { }
         pageStatuses.push({
             name: site.name,
             url: site.url,
-            icon: site.icon || `https://favicons.githubusercontent.com/${new URL(site.url).hostname}`,
+            icon: site.icon || fallbackIcon,
             slug,
             status: responseTimes.currentStatus,
             uptime: uptimes.all,
