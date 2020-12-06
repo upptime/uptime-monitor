@@ -11,6 +11,7 @@ export interface UpptimeConfig {
     headers?: string[];
     slug?: string;
     data?: string;
+    icon?: string;
     maxResponseTime?: number;
     __dangerous__insecure?: boolean;
     __dangerous__disable_verify_peer?: boolean;
@@ -101,6 +102,8 @@ export interface SiteStatus {
   slug: string;
   /** Full URL of the site */
   url: string;
+  /** Favicon URL of the site */
+  icon: string;
   /** Current status, up or down */
   status: "up" | "down" | "degraded";
   /** Current response time (ms) */

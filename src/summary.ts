@@ -9,6 +9,7 @@ import { commit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
 import { SiteStatus } from "./interfaces";
+import { parse } from "url";
 
 export const generateSummary = async () => {
   if (!(await shouldContinue())) return;
@@ -48,6 +49,7 @@ export const generateSummary = async () => {
     pageStatuses.push({
       name: site.name,
       url: site.url,
+      icon: site.icon || `https://favicons.githubusercontent.com/${new URL(site.url)}`,
       slug,
       status: responseTimes.currentStatus,
       uptime: uptimes.all,
@@ -83,7 +85,9 @@ export const generateSummary = async () => {
 ${pageStatuses
   .map(
     (page) =>
-      `| ${page.url.includes("$") ? page.name : `[${page.name}](${page.url})`} | ${
+      `| <img alt="" src="${parse(page.icon).hostname}" height="13"> ${
+        page.url.includes("$") ? page.name : `[${page.name}](${page.url})`
+      } | ${
         page.status === "up"
           ? i18n.up || "🟩 Up"
           : page.status === "degraded"
