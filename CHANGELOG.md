@@ -1,3 +1,11 @@
+## v1.23.5 (2020-12-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.5) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.4...v1.23.5) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.5) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.5.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.5.tar.gz))
+
+### ♻️ Updates
+
+- [`eacb086`](https://github.com/upptime/uptime-monitor/commit/eacb086)  Allow environment variables in JSON body data
+
 ## v1.23.4 (2020-12-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.3...v1.23.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.4.tar.gz))
