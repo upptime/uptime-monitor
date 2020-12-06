@@ -59,6 +59,7 @@ const generateSummary = async () => {
             timeWeek: responseTimes.week,
             timeMonth: responseTimes.month,
             timeYear: responseTimes.year,
+            dailyMinutesDown: uptimes.dailyMinutesDown,
         });
         if (responseTimes.currentStatus === "down")
             numberOfDown++;

@@ -22,6 +22,7 @@ const getDowntimeSecondsForSite = async (slug) => {
     let month = 0;
     let year = 0;
     let all = 0;
+    const dailyMinutesDown = {};
     // Get all the issues for this website
     const { data } = await octokit.issues.listForRepo({
         owner,
@@ -42,6 +43,18 @@ const getDowntimeSecondsForSite = async (slug) => {
             end: new Date(issue.closed_at || new Date()).getTime(),
         };
         const end = dayjs_1.default().toDate().getTime();
+        [...Array(365).keys()].forEach((day) => {
+            const date = dayjs_1.default().subtract(day, "day");
+            const overlap = overlap_1.checkOverlap(issueOverlap, {
+                start: date.toDate().getTime(),
+                end,
+            });
+            if (overlap) {
+                dailyMinutesDown[date.format("YYYY-MM-DD")] =
+                    dailyMinutesDown[date.format("YYYY-MM-DD")] || 0;
+                dailyMinutesDown[date.format("YYYY-MM-DD")] += overlap;
+            }
+        });
         day += overlap_1.checkOverlap(issueOverlap, {
             start: dayjs_1.default().subtract(1, "day").toDate().getTime(),
             end,
@@ -65,6 +78,7 @@ const getDowntimeSecondsForSite = async (slug) => {
         month: Math.round(month / 1000),
         year: Math.round(year / 1000),
         all: Math.round(all / 1000),
+        dailyMinutesDown,
     };
 };
 /**
@@ -90,6 +104,7 @@ const getUptimePercentForSite = async (slug) => {
         month: `${Math.max(0, 100 - (downtimeSeconds.month / Math.min(2628288, totalSeconds)) * 100).toFixed(2)}%`,
         year: `${Math.max(0, 100 - (downtimeSeconds.year / Math.min(31536000, totalSeconds)) * 100).toFixed(2)}%`,
         all: `${Math.max(0, 100 - (downtimeSeconds.all / totalSeconds) * 100).toFixed(2)}%`,
+        dailyMinutesDown: downtimeSeconds.dailyMinutesDown,
     };
 };
 exports.getUptimePercentForSite = getUptimePercentForSite;
