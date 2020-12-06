@@ -304,14 +304,6 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     (config.commitMessages || {}).commitAuthorEmail
   );
 
-  await writeFile(join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
-  commit(
-    (config.commitMessages || {}).summaryJson ||
-      ":card_file_box: Update status summary [skip ci] [upptime]",
-    (config.commitMessages || {}).commitAuthorName,
-    (config.commitMessages || {}).commitAuthorEmail
-  );
-
   // If there are any old workflows left, fix them
   const workflows = (await readdir(join(".", ".github", "workflows"))).filter((i) =>
     i.endsWith(".yml")
@@ -324,6 +316,14 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
       await writeFile(join(".", ".github", "workflows", workflow), newContent);
     }
   }
+
+  await writeFile(join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
+  commit(
+    (config.commitMessages || {}).summaryJson ||
+      ":card_file_box: Update status summary [skip ci] [upptime]",
+    (config.commitMessages || {}).commitAuthorName,
+    (config.commitMessages || {}).commitAuthorEmail
+  );
 
   push();
 
