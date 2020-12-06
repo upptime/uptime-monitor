@@ -14,6 +14,7 @@ const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
+const url_1 = require("url");
 const generateSummary = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;
@@ -39,7 +40,7 @@ const generateSummary = async () => {
         console.log("Response times", responseTimes);
         let fallbackIcon = "";
         try {
-            fallbackIcon = `https://favicons.githubusercontent.com/fallback-icon`;
+            fallbackIcon = `https://favicons.githubusercontent.com/${url_1.parse(site.url).hostname}`;
         }
         catch (error) { }
         pageStatuses.push({
