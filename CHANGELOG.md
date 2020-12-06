@@ -1,3 +1,12 @@
+## v1.23.1 (2020-12-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.0...v1.23.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`d83bacf`](https://github.com/upptime/uptime-monitor/commit/d83bacf)  Fix icon hostname in fallback
+- [`822c53e`](https://github.com/upptime/uptime-monitor/commit/822c53e)  Move updating workflow before commit
+
 ## v1.23.0 (2020-12-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.22.11...v1.23.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.0.tar.gz))
