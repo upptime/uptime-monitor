@@ -41,21 +41,21 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
       start: new Date(issue.created_at).getTime(),
       end: new Date(issue.closed_at || new Date()).getTime(),
     };
-    const end = dayjs().toDate().getTime();
 
     [...Array(365).keys()].forEach((day) => {
       const date = dayjs().subtract(day, "day");
       const overlap = checkOverlap(issueOverlap, {
-        start: date.toDate().getTime(),
-        end,
+        start: date.startOf("day").toDate().getTime(),
+        end: date.endOf("day").toDate().getTime(),
       });
       if (overlap) {
         dailyMinutesDown[date.format("YYYY-MM-DD")] =
           dailyMinutesDown[date.format("YYYY-MM-DD")] || 0;
-        dailyMinutesDown[date.format("YYYY-MM-DD")] += overlap;
+        dailyMinutesDown[date.format("YYYY-MM-DD")] += Math.round(overlap / 1000);
       }
     });
 
+    const end = dayjs().toDate().getTime();
     day += checkOverlap(issueOverlap, {
       start: dayjs().subtract(1, "day").toDate().getTime(),
       end,
