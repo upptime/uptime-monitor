@@ -49,7 +49,7 @@ export const generateSummary = async () => {
     pageStatuses.push({
       name: site.name,
       url: site.url,
-      icon: site.icon || `https://favicons.githubusercontent.com/${new URL(site.url)}`,
+      icon: site.icon || `https://favicons.githubusercontent.com/${new URL(site.url).hostname}`,
       slug,
       status: responseTimes.currentStatus,
       uptime: uptimes.all,
@@ -85,7 +85,7 @@ export const generateSummary = async () => {
 ${pageStatuses
   .map(
     (page) =>
-      `| <img alt="" src="${parse(page.icon).hostname}" height="13"> ${
+      `| <img alt="" src="${page.icon}" height="13"> ${
         page.url.includes("$") ? page.name : `[${page.name}](${page.url})`
       } | ${
         page.status === "up"
