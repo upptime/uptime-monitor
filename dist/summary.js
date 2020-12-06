@@ -14,6 +14,7 @@ const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
+const url_1 = require("url");
 const generateSummary = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;
@@ -40,6 +41,7 @@ const generateSummary = async () => {
         pageStatuses.push({
             name: site.name,
             url: site.url,
+            icon: site.icon || `https://favicons.githubusercontent.com/${new URL(site.url)}`,
             slug,
             status: responseTimes.currentStatus,
             uptime: uptimes.all,
@@ -70,11 +72,11 @@ const generateSummary = async () => {
 | ${i18n.url || "URL"} | ${i18n.status || "Status"} | ${i18n.history || "History"} | ${i18n.responseTime || "Response Time"} | ${i18n.uptime || "Uptime"} |
 | --- | ------ | ------- | ------------- | ------ |
 ${pageStatuses
-            .map((page) => `| ${page.url.includes("$") ? page.name : `[${page.name}](${page.url})`} | ${page.status === "up"
+            .map((page) => `| <img alt="" src="${url_1.parse(page.icon).hostname}" height="13"> ${page.url.includes("$") ? page.name : `[${page.name}](${page.url})`} | ${page.status === "up"
             ? i18n.up || "🟩 Up"
             : page.status === "degraded"
                 ? i18n.degraded || "🟨 Degraded"
-                : i18n.down || "🟥 Down"} | [${page.slug}.yml](https://github.com/${owner}/${repo}/commits/master/history/${page.slug}.yml) | <details><summary><img alt="${i18n.responseTimeGraphAlt || "Response time graph"}" src="./graphs/${page.slug}.png" height="20"> ${page.time}${i18n.ms || "ms"}</summary><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTime || "Response time"} ${page.time}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeDay || "24-hour response time"} ${page.timeDay}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-day.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeWeek || "7-day response time"} ${page.timeWeek}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-week.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeMonth || "30-day response time"} ${page.timeMonth}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-month.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeYear || "1-year response time"} ${page.timeYear}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-year.json"></a></details> | <details><summary><a href="${website}/history/${page.slug}"><img alt="${i18n.uptime || "Uptime"} ${page.uptime}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime.json"></a></summary><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeDay || "24-hour uptime"} ${page.uptimeDay}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-day.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeWeek || "7-day uptime"} ${page.uptimeWeek}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-week.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeMonth || "30-day uptime"} ${page.uptimeMonth}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-month.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeYear || "1-year uptime"} ${page.uptimeYear}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-year.json"></a></details>`)
+                : i18n.down || "🟥 Down"} | [${page.slug}.yml](https://github.com/${owner}/${repo}/commits/master/history/${page.slug}.yml) | <details><summary><img alt="${i18n.responseTimeGraphAlt || "Response time graph"}" src="./graphs/${page.slug}/response-time-week.png" height="20"> ${page.timeWeek}${i18n.ms || "ms"}</summary><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTime || "Response time"} ${page.time}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeDay || "24-hour response time"} ${page.timeDay}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-day.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeWeek || "7-day response time"} ${page.timeWeek}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-week.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeMonth || "30-day response time"} ${page.timeMonth}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-month.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.responseTimeYear || "1-year response time"} ${page.timeYear}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fresponse-time-year.json"></a></details> | <details><summary><a href="${website}/history/${page.slug}">${page.uptimeWeek}</a></summary><a href="${website}/history/${page.slug}"><img alt="${i18n.uptime || "All-time uptime"} ${page.uptime}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeDay || "24-hour uptime"} ${page.uptimeDay}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-day.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeWeek || "7-day uptime"} ${page.uptimeWeek}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-week.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeMonth || "30-day uptime"} ${page.uptimeMonth}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-month.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${i18n.uptimeYear || "1-year uptime"} ${page.uptimeYear}" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${page.slug}%2Fuptime-year.json"></a></details>`)
             .join("\n")}
 ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     }
@@ -183,6 +185,16 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     await fs_extra_1.writeFile(path_1.join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
     git_1.commit((config.commitMessages || {}).summaryJson ||
         ":card_file_box: Update status summary [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+    // If there are any old workflows left, fix them
+    const workflows = (await fs_extra_1.readdir(path_1.join(".", ".github", "workflows"))).filter((i) => i.endsWith(".yml"));
+    for await (const workflow of workflows) {
+        const content = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", workflow), "utf8");
+        const newContent = content.replace("actions/setup-node@v2.1.1", "actions/setup-node@v1.4.4");
+        if (content !== newContent) {
+            console.log("Updating workflow", workflow);
+            await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", workflow), newContent);
+        }
+    }
     git_1.push();
     if (!config.skipDeleteIssues) {
         // Find all the opened issues that shouldn't have opened
