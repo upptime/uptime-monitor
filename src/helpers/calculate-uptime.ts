@@ -123,5 +123,6 @@ export const getUptimePercentForSite = async (slug: string): Promise<DownPecenta
       100 - (downtimeSeconds.year / Math.min(31536000, totalSeconds)) * 100
     ).toFixed(2)}%`,
     all: `${Math.max(0, 100 - (downtimeSeconds.all / totalSeconds) * 100).toFixed(2)}%`,
+    dailyMinutesDown: downtimeSeconds.dailyMinutesDown,
   };
 };

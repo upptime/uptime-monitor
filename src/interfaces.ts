@@ -136,4 +136,5 @@ export interface DownPecentages {
   month: string;
   year: string;
   all: string;
+  dailyMinutesDown: Record<string, number>;
 }

@@ -34,7 +34,7 @@ const getHistoryItems = async (
 
 export const getResponseTimeForSite = async (
   slug: string
-): Promise<Downtimes & { currentStatus: "up" | "down" | "degraded" }> => {
+): Promise<Omit<Downtimes & { currentStatus: "up" | "down" | "degraded" }, "dailyMinutesDown">> => {
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
   const octokit = await getOctokit();
   const config = await getConfig();
