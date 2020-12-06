@@ -48,7 +48,7 @@ export const generateSummary = async () => {
 
     let fallbackIcon = "";
     try {
-      fallbackIcon = `https://favicons.githubusercontent.com/fallback-icon`;
+      fallbackIcon = `https://favicons.githubusercontent.com/${parse(site.url).hostname}`;
     } catch (error) {}
 
     pageStatuses.push({
