@@ -97,7 +97,7 @@ ${pageStatuses
         page.slug
       }.yml) | <details><summary><img alt="${
         i18n.responseTimeGraphAlt || "Response time graph"
-      }" src="./graphs/${page.slug}.png" height="20"> ${page.time}${
+      }" src="./graphs/${page.slug}/response-time-week.png" height="20"> ${page.timeWeek}${
         i18n.ms || "ms"
       }</summary><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.responseTime || "Response time"
@@ -131,11 +131,13 @@ ${pageStatuses
         page.slug
       }%2Fresponse-time-year.json"></a></details> | <details><summary><a href="${website}/history/${
         page.slug
-      }"><img alt="${i18n.uptime || "Uptime"} ${
+      }">${page.uptimeWeek}</a></summary><a href="${website}/history/${page.slug}"><img alt="${
+        i18n.uptime || "All-time uptime"
+      } ${
         page.uptime
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
         page.slug
-      }%2Fuptime.json"></a></summary><a href="${website}/history/${page.slug}"><img alt="${
+      }%2Fuptime.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.uptimeDay || "24-hour uptime"
       } ${
         page.uptimeDay
