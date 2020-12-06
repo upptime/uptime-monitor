@@ -1,3 +1,11 @@
+## v1.23.3 (2020-12-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.2...v1.23.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.3.tar.gz))
+
+### ♻️ Updates
+
+- [`aca5966`](https://github.com/upptime/uptime-monitor/commit/aca5966)  Use hostname icon as fallback
+
 ## v1.23.2 (2020-12-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.1...v1.23.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.2.tar.gz))
