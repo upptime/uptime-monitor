@@ -16,6 +16,14 @@ const generateGraphs = async () => {
     const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     shelljs_1.exec("npx @upptime/graphs");
     shelljs_1.exec("npx imagemin-cli graphs/* --out-dir=graphs");
+    try {
+        await fs_extra_1.remove(path_1.join(".", "graphs", "response-time.png"));
+        await fs_extra_1.remove(path_1.join(".", "graphs", "response-time-day.png"));
+        await fs_extra_1.remove(path_1.join(".", "graphs", "response-time-week.png"));
+        await fs_extra_1.remove(path_1.join(".", "graphs", "response-time-month.png"));
+        await fs_extra_1.remove(path_1.join(".", "graphs", "response-time-year.png"));
+    }
+    catch (error) { }
     await temp_1.tempFixes();
     git_1.commit((config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     git_1.push();
