@@ -1,3 +1,16 @@
+## v1.23.0 (2020-12-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.22.11...v1.23.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.0.tar.gz))
+
+### ✨ New features
+
+- [`dea203b`](https://github.com/upptime/uptime-monitor/commit/dea203b)  Add support for custom icons (fixed #105)
+(Issues: [`#105`](https://github.com/upptime/uptime-monitor/issues/105))- [`23dc630`](https://github.com/upptime/uptime-monitor/commit/23dc630)  Update old actions/setup-node workflows
+
+### ♻️ Updates
+
+- [`2001c72`](https://github.com/upptime/uptime-monitor/commit/2001c72)  Show week response time  graphs
+
 ## v1.22.11 (2020-12-03)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.22.11) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.22.10...v1.22.11) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.22.11) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.22.11.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.22.11.tar.gz))
