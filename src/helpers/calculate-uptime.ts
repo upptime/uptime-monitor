@@ -51,7 +51,7 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
       if (overlap) {
         dailyMinutesDown[date.format("YYYY-MM-DD")] =
           dailyMinutesDown[date.format("YYYY-MM-DD")] || 0;
-        dailyMinutesDown[date.format("YYYY-MM-DD")] += Math.round(overlap / 1000);
+        dailyMinutesDown[date.format("YYYY-MM-DD")] += Math.round(overlap / 60000);
       }
     });
 
