@@ -18,6 +18,7 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
   let month = 0;
   let year = 0;
   let all = 0;
+  const dailyMinutesDown: Record<string, number> = {};
 
   // Get all the issues for this website
   const { data } = await octokit.issues.listForRepo({
@@ -41,6 +42,19 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
       end: new Date(issue.closed_at || new Date()).getTime(),
     };
     const end = dayjs().toDate().getTime();
+
+    [...Array(365).keys()].forEach((day) => {
+      const date = dayjs().subtract(day, "day");
+      const overlap = checkOverlap(issueOverlap, {
+        start: date.toDate().getTime(),
+        end,
+      });
+      if (overlap) {
+        dailyMinutesDown[date.format("YYYY-MM-DD")] =
+          dailyMinutesDown[date.format("YYYY-MM-DD")] || 0;
+        dailyMinutesDown[date.format("YYYY-MM-DD")] += overlap;
+      }
+    });
 
     day += checkOverlap(issueOverlap, {
       start: dayjs().subtract(1, "day").toDate().getTime(),
@@ -66,6 +80,7 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
     month: Math.round(month / 1000),
     year: Math.round(year / 1000),
     all: Math.round(all / 1000),
+    dailyMinutesDown,
   };
 };
 

@@ -118,6 +118,8 @@ export interface SiteStatus {
   uptimeWeek: string;
   uptimeMonth: string;
   uptimeYear: string;
+  /** Summary for downtimes */
+  dailyMinutesDown: Record<string, number>;
 }
 
 export interface Downtimes {
@@ -126,6 +128,7 @@ export interface Downtimes {
   month: number;
   year: number;
   all: number;
+  dailyMinutesDown: Record<string, number>;
 }
 export interface DownPecentages {
   day: string;

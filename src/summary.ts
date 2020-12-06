@@ -67,6 +67,7 @@ export const generateSummary = async () => {
       timeWeek: responseTimes.week,
       timeMonth: responseTimes.month,
       timeYear: responseTimes.year,
+      dailyMinutesDown: responseTimes.dailyMinutesDown,
     });
     if (responseTimes.currentStatus === "down") numberOfDown++;
     if (responseTimes.currentStatus === "degraded") numberOfDegraded++;
