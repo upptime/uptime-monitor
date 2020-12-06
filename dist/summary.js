@@ -14,7 +14,6 @@ const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
-const url_1 = require("url");
 const generateSummary = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;
@@ -41,7 +40,7 @@ const generateSummary = async () => {
         pageStatuses.push({
             name: site.name,
             url: site.url,
-            icon: site.icon || `https://favicons.githubusercontent.com/${new URL(site.url)}`,
+            icon: site.icon || `https://favicons.githubusercontent.com/${new URL(site.url).hostname}`,
             slug,
             status: responseTimes.currentStatus,
             uptime: uptimes.all,
@@ -72,7 +71,7 @@ const generateSummary = async () => {
 | ${i18n.url || "URL"} | ${i18n.status || "Status"} | ${i18n.history || "History"} | ${i18n.responseTime || "Response Time"} | ${i18n.uptime || "Uptime"} |
 | --- | ------ | ------- | ------------- | ------ |
 ${pageStatuses
-            .map((page) => `| <img alt="" src="${url_1.parse(page.icon).hostname}" height="13"> ${page.url.includes("$") ? page.name : `[${page.name}](${page.url})`} | ${page.status === "up"
+            .map((page) => `| <img alt="" src="${page.icon}" height="13"> ${page.url.includes("$") ? page.name : `[${page.name}](${page.url})`} | ${page.status === "up"
             ? i18n.up || "🟩 Up"
             : page.status === "degraded"
                 ? i18n.degraded || "🟨 Degraded"
@@ -182,9 +181,6 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     await fs_extra_1.writeFile(path_1.join(".", "README.md"), prettier_1.format(readmeContent, { parser: "markdown" }));
     git_1.commit((config.commitMessages || {}).readmeContent ||
         ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
-    await fs_extra_1.writeFile(path_1.join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
-    git_1.commit((config.commitMessages || {}).summaryJson ||
-        ":card_file_box: Update status summary [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     // If there are any old workflows left, fix them
     const workflows = (await fs_extra_1.readdir(path_1.join(".", ".github", "workflows"))).filter((i) => i.endsWith(".yml"));
     for await (const workflow of workflows) {
@@ -195,6 +191,9 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
             await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", workflow), newContent);
         }
     }
+    await fs_extra_1.writeFile(path_1.join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
+    git_1.commit((config.commitMessages || {}).summaryJson ||
+        ":card_file_box: Update status summary [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     git_1.push();
     if (!config.skipDeleteIssues) {
         // Find all the opened issues that shouldn't have opened
