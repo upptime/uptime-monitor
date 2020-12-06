@@ -1,3 +1,11 @@
+## v1.23.2 (2020-12-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.1...v1.23.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`ae1190e`](https://github.com/upptime/uptime-monitor/commit/ae1190e)  Catch fallback icon on secret sites
+
 ## v1.23.1 (2020-12-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.0...v1.23.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.1.tar.gz))
