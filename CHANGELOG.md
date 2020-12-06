@@ -1,3 +1,11 @@
+## v1.23.4 (2020-12-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.3...v1.23.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.4.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`f78b0a6`](https://github.com/upptime/uptime-monitor/commit/f78b0a6)  Force remove response time images
+
 ## v1.23.3 (2020-12-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.2...v1.23.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.3.tar.gz))
