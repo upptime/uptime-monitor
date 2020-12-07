@@ -1,9 +1,9 @@
 ---
-name: "@octokit/types"
-version: 6.0.1
+name: "@octokit/plugin-paginate-rest"
+version: 2.6.2
 type: npm
-summary: Shared TypeScript definitions for Octokit projects
-homepage: https://github.com/octokit/types.ts#readme
+summary: Octokit plugin to paginate REST API endpoint responses
+homepage: https://github.com/octokit/plugin-paginate-rest.js#readme
 license: mit
 licenses:
 - sources: LICENSE

@@ -1,16 +1,17 @@
 ---
-name: "@octokit/core"
-version: 3.2.2
+name: "@octokit/rest"
+version: 18.0.12
 type: npm
-summary: Extendable client for GitHub's REST & GraphQL APIs
-homepage: https://github.com/octokit/core.js#readme
+summary: GitHub REST API client for Node.js
+homepage: https://github.com/octokit/rest.js#readme
 license: mit
 licenses:
 - sources: LICENSE
   text: |
     The MIT License
 
-    Copyright (c) 2019 Octokit contributors
+    Copyright (c) 2012 Cloud9 IDE, Inc. (Mike de Boer)
+    Copyright (c) 2017-2018 Octokit contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal

@@ -1,16 +1,17 @@
 ---
-name: sirv
-version: 1.0.9
+name: "@octokit/request"
+version: 5.4.12
 type: npm
-summary: The optimized & lightweight middleware for serving requests to static assets
-homepage: https://github.com/lukeed/sirv#readme
+summary: Send parameterized requests to GitHub’s APIs with sensible defaults in browsers
+  and Node
+homepage: https://github.com/octokit/request.js#readme
 license: mit
 licenses:
-- sources: license
+- sources: LICENSE
   text: |
-    The MIT License (MIT)
+    The MIT License
 
-    Copyright (c) Luke Edwards <luke.edwards05@gmail.com> (https://lukeed.com)
+    Copyright (c) 2018 Octokit contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +30,6 @@ licenses:
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
-- sources: readme.md
-  text: MIT © [Luke Edwards](https://lukeed.com)
+- sources: README.md
+  text: "[MIT](LICENSE)"
 notices: []
