@@ -29,6 +29,7 @@ export interface UpptimeConfig {
     introTitle?: string;
     introMessage?: string;
     navbar?: { title: string; url: string }[];
+    publish?: boolean;
   };
   skipDescriptionUpdate?: boolean;
   skipTopicsUpdate?: boolean;
