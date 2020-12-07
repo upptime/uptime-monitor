@@ -1,3 +1,12 @@
+## v1.23.8 (2020-12-07)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.8) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.7...v1.23.8) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.8) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.8.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.8.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`f7cd5c6`](https://github.com/upptime/uptime-monitor/commit/f7cd5c6)  Don&#x27;t publish private sites (fixed upptime/upptime#107)
+(Issues: [`upptime/upptime#107`](https://github.com/upptime/upptime/issues/107))
+
 ## v1.23.7 (2020-12-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.7) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.6...v1.23.7) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.7) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.7.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.7.tar.gz))
