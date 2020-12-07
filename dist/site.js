@@ -2,13 +2,29 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateSite = void 0;
 const shelljs_1 = require("shelljs");
+const config_1 = require("./helpers/config");
+const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
 const generateSite = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;
+    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const config = await config_1.getConfig();
+    const octokit = await github_1.getOctokit();
+    const repoDetails = await octokit.repos.get({ owner, repo });
     const siteDir = "site";
     shelljs_1.mkdir(siteDir);
     shelljs_1.cd(siteDir);
+    /**
+     * If this is a private repository, we don't publish a status page
+     * by default, but can be overwritten with `publish: true`
+     */
+    if (repoDetails.data.private && !(config["status-website"] || {}).publish) {
+        shelljs_1.mkdir("-p", "status-page/__sapper__/export");
+        shelljs_1.exec("echo 404 > status-page/__sapper__/export/index.html");
+        shelljs_1.cd("../..");
+        return;
+    }
     shelljs_1.exec("npm init -y");
     shelljs_1.exec("npm i @upptime/status-page");
     shelljs_1.cp("-r", "node_modules/@upptime/status-page/*", ".");

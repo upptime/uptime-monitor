@@ -35,6 +35,7 @@ export interface UpptimeConfig {
             title: string;
             url: string;
         }[];
+        publish?: boolean;
     };
     skipDescriptionUpdate?: boolean;
     skipTopicsUpdate?: boolean;
