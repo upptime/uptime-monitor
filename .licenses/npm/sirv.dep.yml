@@ -1,6 +1,6 @@
 ---
 name: sirv
-version: 1.0.9
+version: 1.0.10
 type: npm
 summary: The optimized & lightweight middleware for serving requests to static assets
 homepage: https://github.com/lukeed/sirv#readme
