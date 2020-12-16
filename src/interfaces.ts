@@ -10,7 +10,7 @@ export interface UpptimeConfig {
     assignees?: string[];
     headers?: string[];
     slug?: string;
-    data?: string;
+    body?: string;
     icon?: string;
     maxResponseTime?: number;
     __dangerous__insecure?: boolean;
