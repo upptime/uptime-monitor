@@ -1,3 +1,29 @@
+## v1.23.9 (2020-12-16)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.9) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.8...v1.23.9) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.9) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.9.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.9.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`51702c9`](https://github.com/upptime/uptime-monitor/commit/51702c9)  Fixed upptime/upptime#102, thanks to Max Berman
+(Issues: [`upptime/upptime#102`](https://github.com/upptime/upptime/issues/102))
+
+### ⬆️ Dependency updates
+
+- [`1e7a1ba`](https://github.com/upptime/uptime-monitor/commit/1e7a1ba)  Bump dayjs from 1.9.6 to 1.9.7
+- [`bcd258c`](https://github.com/upptime/uptime-monitor/commit/bcd258c)  Bump @upptime/status-page from 1.5.7 to 1.7.1
+- [`7f3eacd`](https://github.com/upptime/uptime-monitor/commit/7f3eacd)  Bump js-yaml from 3.14.0 to 3.14.1
+- [`e38f211`](https://github.com/upptime/uptime-monitor/commit/e38f211)  Bump @types/jest from 26.0.16 to 26.0.17
+- [`53a812f`](https://github.com/upptime/uptime-monitor/commit/53a812f)  Bump @upptime/status-page from 1.7.1 to 1.7.2
+- [`447bc66`](https://github.com/upptime/uptime-monitor/commit/447bc66)  Bump @types/jest from 26.0.17 to 26.0.18
+- [`89dd5de`](https://github.com/upptime/uptime-monitor/commit/89dd5de)  Bump @upptime/status-page from 1.7.2 to 1.7.3
+- [`6c54827`](https://github.com/upptime/uptime-monitor/commit/6c54827)  Bump @types/fs-extra from 9.0.4 to 9.0.5
+- [`d877449`](https://github.com/upptime/uptime-monitor/commit/d877449)  Bump actions/setup-node from v2.1.2 to v2.1.3
+- [`d37984c`](https://github.com/upptime/uptime-monitor/commit/d37984c)  Bump @types/jest from 26.0.18 to 26.0.19
+- [`76a0894`](https://github.com/upptime/uptime-monitor/commit/76a0894)  Bump @upptime/status-page from 1.7.3 to 1.7.4
+- [`8274620`](https://github.com/upptime/uptime-monitor/commit/8274620)  Bump nodemailer from 6.4.16 to 6.4.17
+- [`3c3ab55`](https://github.com/upptime/uptime-monitor/commit/3c3ab55)  Bump typescript from 4.1.2 to 4.1.3
+- [`563a7e9`](https://github.com/upptime/uptime-monitor/commit/563a7e9)  Bump stefanzweifel/git-auto-commit-action
+
 ## v1.23.8 (2020-12-07)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.8) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.7...v1.23.8) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.8) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.8.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.8.tar.gz))
