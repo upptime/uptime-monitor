@@ -187,8 +187,14 @@ generator: Upptime <https://github.com/upptime/upptime>
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
-                assignees: [...(config.assignees || []), ...(site.assignees || [])],
                 labels: ["status", slug],
+              });
+              const assignees = [...(config.assignees || []), ...(site.assignees || [])];
+              await octokit.issues.addAssignees({
+                owner,
+                repo,
+                issue_number: newIssue.data.number,
+                assignees,
               });
               await octokit.issues.lock({
                 owner,
