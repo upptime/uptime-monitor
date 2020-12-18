@@ -1,3 +1,16 @@
+## v1.23.10 (2020-12-18)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.10) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.9...v1.23.10) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.10) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.10.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.10.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`1315897`](https://github.com/upptime/uptime-monitor/commit/1315897)  Fix upptime/upptime#125 by adding assignees separately
+(Issues: [`upptime/upptime#125`](https://github.com/upptime/upptime/issues/125))
+
+### ⬆️ Dependency updates
+
+- [`93e44bd`](https://github.com/upptime/uptime-monitor/commit/93e44bd)  Bump actions/setup-node from v2.1.3 to v2.1.4
+
 ## v1.23.9 (2020-12-16)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.9) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.8...v1.23.9) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.9) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.9.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.9.tar.gz))
