@@ -1,3 +1,11 @@
+## v1.23.11 (2020-12-19)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.11) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.10...v1.23.11) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.11) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.11.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.11.tar.gz))
+
+### ♻️ Updates
+
+- [`6fb329a`](https://github.com/upptime/uptime-monitor/commit/6fb329a)  Add repository dispatch events to all workflows
+
 ## v1.23.10 (2020-12-18)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.10) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.9...v1.23.10) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.10) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.10.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.10.tar.gz))
