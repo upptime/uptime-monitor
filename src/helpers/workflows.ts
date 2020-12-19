@@ -169,6 +169,8 @@ name: Static Site CI
 on:
   schedule:
     - cron: "${workflowSchedule.staticSite || STATIC_SITE_CI_SCHEDULE}"
+  repository_dispatch:
+    types: [static_site]
   workflow_dispatch:
 jobs:
   release:
@@ -277,6 +279,8 @@ name: Updates CI
 on:
   schedule:
     - cron: "${workflowSchedule.updates || UPDATES_CI_SCHEDULE}"
+  repository_dispatch:
+    types: [updates]
   workflow_dispatch:
 jobs:
   release:
@@ -305,6 +309,8 @@ name: Uptime CI
 on:
   schedule:
     - cron: "${workflowSchedule.uptime || UPTIME_CI_SCHEDULE}"
+  repository_dispatch:
+    types: [uptime]
   workflow_dispatch:
 jobs:
   release:
