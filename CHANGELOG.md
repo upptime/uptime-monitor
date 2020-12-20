@@ -1,3 +1,12 @@
+## v1.23.12 (2020-12-20)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.12) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.11...v1.23.12) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.12) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.12.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.12.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`72bfce1`](https://github.com/upptime/uptime-monitor/commit/72bfce1)  Fix upptime/upptime#127 by adding max redirects
+(Issues: [`upptime/upptime#127`](https://github.com/upptime/upptime/issues/127))
+
 ## v1.23.11 (2020-12-19)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.11) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.10...v1.23.11) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.11) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.11.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.11.tar.gz))
