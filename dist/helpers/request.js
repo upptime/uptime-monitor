@@ -18,7 +18,7 @@ const curl = (site) => new Promise((resolve) => {
     if (site.__dangerous__insecure || site.__dangerous__disable_verify_host)
         curl.setOpt("SSL_VERIFYHOST", false);
     curl.setOpt("FOLLOWLOCATION", 1);
-    curl.setOpt("MAXREDIRS", 3);
+    curl.setOpt("MAXREDIRS", site.maxRedirects || 3);
     curl.setOpt("USERAGENT", "Koj Bot");
     curl.setOpt("CONNECTTIMEOUT", 10);
     curl.setOpt("TIMEOUT", 30);
