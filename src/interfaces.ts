@@ -13,6 +13,7 @@ export interface UpptimeConfig {
     body?: string;
     icon?: string;
     maxResponseTime?: number;
+    maxRedirects?: number;
     __dangerous__insecure?: boolean;
     __dangerous__disable_verify_peer?: boolean;
     __dangerous__disable_verify_host?: boolean;
