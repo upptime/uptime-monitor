@@ -1,6 +1,6 @@
 ---
 name: follow-redirects
-version: 1.13.0
+version: 1.13.1
 type: npm
 summary: HTTP and HTTPS modules that follow redirects.
 homepage: https://github.com/follow-redirects/follow-redirects
