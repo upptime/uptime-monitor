@@ -8,6 +8,7 @@ import { getConfig } from "./helpers/config";
 import { commit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
+import { removeUrlProtocol } from "./helpers/url";
 import { SiteStatus } from "./interfaces";
 import { parse } from "url";
 
@@ -75,7 +76,7 @@ export const generateSummary = async () => {
 
   let website = `https://${config.owner}.github.io/${config.repo}`;
   if (config["status-website"] && config["status-website"].cname)
-    website = `https://${config["status-website"].cname}`;
+    website = `https://${removeUrlProtocol(config["status-website"].cname)}`;
 
   const i18n = config.i18n || {};
 
