@@ -1,3 +1,17 @@
+## v1.23.13 (2020-12-28)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.13) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.12...v1.23.13) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.13) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.13.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.13.tar.gz))
+
+### ⬆️ Dependency updates
+
+- [`08e80c8`](https://github.com/upptime/uptime-monitor/commit/08e80c8)  Bump vsoch/pull-request-action from 1.0.12 to 1.0.13
+- [`590f419`](https://github.com/upptime/uptime-monitor/commit/590f419)  Bump @upptime/status-page from 1.7.4 to 1.7.5
+- [`83dec99`](https://github.com/upptime/uptime-monitor/commit/83dec99)  Bump axios from 0.21.0 to 0.21.1
+- [`afb418f`](https://github.com/upptime/uptime-monitor/commit/afb418f)  Bump pascalgn/automerge-action from v0.12.0 to v0.13.0
+- [`a14ab00`](https://github.com/upptime/uptime-monitor/commit/a14ab00)  Bump node-notifier from 8.0.0 to 8.0.1
+- [`8dd079a`](https://github.com/upptime/uptime-monitor/commit/8dd079a)  Bump @types/prettier from 2.1.5 to 2.1.6
+- [`203a28f`](https://github.com/upptime/uptime-monitor/commit/203a28f)  Bump @types/fs-extra from 9.0.5 to 9.0.6
+
 ## v1.23.12 (2020-12-20)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.12) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.11...v1.23.12) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.12) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.12.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.12.tar.gz))
