@@ -39,23 +39,38 @@ const updateTemplate = async () => {
     const slugs = config.sites.map((site) => site.slug || slugify_1.default(site.name));
     const filesToKeep = ["LICENSE", "summary.json"];
     // Remove old data from ./api
-    const apiData = await fs_extra_1.readdir(path_1.join(".", "api"));
-    for await (const file of apiData)
-        if (!filesToKeep.includes(file) && !slugs.includes(file))
-            await fs_extra_1.remove(path_1.join(".", "api", file));
-    console.log("Removed old data from api");
+    try {
+        const apiData = await fs_extra_1.readdir(path_1.join(".", "api"));
+        for await (const file of apiData)
+            if (!filesToKeep.includes(file) && !slugs.includes(file))
+                await fs_extra_1.remove(path_1.join(".", "api", file));
+        console.log("Removed old data from api");
+    }
+    catch (error) {
+        console.log(error);
+    }
     // Remove old data from ./graphs
-    const graphsData = await fs_extra_1.readdir(path_1.join(".", "graphs"));
-    for await (const file of graphsData)
-        if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".png", "")))
-            await fs_extra_1.remove(path_1.join(".", "graphs", file));
-    console.log("Removed old data from graphs");
+    try {
+        const graphsData = await fs_extra_1.readdir(path_1.join(".", "graphs"));
+        for await (const file of graphsData)
+            if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".png", "")))
+                await fs_extra_1.remove(path_1.join(".", "graphs", file));
+        console.log("Removed old data from graphs");
+    }
+    catch (error) {
+        console.log(error);
+    }
     // Remove old data from ./history
-    const historyData = await fs_extra_1.readdir(path_1.join(".", "history"));
-    for await (const file of historyData)
-        if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".yml", "")))
-            await fs_extra_1.remove(path_1.join(".", "history", file));
-    console.log("Removed old data from history");
+    try {
+        const historyData = await fs_extra_1.readdir(path_1.join(".", "history"));
+        for await (const file of historyData)
+            if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".yml", "")))
+                await fs_extra_1.remove(path_1.join(".", "history", file));
+        console.log("Removed old data from history");
+    }
+    catch (error) {
+        console.log(error);
+    }
     git_1.commit(`:arrow_up: Update @upptime to ${await workflows_1.getUptimeMonitorVersion()}`);
     git_1.push();
     console.log("All done!");
