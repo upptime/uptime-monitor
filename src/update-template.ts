@@ -53,24 +53,37 @@ export const updateTemplate = async () => {
   const filesToKeep = ["LICENSE", "summary.json"];
 
   // Remove old data from ./api
-  const apiData = await readdir(join(".", "api"));
-  for await (const file of apiData)
-    if (!filesToKeep.includes(file) && !slugs.includes(file)) await remove(join(".", "api", file));
-  console.log("Removed old data from api");
+  try {
+    const apiData = await readdir(join(".", "api"));
+    for await (const file of apiData)
+      if (!filesToKeep.includes(file) && !slugs.includes(file))
+        await remove(join(".", "api", file));
+    console.log("Removed old data from api");
+  } catch (error) {
+    console.log(error);
+  }
 
   // Remove old data from ./graphs
-  const graphsData = await readdir(join(".", "graphs"));
-  for await (const file of graphsData)
-    if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".png", "")))
-      await remove(join(".", "graphs", file));
-  console.log("Removed old data from graphs");
+  try {
+    const graphsData = await readdir(join(".", "graphs"));
+    for await (const file of graphsData)
+      if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".png", "")))
+        await remove(join(".", "graphs", file));
+    console.log("Removed old data from graphs");
+  } catch (error) {
+    console.log(error);
+  }
 
   // Remove old data from ./history
-  const historyData = await readdir(join(".", "history"));
-  for await (const file of historyData)
-    if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".yml", "")))
-      await remove(join(".", "history", file));
-  console.log("Removed old data from history");
+  try {
+    const historyData = await readdir(join(".", "history"));
+    for await (const file of historyData)
+      if (!filesToKeep.includes(file) && !slugs.includes(file.replace(".yml", "")))
+        await remove(join(".", "history", file));
+    console.log("Removed old data from history");
+  } catch (error) {
+    console.log(error);
+  }
 
   commit(`:arrow_up: Update @upptime to ${await getUptimeMonitorVersion()}`);
   push();
