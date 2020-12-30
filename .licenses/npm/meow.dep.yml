@@ -1,6 +1,6 @@
 ---
 name: meow
-version: 8.0.0
+version: 8.1.0
 type: npm
 summary: CLI app helper
 homepage: https://github.com/sindresorhus/meow#readme
