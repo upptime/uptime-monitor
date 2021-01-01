@@ -1,3 +1,17 @@
+## v1.23.14 (2021-01-01)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.14) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.13...v1.23.14) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.14) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.14.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.14.tar.gz))
+
+### ♻️ Updates
+
+- [`eaad729`](https://github.com/upptime/uptime-monitor/commit/eaad729)  Add logs for https://github.com/upptime/upptime/issues/150
+
+### ⬆️ Dependency updates
+
+- [`2ff5382`](https://github.com/upptime/uptime-monitor/commit/2ff5382)  Bump dayjs from 1.9.7 to 1.9.8
+- [`24125ca`](https://github.com/upptime/uptime-monitor/commit/24125ca)  Bump @upptime/status-page from 1.7.5 to 1.7.6
+- [`6935563`](https://github.com/upptime/uptime-monitor/commit/6935563)  Bump semantic-release from 17.3.0 to 17.3.1
+
 ## v1.23.13 (2020-12-28)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.13) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.12...v1.23.13) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.13) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.13.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.13.tar.gz))
