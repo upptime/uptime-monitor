@@ -26,8 +26,9 @@ export const curl = (
     curl.setOpt("HEADER", 1);
     curl.setOpt("VERBOSE", false);
     curl.setOpt("CUSTOMREQUEST", method);
-    curl.on("error", () => {
+    curl.on("error", (error) => {
       curl.close();
+      console.log("Got an error (on error)", error);
       return resolve({ httpCode: 0, totalTime: 0, data: "" });
     });
     curl.on("end", (_, data) => {
@@ -39,8 +40,10 @@ export const curl = (
         totalTime = Number(curl.getInfo("TOTAL_TIME"));
       } catch (error) {
         curl.close();
+        console.log("Got an error (on end)", error);
         return resolve({ httpCode, totalTime, data });
       }
+      if (httpCode === 0 || totalTime === 0) console.log("Didn't get an error but got 0s");
       return resolve({ httpCode, totalTime, data });
     });
     curl.perform();
