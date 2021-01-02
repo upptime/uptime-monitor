@@ -89,6 +89,16 @@ export const update = async (shouldCommit = false) => {
         )
           status = "degraded";
       }
+      if (
+        site.__dangerous__body_degraded_if_text_missing &&
+        !result.data.includes(site.__dangerous__body_degraded_if_text_missing)
+      )
+        status = "degraded";
+      if (
+        site.__dangerous__body_down_if_text_missing &&
+        !result.data.includes(site.__dangerous__body_down_if_text_missing)
+      )
+        status = "down";
       return { result, responseTime, status };
     };
 
