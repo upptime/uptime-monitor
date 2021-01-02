@@ -1,3 +1,11 @@
+## v1.24.0 (2021-01-02)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.14...v1.24.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.0.tar.gz))
+
+### ✨ New features
+
+- [`c774b71`](https://github.com/upptime/uptime-monitor/commit/c774b71)  Add if text missing text
+
 ## v1.23.14 (2021-01-01)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.23.14) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.13...v1.23.14) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.23.14) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.23.14.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.23.14.tar.gz))
