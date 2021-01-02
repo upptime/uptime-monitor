@@ -79,6 +79,12 @@ const update = async (shouldCommit = false) => {
                     result.data.includes(site.__dangerous__body_degraded))
                     status = "degraded";
             }
+            if (site.__dangerous__body_degraded_if_text_missing &&
+                !result.data.includes(site.__dangerous__body_degraded_if_text_missing))
+                status = "degraded";
+            if (site.__dangerous__body_down_if_text_missing &&
+                !result.data.includes(site.__dangerous__body_down_if_text_missing))
+                status = "down";
             return { result, responseTime, status };
         };
         let { result, responseTime, status } = await performTestOnce();
