@@ -8,7 +8,7 @@ let __config = undefined;
 const getConfig = async () => {
     if (__config)
         return __config;
-    const config = js_yaml_1.safeLoad(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
+    const config = js_yaml_1.load(await fs_extra_1.readFile(path_1.join(".", ".upptimerc.yml"), "utf8"));
     __config = config;
     return config;
 };
