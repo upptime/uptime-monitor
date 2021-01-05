@@ -1,3 +1,11 @@
+## v1.24.2 (2021-01-05)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.1...v1.24.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.2.tar.gz))
+
+### ♻️ Updates
+
+- [`fbc18a5`](https://github.com/upptime/uptime-monitor/commit/fbc18a5)  Trigger patch release
+
 ## v1.24.1 (2021-01-05)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.0...v1.24.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.1.tar.gz))
