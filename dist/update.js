@@ -29,7 +29,7 @@ const update = async (shouldCommit = false) => {
         let currentStatus = "unknown";
         let startTime = new Date();
         try {
-            const siteHistory = js_yaml_1.safeLoad((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
+            const siteHistory = js_yaml_1.load((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
                 .split("\n")
                 .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
                 .join("\n"));
@@ -112,7 +112,7 @@ const update = async (shouldCommit = false) => {
         }
         try {
             if (shouldCommit || currentStatus !== status) {
-                await fs_extra_1.writeFile(path_1.join(".", "history", `${slug}.yml`), `url: ${site.url}  
+                await fs_extra_1.writeFile(path_1.join(".", "history", `${slug}.yml`), `url: ${site.url}
 status: ${status}
 code: ${result.httpCode}
 responseTime: ${responseTime}

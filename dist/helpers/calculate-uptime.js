@@ -87,7 +87,7 @@ const getDowntimeSecondsForSite = async (slug) => {
  * @param slug - Slug of the site
  */
 const getUptimePercentForSite = async (slug) => {
-    const site = js_yaml_1.safeLoad((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
+    const site = js_yaml_1.load((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
         .split("\n")
         .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
         .join("\n"));
