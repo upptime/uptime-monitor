@@ -1,3 +1,17 @@
+## v1.24.1 (2021-01-05)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.0...v1.24.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.1.tar.gz))
+
+### ♻️ Updates
+
+- [`f8a4d59`](https://github.com/upptime/uptime-monitor/commit/f8a4d59)  Trigger patch release
+
+### ⬆️ Dependency updates
+
+- [`1fa7f75`](https://github.com/upptime/uptime-monitor/commit/1fa7f75)  Bump js-yaml from 3.14.1 to 4.0.0
+- [`9789b7f`](https://github.com/upptime/uptime-monitor/commit/9789b7f)  Bump @upptime/status-page from 1.7.6 to 1.7.7
+- [`ea65d1c`](https://github.com/upptime/uptime-monitor/commit/ea65d1c)  Bump dayjs from 1.9.8 to 1.10.1
+
 ## v1.24.0 (2021-01-02)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.23.14...v1.24.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.0.tar.gz))
