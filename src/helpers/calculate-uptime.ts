@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { readFile } from "fs-extra";
-import { safeLoad } from "js-yaml";
+import { load } from "js-yaml";
 import { join } from "path";
 import { DownPecentages, Downtimes, SiteHistory } from "../interfaces";
 import { getOctokit } from "./github";
@@ -90,7 +90,7 @@ const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
  * @param slug - Slug of the site
  */
 export const getUptimePercentForSite = async (slug: string): Promise<DownPecentages> => {
-  const site = safeLoad(
+  const site = load(
     (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
       .split("\n")
       .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))

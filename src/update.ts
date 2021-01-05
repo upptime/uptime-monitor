@@ -1,6 +1,6 @@
 import slugify from "@sindresorhus/slugify";
 import { mkdirp, readFile, writeFile } from "fs-extra";
-import { safeLoad } from "js-yaml";
+import { load } from "js-yaml";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
 import { commit, lastCommit, push } from "./helpers/git";
@@ -27,7 +27,7 @@ export const update = async (shouldCommit = false) => {
     let currentStatus = "unknown";
     let startTime = new Date();
     try {
-      const siteHistory = safeLoad(
+      const siteHistory = load(
         (await readFile(join(".", "history", `${slug}.yml`), "utf8"))
           .split("\n")
           .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
@@ -129,7 +129,7 @@ export const update = async (shouldCommit = false) => {
       if (shouldCommit || currentStatus !== status) {
         await writeFile(
           join(".", "history", `${slug}.yml`),
-          `url: ${site.url}  
+          `url: ${site.url}
 status: ${status}
 code: ${result.httpCode}
 responseTime: ${responseTime}

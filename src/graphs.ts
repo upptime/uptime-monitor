@@ -1,5 +1,5 @@
 import { mkdirp, readFile, remove } from "fs-extra";
-import { safeLoad } from "js-yaml";
+import { load } from "js-yaml";
 import { join } from "path";
 import { exec } from "shelljs";
 import { commit, push } from "./helpers/git";
@@ -11,7 +11,7 @@ export const generateGraphs = async () => {
   if (!(await shouldContinue())) return;
   await mkdirp("graphs");
   await mkdirp("api");
-  const config = safeLoad(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
+  const config = load(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
   exec("npx @upptime/graphs");
   exec("npx imagemin-cli graphs/* --out-dir=graphs");
   try {
