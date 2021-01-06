@@ -29,7 +29,7 @@
     "@semantic-release/git": "^9.0.0",
     "@types/fs-extra": "^9.0.2",
     "@types/jest": "^26.0.14",
-    "@types/js-yaml": "^3.12.5",
+    "@types/js-yaml": "^4.0.0",
     "@types/nodemailer": "^6.4.0",
     "@types/prettier": "^2.1.5",
     "@types/shelljs": "^0.8.8",
