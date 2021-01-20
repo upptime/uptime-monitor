@@ -1,6 +1,6 @@
 ---
 name: yargs
-version: 15.4.1
+version: 16.2.0
 type: npm
 summary: yargs the modern, pirate-themed, successor to optimist.
 homepage: https://yargs.js.org/
