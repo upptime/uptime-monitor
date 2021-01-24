@@ -1,6 +1,7 @@
 import { getOctokit } from "./github";
 import { getConfig } from "./config";
 import {
+  DEFAULT_RUNNER,
   GRAPHS_CI_SCHEDULE,
   RESPONSE_TIME_CI_SCHEDULE,
   STATIC_SITE_CI_SCHEDULE,
@@ -48,7 +49,7 @@ on:
 jobs:
   release:
     name: Generate graphs
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -80,7 +81,7 @@ on:
 jobs:
   release:
     name: Check status
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -114,7 +115,7 @@ on:
 jobs:
   release:
     name: Setup Upptime
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -175,7 +176,7 @@ on:
 jobs:
   release:
     name: Build and deploy site
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
@@ -213,7 +214,7 @@ on:
 jobs:
   release:
     name: Generate README
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -253,7 +254,7 @@ on:
 jobs:
   release:
     name: Build
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -285,7 +286,7 @@ on:
 jobs:
   release:
     name: Deploy updates
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -315,7 +316,7 @@ on:
 jobs:
   release:
     name: Check status
-    runs-on: ubuntu-18.04
+    runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
