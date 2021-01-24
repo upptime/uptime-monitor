@@ -87,6 +87,7 @@ export interface UpptimeConfig {
     updates?: string;
     uptime?: string;
   };
+  runner?: string;
 }
 
 export interface SiteHistory {
