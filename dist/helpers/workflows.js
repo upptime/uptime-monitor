@@ -41,7 +41,7 @@ on:
 jobs:
   release:
     name: Generate graphs
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -72,7 +72,7 @@ on:
 jobs:
   release:
     name: Check status
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -105,7 +105,7 @@ on:
 jobs:
   release:
     name: Setup Upptime
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -165,7 +165,7 @@ on:
 jobs:
   release:
     name: Build and deploy site
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
@@ -202,7 +202,7 @@ on:
 jobs:
   release:
     name: Generate README
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -241,7 +241,7 @@ on:
 jobs:
   release:
     name: Build
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -272,7 +272,7 @@ on:
 jobs:
   release:
     name: Deploy updates
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
@@ -301,7 +301,7 @@ on:
 jobs:
   release:
     name: Check status
-    runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.3
