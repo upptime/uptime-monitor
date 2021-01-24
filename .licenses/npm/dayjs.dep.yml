@@ -1,6 +1,6 @@
 ---
 name: dayjs
-version: 1.10.3
+version: 1.10.4
 type: npm
 summary: '2KB immutable date time library alternative to Moment.js with the same modern
   API '
