@@ -1,3 +1,23 @@
+## v1.24.3 (2021-01-24)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.2...v1.24.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.3.tar.gz))
+
+### ⬆️ Dependency updates
+
+- [`7b31b34`](https://github.com/upptime/uptime-monitor/commit/7b31b34)  Bump dayjs from 1.10.1 to 1.10.2
+- [`27da57e`](https://github.com/upptime/uptime-monitor/commit/27da57e)  Bump @upptime/status-page from 1.7.7 to 1.7.8
+- [`56dc712`](https://github.com/upptime/uptime-monitor/commit/56dc712)  Bump @types/js-yaml from 3.12.5 to 4.0.0
+- [`cd3192c`](https://github.com/upptime/uptime-monitor/commit/cd3192c)  Bump @types/jest from 26.0.19 to 26.0.20
+- [`0270ecb`](https://github.com/upptime/uptime-monitor/commit/0270ecb)  Bump @upptime/status-page from 1.7.8 to 1.7.9
+- [`51bac42`](https://github.com/upptime/uptime-monitor/commit/51bac42)  Bump dayjs from 1.10.2 to 1.10.3
+- [`c83d04e`](https://github.com/upptime/uptime-monitor/commit/c83d04e)  Bump @upptime/status-page from 1.7.9 to 1.7.10
+- [`3f01303`](https://github.com/upptime/uptime-monitor/commit/3f01303)  Bump semantic-release from 17.3.1 to 17.3.2
+- [`18e743a`](https://github.com/upptime/uptime-monitor/commit/18e743a)  Bump @upptime/status-page from 1.7.10 to 1.7.11
+- [`889876b`](https://github.com/upptime/uptime-monitor/commit/889876b)  Bump semantic-release from 17.3.2 to 17.3.3
+- [`4ca5f11`](https://github.com/upptime/uptime-monitor/commit/4ca5f11)  Bump fs-extra from 9.0.1 to 9.1.0
+- [`d6e0c63`](https://github.com/upptime/uptime-monitor/commit/d6e0c63)  Bump semantic-release from 17.3.3 to 17.3.4
+- [`d3ca4bf`](https://github.com/upptime/uptime-monitor/commit/d3ca4bf)  Bump semantic-release from 17.3.4 to 17.3.6
+
 ## v1.24.2 (2021-01-05)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.1...v1.24.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.2.tar.gz))
