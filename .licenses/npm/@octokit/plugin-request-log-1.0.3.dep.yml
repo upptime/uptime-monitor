@@ -1,6 +1,6 @@
 ---
 name: "@octokit/plugin-request-log"
-version: 1.0.2
+version: 1.0.3
 type: npm
 summary: Log all requests and request errors
 homepage: https://github.com/octokit/plugin-request-log.js#readme

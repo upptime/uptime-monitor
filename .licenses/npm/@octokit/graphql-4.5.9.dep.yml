@@ -1,16 +1,16 @@
 ---
-name: "@octokit/auth-token"
-version: 2.4.4
+name: "@octokit/graphql"
+version: 4.5.9
 type: npm
-summary: GitHub API token authentication for browsers and Node.js
-homepage: https://github.com/octokit/auth-token.js#readme
+summary: GitHub GraphQL API client for browsers and Node
+homepage: https://github.com/octokit/graphql.js#readme
 license: mit
 licenses:
 - sources: LICENSE
   text: |
     The MIT License
 
-    Copyright (c) 2019 Octokit contributors
+    Copyright (c) 2018 Octokit contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
