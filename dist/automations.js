@@ -38,7 +38,7 @@ const createAutomatedIssue = async () => {
                 catch (error) { }
                 try {
                     if (!hasDisabledAutomatedIssues) {
-                        const { data } = await axios_1.default.get(`https://raw.githubusercontent.com/${owner}/${repo}/main/.upptimerc.yml`);
+                        const { data } = await axios_1.default.get(`https://raw.githubusercontent.com/${owner}/${repo}/HEAD/.upptimerc.yml`);
                         if (data.includes("hasDisabledAutomatedIssues"))
                             hasDisabledAutomatedIssues = true;
                     }
