@@ -1,6 +1,6 @@
 ---
 name: "@octokit/types"
-version: 6.6.0
+version: 6.7.0
 type: npm
 summary: Shared TypeScript definitions for Octokit projects
 homepage: https://github.com/octokit/types.ts#readme
