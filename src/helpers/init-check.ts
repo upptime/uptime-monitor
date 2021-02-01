@@ -7,7 +7,7 @@ export const shouldContinue = async (): Promise<boolean> => {
   if (`${owner}/${repo}` === "upptime/upptime") return true;
   try {
     const upptimeDefaultConfig = await axios.get(
-      "https://raw.githubusercontent.com/upptime/upptime/master/.upptimerc.yml"
+      "https://raw.githubusercontent.com/upptime/upptime/HEAD/.upptimerc.yml"
     );
     const thisRepoConfig = await readFile(join(".", ".upptimerc.yml"), "utf8");
     if (upptimeDefaultConfig.data.trim() === thisRepoConfig.trim()) {

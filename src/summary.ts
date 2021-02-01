@@ -99,7 +99,7 @@ ${pageStatuses
           : page.status === "degraded"
           ? i18n.degraded || "🟨 Degraded"
           : i18n.down || "🟥 Down"
-      } | [${page.slug}.yml](https://github.com/${owner}/${repo}/commits/master/history/${
+      } | [${page.slug}.yml](https://github.com/${owner}/${repo}/commits/HEAD/history/${
         page.slug
       }.yml) | <details><summary><img alt="${
         i18n.responseTimeGraphAlt || "Response time graph"
@@ -109,31 +109,31 @@ ${pageStatuses
         i18n.responseTime || "Response time"
       } ${
         page.time
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fresponse-time.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.responseTimeDay || "24-hour response time"
       } ${
         page.timeDay
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fresponse-time-day.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.responseTimeWeek || "7-day response time"
       } ${
         page.timeWeek
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fresponse-time-week.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.responseTimeMonth || "30-day response time"
       } ${
         page.timeMonth
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fresponse-time-month.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.responseTimeYear || "1-year response time"
       } ${
         page.timeYear
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fresponse-time-year.json"></a></details> | <details><summary><a href="${website}/history/${
         page.slug
@@ -141,31 +141,31 @@ ${pageStatuses
         i18n.uptime || "All-time uptime"
       } ${
         page.uptime
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fuptime.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.uptimeDay || "24-hour uptime"
       } ${
         page.uptimeDay
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fuptime-day.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.uptimeWeek || "7-day uptime"
       } ${
         page.uptimeWeek
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fuptime-week.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.uptimeMonth || "30-day uptime"
       } ${
         page.uptimeMonth
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fuptime-month.json"></a><br><a href="${website}/history/${page.slug}"><img alt="${
         i18n.uptimeYear || "1-year uptime"
       } ${
         page.uptimeYear
-      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2Fmaster%2Fapi%2F${
+      }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
       }%2Fuptime-year.json"></a></details>`
   )
