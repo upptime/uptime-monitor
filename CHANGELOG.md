@@ -1,3 +1,19 @@
+## v1.24.4 (2021-02-01)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.3...v1.24.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.4.tar.gz))
+
+### ♻️ Updates
+
+- [`95c3254`](https://github.com/upptime/uptime-monitor/commit/95c3254)  Use HEAD instead of master
+
+### ⬆️ Dependency updates
+
+- [`5abb741`](https://github.com/upptime/uptime-monitor/commit/5abb741)  Update dependencies
+- [`407e578`](https://github.com/upptime/uptime-monitor/commit/407e578)  Bump @upptime/status-page from 1.10.0 to 1.11.2
+- [`29c9ca5`](https://github.com/upptime/uptime-monitor/commit/29c9ca5)  Bump @upptime/status-page from 1.11.2 to 1.11.3
+- [`53fd504`](https://github.com/upptime/uptime-monitor/commit/53fd504)  Bump ts-jest from 26.4.4 to 26.5.0
+- [`3800088`](https://github.com/upptime/uptime-monitor/commit/3800088)  Bump @upptime/status-page from 1.11.3 to 1.11.4
+
 ## v1.24.3 (2021-01-24)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.2...v1.24.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.3.tar.gz))
