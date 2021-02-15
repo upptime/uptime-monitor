@@ -1,6 +1,6 @@
 ---
 name: yargs-parser
-version: 20.2.4
+version: 20.2.5
 type: npm
 summary: the mighty option parser used by yargs
 homepage: https://github.com/yargs/yargs-parser#readme
