@@ -1,3 +1,12 @@
+## v1.25.1 (2021-02-24)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.25.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.25.0...v1.25.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.25.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.25.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.25.1.tar.gz))
+
+### ♻️ Updates
+
+- [`8370054`](https://github.com/upptime/uptime-monitor/commit/8370054)  Add port option for tcp-ping
+- [`8e777e7`](https://github.com/upptime/uptime-monitor/commit/8e777e7)  Don&#x27;t remove any custom workflows
+
 ## v1.25.0 (2021-02-24)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.25.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.4...v1.25.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.25.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.25.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.25.0.tar.gz))
