@@ -13,8 +13,15 @@ const workflows_1 = require("./helpers/workflows");
 const updateTemplate = async () => {
     const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
     const config = await config_1.getConfig();
-    // Remove the .github/workflows directory completely
-    await fs_extra_1.remove(path_1.join(".", ".github", "workflows"));
+    // Remove our workflows (not all workflows)
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "graphs.yml"));
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "response-time.yml"));
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "setup.yml"));
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "site.yml"));
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "summary.yml"));
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "update-template.yml"));
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "updates.yml"));
+    await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "uptime.yml"));
     console.log("Removed legacy .github/workflows");
     // Clone and create workflows from this repo
     await fs_extra_1.ensureDir(path_1.join(".", ".github", "workflows"));
