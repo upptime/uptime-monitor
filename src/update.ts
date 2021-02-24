@@ -115,13 +115,13 @@ export const update = async (shouldCommit = false) => {
           if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
           const tcpResult = await ping({
             address: replaceEnvironmentVariables(site.url),
-            attempts: 1,
+            attempts: 5,
             port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
           });
           console.log("Got result", tcpResult);
           return {
             result: { httpCode: 200 },
-            responseTime: tcpResult.avg.toFixed(0),
+            responseTime: (tcpResult.avg || 0).toFixed(0),
             status,
           };
         } catch (error) {
