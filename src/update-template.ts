@@ -19,8 +19,15 @@ export const updateTemplate = async () => {
   const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
   const config = await getConfig();
 
-  // Remove the .github/workflows directory completely
-  await remove(join(".", ".github", "workflows"));
+  // Remove our workflows (not all workflows)
+  await remove(join(".", ".github", "workflows", "graphs.yml"));
+  await remove(join(".", ".github", "workflows", "response-time.yml"));
+  await remove(join(".", ".github", "workflows", "setup.yml"));
+  await remove(join(".", ".github", "workflows", "site.yml"));
+  await remove(join(".", ".github", "workflows", "summary.yml"));
+  await remove(join(".", ".github", "workflows", "update-template.yml"));
+  await remove(join(".", ".github", "workflows", "updates.yml"));
+  await remove(join(".", ".github", "workflows", "uptime.yml"));
   console.log("Removed legacy .github/workflows");
 
   // Clone and create workflows from this repo
