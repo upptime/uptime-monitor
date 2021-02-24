@@ -105,13 +105,13 @@ const update = async (shouldCommit = false) => {
                         status = "degraded";
                     const tcpResult = await ping_1.ping({
                         address: environment_1.replaceEnvironmentVariables(site.url),
-                        attempts: 1,
+                        attempts: 5,
                         port: Number(environment_1.replaceEnvironmentVariables(site.port ? String(site.port) : "")),
                     });
                     console.log("Got result", tcpResult);
                     return {
                         result: { httpCode: 200 },
-                        responseTime: tcpResult.avg.toFixed(0),
+                        responseTime: (tcpResult.avg || 0).toFixed(0),
                         status,
                     };
                 }
