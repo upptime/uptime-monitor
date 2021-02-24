@@ -90,6 +90,7 @@ export interface UpptimeConfig {
   };
   runner?: string;
   customStatusWebsitePackage?: string;
+  skipGeneratingWebsite?: boolean;
 }
 
 export interface SiteHistory {

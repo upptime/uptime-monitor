@@ -7,6 +7,7 @@ export const generateSite = async () => {
   if (!(await shouldContinue())) return;
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
   const config = await getConfig();
+  if (config.skipGeneratingWebsite) return;
   const sitePackage = config.customStatusWebsitePackage || "@upptime/status-page";
   const octokit = await getOctokit();
   const repoDetails = await octokit.repos.get({ owner, repo });
