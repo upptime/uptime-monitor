@@ -1,3 +1,40 @@
+## v1.25.0 (2021-02-24)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.25.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.4...v1.25.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.25.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.25.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.25.0.tar.gz))
+
+### ✨ New features
+
+- [`2e8dcfe`](https://github.com/upptime/uptime-monitor/commit/2e8dcfe)  Add TCP pinging
+
+### ♻️ Updates
+
+- [`906d179`](https://github.com/upptime/uptime-monitor/commit/906d179)  Add config for custom status page package
+- [`6770e01`](https://github.com/upptime/uptime-monitor/commit/6770e01)  Add skipGeneratingWebsite option
+
+### ⬆️ Dependency updates
+
+- [`ce33389`](https://github.com/upptime/uptime-monitor/commit/ce33389)  Bump actions/cache from v2 to v2.1.4
+- [`6d32ea1`](https://github.com/upptime/uptime-monitor/commit/6d32ea1)  Bump @types/prettier from 2.1.6 to 2.2.0
+- [`97ff031`](https://github.com/upptime/uptime-monitor/commit/97ff031)  Bump @upptime/status-page from 1.11.4 to 1.11.5
+- [`9a21416`](https://github.com/upptime/uptime-monitor/commit/9a21416)  Bump semantic-release from 17.3.7 to 17.3.8
+- [`06c023e`](https://github.com/upptime/uptime-monitor/commit/06c023e)  Bump typescript from 4.1.3 to 4.1.4
+- [`3e2983d`](https://github.com/upptime/uptime-monitor/commit/3e2983d)  Bump ts-jest from 26.5.0 to 26.5.1
+- [`b123be8`](https://github.com/upptime/uptime-monitor/commit/b123be8)  Bump typescript from 4.1.4 to 4.1.5
+- [`c0cd7a0`](https://github.com/upptime/uptime-monitor/commit/c0cd7a0)  Bump nodemailer from 6.4.17 to 6.4.18
+- [`7459431`](https://github.com/upptime/uptime-monitor/commit/7459431)  Bump @types/fs-extra from 9.0.6 to 9.0.7
+- [`cf0a1b7`](https://github.com/upptime/uptime-monitor/commit/cf0a1b7)  Bump @upptime/status-page from 1.11.5 to 1.11.6
+- [`8ae3e69`](https://github.com/upptime/uptime-monitor/commit/8ae3e69)  Bump @types/prettier from 2.2.0 to 2.2.1
+- [`f9803c3`](https://github.com/upptime/uptime-monitor/commit/f9803c3)  Bump semantic-release from 17.3.8 to 17.3.9
+- [`e9c4f12`](https://github.com/upptime/uptime-monitor/commit/e9c4f12)  Bump pascalgn/automerge-action from v0.13.0 to v0.13.1
+- [`dbb4abb`](https://github.com/upptime/uptime-monitor/commit/dbb4abb)  Bump vsoch/pull-request-action from 1.0.13 to 1.0.14
+- [`2ee21d0`](https://github.com/upptime/uptime-monitor/commit/2ee21d0)  Bump vsoch/pull-request-action from 1.0.14 to 1.0.15
+- [`d90a99a`](https://github.com/upptime/uptime-monitor/commit/d90a99a)  Bump stefanzweifel/git-auto-commit-action
+- [`70ce41a`](https://github.com/upptime/uptime-monitor/commit/70ce41a)  Bump @upptime/status-page from 1.11.6 to 1.11.7
+- [`8f42d95`](https://github.com/upptime/uptime-monitor/commit/8f42d95)  Bump actions/setup-node from v2.1.4 to v2.1.5
+- [`1e4e4d4`](https://github.com/upptime/uptime-monitor/commit/1e4e4d4)  Bump typescript from 4.1.5 to 4.2.2
+- [`fc7848b`](https://github.com/upptime/uptime-monitor/commit/fc7848b)  Bump ts-jest from 26.5.1 to 26.5.2
+- [`70f360b`](https://github.com/upptime/uptime-monitor/commit/70f360b)  Bump stefanzweifel/git-auto-commit-action
+
 ## v1.24.4 (2021-02-01)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.24.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.24.3...v1.24.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.24.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.24.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.24.4.tar.gz))
