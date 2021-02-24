@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.update = void 0;
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
+const dayjs_1 = __importDefault(require("dayjs"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
@@ -25,6 +26,58 @@ const update = async (shouldCommit = false) => {
     const config = await config_1.getConfig();
     const octokit = await github_1.getOctokit();
     let hasDelta = false;
+    const _ongoingMaintenanceEvents = await octokit.issues.listForRepo({
+        owner,
+        repo,
+        state: "open",
+        filter: "all",
+        sort: "created",
+        direction: "desc",
+        labels: "maintenance",
+    });
+    console.log("Found ongoing maintenance events", _ongoingMaintenanceEvents.data.length);
+    const ongoingMaintenanceEvents = [];
+    for await (const incident of _ongoingMaintenanceEvents.data) {
+        const metadata = {};
+        if (incident.body.includes("<!--")) {
+            const summary = incident.body.split("<!--")[1].split("-->")[0];
+            const lines = summary
+                .split("\n")
+                .filter((i) => i.trim())
+                .filter((i) => i.includes(":"));
+            lines.forEach((i) => {
+                metadata[i.split(/:(.+)/)[0].trim()] = i.split(/:(.+)/)[1].trim();
+            });
+        }
+        if (metadata.start && metadata.end) {
+            let expectedDown = [];
+            let expectedDegraded = [];
+            if (metadata.expectedDown)
+                expectedDown = metadata.expectedDown
+                    .split(",")
+                    .map((i) => i.trim())
+                    .filter((i) => i.length);
+            if (metadata.expectedDown)
+                expectedDegraded = metadata.expectedDown
+                    .split(",")
+                    .map((i) => i.trim())
+                    .filter((i) => i.length);
+            if (dayjs_1.default(metadata.end).isBefore(dayjs_1.default())) {
+                await octokit.issues.update({
+                    owner,
+                    repo,
+                    issue_number: incident.number,
+                    state: "closed",
+                });
+                console.log("Closed maintenance completed event", incident.number);
+            }
+            else
+                ongoingMaintenanceEvents.push({
+                    issueNumber: incident.number,
+                    metadata: { start: metadata.start, end: metadata.end, expectedDegraded, expectedDown },
+                });
+        }
+    }
     for await (const site of config.sites) {
         console.log("Checking", site.url);
         const slug = site.slug || slugify_1.default(site.name);
@@ -175,8 +228,15 @@ generator: Upptime <https://github.com/upptime/upptime>
                         per_page: 1,
                     });
                     console.log(`Found ${issues.data.length} issues`);
+                    // Don't create an issue if it's expected that the site is down or degraded
+                    let expected = false;
+                    if ((status === "down" &&
+                        ongoingMaintenanceEvents.find((i) => i.metadata.expectedDown.includes(slug))) ||
+                        (status === "degraded" &&
+                            ongoingMaintenanceEvents.find((i) => i.metadata.expectedDegraded.includes(slug))))
+                        expected = true;
                     // If the site was just recorded as down or degraded, open an issue
-                    if (status === "down" || status === "degraded") {
+                    if ((status === "down" || status === "degraded") && !expected) {
                         if (!issues.data.length) {
                             const newIssue = await octokit.issues.create({
                                 owner,
