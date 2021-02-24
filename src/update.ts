@@ -58,6 +58,7 @@ export const update = async (shouldCommit = false) => {
           const tcpResult = await ping({
             address: replaceEnvironmentVariables(site.url),
             attempts: 1,
+            port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
           });
           console.log("Got result", tcpResult);
           return {
