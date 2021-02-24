@@ -3,6 +3,7 @@ export interface UpptimeConfig {
     repo: string;
     "user-agent"?: string;
     sites: {
+        check?: "http" | "tcp-ping";
         method?: string;
         name: string;
         url: string;
@@ -94,6 +95,8 @@ export interface UpptimeConfig {
         uptime?: string;
     };
     runner?: string;
+    customStatusWebsitePackage?: string;
+    skipGeneratingWebsite?: boolean;
 }
 export interface SiteHistory {
     url: string;

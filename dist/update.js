@@ -9,10 +9,12 @@ const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const config_1 = require("./helpers/config");
+const environment_1 = require("./helpers/environment");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
 const notifme_1 = require("./helpers/notifme");
+const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
 const summary_1 = require("./summary");
 const update = async (shouldCommit = false) => {
@@ -42,50 +44,74 @@ const update = async (shouldCommit = false) => {
          * Check whether the site is online
          */
         const performTestOnce = async () => {
-            const result = await request_1.curl(site);
-            console.log("Result from test", result.httpCode, result.totalTime);
-            const responseTime = (result.totalTime * 1000).toFixed(0);
-            const expectedStatusCodes = (site.expectedStatusCodes || [
-                200,
-                201,
-                202,
-                203,
-                200,
-                204,
-                205,
-                206,
-                207,
-                208,
-                226,
-                300,
-                301,
-                302,
-                303,
-                304,
-                305,
-                306,
-                307,
-                308,
-            ]).map(Number);
-            let status = expectedStatusCodes.includes(Number(result.httpCode))
-                ? "up"
-                : "down";
-            if (parseInt(responseTime) > (site.maxResponseTime || 60000))
-                status = "degraded";
-            if (status === "up" && typeof result.data === "string") {
-                if (site.__dangerous__body_down && result.data.includes(site.__dangerous__body_down))
-                    status = "down";
-                if (site.__dangerous__body_degraded &&
-                    result.data.includes(site.__dangerous__body_degraded))
-                    status = "degraded";
+            if (site.check === "tcp-ping") {
+                console.log("Using tcp-ping instead of curl");
+                try {
+                    let status = "up";
+                    if (parseInt(responseTime) > (site.maxResponseTime || 60000))
+                        status = "degraded";
+                    const tcpResult = await ping_1.ping({
+                        address: environment_1.replaceEnvironmentVariables(site.url),
+                        attempts: 1,
+                    });
+                    console.log("Got result", tcpResult);
+                    return {
+                        result: { httpCode: 200 },
+                        responseTime: tcpResult.avg.toFixed(0),
+                        status,
+                    };
+                }
+                catch (error) {
+                    console.log("Got pinging error", error);
+                    return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+                }
             }
-            if (site.__dangerous__body_degraded_if_text_missing &&
-                !result.data.includes(site.__dangerous__body_degraded_if_text_missing))
-                status = "degraded";
-            if (site.__dangerous__body_down_if_text_missing &&
-                !result.data.includes(site.__dangerous__body_down_if_text_missing))
-                status = "down";
-            return { result, responseTime, status };
+            else {
+                const result = await request_1.curl(site);
+                console.log("Result from test", result.httpCode, result.totalTime);
+                const responseTime = (result.totalTime * 1000).toFixed(0);
+                const expectedStatusCodes = (site.expectedStatusCodes || [
+                    200,
+                    201,
+                    202,
+                    203,
+                    200,
+                    204,
+                    205,
+                    206,
+                    207,
+                    208,
+                    226,
+                    300,
+                    301,
+                    302,
+                    303,
+                    304,
+                    305,
+                    306,
+                    307,
+                    308,
+                ]).map(Number);
+                let status = expectedStatusCodes.includes(Number(result.httpCode))
+                    ? "up"
+                    : "down";
+                if (parseInt(responseTime) > (site.maxResponseTime || 60000))
+                    status = "degraded";
+                if (status === "up" && typeof result.data === "string") {
+                    if (site.__dangerous__body_down && result.data.includes(site.__dangerous__body_down))
+                        status = "down";
+                    if (site.__dangerous__body_degraded &&
+                        result.data.includes(site.__dangerous__body_degraded))
+                        status = "degraded";
+                }
+                if (site.__dangerous__body_degraded_if_text_missing &&
+                    !result.data.includes(site.__dangerous__body_degraded_if_text_missing))
+                    status = "degraded";
+                if (site.__dangerous__body_down_if_text_missing &&
+                    !result.data.includes(site.__dangerous__body_down_if_text_missing))
+                    status = "down";
+                return { result, responseTime, status };
+            }
         };
         let { result, responseTime, status } = await performTestOnce();
         /**
