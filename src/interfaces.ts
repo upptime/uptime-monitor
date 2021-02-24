@@ -89,6 +89,7 @@ export interface UpptimeConfig {
     uptime?: string;
   };
   runner?: string;
+  customStatusWebsitePackage?: string;
 }
 
 export interface SiteHistory {

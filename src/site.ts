@@ -7,6 +7,7 @@ export const generateSite = async () => {
   if (!(await shouldContinue())) return;
   let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
   const config = await getConfig();
+  const sitePackage = config.customStatusWebsitePackage || "@upptime/status-page";
   const octokit = await getOctokit();
   const repoDetails = await octokit.repos.get({ owner, repo });
   const siteDir = "site";
@@ -23,8 +24,9 @@ export const generateSite = async () => {
     return;
   }
   exec("npm init -y");
-  exec("npm i @upptime/status-page");
-  cp("-r", "node_modules/@upptime/status-page/*", ".");
+  config.repo;
+  exec(`npm i ${sitePackage}`);
+  cp("-r", `node_modules/${sitePackage}/*`, ".");
   exec("npm i");
   exec("npm run export");
   mkdir("-p", "status-page/__sapper__/export");
