@@ -101,6 +101,7 @@ jobs:
 export const setupCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
+  const commitMessages = config.commitMessages || {};
 
   return `${await introComment()}
 
@@ -152,17 +153,22 @@ jobs:
           command: "site"
         env:
           GH_PAT: \${{ secrets.GH_PAT }}
-      - uses: maxheld83/ghpages@v0.3.0
+      - uses: peaceiris/actions-gh-pages@v3.7.3
         name: GitHub Pages Deploy
-        env:
-          BUILD_DIR: "site/status-page/__sapper__/export/"
-          GH_PAT: \${{ secrets.GH_PAT }}
+        with:
+          github_token: \${{ secrets.GH_PAT }}
+          publish_dir: "site/status-page/__sapper__/export/"
+          user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
+          user_email: "${
+            commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"
+          }"
 `;
 };
 
 export const siteCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
+  const commitMessages = config.commitMessages || {};
 
   return `${await introComment()}
 
@@ -190,11 +196,15 @@ jobs:
           command: "site"
         env:
           GH_PAT: \${{ secrets.GH_PAT }}
-      - uses: maxheld83/ghpages@v0.3.0
+      - uses: peaceiris/actions-gh-pages@v3.7.3
         name: GitHub Pages Deploy
-        env:
-          BUILD_DIR: "site/status-page/__sapper__/export/"
-          GH_PAT: \${{ secrets.GH_PAT }}
+        with:
+          github_token: \${{ secrets.GH_PAT }}
+          publish_dir: "site/status-page/__sapper__/export/"
+          user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
+          user_email: "${
+            commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"
+          }"
 `;
 };
 
