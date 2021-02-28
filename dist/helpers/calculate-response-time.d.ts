@@ -1,4 +1,4 @@
 import { Downtimes } from "../interfaces";
-export declare const getResponseTimeForSite: (slug: string) => Promise<Pick<Downtimes & {
+export declare const getResponseTimeForSite: (slug: string) => Promise<Omit<Downtimes & {
     currentStatus: "up" | "down" | "degraded";
-}, "all" | "day" | "month" | "year" | "week" | "currentStatus">>;
+}, "dailyMinutesDown">>;
