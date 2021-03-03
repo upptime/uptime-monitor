@@ -1,3 +1,26 @@
+## v1.26.0 (2021-03-03)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.25.1...v1.26.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.0.tar.gz))
+
+### ✨ New features
+
+- [`32a8b0f`](https://github.com/upptime/uptime-monitor/commit/32a8b0f)  Add scheduled maintenance
+
+### ♻️ Updates
+
+- [`12d282c`](https://github.com/upptime/uptime-monitor/commit/12d282c)  Use 5 attempts for TCP
+- [`4f1ee7d`](https://github.com/upptime/uptime-monitor/commit/4f1ee7d)  Update CI to use peaceiris/actions-gh-pages (fixed upptime/upptime#118)
+(Issues: [`upptime/upptime#118`](https://github.com/upptime/upptime/issues/118))- [`cde5e47`](https://github.com/upptime/uptime-monitor/commit/cde5e47)  Use default GITHUB_TOKEN in CI
+
+### ⬆️ Dependency updates
+
+- [`db4db71`](https://github.com/upptime/uptime-monitor/commit/db4db71)  Bump ts-jest from 26.5.1 to 26.5.2
+- [`f71c36b`](https://github.com/upptime/uptime-monitor/commit/f71c36b)  Bump typescript from 4.1.5 to 4.2.2
+- [`8dc2570`](https://github.com/upptime/uptime-monitor/commit/8dc2570)  Bump semantic-release from 17.3.9 to 17.4.0
+- [`33830f7`](https://github.com/upptime/uptime-monitor/commit/33830f7)  Bump nodemailer from 6.4.18 to 6.5.0
+- [`c1f0e19`](https://github.com/upptime/uptime-monitor/commit/c1f0e19)  Bump @types/fs-extra from 9.0.7 to 9.0.8
+- [`9892505`](https://github.com/upptime/uptime-monitor/commit/9892505)  Bump @types/prettier from 2.2.1 to 2.2.2
+
 ## v1.25.1 (2021-02-24)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.25.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.25.0...v1.25.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.25.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.25.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.25.1.tar.gz))
