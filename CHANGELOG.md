@@ -1,3 +1,11 @@
+## v1.26.1 (2021-03-03)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.0...v1.26.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`2207872`](https://github.com/upptime/uptime-monitor/commit/2207872)  Add fallback token
+
 ## v1.26.0 (2021-03-03)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.25.1...v1.26.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.0.tar.gz))
