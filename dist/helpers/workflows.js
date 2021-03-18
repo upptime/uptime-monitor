@@ -53,7 +53,7 @@ jobs:
         with:
           command: "graphs"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
 `;
 };
 exports.graphsCiWorkflow = graphsCiWorkflow;
@@ -84,7 +84,7 @@ jobs:
         with:
           command: "response-time"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
           SECRETS_CONTEXT: \${{ toJson(secrets) }}
 `;
 };
@@ -118,20 +118,20 @@ jobs:
         with:
           command: "update-template"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "response-time"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
           SECRETS_CONTEXT: \${{ toJson(secrets) }}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "readme"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
       - name: Generate graphs
         uses: benc-uk/workflow-dispatch@v1
         with:
@@ -142,7 +142,7 @@ jobs:
         with:
           command: "site"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
       - uses: peaceiris/actions-gh-pages@v3.7.3
         name: GitHub Pages Deploy
         with:
@@ -182,7 +182,7 @@ jobs:
         with:
           command: "site"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
       - uses: peaceiris/actions-gh-pages@v3.7.3
         name: GitHub Pages Deploy
         with:
@@ -220,7 +220,7 @@ jobs:
         with:
           command: "readme"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
       - name: Run readme-repos-list
         uses: koj-co/readme-repos-list@master
         with:
@@ -259,7 +259,7 @@ jobs:
         with:
           command: "update-template"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
 `;
 };
 exports.updateTemplateCiWorkflow = updateTemplateCiWorkflow;
@@ -288,7 +288,7 @@ jobs:
       - name: Update code
         uses: upptime/updates@master
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
 `;
 };
 exports.updatesCiWorkflow = updatesCiWorkflow;
@@ -319,7 +319,7 @@ jobs:
         with:
           command: "update"
         env:
-          GITHUB_TOKEN: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT }}
           SECRETS_CONTEXT: \${{ toJson(secrets) }}
 `;
 };
