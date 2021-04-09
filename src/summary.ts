@@ -238,7 +238,7 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
 
     // Change badges
     readmeContent = readmeContent.replace(
-      new RegExp("upptime/upptime/workflows", "g"),
+      new RegExp("${owner}%2F${repo}%2Fworkflows", "g"),
       `${config.owner}/${config.repo}/workflows`
     );
 
