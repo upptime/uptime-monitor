@@ -1,17 +1,17 @@
 ---
-name: "@octokit/request"
-version: 5.4.15
+name: "@octokit/rest"
+version: 18.5.2
 type: npm
-summary: "Send parameterized requests to GitHubâ\x80\x99s APIs with sensible defaults
-  in browsers and Node"
-homepage: https://github.com/octokit/request.js#readme
+summary: GitHub REST API client for Node.js
+homepage: https://github.com/octokit/rest.js#readme
 license: mit
 licenses:
 - sources: LICENSE
   text: |
     The MIT License
 
-    Copyright (c) 2018 Octokit contributors
+    Copyright (c) 2012 Cloud9 IDE, Inc. (Mike de Boer)
+    Copyright (c) 2017-2018 Octokit contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
