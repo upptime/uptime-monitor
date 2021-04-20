@@ -8,6 +8,11 @@ import { update } from "./update";
 import { updateTemplate } from "./update-template";
 
 const token = getSecret("GH_PAT") || getInput("token") || getSecret("GITHUB_TOKEN");
+const SECRETS_CONTEXT = process.env.SECRETS_CONTEXT || "{}";
+const allSecrets: Record<string, string> = JSON.parse(SECRETS_CONTEXT);
+Object.keys(allSecrets).forEach((key) => {
+  process.env[key] = allSecrets[key];
+});
 
 export const run = async () => {
   if (!token) throw new Error("GitHub token not found");
