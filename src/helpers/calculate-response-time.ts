@@ -25,6 +25,7 @@ const getHistoryItems = async (
     page,
   });
   let data = results.data;
+  if (!data[0]) return [];
   if (
     data.length === 100 &&
     !dayjs((data[0].commit.author || {}).date).isBefore(dayjs().subtract(1, "year"))
@@ -78,13 +79,13 @@ export const getResponseTimeForSite = async (
   console.log("weekSum", weekSum, avg(weekSum));
 
   // Current status is "up", "down", or "degraded" based on the emoji prefix of the commit message
-  const currentStatus: "up" | "down" | "degraded" = data[0].commit.message
-    .split(" ")[0]
-    .includes(config.commitPrefixStatusUp || "🟩")
-    ? "up"
-    : data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusDegraded || "🟨")
-    ? "degraded"
-    : "down";
+  const currentStatus: "up" | "down" | "degraded" = data[0]
+    ? data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusUp || "🟩")
+      ? "up"
+      : data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusDegraded || "🟨")
+      ? "degraded"
+      : "down"
+    : "up";
 
   return {
     day: Math.round(avg(daySum) || 0),
