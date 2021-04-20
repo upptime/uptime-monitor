@@ -346,6 +346,7 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     console.log("Found recently closed issues", issuesRecentlyClosed.data.length);
     for await (const issue of issuesRecentlyClosed.data) {
       if (
+        issue.closed_at &&
         // If this issue was closed within 15 minutes
         new Date(issue.closed_at).getTime() - new Date(issue.created_at).getTime() < 900000 &&
         // It has 1 comment (the default Upptime one)

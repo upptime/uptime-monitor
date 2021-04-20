@@ -41,7 +41,7 @@ export const update = async (shouldCommit = false) => {
   }[] = [];
   for await (const incident of _ongoingMaintenanceEvents.data) {
     const metadata: Record<string, string> = {};
-    if (incident.body.includes("<!--")) {
+    if (incident.body && incident.body.includes("<!--")) {
       const summary = incident.body.split("<!--")[1].split("-->")[0];
       const lines = summary
         .split("\n")

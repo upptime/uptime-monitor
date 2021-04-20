@@ -27,7 +27,7 @@ const getHistoryItems = async (
   let data = results.data;
   if (
     data.length === 100 &&
-    !dayjs(data[0].commit.author.date).isBefore(dayjs().subtract(1, "year"))
+    !dayjs((data[0].commit.author || {}).date).isBefore(dayjs().subtract(1, "year"))
   )
     data.push(...(await getHistoryItems(octokit, owner, repo, slug, page + 1)));
   return data;
@@ -56,7 +56,7 @@ export const getResponseTimeForSite = async (
     .map(
       (item) =>
         [
-          item.commit.author.date,
+          (item.commit.author || {}).date,
           parseInt(item.commit.message.split(" in ")[1].split("ms")[0].trim()),
         ] as [string, number]
     )

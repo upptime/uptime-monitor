@@ -70,8 +70,8 @@ export const updateDependencies = async () => {
       owner,
       repo,
       path: "README.md",
-      content: contents.data.content,
-      sha: contents.data.sha,
+      content: (contents.data as any).content,
+      sha: (contents.data as any).sha,
       message: ":package: Release dependency updates",
     });
   }
