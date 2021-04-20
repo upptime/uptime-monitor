@@ -12,7 +12,8 @@ export const commit = (
 };
 
 export const push = () => {
-  exec("git push");
+  const result = exec("git push");
+  if (result.includes("error:")) throw new Error(result);
 };
 
 export const lastCommit = () => {
