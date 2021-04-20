@@ -8,7 +8,7 @@ const getOctokit = async () => {
     const config = await config_1.getConfig();
     return new rest_1.Octokit({
         auth: config.PAT || secrets_1.getSecret("GH_PAT") || secrets_1.getSecret("GITHUB_TOKEN"),
-        userAgent: config["user-agent"] || secrets_1.getSecret("USER_AGENT") || "KojBot",
+        userAgent: config["user-agent"] || secrets_1.getSecret("USER_AGENT") || "upptime",
     });
 };
 exports.getOctokit = getOctokit;
