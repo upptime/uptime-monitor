@@ -1,6 +1,6 @@
 ---
 name: "@sindresorhus/slugify"
-version: 1.1.0
+version: 1.1.2
 type: npm
 summary: Slugify a string
 homepage: https://github.com/sindresorhus/slugify#readme
