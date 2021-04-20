@@ -3,11 +3,12 @@ import { join } from "path";
 import { Octokit } from "@octokit/rest";
 import { config } from "dotenv";
 import axios from "axios";
+import { getSecret } from "./helpers/secrets";
 config();
 
 const createAutomatedIssue = async () => {
   const octokit = new Octokit({
-    auth: process.env.AUTOMATION_TOKEN,
+    auth: getSecret("AUTOMATION_TOKEN"),
   });
   const searchResults = await octokit.search.repos({
     q: "topic:upptime",

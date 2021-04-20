@@ -3,6 +3,7 @@ import { ensureDir, readdir, remove, writeFile } from "fs-extra";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
 import { commit, push } from "./helpers/git";
+import { getOwnerRepo } from "./helpers/secrets";
 import {
   graphsCiWorkflow,
   responseTimeCiWorkflow,
@@ -16,7 +17,7 @@ import {
 } from "./helpers/workflows";
 
 export const updateTemplate = async () => {
-  const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const [owner, repo] = getOwnerRepo();
   const config = await getConfig();
 
   // Remove our workflows (not all workflows)

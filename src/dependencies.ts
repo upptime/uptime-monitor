@@ -3,9 +3,10 @@ import { join } from "path";
 import { getConfig } from "./helpers/config";
 import { commit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
+import { getOwnerRepo } from "./helpers/secrets";
 
 export const updateDependencies = async () => {
-  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const [owner, repo] = getOwnerRepo();
   if (`${owner}/${repo}` !== "upptime/upptime") return;
 
   const config = await getConfig();

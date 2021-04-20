@@ -11,13 +11,14 @@ import { shouldContinue } from "./helpers/init-check";
 import { sendNotification } from "./helpers/notifme";
 import { ping } from "./helpers/ping";
 import { curl } from "./helpers/request";
+import { getOwnerRepo } from "./helpers/secrets";
 import { SiteHistory } from "./interfaces";
 import { generateSummary } from "./summary";
 
 export const update = async (shouldCommit = false) => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
-  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const [owner, repo] = getOwnerRepo();
 
   const config = await getConfig();
   const octokit = await getOctokit();

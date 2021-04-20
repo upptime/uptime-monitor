@@ -1,9 +1,10 @@
 import axios from "axios";
 import { readFile } from "fs-extra";
 import { join } from "path";
+import { getOwnerRepo } from "./secrets";
 
 export const shouldContinue = async (): Promise<boolean> => {
-  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const [owner, repo] = getOwnerRepo();
   if (`${owner}/${repo}` === "upptime/upptime") return true;
   try {
     const upptimeDefaultConfig = await axios.get(

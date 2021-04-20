@@ -5,13 +5,14 @@ import { join } from "path";
 import { DownPecentages, Downtimes, SiteHistory } from "../interfaces";
 import { getOctokit } from "./github";
 import { checkOverlap } from "./overlap";
+import { getOwnerRepo } from "./secrets";
 
 /**
  * Get the number of seconds a website has been down
  * @param slug - Slug of the site
  */
 const getDowntimeSecondsForSite = async (slug: string): Promise<Downtimes> => {
-  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const [owner, repo] = getOwnerRepo();
   const octokit = await getOctokit();
   let day = 0;
   let week = 0;

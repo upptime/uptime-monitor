@@ -3,6 +3,7 @@ import { Downtimes } from "../interfaces";
 import { getConfig } from "./config";
 import { getOctokit } from "./github";
 import { Octokit } from "@octokit/rest";
+import { getOwnerRepo } from "./secrets";
 
 /** Calculate the average of some numbers */
 const avg = (array: number[]) => (array.length ? array.reduce((a, b) => a + b) / array.length : 0);
@@ -35,7 +36,7 @@ const getHistoryItems = async (
 export const getResponseTimeForSite = async (
   slug: string
 ): Promise<Omit<Downtimes & { currentStatus: "up" | "down" | "degraded" }, "dailyMinutesDown">> => {
-  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const [owner, repo] = getOwnerRepo();
   const octokit = await getOctokit();
   const config = await getConfig();
 

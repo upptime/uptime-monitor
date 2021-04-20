@@ -2,10 +2,11 @@ import { cd, cp, exec, mkdir } from "shelljs";
 import { getConfig } from "./helpers/config";
 import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
+import { getOwnerRepo } from "./helpers/secrets";
 
 export const generateSite = async () => {
   if (!(await shouldContinue())) return;
-  let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+  const [owner, repo] = getOwnerRepo();
   const config = await getConfig();
   if (config.skipGeneratingWebsite) return;
   const sitePackage = config.customStatusWebsitePackage || "@upptime/status-page";
