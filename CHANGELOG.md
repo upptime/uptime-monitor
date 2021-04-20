@@ -1,3 +1,14 @@
+## v1.26.3 (2021-04-20)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.2...v1.26.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.3.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`712da31`](https://github.com/upptime/uptime-monitor/commit/712da31)  Use list for issues, not user API (fixed upptime/upptime#311)
+(Issues: [`upptime/upptime#311`](https://github.com/upptime/upptime/issues/311))- [`9aa64cc`](https://github.com/upptime/uptime-monitor/commit/9aa64cc)  Add fallback for commit (fixed upptime/upptime#262)
+(Issues: [`upptime/upptime#262`](https://github.com/upptime/upptime/issues/262))- [`d1ac90c`](https://github.com/upptime/uptime-monitor/commit/d1ac90c)  Set env for replacing (fixed upptime/upptime#319)
+(Issues: [`upptime/upptime#319`](https://github.com/upptime/upptime/issues/319))
+
 ## v1.26.2 (2021-04-20)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.1...v1.26.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.2.tar.gz))
