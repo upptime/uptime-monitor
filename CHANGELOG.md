@@ -1,3 +1,23 @@
+## v1.26.2 (2021-04-20)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.1...v1.26.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`de26db3`](https://github.com/upptime/uptime-monitor/commit/de26db3)  Revert to GH_PAT
+- [`83e61fc`](https://github.com/upptime/uptime-monitor/commit/83e61fc)  Fix using GH_PAT instead of GITHUB_TOKEN
+- [`154bcec`](https://github.com/upptime/uptime-monitor/commit/154bcec)  Add GH_PAT to Octokit
+- [`d70f7a6`](https://github.com/upptime/uptime-monitor/commit/d70f7a6)  Fix order of tokens, use new env
+
+### ⬆️ Dependency updates
+
+- [`4e07914`](https://github.com/upptime/uptime-monitor/commit/4e07914)  Bump ts-jest from 26.5.2 to 26.5.3
+- [`f335b07`](https://github.com/upptime/uptime-monitor/commit/f335b07)  Bump semantic-release from 17.4.0 to 17.4.1
+- [`a0d4ccc`](https://github.com/upptime/uptime-monitor/commit/a0d4ccc)  Bump stefanzweifel/git-auto-commit-action
+- [`528eb19`](https://github.com/upptime/uptime-monitor/commit/528eb19)  Bump typescript from 4.2.2 to 4.2.3
+- [`15f36e5`](https://github.com/upptime/uptime-monitor/commit/15f36e5)  Bump node-libcurl to 2.3.2 to make the npm installation pass
+- [`74597c4`](https://github.com/upptime/uptime-monitor/commit/74597c4)  Update dependencies
+
 ## v1.26.1 (2021-03-03)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.0...v1.26.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.1.tar.gz))
