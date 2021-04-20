@@ -21,6 +21,8 @@ const getHistoryItems = async (octokit, owner, repo, slug, page) => {
         page,
     });
     let data = results.data;
+    if (!data[0])
+        return [];
     if (data.length === 100 &&
         !dayjs_1.default((data[0].commit.author || {}).date).isBefore(dayjs_1.default().subtract(1, "year")))
         data.push(...(await getHistoryItems(octokit, owner, repo, slug, page + 1)));
@@ -60,13 +62,13 @@ const getResponseTimeForSite = async (slug) => {
     const allSum = responseTimes.map((i) => i[1]);
     console.log("weekSum", weekSum, avg(weekSum));
     // Current status is "up", "down", or "degraded" based on the emoji prefix of the commit message
-    const currentStatus = data[0].commit.message
-        .split(" ")[0]
-        .includes(config.commitPrefixStatusUp || "🟩")
-        ? "up"
-        : data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusDegraded || "🟨")
-            ? "degraded"
-            : "down";
+    const currentStatus = data[0]
+        ? data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusUp || "🟩")
+            ? "up"
+            : data[0].commit.message.split(" ")[0].includes(config.commitPrefixStatusDegraded || "🟨")
+                ? "degraded"
+                : "down"
+        : "up";
     return {
         day: Math.round(avg(daySum) || 0),
         week: Math.round(avg(weekSum) || 0),
