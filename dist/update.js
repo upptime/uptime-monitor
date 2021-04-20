@@ -17,12 +17,13 @@ const init_check_1 = require("./helpers/init-check");
 const notifme_1 = require("./helpers/notifme");
 const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
+const secrets_1 = require("./helpers/secrets");
 const summary_1 = require("./summary");
 const update = async (shouldCommit = false) => {
     if (!(await init_check_1.shouldContinue()))
         return;
     await fs_extra_1.mkdirp("history");
-    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const [owner, repo] = secrets_1.getOwnerRepo();
     const config = await config_1.getConfig();
     const octokit = await github_1.getOctokit();
     let hasDelta = false;
@@ -39,7 +40,7 @@ const update = async (shouldCommit = false) => {
     const ongoingMaintenanceEvents = [];
     for await (const incident of _ongoingMaintenanceEvents.data) {
         const metadata = {};
-        if (incident.body.includes("<!--")) {
+        if (incident.body && incident.body.includes("<!--")) {
             const summary = incident.body.split("<!--")[1].split("-->")[0];
             const lines = summary
                 .split("\n")

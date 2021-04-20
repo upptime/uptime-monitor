@@ -6,8 +6,9 @@ const path_1 = require("path");
 const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
+const secrets_1 = require("./helpers/secrets");
 const updateDependencies = async () => {
-    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const [owner, repo] = secrets_1.getOwnerRepo();
     if (`${owner}/${repo}` !== "upptime/upptime")
         return;
     const config = await config_1.getConfig();

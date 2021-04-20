@@ -15,11 +15,12 @@ const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
 const url_1 = require("url");
+const secrets_1 = require("./helpers/secrets");
 const generateSummary = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;
     await fs_extra_1.mkdirp("history");
-    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const [owner, repo] = secrets_1.getOwnerRepo();
     const config = await config_1.getConfig();
     const octokit = await github_1.getOctokit();
     let readmeContent = await fs_extra_1.readFile(path_1.join(".", "README.md"), "utf8");
@@ -214,9 +215,9 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
         });
         console.log("Found recently closed issues", issuesRecentlyClosed.data.length);
         for await (const issue of issuesRecentlyClosed.data) {
-            if (
-            // If this issue was closed within 15 minutes
-            new Date(issue.closed_at).getTime() - new Date(issue.created_at).getTime() < 900000 &&
+            if (issue.closed_at &&
+                // If this issue was closed within 15 minutes
+                new Date(issue.closed_at).getTime() - new Date(issue.created_at).getTime() < 900000 &&
                 // It has 1 comment (the default Upptime one)
                 issue.comments === 1) {
                 try {

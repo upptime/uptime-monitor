@@ -8,10 +8,11 @@ const path_1 = require("path");
 const rest_1 = require("@octokit/rest");
 const dotenv_1 = require("dotenv");
 const axios_1 = __importDefault(require("axios"));
+const secrets_1 = require("./helpers/secrets");
 dotenv_1.config();
 const createAutomatedIssue = async () => {
     const octokit = new rest_1.Octokit({
-        auth: process.env.AUTOMATION_TOKEN,
+        auth: secrets_1.getSecret("AUTOMATION_TOKEN"),
     });
     const searchResults = await octokit.search.repos({
         q: "topic:upptime",

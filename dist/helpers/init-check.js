@@ -7,8 +7,9 @@ exports.shouldContinue = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
+const secrets_1 = require("./secrets");
 const shouldContinue = async () => {
-    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const [owner, repo] = secrets_1.getOwnerRepo();
     if (`${owner}/${repo}` === "upptime/upptime")
         return true;
     try {

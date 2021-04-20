@@ -5,10 +5,11 @@ const shelljs_1 = require("shelljs");
 const config_1 = require("./helpers/config");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
+const secrets_1 = require("./helpers/secrets");
 const generateSite = async () => {
     if (!(await init_check_1.shouldContinue()))
         return;
-    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const [owner, repo] = secrets_1.getOwnerRepo();
     const config = await config_1.getConfig();
     if (config.skipGeneratingWebsite)
         return;

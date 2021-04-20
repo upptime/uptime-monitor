@@ -10,12 +10,13 @@ const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const github_1 = require("./github");
 const overlap_1 = require("./overlap");
+const secrets_1 = require("./secrets");
 /**
  * Get the number of seconds a website has been down
  * @param slug - Slug of the site
  */
 const getDowntimeSecondsForSite = async (slug) => {
-    let [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const [owner, repo] = secrets_1.getOwnerRepo();
     const octokit = await github_1.getOctokit();
     let day = 0;
     let week = 0;

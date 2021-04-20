@@ -9,9 +9,10 @@ const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
+const secrets_1 = require("./helpers/secrets");
 const workflows_1 = require("./helpers/workflows");
 const updateTemplate = async () => {
-    const [owner, repo] = (process.env.GITHUB_REPOSITORY || "").split("/");
+    const [owner, repo] = secrets_1.getOwnerRepo();
     const config = await config_1.getConfig();
     // Remove our workflows (not all workflows)
     await fs_extra_1.remove(path_1.join(".", ".github", "workflows", "graphs.yml"));
