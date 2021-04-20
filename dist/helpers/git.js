@@ -10,7 +10,9 @@ const commit = (message, name = "Upptime Bot", email = "73812536+upptime-bot@use
 };
 exports.commit = commit;
 const push = () => {
-    shelljs_1.exec("git push");
+    const result = shelljs_1.exec("git push");
+    if (result.includes("error:"))
+        throw new Error(result);
 };
 exports.push = push;
 const lastCommit = () => {
