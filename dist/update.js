@@ -218,7 +218,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                 if (currentStatus !== status) {
                     console.log("Status is different", currentStatus, "to", status);
                     hasDelta = true;
-                    const issues = await octokit.issues.list({
+                    const issues = await octokit.issues.listForRepo({
                         owner,
                         repo,
                         labels: slug,
