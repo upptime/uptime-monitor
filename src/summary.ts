@@ -240,6 +240,9 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     readmeContent = readmeContent.replace(
       new RegExp("upptime/upptime/workflows", "g"),
       `${config.owner}/${config.repo}/workflows`
+    ).replace(
+      new RegExp("upptime/upptime/actions", "g"),
+      `${config.owner}/${config.repo}/actions`
     );
 
     // Add repo description, topics, etc.
