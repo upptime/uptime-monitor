@@ -1,3 +1,13 @@
+## v1.26.4 (2021-04-24)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.3...v1.26.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.4.tar.gz))
+
+### ♻️ Updates
+
+- [`e1a90da`](https://github.com/upptime/uptime-monitor/commit/e1a90da)  Rename default UA (fixed upptime/upptime#320)
+(Issues: [`upptime/upptime#320`](https://github.com/upptime/upptime/issues/320))- [`569136c`](https://github.com/upptime/uptime-monitor/commit/569136c)  Release #154
+(Issues: [`#154`](https://github.com/upptime/uptime-monitor/issues/154))
+
 ## v1.26.3 (2021-04-20)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.2...v1.26.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.3.tar.gz))
