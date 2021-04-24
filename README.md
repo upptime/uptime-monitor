@@ -6,7 +6,6 @@ This repository contains Upptime's GitHub Action.
 
 [![Build CI](https://github.com/upptime/uptime-monitor/workflows/Build%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Build+CI%22)
 [![Release CI](https://github.com/upptime/uptime-monitor/workflows/Release%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Release+CI%22)
-[![Node CI](https://github.com/upptime/uptime-monitor/workflows/Node%20CI/badge.svg)](https://github.com/upptime/uptime-monitor/actions?query=workflow%3A%22Node+CI%22)
 
 ## 🎁 Contributing
 
