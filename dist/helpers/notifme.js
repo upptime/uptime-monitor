@@ -222,7 +222,7 @@ const sendNotification = async (message) => {
                 parse_mode: "Markdown",
                 disable_web_page_preview: true,
                 chat_id: secrets_1.getSecret("NOTIFICATION_TELEGRAM_CHAT_ID"),
-                text: message,
+                text: message.replace(/_/g, '\\_'),
             });
             console.log("Success Telegram");
         }
