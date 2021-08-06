@@ -97,7 +97,7 @@ export const update = async (shouldCommit = false) => {
       currentStatus = siteHistory.status || "unknown";
       startTime = new Date(siteHistory.startTime || new Date());
     } catch (error) {}
-    console.log("Current status", site.slug, currentStatus, startTime);
+    console.log("Current status", slug, currentStatus, startTime);
 
     /**
      * Check whether the site is online
