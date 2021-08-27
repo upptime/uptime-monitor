@@ -113,16 +113,17 @@ export const update = async (shouldCommit = false) => {
         console.log("Using tcp-ping instead of curl");
         try {
           let status: "up" | "down" | "degraded" = "up";
-          if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
           const tcpResult = await ping({
             address: replaceEnvironmentVariables(site.url),
             attempts: 5,
             port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
           });
           console.log("Got result", tcpResult);
+          let responseTime = (tcpResult.avg || 0).toFixed(0);
+          if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
           return {
             result: { httpCode: 200 },
-            responseTime: (tcpResult.avg || 0).toFixed(0),
+            responseTime,
             status,
           };
         } catch (error) {
