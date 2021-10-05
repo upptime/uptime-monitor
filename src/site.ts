@@ -13,6 +13,11 @@ export const generateSite = async () => {
   const octokit = await getOctokit();
   const repoDetails = await octokit.repos.get({ owner, repo });
   const siteDir = "site";
+  
+  /* Configure shelljs to fail on failure */
+  var sh = require('shelljs');
+  sh.config.fatal = true;
+  
   mkdir(siteDir);
   cd(siteDir);
   /**
