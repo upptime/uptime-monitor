@@ -17,6 +17,9 @@ const generateSite = async () => {
     const octokit = await github_1.getOctokit();
     const repoDetails = await octokit.repos.get({ owner, repo });
     const siteDir = "site";
+    /* Configure shelljs to fail on failure */
+    var sh = require('shelljs');
+    sh.config.fatal = true;
     shelljs_1.mkdir(siteDir);
     shelljs_1.cd(siteDir);
     /**
