@@ -118,7 +118,7 @@ export const update = async (shouldCommit = false) => {
             attempts: 5,
             port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
           });
-          if(tcpResult.results.every(result => Object.prototype.toString.call(result.err) === "[object Error]"))
+          if(tcpResult.results.every(result => Object.prototype.toString.call((result as any).err) === "[object Error]"))
             throw Error('all attempts failed');
           console.log("Got result", tcpResult);
           let responseTime = (tcpResult.avg || 0).toFixed(0);
