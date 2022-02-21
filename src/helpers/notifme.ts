@@ -244,4 +244,30 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Telegram");
   }
+  if (getSecret("NOTIFICATION_LARK")) {
+    console.log("Sending Lark");
+    try {
+      await axios.post(
+        `${getSecret("NOTIFICATION_LARK_BOT_WEBHOOK")}`,
+        {
+          "msg_type": "interactive",
+          "card": {
+            "config": {
+              "wide_screen_mode": true
+            },
+            "elements": [
+              {
+                "tag": "markdown",
+                "content": message.replace(/_/g, '\\_'),
+              }
+            ]
+          }
+        }
+      );
+      console.log("Success Lark");
+    } catch (error) {
+      console.log("Got an error", error);
+    }
+    console.log("Finished sending Lark");
+  }
 };
