@@ -6,6 +6,7 @@ const environment_1 = require("./environment");
 const curl = (site) => new Promise((resolve) => {
     const url = environment_1.replaceEnvironmentVariables(site.url);
     const method = site.method || "GET";
+    const maxRedirects = Number.isInteger(site.maxRedirects) ? Number(site.maxRedirects) : 3;
     const curl = new node_libcurl_1.Curl();
     curl.enable(node_libcurl_1.CurlFeature.Raw);
     curl.setOpt("URL", url);
@@ -17,8 +18,8 @@ const curl = (site) => new Promise((resolve) => {
         curl.setOpt("SSL_VERIFYPEER", false);
     if (site.__dangerous__insecure || site.__dangerous__disable_verify_host)
         curl.setOpt("SSL_VERIFYHOST", false);
-    curl.setOpt("FOLLOWLOCATION", 1);
-    curl.setOpt("MAXREDIRS", Number.isInteger(site.maxRedirects) ? Number(site.maxRedirects) : 3);
+    curl.setOpt("FOLLOWLOCATION", maxRedirects ? 1 : 0);
+    curl.setOpt("MAXREDIRS", maxRedirects);
     curl.setOpt("USERAGENT", "Koj Bot");
     curl.setOpt("CONNECTTIMEOUT", 10);
     curl.setOpt("TIMEOUT", 30);
