@@ -344,7 +344,7 @@ generator: Upptime <https://github.com/upptime/upptime>
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
-                labels: ["status", slug],
+                labels: ["status", slug, ...site.tags || []],
               });
               const assignees = [...(config.assignees || []), ...(site.assignees || [])];
               await octokit.issues.addAssignees({
