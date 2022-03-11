@@ -11,6 +11,7 @@ export interface UpptimeConfig {
     expectedStatusCodes?: number[];
     assignees?: string[];
     headers?: string[];
+    tags?: string[];
     slug?: string;
     body?: string;
     icon?: string;
