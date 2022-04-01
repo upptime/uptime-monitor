@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.update = void 0;
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const dayjs_1 = __importDefault(require("dayjs"));
+const ws_1 = __importDefault(require("ws"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
@@ -121,6 +122,60 @@ const update = async (shouldCommit = false) => {
                 }
                 catch (error) {
                     console.log("ERROR Got pinging error", error);
+                    return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+                }
+            }
+            else if (site.check === "ws") {
+                console.log("Using websocket check instead of curl");
+                let success = false;
+                let status = "up";
+                let responseTime = "0";
+                //   promise to await:
+                const connect = () => {
+                    return new Promise(function (resolve, reject) {
+                        const ws = new ws_1.default(environment_1.replaceEnvironmentVariables(site.url));
+                        ws.on('open', function open() {
+                            if (site.body) {
+                                ws.send(site.body);
+                            }
+                            else {
+                                ws.send("");
+                            }
+                            ws.on('message', function message(data) {
+                                if (data) {
+                                    success = true;
+                                }
+                            });
+                            ws.close();
+                            ws.on('close', function close() {
+                                console.log('Websocket disconnected');
+                            });
+                            resolve(ws);
+                        });
+                        ws.on('error', function error(error) {
+                            reject(error);
+                        });
+                    });
+                };
+                try {
+                    const connection = await connect();
+                    if (connection)
+                        success = true;
+                    if (success) {
+                        status = "up";
+                    }
+                    else {
+                        status = "down";
+                    }
+                    ;
+                    return {
+                        result: { httpCode: 200 },
+                        responseTime,
+                        status,
+                    };
+                }
+                catch (error) {
+                    console.log("ERROR Got pinging error from async call", error);
                     return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
                 }
             }
@@ -252,7 +307,7 @@ generator: Upptime <https://github.com/upptime/upptime>
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
-                                labels: ["status", slug],
+                                labels: ["status", slug, ...site.tags || []],
                             });
                             const assignees = [...(config.assignees || []), ...(site.assignees || [])];
                             await octokit.issues.addAssignees({
