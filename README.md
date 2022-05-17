@@ -51,7 +51,7 @@ npx @upptime/uptime-monitor
 
 ## 📄 License
 
-[MIT](./LICENSE) © [Koj](https://koj.co)
+[MIT](./LICENSE) © [Pabio](https://pabio.com)
 
 <p align="center">
   <a href="https://koj.co">
