@@ -1,3 +1,12 @@
+## v1.27.0 (2022-05-17)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.27.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.4...v1.27.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.27.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.27.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.27.0.tar.gz))
+
+### ✨ New features
+
+- [`b620bc2`](https://github.com/upptime/uptime-monitor/commit/b620bc2)  Add Lark Provider
+- [`ac129f3`](https://github.com/upptime/uptime-monitor/commit/ac129f3)  Deploy new minor version
+
 ## v1.26.4 (2021-04-24)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.26.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.3...v1.26.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.26.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.26.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.26.4.tar.gz))
