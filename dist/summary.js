@@ -41,7 +41,7 @@ const generateSummary = async () => {
         console.log("Response times", responseTimes);
         let fallbackIcon = "";
         try {
-            fallbackIcon = `https://favicons.githubusercontent.com/${url_1.parse(site.url).hostname}`;
+            fallbackIcon = `https://icons.duckduckgo.com/ip3/${url_1.parse(site.url).hostname}.ico`;
         }
         catch (error) { }
         pageStatuses.push({
