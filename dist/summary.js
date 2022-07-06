@@ -116,7 +116,9 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
         if (readmeContent.includes("[MIT](./LICENSE) © [Koj](https://koj.co)") ||
             readmeContent.includes("<!--start: description-->")) {
             try {
-                const org = await octokit.users.getByUsername({ username: config.owner });
+                const org = await octokit.users.getByUsername({
+                    username: config.owner,
+                });
                 name = `[${org.data.name || config.owner}](${org.data.blog || website})`;
             }
             catch (error) { }
@@ -146,7 +148,8 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
                         .replace("[", "")}, powered by @upptime`,
                 });
             console.log("Current topics are", repoInfo.data.topics);
-            if (!(repoInfo.data.topics || []).includes("upptime") && !config.skipTopicsUpdate)
+            if (!(repoInfo.data.topics || []).includes("upptime") &&
+                !config.skipTopicsUpdate)
                 await octokit.repos.replaceAllTopics({
                     owner,
                     repo,
@@ -157,7 +160,12 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
                         "upptime",
                     ].filter((value, index, array) => array.indexOf(value) === index),
                 });
-            console.log("Possibly updated to to", [...(repoInfo.data.topics || []), "uptime-monitor", "status-page", "upptime"].filter((value, index, array) => array.indexOf(value) === index));
+            console.log("Possibly updated to to", [
+                ...(repoInfo.data.topics || []),
+                "uptime-monitor",
+                "status-page",
+                "upptime",
+            ].filter((value, index, array) => array.indexOf(value) === index));
             console.log("Topics are", (await octokit.repos.get({ owner, repo })).data.topics);
             if (!repoInfo.data.homepage && !config.skipHomepageUpdate)
                 await octokit.repos.update({
@@ -187,6 +195,7 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     })
         .join("\n");
     await fs_extra_1.writeFile(path_1.join(".", "README.md"), prettier_1.format(readmeContent, { parser: "markdown" }));
+    await fs_extra_1.writeFile(path_1.join(".", ".gitattributes"), "# Markdown\n*.md linguist-detectable=true\n*.md linguist-documentation=false\n\n# JSON\n*.json linguist-detectable=true\n\n# YAML\n*.yml linguist-detectable=true\n");
     git_1.commit((config.commitMessages || {}).readmeContent ||
         ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     // If there are any old workflows left, fix them
@@ -217,7 +226,9 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
         for await (const issue of issuesRecentlyClosed.data) {
             if (issue.closed_at &&
                 // If this issue was closed within 15 minutes
-                new Date(issue.closed_at).getTime() - new Date(issue.created_at).getTime() < 900000 &&
+                new Date(issue.closed_at).getTime() -
+                    new Date(issue.created_at).getTime() <
+                    900000 &&
                 // It has 1 comment (the default Upptime one)
                 issue.comments === 1) {
                 try {
