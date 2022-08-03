@@ -20,6 +20,7 @@ const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
 const secrets_1 = require("./helpers/secrets");
 const summary_1 = require("./summary");
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const update = async (shouldCommit = false) => {
     if (!(await init_check_1.shouldContinue()))
         return;
@@ -82,6 +83,10 @@ const update = async (shouldCommit = false) => {
     }
     for await (const site of config.sites) {
         console.log("Checking", site.url);
+        if (config.delay) {
+            console.log(`Waiting for ${config.delay}ms`);
+            await delay(config.delay);
+        }
         const slug = site.slug || slugify_1.default(site.name);
         let currentStatus = "unknown";
         let startTime = new Date();
