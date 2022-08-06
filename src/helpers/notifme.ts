@@ -244,6 +244,28 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Telegram");
   }
+
+  if(getSecret("MS_TEAMS_WEBHOOK_URL")) {
+    const webhookUrl = getSecret("MS_TEAMS_WEBHOOK_URL");
+      if (webhookUrl) {
+        console.log("[debug] Sending email notification");
+        const messageCard = {
+          "@type": "MessageCard",
+          "@context": "https://schema.org/extensions",
+          "themeColor": "0078D7",
+          "sections": [
+            {
+              "text": message.replace(/_/g, '\\_')
+            }
+          ]
+        };
+        await axios.post(webhookUrl, messageCard);
+        console.log("[debug] Sent notification");
+      } else {
+        console.log("[debug] MS_TEAMS_WEBHOOK_URL secret not exists");
+      }
+  }
+
   if (getSecret("NOTIFICATION_LARK")) {
     console.log("Sending Lark");
     try {
