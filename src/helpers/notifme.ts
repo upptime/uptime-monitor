@@ -246,7 +246,7 @@ export const sendNotification = async (message: string) => {
   }
 
   if(getSecret("MS_TEAMS_WEBHOOK_URL")) {
-    const webhookUrl = getSecret("MS_TEAMS_WEBHOOK_URL");
+      const webhookUrl = getSecret("MS_TEAMS_WEBHOOK_URL");
       if (webhookUrl) {
         console.log("[debug] Sending email notification");
         const messageCard = {
