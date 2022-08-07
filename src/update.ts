@@ -16,6 +16,8 @@ import { getOwnerRepo } from "./helpers/secrets";
 import { SiteHistory } from "./interfaces";
 import { generateSummary } from "./summary";
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const update = async (shouldCommit = false) => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
@@ -85,6 +87,11 @@ export const update = async (shouldCommit = false) => {
   for await (const site of config.sites) {
     console.log("Checking", site.url);
 
+    if (config.delay) {
+      console.log(`Waiting for ${config.delay}ms`);
+      await delay(config.delay);
+    }
+
     const slug = site.slug || slugify(site.name);
     let currentStatus = "unknown";
     let startTime = new Date();
@@ -97,7 +104,7 @@ export const update = async (shouldCommit = false) => {
       ) as SiteHistory;
       currentStatus = siteHistory.status || "unknown";
       startTime = new Date(siteHistory.startTime || new Date());
-    } catch (error) {}
+    } catch (error) { }
     console.log("Current status", site.slug, currentStatus, startTime);
 
     /**
@@ -119,7 +126,7 @@ export const update = async (shouldCommit = false) => {
             attempts: 5,
             port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
           });
-          if(tcpResult.results.every(result => Object.prototype.toString.call((result as any).err) === "[object Error]"))
+          if (tcpResult.results.every(result => Object.prototype.toString.call((result as any).err) === "[object Error]"))
             throw Error('all attempts failed');
           console.log("Got result", tcpResult);
           let responseTime = (tcpResult.avg || 0).toFixed(0);
@@ -134,25 +141,25 @@ export const update = async (shouldCommit = false) => {
           return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
         }
       } else if (site.check === "ws") {
-          console.log("Using websocket check instead of curl")
-          let success = false;
-          let status: "up" | "down" | "degraded" = "up";
-          let responseTime = "0";
+        console.log("Using websocket check instead of curl")
+        let success = false;
+        let status: "up" | "down" | "degraded" = "up";
+        let responseTime = "0";
         //   promise to await:
-          const connect = () => { 
-              return new Promise(function(resolve, reject) {
-                const ws = new WebSocket(replaceEnvironmentVariables(site.url));
-                ws.on('open', function open() {
-                    if (site.body) {
-                      ws.send(site.body);
-                    } else {
-                      ws.send("");
-                    }
-                    ws.on('message', function message(data){
-                        if(data){
-                            success=true
-                        }
-                    })
+        const connect = () => {
+          return new Promise(function (resolve, reject) {
+            const ws = new WebSocket(replaceEnvironmentVariables(site.url));
+            ws.on('open', function open() {
+              if (site.body) {
+                ws.send(site.body);
+              } else {
+                ws.send("");
+              }
+              ws.on('message', function message(data) {
+                if (data) {
+                  success = true
+                }
+              })
               ws.close();
               ws.on('close', function close() {
                 console.log('Websocket disconnected');
@@ -160,28 +167,28 @@ export const update = async (shouldCommit = false) => {
               resolve(ws)
             });
             ws.on('error', function error(error: any) {
-                reject(error)
-              });               
-              })
-          }
+              reject(error)
+            });
+          })
+        }
         try {
           const connection = await connect()
-          if(connection) success = true
+          if (connection) success = true
           if (success) {
-              status = "up";
-            } else {
-                status = "down";
-            };
-            return {
-                result: { httpCode: 200 },
-                responseTime,
-                status,
-            };
+            status = "up";
+          } else {
+            status = "down";
+          };
+          return {
+            result: { httpCode: 200 },
+            responseTime,
+            status,
+          };
         }
-     catch (error) {
-        console.log("ERROR Got pinging error from async call", error);
-        return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
-    }
+        catch (error) {
+          console.log("ERROR Got pinging error from async call", error);
+          return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+        }
       } else {
         const result = await curl(site);
         console.log("Result from test", result.httpCode, result.totalTime);
@@ -285,8 +292,8 @@ generator: Upptime <https://github.com/upptime/upptime>
               status === "up"
                 ? config.commitPrefixStatusUp || "🟩"
                 : status === "degraded"
-                ? config.commitPrefixStatusDegraded || "🟨"
-                : config.commitPrefixStatusDown || "🟥"
+                  ? config.commitPrefixStatusDegraded || "🟨"
+                  : config.commitPrefixStatusDown || "🟥"
             )
             .replace("$SITE_NAME", site.name)
             .replace("$SITE_URL", site.url)
@@ -338,9 +345,8 @@ generator: Upptime <https://github.com/upptime/upptime>
                 body: `In [\`${lastCommitSha.substr(
                   0,
                   7
-                )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}), ${site.name} (${
-                  site.url
-                }) ${status === "down" ? "was **down**" : "experienced **degraded performance**"}:
+                )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}), ${site.name} (${site.url
+                  }) ${status === "down" ? "was **down**" : "experienced **degraded performance**"}:
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
@@ -377,14 +383,13 @@ generator: Upptime <https://github.com/upptime/upptime>
               owner,
               repo,
               issue_number: issues.data[0].number,
-              body: `**Resolved:** ${site.name} ${
-                issues.data[0].title.includes("degraded")
+              body: `**Resolved:** ${site.name} ${issues.data[0].title.includes("degraded")
                   ? "performance has improved"
                   : "is back up"
-              } in [\`${lastCommitSha.substr(
-                0,
-                7
-              )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).`,
+                } in [\`${lastCommitSha.substr(
+                  0,
+                  7
+                )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).`,
             });
             console.log("Created comment in issue");
             await octokit.issues.update({
@@ -396,10 +401,9 @@ generator: Upptime <https://github.com/upptime/upptime>
             console.log("Closed issue");
             try {
               await sendNotification(
-                `🟩 ${site.name} (${site.url}) ${
-                  issues.data[0].title.includes("degraded")
-                    ? "performance has improved"
-                    : "is back up"
+                `🟩 ${site.name} (${site.url}) ${issues.data[0].title.includes("degraded")
+                  ? "performance has improved"
+                  : "is back up"
                 }.`
               );
             } catch (error) {

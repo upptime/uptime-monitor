@@ -30,6 +30,7 @@ export interface UpptimeConfig {
         [index: string]: string;
     }[];
     assignees: string[];
+    delay?: number;
     PAT?: string;
     "status-website"?: {
         cname?: string;

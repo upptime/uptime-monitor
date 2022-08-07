@@ -48,6 +48,27 @@ const sendNotification = async (config, text) => {
             });
             console.log("[debug] Sent notification");
         }
+        else if (notification.type === 'ms-teams') {
+            const webhookUrl = (0, secrets_1.getSecret)("MS_TEAMS_WEBHOOK_URL");
+            if (webhookUrl) {
+                console.log("[debug] Sending email notification");
+                const messageCard = {
+                    "@type": "MessageCard",
+                    "@context": "https://schema.org/extensions",
+                    "themeColor": "0078D7",
+                    "sections": [
+                        {
+                            "text": text
+                        }
+                    ]
+                };
+                await axios_1.default.post(webhookUrl, messageCard);
+                console.log("[debug] Sent notification");
+            }
+            else {
+                console.log("[debug] MS_TEAMS_WEBHOOK_URL secret not exists");
+            }
+        }
         else {
             console.log("This notification type is not supported:", notification.type);
         }
