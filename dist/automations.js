@@ -9,17 +9,17 @@ const rest_1 = require("@octokit/rest");
 const dotenv_1 = require("dotenv");
 const axios_1 = __importDefault(require("axios"));
 const secrets_1 = require("./helpers/secrets");
-dotenv_1.config();
+(0, dotenv_1.config)();
 const createAutomatedIssue = async () => {
     const octokit = new rest_1.Octokit({
-        auth: secrets_1.getSecret("AUTOMATION_TOKEN"),
+        auth: (0, secrets_1.getSecret)("AUTOMATION_TOKEN"),
     });
     const searchResults = await octokit.search.repos({
         q: "topic:upptime",
         per_page: 100,
     });
     const numberOfPages = Math.floor(searchResults.data.total_count / 100);
-    const body = await fs_extra_1.readFile(path_1.join(".", "src", "issue-template.md"), "utf8");
+    const body = await (0, fs_extra_1.readFile)((0, path_1.join)(".", "src", "issue-template.md"), "utf8");
     for await (const page of Array.from(Array(numberOfPages)).map((_, i) => i + 1)) {
         const results = await octokit.search.repos({
             q: "topic:upptime",

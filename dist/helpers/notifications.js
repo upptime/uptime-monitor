@@ -13,35 +13,35 @@ const sendNotification = async (config, text) => {
     for await (const notification of config.notifications || []) {
         if (notification.type === "slack") {
             console.log("[debug] Sending Slack notification to channel", notification.channel);
-            const token = secrets_1.getSecret("SLACK_APP_ACCESS_TOKEN");
+            const token = (0, secrets_1.getSecret)("SLACK_APP_ACCESS_TOKEN");
             if (token) {
-                const { data } = await axios_1.default.post("https://slack.com/api/chat.postMessage", { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${secrets_1.getSecret("SLACK_BOT_ACCESS_TOKEN")}` } });
+                const { data } = await axios_1.default.post("https://slack.com/api/chat.postMessage", { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${(0, secrets_1.getSecret)("SLACK_BOT_ACCESS_TOKEN")}` } });
                 console.log("[debug] Slack response", data);
             }
             console.log("[debug] Slack token found?", !!token);
             if (config.owner === "AnandChowdhary" && config.repo === "status")
-                console.log("[debug] Slack token", (token || "").split("").join(" "), { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${secrets_1.getSecret("SLACK_BOT_ACCESS_TOKEN")}` } });
+                console.log("[debug] Slack token", (token || "").split("").join(" "), { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${(0, secrets_1.getSecret)("SLACK_BOT_ACCESS_TOKEN")}` } });
         }
         else if (notification.type === "discord") {
             console.log("[debug] Sending Discord notification");
-            const webhookUrl = secrets_1.getSecret("DISCORD_WEBHOOK_URL");
+            const webhookUrl = (0, secrets_1.getSecret)("DISCORD_WEBHOOK_URL");
             if (webhookUrl)
                 await axios_1.default.post(webhookUrl, { content: text });
         }
         else if (notification.type === "email") {
             console.log("[debug] Sending email notification");
             const transporter = nodemailer_1.default.createTransport({
-                host: secrets_1.getSecret("NOTIFICATION_SMTP_HOST"),
-                port: secrets_1.getSecret("NOTIFICATION_SMTP_PORT") || 587,
-                secure: !!secrets_1.getSecret("NOTIFICATION_SMTP_SECURE"),
+                host: (0, secrets_1.getSecret)("NOTIFICATION_SMTP_HOST"),
+                port: (0, secrets_1.getSecret)("NOTIFICATION_SMTP_PORT") || 587,
+                secure: !!(0, secrets_1.getSecret)("NOTIFICATION_SMTP_SECURE"),
                 auth: {
-                    user: secrets_1.getSecret("NOTIFICATION_SMTP_USER"),
-                    pass: secrets_1.getSecret("NOTIFICATION_SMTP_PASSWORD"),
+                    user: (0, secrets_1.getSecret)("NOTIFICATION_SMTP_USER"),
+                    pass: (0, secrets_1.getSecret)("NOTIFICATION_SMTP_PASSWORD"),
                 },
             });
             await transporter.sendMail({
-                from: secrets_1.getSecret("NOTIFICATION_SMTP_USER"),
-                to: secrets_1.getSecret("NOTIFICATION_EMAIL") || secrets_1.getSecret("NOTIFICATION_SMTP_USER"),
+                from: (0, secrets_1.getSecret)("NOTIFICATION_SMTP_USER"),
+                to: (0, secrets_1.getSecret)("NOTIFICATION_EMAIL") || (0, secrets_1.getSecret)("NOTIFICATION_SMTP_USER"),
                 subject: text,
                 text: text,
                 html: `<p>${text}</p>`,
