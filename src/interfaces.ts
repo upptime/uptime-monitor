@@ -27,6 +27,7 @@ export interface UpptimeConfig {
   }[];
   notifications?: { type: string; [index: string]: string }[];
   assignees: string[];
+  delay?: number;
   PAT?: string;
   "status-website"?: {
     cname?: string;
