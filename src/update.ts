@@ -5,6 +5,7 @@ import { mkdirp, readFile, writeFile } from "fs-extra";
 import { load } from "js-yaml";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
+import { getSecret } from "./helpers/secrets";
 import { replaceEnvironmentVariables } from "./helpers/environment";
 import { commit, lastCommit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
@@ -366,10 +367,17 @@ generator: Upptime <https://github.com/upptime/upptime>
               });
               console.log("Opened and locked a new issue");
               try {
+                const downmsg = await getSecret("NOTIFICATIONS_DOWN_MESSAGE") ? getSecret("NOTIFICATIONS_DOWN_MESSAGE")
+                .replace("$SITE_NAME", site.name)
+                .replace("$SITE_URL", `(${site.url})`)
+                .replace("$ISSUE_URL", `${newIssue.data.html_url}`)
+                .replace("$RESPONSE_CODE", result.httpCode.toString())
+                : `$EMOJI ${site.name} (${site.url}) is $STATUS : ${newIssue.data.html_url}`
+
                 await sendNotification(
                   status === "down"
-                    ? `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
-                    : `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**: ${newIssue.data.html_url}`
+                    ? `${downmsg.replace("$STATUS", "**down**").replace("$EMOJI", `${config.commitPrefixStatusDown || "🟥"}`)}`
+                    : `${downmsg.replace("$STATUS", "experiencing **degrading performance**").replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟥"}`)}`
                 );
               } catch (error) {
                 console.log(error);
@@ -400,12 +408,15 @@ generator: Upptime <https://github.com/upptime/upptime>
             });
             console.log("Closed issue");
             try {
-              await sendNotification(
-                `🟩 ${site.name} (${site.url}) ${issues.data[0].title.includes("degraded")
-                  ? "performance has improved"
-                  : "is back up"
-                }.`
-              );
+              const upmsg = await getSecret("NOTIFICATIONS_UP_MESSAGE") ? getSecret("NOTIFICATIONS_UP_MESSAGE")
+              .replace("$SITE_NAME", site.name)
+              .replace("$SITE_URL", `(${site.url})`)
+              : `$EMOJI ${site.name} (${site.url}) $STATUS`
+
+              await sendNotification(upmsg.replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`).replace("STATUS", `${issues.data[0].title.includes("degraded")
+              ? "performance has improved"
+              : "is back up"
+            }`));
             } catch (error) {
               console.log(error);
             }
