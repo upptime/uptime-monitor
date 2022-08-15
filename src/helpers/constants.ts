@@ -5,4 +5,4 @@ export const SUMMARY_CI_SCHEDULE = "0 0 * * *";
 export const UPDATE_TEMPLATE_CI_SCHEDULE = "0 0 * * *";
 export const UPDATES_CI_SCHEDULE = "0 3 * * *";
 export const UPTIME_CI_SCHEDULE = "*/5 * * * *";
-export const DEFAULT_RUNNER = "ubuntu-18.04";
+export const DEFAULT_RUNNER = "ubuntu-20.04";
