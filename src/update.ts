@@ -367,7 +367,7 @@ generator: Upptime <https://github.com/upptime/upptime>
               });
               console.log("Opened and locked a new issue");
               try {
-                const downmsg = await getSecret("NOTIFICATIONS_DOWN_MESSAGE") ? getSecret("NOTIFICATIONS_DOWN_MESSAGE")
+                const downmsg = await getSecret("NOTIFICATIONS_DOWN_MESSAGE") ? (getSecret("NOTIFICATIONS_DOWN_MESSAGE") || "")
                 .replace("$SITE_NAME", site.name)
                 .replace("$SITE_URL", `(${site.url})`)
                 .replace("$ISSUE_URL", `${newIssue.data.html_url}`)
@@ -408,7 +408,7 @@ generator: Upptime <https://github.com/upptime/upptime>
             });
             console.log("Closed issue");
             try {
-              const upmsg = await getSecret("NOTIFICATIONS_UP_MESSAGE") ? getSecret("NOTIFICATIONS_UP_MESSAGE")
+              const upmsg = await getSecret("NOTIFICATIONS_UP_MESSAGE") ? (getSecret("NOTIFICATIONS_UP_MESSAGE") || "")
               .replace("$SITE_NAME", site.name)
               .replace("$SITE_URL", `(${site.url})`)
               : `$EMOJI ${site.name} (${site.url}) $STATUS`
