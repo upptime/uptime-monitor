@@ -11,6 +11,7 @@ const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
 const config_1 = require("./helpers/config");
+const secrets_1 = require("./helpers/secrets");
 const environment_1 = require("./helpers/environment");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
@@ -18,14 +19,14 @@ const init_check_1 = require("./helpers/init-check");
 const notifme_1 = require("./helpers/notifme");
 const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
-const secrets_1 = require("./helpers/secrets");
+const secrets_2 = require("./helpers/secrets");
 const summary_1 = require("./summary");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const update = async (shouldCommit = false) => {
     if (!(await init_check_1.shouldContinue()))
         return;
     await fs_extra_1.mkdirp("history");
-    const [owner, repo] = secrets_1.getOwnerRepo();
+    const [owner, repo] = secrets_2.getOwnerRepo();
     const config = await config_1.getConfig();
     const octokit = await github_1.getOctokit();
     let hasDelta = false;
@@ -328,9 +329,15 @@ generator: Upptime <https://github.com/upptime/upptime>
                             });
                             console.log("Opened and locked a new issue");
                             try {
+                                const downmsg = await secrets_1.getSecret("NOTIFICATIONS_DOWN_MESSAGE") ? (secrets_1.getSecret("NOTIFICATIONS_DOWN_MESSAGE") || "")
+                                    .replace("$SITE_NAME", site.name)
+                                    .replace("$SITE_URL", `(${site.url})`)
+                                    .replace("$ISSUE_URL", `${newIssue.data.html_url}`)
+                                    .replace("$RESPONSE_CODE", result.httpCode.toString())
+                                    : `$EMOJI ${site.name} (${site.url}) is $STATUS : ${newIssue.data.html_url}`;
                                 await notifme_1.sendNotification(status === "down"
-                                    ? `🟥 ${site.name} (${site.url}) is **down**: ${newIssue.data.html_url}`
-                                    : `🟨 ${site.name} (${site.url}) is experiencing **degraded performance**: ${newIssue.data.html_url}`);
+                                    ? `${downmsg.replace("$STATUS", "**down**").replace("$EMOJI", `${config.commitPrefixStatusDown || "🟥"}`)}`
+                                    : `${downmsg.replace("$STATUS", "experiencing **degrading performance**").replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟥"}`)}`);
                             }
                             catch (error) {
                                 console.log(error);
@@ -359,9 +366,13 @@ generator: Upptime <https://github.com/upptime/upptime>
                         });
                         console.log("Closed issue");
                         try {
-                            await notifme_1.sendNotification(`🟩 ${site.name} (${site.url}) ${issues.data[0].title.includes("degraded")
+                            const upmsg = await secrets_1.getSecret("NOTIFICATIONS_UP_MESSAGE") ? (secrets_1.getSecret("NOTIFICATIONS_UP_MESSAGE") || "")
+                                .replace("$SITE_NAME", site.name)
+                                .replace("$SITE_URL", `(${site.url})`)
+                                : `$EMOJI ${site.name} (${site.url}) $STATUS`;
+                            await notifme_1.sendNotification(upmsg.replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`).replace("STATUS", `${issues.data[0].title.includes("degraded")
                                 ? "performance has improved"
-                                : "is back up"}.`);
+                                : "is back up"}`));
                         }
                         catch (error) {
                             console.log(error);

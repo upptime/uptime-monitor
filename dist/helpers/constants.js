@@ -8,5 +8,5 @@ exports.SUMMARY_CI_SCHEDULE = "0 0 * * *";
 exports.UPDATE_TEMPLATE_CI_SCHEDULE = "0 0 * * *";
 exports.UPDATES_CI_SCHEDULE = "0 3 * * *";
 exports.UPTIME_CI_SCHEDULE = "*/5 * * * *";
-exports.DEFAULT_RUNNER = "ubuntu-18.04";
+exports.DEFAULT_RUNNER = "ubuntu-20.04";
 //# sourceMappingURL=constants.js.map
