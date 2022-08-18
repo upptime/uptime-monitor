@@ -15,6 +15,8 @@ This repository is for Upptime's GitHub Action. We love contributions, so please
 
 We use the [upptime/upptime](https://github.com/upptime/upptime) repository for issues for all projects, including this one. If you found a bug or have a feature request, [open an issue](https://github.com/upptime/upptime/issues) in the Upptime repository and add the label "action".
 
+For now, we have disabled issues so you will need to create a fake PR to be able to communicate with us :smile:.
+
 ## 💻 Usage
 
 When you use Upptime, we automatically add the required workflows. If you want to manually use this package, you can use `npx`:
