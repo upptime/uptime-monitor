@@ -67,11 +67,21 @@ const update = async (shouldCommit = false) => {
                     .map((i) => i.trim())
                     .filter((i) => i.length);
             if (dayjs_1.default(metadata.end).isBefore(dayjs_1.default())) {
+                await octokit.issues.unlock({
+                    owner,
+                    repo,
+                    issue_number: incident.number,
+                });
                 await octokit.issues.update({
                     owner,
                     repo,
                     issue_number: incident.number,
                     state: "closed",
+                });
+                await octokit.issues.lock({
+                    owner,
+                    repo,
+                    issue_number: incident.number,
                 });
                 console.log("Closed maintenance completed event", incident.number);
             }
@@ -349,6 +359,11 @@ generator: Upptime <https://github.com/upptime/upptime>
                     }
                     else if (issues.data.length) {
                         // If the site just came back up
+                        await octokit.issues.unlock({
+                            owner,
+                            repo,
+                            issue_number: issues.data[0].number,
+                        });
                         await octokit.issues.createComment({
                             owner,
                             repo,
@@ -363,6 +378,11 @@ generator: Upptime <https://github.com/upptime/upptime>
                             repo,
                             issue_number: issues.data[0].number,
                             state: "closed",
+                        });
+                        await octokit.issues.lock({
+                            owner,
+                            repo,
+                            issue_number: issues.data[0].number,
                         });
                         console.log("Closed issue");
                         try {
