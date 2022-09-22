@@ -255,6 +255,23 @@ const sendNotification = async (message) => {
         }
         console.log("Finished sending Lark");
     }
+    if (secrets_1.getSecret("NOTIFICATION_TEAMS")) {
+        console.log("Sending Microsoft Teams");
+        try {
+            await axios_1.default.post(`${secrets_1.getSecret("NOTIFICATION_TEAMS_WEBHOOK_URL")}`, {
+                "@context": "https://schema.org/extensions",
+                "@type": "MessageCard",
+                themeColor: "0072C6",
+                text: message,
+                summary: message
+            });
+            console.log("Success Microsoft Teams");
+        }
+        catch (error) {
+            console.log("Got an error", error);
+        }
+        console.log("Finished sending Microsoft Teams");
+    }
 };
 exports.sendNotification = sendNotification;
 //# sourceMappingURL=notifme.js.map
