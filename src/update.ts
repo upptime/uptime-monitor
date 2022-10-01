@@ -433,7 +433,7 @@ generator: Upptime <https://github.com/upptime/upptime>
               .replace("$SITE_URL", `(${site.url})`)
               : `$EMOJI ${site.name} (${site.url}) $STATUS`
 
-              await sendNotification(upmsg.replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`).replace("STATUS", `${issues.data[0].title.includes("degraded")
+              await sendNotification(upmsg.replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`).replace("$STATUS", `${issues.data[0].title.includes("degraded")
               ? "performance has improved"
               : "is back up"
             }`));
