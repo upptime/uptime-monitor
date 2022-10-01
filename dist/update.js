@@ -390,7 +390,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                                 .replace("$SITE_NAME", site.name)
                                 .replace("$SITE_URL", `(${site.url})`)
                                 : `$EMOJI ${site.name} (${site.url}) $STATUS`;
-                            await notifme_1.sendNotification(upmsg.replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`).replace("STATUS", `${issues.data[0].title.includes("degraded")
+                            await notifme_1.sendNotification(upmsg.replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`).replace("$STATUS", `${issues.data[0].title.includes("degraded")
                                 ? "performance has improved"
                                 : "is back up"}`));
                         }
