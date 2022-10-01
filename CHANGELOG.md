@@ -1,3 +1,18 @@
+## v1.28.0 (2022-10-01)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.28.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.27.0...v1.28.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.28.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.28.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.28.0.tar.gz))
+
+### ✨ New features
+
+- [`66bdb6b`](https://github.com/upptime/uptime-monitor/commit/66bdb6b)  Add .gitattributes generator
+- [`441513a`](https://github.com/upptime/uptime-monitor/commit/441513a)  Add support for delays (fixes upptime/upptime#625)
+(Issues: [`upptime/upptime#625`](https://github.com/upptime/upptime/issues/625))- [`a9073ac`](https://github.com/upptime/uptime-monitor/commit/a9073ac)  Custom messages in up/down notifications
+- [`710ef81`](https://github.com/upptime/uptime-monitor/commit/710ef81)  Add Microsoft Teams integration
+
+### 🐛 Bug fixes
+
+- [`e3d6e09`](https://github.com/upptime/uptime-monitor/commit/e3d6e09)  Fix types
+
 ## v1.27.0 (2022-05-17)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.27.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.26.4...v1.27.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.27.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.27.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.27.0.tar.gz))
