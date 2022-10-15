@@ -235,6 +235,7 @@ export const sendNotification = async (message: string) => {
       await axios.post(
         `${baseUrl}/messaging/messages/create`,
         {
+          i: getSecret("NOTIFICATION_MISSKEY_API_KEY") as string,
           userId: getSecret("NOTIFICATION_MISSKEY_CHAT_USER_ID"),
           text: message,
         }
@@ -276,7 +277,6 @@ export const sendNotification = async (message: string) => {
       await axios.post(
         `https://api.telegram.org/bot${getSecret("NOTIFICATION_TELEGRAM_BOT_KEY")}/sendMessage`,
         {
-          i: getSecret("NOTIFICATION_MISSKEY_API_KEY") as string,
           parse_mode: "Markdown",
           disable_web_page_preview: true,
           chat_id: getSecret("NOTIFICATION_TELEGRAM_CHAT_ID"),
