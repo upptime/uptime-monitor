@@ -1,4 +1,4 @@
-import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
+import NotifmeSdk, { EmailProvider, MisskeyProvider, SlackProvider, SmsProvider } from "notifme-sdk";
 import axios from "axios";
 import type { Channel } from "notifme-sdk";
 import { replaceEnvironmentVariables } from "./environment";
@@ -6,6 +6,7 @@ import { getSecret } from "./secrets";
 
 const channels: {
   email?: Channel<EmailProvider>;
+  misskey?: Channel<MisskeyProvider>;
   sms?: Channel<SmsProvider>;
   slack?: Channel<SlackProvider>;
 } = {};
@@ -226,12 +227,56 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Discord");
   }
+  if (getSecret("NOTIFICATION_MISSKEY") && getSecret("NOTIFICATION_MISSKEY_INSTANCEURL") && getSecret("NOTIFICATION_MISSKEY_API_KEY")) {
+    console.log("Sending Misskey");
+    const instanceUrl = new URL(getSecret("NOTIFICATION_MISSKEY_INSTANCEURL") as string);
+    const baseUrl = `${instanceUrl.protocol}://${instanceUrl.hostname}/api`;
+    if (getSecret("NOTIFICATION_MISSKEY_CHAT") && getSecret("NOTIFICATION_MISSKEY_CHAT_USER_ID")) {
+      await axios.post(
+        `${baseUrl}/messaging/messages/create`,
+        {
+          userId: getSecret("NOTIFICATION_MISSKEY_CHAT_USER_ID"),
+          text: message,
+        }
+      );
+    }
+    if (getSecret("NOTIFICATION_MISSKEY_NOTE")) {
+      type MisskeyNoteVisibility = "public" | "home" | "followers" | "specified";
+      let visibility: MisskeyNoteVisibility = "public";
+      let visibleUserIds: string[] | undefined;
+      if (getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBILITY")) {
+        try {
+          visibility = getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBILITY") as MisskeyNoteVisibility;
+        } catch (e) {
+          console.log(`Unsupported Misskey note visibility mode: ${getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBILITY")}`);
+        }
+      }
+      if (visibility == "specified") {
+        if (Array.isArray(getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBLE_USER_IDS"))) {
+          visibleUserIds = getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBLE_USER_IDS")
+        } else {
+          console.log("Error: No visible user ID list specified");
+        }
+      }
+      await axios.post(
+        `${baseUrl}/notes/create`,
+        {
+          i: getSecret("NOTIFICATION_MISSKEY_API_KEY") as string,
+          visibility: visibility,
+          visibleUserIds: visibleUserIds,
+          text: message,
+        }
+      );
+    }
+    console.log("Success Misskey");
+  }
   if (getSecret("NOTIFICATION_TELEGRAM") && getSecret("NOTIFICATION_TELEGRAM_BOT_KEY")) {
     console.log("Sending Telegram");
     try {
       await axios.post(
         `https://api.telegram.org/bot${getSecret("NOTIFICATION_TELEGRAM_BOT_KEY")}/sendMessage`,
         {
+          i: getSecret("NOTIFICATION_MISSKEY_API_KEY") as string,
           parse_mode: "Markdown",
           disable_web_page_preview: true,
           chat_id: getSecret("NOTIFICATION_TELEGRAM_CHAT_ID"),
