@@ -30,7 +30,13 @@ export const sendNotification = async (config: UpptimeConfig, text: string) => {
     } else if (notification.type === "discord") {
       console.log("[debug] Sending Discord notification");
       const webhookUrl = getSecret("DISCORD_WEBHOOK_URL");
-      if (webhookUrl) await axios.post(webhookUrl, { content: text });
+      if (webhookUrl) {
+        if (webhookUrl.indexOf("?hideUpptimeSource")) {
+            // replace the first line (which is the source), but leave the second link (the github issue) intact
+            text = l.replace(/(?:https?):\/\/[\n\S]+/, '(redacted)');
+        }
+        await axios_1.default.post(webhookUrl, { content: text });
+      }
     } else if (notification.type === "email") {
       console.log("[debug] Sending email notification");
       const transporter = nodemailer.createTransport({
