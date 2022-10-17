@@ -1,4 +1,4 @@
-import NotifmeSdk, { EmailProvider, MisskeyProvider, SlackProvider, SmsProvider } from "notifme-sdk";
+import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
 import axios from "axios";
 import type { Channel } from "notifme-sdk";
 import { replaceEnvironmentVariables } from "./environment";
@@ -6,7 +6,6 @@ import { getSecret } from "./secrets";
 
 const channels: {
   email?: Channel<EmailProvider>;
-  misskey?: Channel<MisskeyProvider>;
   sms?: Channel<SmsProvider>;
   slack?: Channel<SlackProvider>;
 } = {};
@@ -227,9 +226,9 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Discord");
   }
-  if (getSecret("NOTIFICATION_MISSKEY") && getSecret("NOTIFICATION_MISSKEY_INSTANCEURL") && getSecret("NOTIFICATION_MISSKEY_API_KEY")) {
+  if (getSecret("NOTIFICATION_MISSKEY") && getSecret("NOTIFICATION_MISSKEY_INSTANCE_URL") && getSecret("NOTIFICATION_MISSKEY_API_KEY")) {
     console.log("Sending Misskey");
-    const instanceUrl = new URL(getSecret("NOTIFICATION_MISSKEY_INSTANCEURL") as string);
+    const instanceUrl = new URL(getSecret("NOTIFICATION_MISSKEY_INSTANCE_URL") as string);
     const baseUrl = `${instanceUrl.protocol}://${instanceUrl.hostname}/api`;
     if (getSecret("NOTIFICATION_MISSKEY_CHAT") && getSecret("NOTIFICATION_MISSKEY_CHAT_USER_ID")) {
       await axios.post(
