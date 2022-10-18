@@ -226,6 +226,32 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Discord");
   }
+  if (getSecret("NOTIFICATION_MASTODON") && getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") && getSecret("NOTIFICATION_MASTODON_API_KEY")) {
+    console.log("Sending Mastodon");
+    const instanceUrl = new URL(getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") as string);
+    const baseUrl = `${instanceUrl.protocol}://${instanceUrl.hostname}/api`;
+    type MastodonVisibility = "public" | "unlisted" | "private" | "direct";
+    let visibility: MastodonVisibility = "public";
+    if (getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY")) {
+      try {
+        visibility = getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY") as MastodonVisibility;
+      } catch (e) {
+        console.log(`Unsupported Mastodon toot visibility mode: ${getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY")}`);
+      }
+    }
+    await axios.post(
+      `${baseUrl}/v1/statuses`,
+      {
+        visibility: visibility,
+        status: message,
+      },
+      { 
+        headers: {
+          "Authorization": `Bearer ${getSecret("NOTIFICATION_MASTODON_API_KEY")}`
+        }
+      }
+    );
+  }
   if (getSecret("NOTIFICATION_MISSKEY") && getSecret("NOTIFICATION_MISSKEY_INSTANCE_URL") && getSecret("NOTIFICATION_MISSKEY_API_KEY")) {
     console.log("Sending Misskey");
     const instanceUrl = new URL(getSecret("NOTIFICATION_MISSKEY_INSTANCE_URL") as string);
