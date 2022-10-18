@@ -215,6 +215,62 @@ const sendNotification = async (message) => {
         }
         console.log("Finished sending Discord");
     }
+    if (secrets_1.getSecret("NOTIFICATION_MASTODON") && secrets_1.getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") && secrets_1.getSecret("NOTIFICATION_MASTODON_API_KEY")) {
+        console.log("Sending Mastodon");
+        const instanceUrl = new URL(secrets_1.getSecret("NOTIFICATION_MASTODON_INSTANCE_URL"));
+        const baseUrl = `${instanceUrl.protocol}://${instanceUrl.hostname}/api`;
+        let visibility = "public";
+        if (secrets_1.getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY")) {
+            try {
+                visibility = secrets_1.getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY");
+            }
+            catch (e) {
+                console.log(`Unsupported Mastodon toot visibility mode: ${secrets_1.getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY")}`);
+            }
+        }
+        await axios_1.default.post(`${baseUrl}/v1/statuses`, {
+            visibility: visibility,
+            status: message,
+        }, {
+            headers: {
+                "Authorization": `Bearer ${secrets_1.getSecret("NOTIFICATION_MASTODON_API_KEY")}`
+            }
+        });
+    }
+    if (secrets_1.getSecret("NOTIFICATION_MISSKEY") && secrets_1.getSecret("NOTIFICATION_MISSKEY_INSTANCE_URL") && secrets_1.getSecret("NOTIFICATION_MISSKEY_API_KEY")) {
+        console.log("Sending Misskey");
+        const instanceUrl = new URL(secrets_1.getSecret("NOTIFICATION_MISSKEY_INSTANCE_URL"));
+        const baseUrl = `${instanceUrl.protocol}://${instanceUrl.hostname}/api`;
+        if (secrets_1.getSecret("NOTIFICATION_MISSKEY_CHAT") && secrets_1.getSecret("NOTIFICATION_MISSKEY_CHAT_USER_ID")) {
+            await axios_1.default.post(`${baseUrl}/messaging/messages/create`, {
+                i: secrets_1.getSecret("NOTIFICATION_MISSKEY_API_KEY"),
+                userId: secrets_1.getSecret("NOTIFICATION_MISSKEY_CHAT_USER_ID"),
+                text: message,
+            });
+        }
+        if (secrets_1.getSecret("NOTIFICATION_MISSKEY_NOTE")) {
+            let visibility = "public";
+            let visibleUserIds;
+            if (secrets_1.getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBILITY")) {
+                try {
+                    visibility = secrets_1.getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBILITY");
+                }
+                catch (e) {
+                    console.log(`Unsupported Misskey note visibility mode: ${secrets_1.getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBILITY")}`);
+                }
+            }
+            if (visibility == "specified") {
+                visibleUserIds = (secrets_1.getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBLE_USER_IDS") || "").split(",");
+            }
+            await axios_1.default.post(`${baseUrl}/notes/create`, {
+                i: secrets_1.getSecret("NOTIFICATION_MISSKEY_API_KEY"),
+                visibility: visibility,
+                visibleUserIds: visibleUserIds,
+                text: message,
+            });
+        }
+        console.log("Success Misskey");
+    }
     if (secrets_1.getSecret("NOTIFICATION_TELEGRAM") && secrets_1.getSecret("NOTIFICATION_TELEGRAM_BOT_KEY")) {
         console.log("Sending Telegram");
         try {
