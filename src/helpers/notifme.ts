@@ -278,11 +278,7 @@ export const sendNotification = async (message: string) => {
         }
       }
       if (visibility == "specified") {
-        if (Array.isArray(getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBLE_USER_IDS"))) {
-          visibleUserIds = getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBLE_USER_IDS")
-        } else {
-          console.log("Error: No visible user ID list specified");
-        }
+        visibleUserIds = (getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBLE_USER_IDS") || "").split(",")
       }
       await axios.post(
         `${baseUrl}/notes/create`,
