@@ -226,6 +226,30 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Discord");
   }
+  if (
+    getSecret("NOTIFICATION_ZULIP_MESSAGE_URL") &&
+    getSecret("NOTIFICATION_ZULIP_API_EMAIL") &&
+    getSecret("NOTIFICATION_ZULIP_API_KEY")
+  ) {
+    console.log("Sending Zulip");
+    try {
+      await axios.request({
+        method: "post",
+        url: getSecret("NOTIFICATION_ZULIP_MESSAGE_URL") as string,
+        auth: {
+          username: getSecret("NOTIFICATION_ZULIP_API_EMAIL") as string,
+          password: getSecret("NOTIFICATION_ZULIP_API_KEY") as string,
+        },
+        params: {
+          content: message,
+        },
+      });
+      console.log("Success Zulip");
+    } catch (error) {
+      console.log("Got an error", error);
+    }
+    console.log("Finished sending Zulip");
+  }
   if (getSecret("NOTIFICATION_MASTODON") && getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") && getSecret("NOTIFICATION_MASTODON_API_KEY")) {
     console.log("Sending Mastodon");
     const instanceUrl = new URL(getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") as string);
