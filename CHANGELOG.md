@@ -1,3 +1,19 @@
+## v1.29.0 (2022-11-28)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.29.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.28.0...v1.29.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.29.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.29.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.29.0.tar.gz))
+
+### ✨ New features
+
+- [`1ce3727`](https://github.com/upptime/uptime-monitor/commit/1ce3727)  Add Misskey notifier
+- [`d118c44`](https://github.com/upptime/uptime-monitor/commit/d118c44)  feat: Add Mastodon integration
+- [`15b15c2`](https://github.com/upptime/uptime-monitor/commit/15b15c2)  Add Zulip integration (#198)
+(Issues: [`#198`](https://github.com/upptime/uptime-monitor/issues/198))- [`3a814b2`](https://github.com/upptime/uptime-monitor/commit/3a814b2)  Allow verbose logging in libcurl (#197)
+(Issues: [`#197`](https://github.com/upptime/uptime-monitor/issues/197))
+
+### ⬆️ Dependency updates
+
+- [`c557f2c`](https://github.com/upptime/uptime-monitor/commit/c557f2c)  Bump got and @semantic-release/npm
+
 ## v1.28.0 (2022-10-01)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.28.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.27.0...v1.28.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.28.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.28.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.28.0.tar.gz))
