@@ -24,7 +24,12 @@ const curl = (site) => new Promise((resolve) => {
     curl.setOpt("CONNECTTIMEOUT", 10);
     curl.setOpt("TIMEOUT", 30);
     curl.setOpt("HEADER", 1);
-    curl.setOpt("VERBOSE", false);
+    if (site.verbose) {
+        curl.setOpt("VERBOSE", true);
+    }
+    else {
+        curl.setOpt("VERBOSE", false);
+    }
     curl.setOpt("CUSTOMREQUEST", method);
     curl.on("error", (error) => {
         curl.close();

@@ -215,6 +215,29 @@ const sendNotification = async (message) => {
         }
         console.log("Finished sending Discord");
     }
+    if (secrets_1.getSecret("NOTIFICATION_ZULIP_MESSAGE_URL") &&
+        secrets_1.getSecret("NOTIFICATION_ZULIP_API_EMAIL") &&
+        secrets_1.getSecret("NOTIFICATION_ZULIP_API_KEY")) {
+        console.log("Sending Zulip");
+        try {
+            await axios_1.default.request({
+                method: "post",
+                url: secrets_1.getSecret("NOTIFICATION_ZULIP_MESSAGE_URL"),
+                auth: {
+                    username: secrets_1.getSecret("NOTIFICATION_ZULIP_API_EMAIL"),
+                    password: secrets_1.getSecret("NOTIFICATION_ZULIP_API_KEY"),
+                },
+                params: {
+                    content: message,
+                },
+            });
+            console.log("Success Zulip");
+        }
+        catch (error) {
+            console.log("Got an error", error);
+        }
+        console.log("Finished sending Zulip");
+    }
     if (secrets_1.getSecret("NOTIFICATION_MASTODON") && secrets_1.getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") && secrets_1.getSecret("NOTIFICATION_MASTODON_API_KEY")) {
         console.log("Sending Mastodon");
         const instanceUrl = new URL(secrets_1.getSecret("NOTIFICATION_MASTODON_INSTANCE_URL"));
