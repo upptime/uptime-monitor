@@ -44,7 +44,7 @@ jobs:
     runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
@@ -75,7 +75,7 @@ jobs:
     runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
@@ -109,7 +109,7 @@ jobs:
     runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
@@ -173,7 +173,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
@@ -211,7 +211,7 @@ jobs:
     runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
@@ -242,7 +242,7 @@ jobs:
     runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
@@ -273,7 +273,7 @@ jobs:
     runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
@@ -302,7 +302,7 @@ jobs:
     runs-on: ${config.runner || constants_1.DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT }}
