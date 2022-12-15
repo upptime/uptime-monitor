@@ -18,19 +18,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Cache node modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: node18-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            node18-${{ runner.os }}-build-${{ env.cache-name }}-
-            node18-${{ runner.os }}-build-
-            node18-${{ runner.os }}-
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: Build TypeScript
         run: npm run build
       - name: Run tests
