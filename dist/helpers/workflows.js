@@ -93,6 +93,7 @@ const setupCiWorkflow = async () => {
     const config = await config_1.getConfig();
     const workflowSchedule = config.workflowSchedule || {};
     const commitMessages = config.commitMessages || {};
+    const statusWebsite = config["status-website"] || {};
     return `${await introComment()}
 
 name: Setup CI
@@ -148,6 +149,7 @@ jobs:
         with:
           github_token: \${{ secrets.GH_PAT }}
           publish_dir: "site/status-page/__sapper__/export/"
+          force_orphan: "${statusWebsite.singleCommit || false}"
           user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
           user_email: "${commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"}"
 `;
@@ -157,6 +159,7 @@ const siteCiWorkflow = async () => {
     const config = await config_1.getConfig();
     const workflowSchedule = config.workflowSchedule || {};
     const commitMessages = config.commitMessages || {};
+    const statusWebsite = config["status-website"] || {};
     return `${await introComment()}
 
 name: Static Site CI
@@ -188,6 +191,7 @@ jobs:
         with:
           github_token: \${{ secrets.GH_PAT }}
           publish_dir: "site/status-page/__sapper__/export/"
+          force_orphan: "${statusWebsite.singleCommit || false}"
           user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
           user_email: "${commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"}"
 `;

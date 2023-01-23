@@ -44,6 +44,7 @@ export interface UpptimeConfig {
             url: string;
         }[];
         publish?: boolean;
+        singleCommit?: boolean;
     };
     skipDescriptionUpdate?: boolean;
     skipTopicsUpdate?: boolean;
