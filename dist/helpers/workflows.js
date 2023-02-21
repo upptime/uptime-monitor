@@ -47,13 +47,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate graphs
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "graphs"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
 `;
 };
 exports.graphsCiWorkflow = graphsCiWorkflow;
@@ -78,13 +78,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "response-time"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
           SECRETS_CONTEXT: \${{ toJson(secrets) }}
 `;
 };
@@ -113,41 +113,41 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Update template
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "update-template"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "response-time"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
           SECRETS_CONTEXT: \${{ toJson(secrets) }}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "readme"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
       - name: Generate graphs
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: Graphs CI
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate site
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "site"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
       - uses: peaceiris/actions-gh-pages@v3.7.3
         name: GitHub Pages Deploy
         with:
-          github_token: \${{ secrets.GH_PAT }}
+          github_token: \${{ secrets.GH_PAT || github.token }}
           publish_dir: "site/status-page/__sapper__/export/"
           force_orphan: "${statusWebsite.singleCommit || false}"
           user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
@@ -179,17 +179,17 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate site
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "site"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
       - uses: peaceiris/actions-gh-pages@v3.7.3
         name: GitHub Pages Deploy
         with:
-          github_token: \${{ secrets.GH_PAT }}
+          github_token: \${{ secrets.GH_PAT || github.token }}
           publish_dir: "site/status-page/__sapper__/export/"
           force_orphan: "${statusWebsite.singleCommit || false}"
           user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
@@ -218,13 +218,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "readme"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
 `;
 };
 exports.summaryCiWorkflow = summaryCiWorkflow;
@@ -249,13 +249,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Update template
         uses: upptime/uptime-monitor@master
         with:
           command: "update-template"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
 `;
 };
 exports.updateTemplateCiWorkflow = updateTemplateCiWorkflow;
@@ -280,11 +280,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Update code
         uses: upptime/updates@master
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
 `;
 };
 exports.updatesCiWorkflow = updatesCiWorkflow;
@@ -309,13 +309,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT }}
+          token: \${{ secrets.GH_PAT || github.token }}
       - name: Check endpoint status
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
           command: "update"
         env:
-          GH_PAT: \${{ secrets.GH_PAT }}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
           SECRETS_CONTEXT: \${{ toJson(secrets) }}
 `;
 };
