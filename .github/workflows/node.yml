@@ -1,4 +1,4 @@
-name: Node CI
+dist/index.js
 on:
   push:
     branches-ignore:
