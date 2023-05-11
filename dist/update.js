@@ -347,7 +347,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                                     : `$EMOJI ${site.name} (${site.url}) is $STATUS : ${newIssue.data.html_url}`;
                                 await notifme_1.sendNotification(status === "down"
                                     ? `${downmsg.replace("$STATUS", "**down**").replace("$EMOJI", `${config.commitPrefixStatusDown || "🟥"}`)}`
-                                    : `${downmsg.replace("$STATUS", "experiencing **degrading performance**").replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟥"}`)}`);
+                                    : `${downmsg.replace("$STATUS", "experiencing **degraded performance**").replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟨"}`)}`);
                             }
                             catch (error) {
                                 console.log(error);
