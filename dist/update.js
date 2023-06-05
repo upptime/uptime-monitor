@@ -110,7 +110,7 @@ const update = async (shouldCommit = false) => {
             startTime = new Date(siteHistory.startTime || new Date());
         }
         catch (error) { }
-        console.log("Current status", site.slug, currentStatus, startTime);
+        console.log("Current status", site.slug || slugify_1.default(site.name), currentStatus, startTime);
         /**
          * Check whether the site is online
          */
