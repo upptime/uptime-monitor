@@ -14,14 +14,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 16
       - name: Cache node modules
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
           path: ~/.npm
-          key: node18-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: node16-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             node18-${{ runner.os }}-build-${{ env.cache-name }}-
             node18-${{ runner.os }}-build-
