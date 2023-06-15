@@ -1,3 +1,11 @@
+## v1.30.1 (2023-06-15)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.30.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.30.0...v1.30.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.30.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.30.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.30.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`b699ef4`](https://github.com/upptime/uptime-monitor/commit/b699ef4)  Trigger patch release with node version
+
 ## v1.30.0 (2023-06-15)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.30.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.29.0...v1.30.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.30.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.30.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.30.0.tar.gz))
