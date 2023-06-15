@@ -4,7 +4,7 @@ author: "Koj <https://github.com/koj.co>"
 inputs:
   command:
     required: true
-    description: "Command to run"
+    description: "Command to run (see README for commands)"
     default: "update"
 runs:
   using: "node16"
