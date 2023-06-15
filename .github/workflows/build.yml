@@ -1,11 +1,13 @@
 name: Build CI
+
 on:
   push:
     branches:
       - master
+
 jobs:
   release:
-    name: Build and publish
+    name: Build and Publish
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
@@ -14,19 +16,26 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_PAT }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Install dependencies
+          cache: 'npm'
+
+      - name: Install Dependencies
         run: npm install
+
       - name: Build TypeScript
         run: npm run build
-      - name: Run tests
+
+      - name: Run Tests
         run: npm run test
-      - name: Build package
+
+      - name: Build Package
         run: npm run package
-      - name: Publish package
+
+      - name: Publish Package
         uses: stefanzweifel/git-auto-commit-action@v4.9.2
         with:
           commit_message: ":rocket: Deploy new version [skip ci]"

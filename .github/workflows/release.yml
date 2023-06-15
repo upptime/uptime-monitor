@@ -1,9 +1,11 @@
 name: Release CI
+
 on:
   workflow_dispatch:
+
 jobs:
   release:
-    name: Build, test, and release
+    name: Build, Test, and Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -11,23 +13,16 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_PAT }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Cache node modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: node16-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            node16-${{ runner.os }}-build-${{ env.cache-name }}-
-            node16-${{ runner.os }}-build-
-            node16-${{ runner.os }}-
-      - name: Install dependencies
+          cache: 'npm'
+
+      - name: Install Dependencies
         run: npm ci
+        
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
