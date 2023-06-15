@@ -1,3 +1,28 @@
+## v1.30.0 (2023-06-15)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.30.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.29.0...v1.30.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.30.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.30.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.30.0.tar.gz))
+
+### ✨ New features
+
+- [`d53eb05`](https://github.com/upptime/uptime-monitor/commit/d53eb05)  Add fallback GitHub token (#209)
+(Issues: [`#209`](https://github.com/upptime/uptime-monitor/issues/209))- [`bde5ff8`](https://github.com/upptime/uptime-monitor/commit/bde5ff8)  Use Node.js v16 with updated dependencies (#217)
+(Issues: [`#217`](https://github.com/upptime/uptime-monitor/issues/217))
+
+### 🐛 Bug fixes
+
+- [`427a8d3`](https://github.com/upptime/uptime-monitor/commit/427a8d3)  Recompile node-libcurl for Node 18
+- [`a7aa557`](https://github.com/upptime/uptime-monitor/commit/a7aa557)  Upgrade to Node.js v18 (#214)
+(Issues: [`#214`](https://github.com/upptime/uptime-monitor/issues/214))
+
+### ⬆️ Dependency updates
+
+- [`1d46c7e`](https://github.com/upptime/uptime-monitor/commit/1d46c7e)  Upgrade actions/checkout (#200)
+(Issues: [`#200`](https://github.com/upptime/uptime-monitor/issues/200))- [`a0f0a85`](https://github.com/upptime/uptime-monitor/commit/a0f0a85)   fix deprecation warning: (#204)
+(Issues: [`#204`](https://github.com/upptime/uptime-monitor/issues/204))- [`1458893`](https://github.com/upptime/uptime-monitor/commit/1458893)  Update GitHub Actions dependencies
+- [`c5e616e`](https://github.com/upptime/uptime-monitor/commit/c5e616e)  Change @zeit/ncc -&gt; @vercel/ncc
+- [`fae5adb`](https://github.com/upptime/uptime-monitor/commit/fae5adb)  Bump ansi-regex (#206)
+(Issues: [`#206`](https://github.com/upptime/uptime-monitor/issues/206))
+
 ## v1.29.0 (2022-11-28)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.29.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.28.0...v1.29.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.29.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.29.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.29.0.tar.gz))
