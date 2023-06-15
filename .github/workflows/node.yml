@@ -1,34 +1,30 @@
 name: Node CI
+
 on:
   push:
     branches-ignore:
       - master
+
 jobs:
   release:
-    name: Build and test
+    name: Build and Test
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Cache node modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: node16-${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            node16-${{ runner.os }}-build-${{ env.cache-name }}-
-            node16-${{ runner.os }}-build-
-            node16-${{ runner.os }}-
-      - name: Install dependencies
+          cache: 'npm'
+
+      - name: Install Dependencies
         run: npm ci
+
       - name: Build TypeScript
         run: npm run build
-      - name: Run tests
+
+      - name: Run Tests
         run: npm run test
