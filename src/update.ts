@@ -19,9 +19,9 @@ import { generateSummary } from "./summary";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function getHumanReadableTimeDifference(startTime) {
+function getHumanReadableTimeDifference(startTime: Date): string {
   const now = new Date();
-  const deltaMilliseconds = now - startTime;
+  const deltaMilliseconds = now.getTime() - startTime.getTime();
   const seconds = Math.floor(deltaMilliseconds / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -309,7 +309,7 @@ status: ${status}
 code: ${result.httpCode}
 responseTime: ${responseTime}
 lastUpdated: ${new Date().toISOString()}
-startTime: ${startTime}
+startTime: ${startTime.toISOString()}
 generator: Upptime <https://github.com/upptime/upptime>
 `
         );
