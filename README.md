@@ -9,7 +9,7 @@ This repository contains Upptime's GitHub Action.
 
 ## 🎁 Contributing
 
-This repository is for Upptime's GitHub Action. We love contributions, so please read our [Contributing Guidelines](https://github.com/upptime-js/.github/blob/master/CONTRIBUTING.md) and [Code of Conduct](https://github.com/upptime-js/.github/blob/master/CODE_OF_CONDUCT.md) and open an issue or make a pull request!
+This repository is for Upptime's GitHub Action. We love contributions, so please read our [Contributing Guidelines](https://github.com/upptime/.github/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/upptime/.github/blob/main/CODE_OF_CONDUCT.md) and open an issue or make a pull request!
 
 ### Issues
 
