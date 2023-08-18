@@ -22,6 +22,26 @@ const request_1 = require("./helpers/request");
 const secrets_2 = require("./helpers/secrets");
 const summary_1 = require("./summary");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+function getHumanReadableTimeDifference(startTime) {
+    const now = new Date();
+    const deltaMilliseconds = now.getTime() - startTime.getTime();
+    const seconds = Math.floor(deltaMilliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    if (days > 0) {
+        return `${days} days, ${hours % 24} hours, ${minutes % 60} minutes`;
+    }
+    else if (hours > 0) {
+        return `${hours} hours, ${minutes % 60} minutes`;
+    }
+    else if (minutes > 0) {
+        return `${minutes} minutes`;
+    }
+    else {
+        return `${seconds} seconds`;
+    }
+}
 const update = async (shouldCommit = false) => {
     if (!(await init_check_1.shouldContinue()))
         return;
@@ -272,7 +292,7 @@ status: ${status}
 code: ${result.httpCode}
 responseTime: ${responseTime}
 lastUpdated: ${new Date().toISOString()}
-startTime: ${startTime}
+startTime: ${startTime.toISOString()}
 generator: Upptime <https://github.com/upptime/upptime>
 `);
                 git_1.commit(((config.commitMessages || {}).statusChange ||
@@ -370,7 +390,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                             issue_number: issues.data[0].number,
                             body: `**Resolved:** ${site.name} ${issues.data[0].title.includes("degraded")
                                 ? "performance has improved"
-                                : "is back up"} in [\`${lastCommitSha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).`,
+                                : "is back up"} in [\`${lastCommitSha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}) after ${getHumanReadableTimeDifference(startTime)}.`,
                         });
                         console.log("Created comment in issue");
                         await octokit.issues.update({
