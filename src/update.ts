@@ -27,6 +27,7 @@ function getHumanReadableTimeDifference(startTime) {
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
 
+  
   if (days > 0) {
     return `${days} days, ${hours % 24} hours, ${minutes % 60} minutes`;
   } else if (hours > 0) {
