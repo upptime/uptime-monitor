@@ -19,6 +19,26 @@ import { generateSummary } from "./summary";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+function getHumanReadableTimeDifference(startTime) {
+  const now = new Date();
+  const deltaMilliseconds = now - startTime;
+  const seconds = Math.floor(deltaMilliseconds / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return `${days} days, ${hours % 24} hours, ${minutes % 60} minutes`;
+  } else if (hours > 0) {
+    return `${hours} hours, ${minutes % 60} minutes`;
+  } else if (minutes > 0) {
+    return `${minutes} minutes`;
+  } else {
+    return `${seconds} seconds`;
+  }
+}
+
+
 export const update = async (shouldCommit = false) => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
@@ -402,17 +422,20 @@ generator: Upptime <https://github.com/upptime/upptime>
               repo,
               issue_number: issues.data[0].number,
             });
-            await octokit.issues.createComment({
+           await octokit.issues.createComment({
               owner,
               repo,
               issue_number: issues.data[0].number,
-              body: `**Resolved:** ${site.name} ${issues.data[0].title.includes("degraded")
+              body: `**Resolved:** ${site.name} ${
+                issues.data[0].title.includes("degraded")
                   ? "performance has improved"
                   : "is back up"
-                } in [\`${lastCommitSha.substr(
-                  0,
-                  7
-                )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).`,
+              } in [\`${lastCommitSha.substr(
+                0,
+                7
+              )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).\n\nTime taken: ${getHumanReadableTimeDifference(
+                startTime
+              )}.`,
             });
             console.log("Created comment in issue");
             await octokit.issues.update({
