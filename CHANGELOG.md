@@ -1,3 +1,16 @@
+## v1.31.0 (2023-08-18)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.31.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.30.1...v1.31.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.31.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.31.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.31.0.tar.gz))
+
+### ✨ New features
+
+- [`d6ee428`](https://github.com/upptime/uptime-monitor/commit/d6ee428)  Deploy duration for downtime
+
+### 🐛 Bug fixes
+
+- [`e28761b`](https://github.com/upptime/uptime-monitor/commit/e28761b)  Update DEFAULT_RUNNER (#220)
+(Issues: [`#220`](https://github.com/upptime/uptime-monitor/issues/220))
+
 ## v1.30.1 (2023-06-15)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.30.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.30.0...v1.30.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.30.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.30.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.30.1.tar.gz))
