@@ -433,7 +433,7 @@ generator: Upptime <https://github.com/upptime/upptime>
               } in [\`${lastCommitSha.substr(
                 0,
                 7
-              )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}).\n\nTime taken: ${getHumanReadableTimeDifference(
+              )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}) after ${getHumanReadableTimeDifference(
                 startTime
               )}.`,
             });
