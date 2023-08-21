@@ -1,3 +1,12 @@
+## v1.31.1 (2023-08-21)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.31.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.31.0...v1.31.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.31.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.31.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.31.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`54100ae`](https://github.com/upptime/uptime-monitor/commit/54100ae)  Fix upptime/upptime#838 login for time difference
+(Issues: [`upptime/upptime#838`](https://github.com/upptime/upptime/issues/838))
+
 ## v1.31.0 (2023-08-18)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.31.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.30.1...v1.31.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.31.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.31.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.31.0.tar.gz))
