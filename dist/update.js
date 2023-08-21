@@ -6,12 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.update = void 0;
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const dayjs_1 = __importDefault(require("dayjs"));
-const ws_1 = __importDefault(require("ws"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
+const ws_1 = __importDefault(require("ws"));
 const config_1 = require("./helpers/config");
-const secrets_1 = require("./helpers/secrets");
 const environment_1 = require("./helpers/environment");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
@@ -19,34 +18,35 @@ const init_check_1 = require("./helpers/init-check");
 const notifme_1 = require("./helpers/notifme");
 const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
-const secrets_2 = require("./helpers/secrets");
+const secrets_1 = require("./helpers/secrets");
 const summary_1 = require("./summary");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+/**
+ * Get a human-readable time difference between from now
+ * @param startTime - Starting time
+ * @returns Human-readable time difference, e.g. "2 days, 3 hours, 5 minutes"
+ */
 function getHumanReadableTimeDifference(startTime) {
-    const now = new Date();
-    const deltaMilliseconds = now.getTime() - startTime.getTime();
-    const seconds = Math.floor(deltaMilliseconds / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    if (days > 0) {
-        return `${days} days, ${hours % 24} hours, ${minutes % 60} minutes`;
-    }
-    else if (hours > 0) {
-        return `${hours} hours, ${minutes % 60} minutes`;
-    }
-    else if (minutes > 0) {
-        return `${minutes} minutes`;
-    }
-    else {
-        return `${seconds} seconds`;
-    }
+    const diffDays = dayjs_1.default().diff(dayjs_1.default(startTime), "day");
+    const diffHours = dayjs_1.default().subtract(diffDays, "day").diff(dayjs_1.default(startTime), "hour");
+    const diffMinutes = dayjs_1.default()
+        .subtract(diffDays, "day")
+        .subtract(diffHours, "hour")
+        .diff(dayjs_1.default(startTime), "minute");
+    const result = [];
+    if (diffDays > 0)
+        result.push(`${diffDays.toLocaleString()} ${diffDays > 1 ? "days" : "day"}`);
+    if (diffHours > 0)
+        result.push(`${diffHours.toLocaleString()} ${diffHours > 1 ? "hours" : "hour"}`);
+    if (diffMinutes > 0)
+        result.push(`${diffMinutes.toLocaleString()} ${diffMinutes > 1 ? "minutes" : "minute"}`);
+    return result.join(", ");
 }
 const update = async (shouldCommit = false) => {
     if (!(await init_check_1.shouldContinue()))
         return;
     await fs_extra_1.mkdirp("history");
-    const [owner, repo] = secrets_2.getOwnerRepo();
+    const [owner, repo] = secrets_1.getOwnerRepo();
     const config = await config_1.getConfig();
     const octokit = await github_1.getOctokit();
     let hasDelta = false;
@@ -144,8 +144,8 @@ const update = async (shouldCommit = false) => {
                         attempts: 5,
                         port: Number(environment_1.replaceEnvironmentVariables(site.port ? String(site.port) : "")),
                     });
-                    if (tcpResult.results.every(result => Object.prototype.toString.call(result.err) === "[object Error]"))
-                        throw Error('all attempts failed');
+                    if (tcpResult.results.every((result) => Object.prototype.toString.call(result.err) === "[object Error]"))
+                        throw Error("all attempts failed");
                     console.log("Got result", tcpResult);
                     let responseTime = (tcpResult.avg || 0).toFixed(0);
                     if (parseInt(responseTime) > (site.maxResponseTime || 60000))
@@ -170,25 +170,25 @@ const update = async (shouldCommit = false) => {
                 const connect = () => {
                     return new Promise(function (resolve, reject) {
                         const ws = new ws_1.default(environment_1.replaceEnvironmentVariables(site.url));
-                        ws.on('open', function open() {
+                        ws.on("open", function open() {
                             if (site.body) {
                                 ws.send(site.body);
                             }
                             else {
                                 ws.send("");
                             }
-                            ws.on('message', function message(data) {
+                            ws.on("message", function message(data) {
                                 if (data) {
                                     success = true;
                                 }
                             });
                             ws.close();
-                            ws.on('close', function close() {
-                                console.log('Websocket disconnected');
+                            ws.on("close", function close() {
+                                console.log("Websocket disconnected");
                             });
                             resolve(ws);
                         });
-                        ws.on('error', function error(error) {
+                        ws.on("error", function error(error) {
                             reject(error);
                         });
                     });
@@ -203,7 +203,6 @@ const update = async (shouldCommit = false) => {
                     else {
                         status = "down";
                     }
-                    ;
                     return {
                         result: { httpCode: 200 },
                         responseTime,
@@ -343,7 +342,7 @@ generator: Upptime <https://github.com/upptime/upptime>
 - HTTP code: ${result.httpCode}
 - Response time: ${responseTime} ms
 `,
-                                labels: ["status", slug, ...site.tags || []],
+                                labels: ["status", slug, ...(site.tags || [])],
                             });
                             const assignees = [...(config.assignees || []), ...(site.assignees || [])];
                             await octokit.issues.addAssignees({
@@ -359,15 +358,20 @@ generator: Upptime <https://github.com/upptime/upptime>
                             });
                             console.log("Opened and locked a new issue");
                             try {
-                                const downmsg = await secrets_1.getSecret("NOTIFICATIONS_DOWN_MESSAGE") ? (secrets_1.getSecret("NOTIFICATIONS_DOWN_MESSAGE") || "")
-                                    .replace("$SITE_NAME", site.name)
-                                    .replace("$SITE_URL", `(${site.url})`)
-                                    .replace("$ISSUE_URL", `${newIssue.data.html_url}`)
-                                    .replace("$RESPONSE_CODE", result.httpCode.toString())
+                                const downmsg = (await secrets_1.getSecret("NOTIFICATIONS_DOWN_MESSAGE"))
+                                    ? (secrets_1.getSecret("NOTIFICATIONS_DOWN_MESSAGE") || "")
+                                        .replace("$SITE_NAME", site.name)
+                                        .replace("$SITE_URL", `(${site.url})`)
+                                        .replace("$ISSUE_URL", `${newIssue.data.html_url}`)
+                                        .replace("$RESPONSE_CODE", result.httpCode.toString())
                                     : `$EMOJI ${site.name} (${site.url}) is $STATUS : ${newIssue.data.html_url}`;
                                 await notifme_1.sendNotification(status === "down"
-                                    ? `${downmsg.replace("$STATUS", "**down**").replace("$EMOJI", `${config.commitPrefixStatusDown || "🟥"}`)}`
-                                    : `${downmsg.replace("$STATUS", "experiencing **degraded performance**").replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟨"}`)}`);
+                                    ? `${downmsg
+                                        .replace("$STATUS", "**down**")
+                                        .replace("$EMOJI", `${config.commitPrefixStatusDown || "🟥"}`)}`
+                                    : `${downmsg
+                                        .replace("$STATUS", "experiencing **degraded performance**")
+                                        .replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟨"}`)}`);
                             }
                             catch (error) {
                                 console.log(error);
@@ -406,11 +410,14 @@ generator: Upptime <https://github.com/upptime/upptime>
                         });
                         console.log("Closed issue");
                         try {
-                            const upmsg = await secrets_1.getSecret("NOTIFICATIONS_UP_MESSAGE") ? (secrets_1.getSecret("NOTIFICATIONS_UP_MESSAGE") || "")
-                                .replace("$SITE_NAME", site.name)
-                                .replace("$SITE_URL", `(${site.url})`)
+                            const upmsg = (await secrets_1.getSecret("NOTIFICATIONS_UP_MESSAGE"))
+                                ? (secrets_1.getSecret("NOTIFICATIONS_UP_MESSAGE") || "")
+                                    .replace("$SITE_NAME", site.name)
+                                    .replace("$SITE_URL", `(${site.url})`)
                                 : `$EMOJI ${site.name} (${site.url}) $STATUS`;
-                            await notifme_1.sendNotification(upmsg.replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`).replace("$STATUS", `${issues.data[0].title.includes("degraded")
+                            await notifme_1.sendNotification(upmsg
+                                .replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`)
+                                .replace("$STATUS", `${issues.data[0].title.includes("degraded")
                                 ? "performance has improved"
                                 : "is back up"}`));
                         }
