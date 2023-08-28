@@ -443,7 +443,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                 0,
                 7
               )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}) after ${getHumanReadableTimeDifference(
-                startTime
+                new Date(issues.data[0].created_at)
               )}.`,
             });
             console.log("Created comment in issue");
