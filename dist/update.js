@@ -394,7 +394,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                             issue_number: issues.data[0].number,
                             body: `**Resolved:** ${site.name} ${issues.data[0].title.includes("degraded")
                                 ? "performance has improved"
-                                : "is back up"} in [\`${lastCommitSha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}) after ${getHumanReadableTimeDifference(startTime)}.`,
+                                : "is back up"} in [\`${lastCommitSha.substr(0, 7)}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}) after ${getHumanReadableTimeDifference(new Date(issues.data[0].created_at))}.`,
                         });
                         console.log("Created comment in issue");
                         await octokit.issues.update({
