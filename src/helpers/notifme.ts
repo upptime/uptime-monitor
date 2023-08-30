@@ -325,6 +325,7 @@ export const sendNotification = async (message: string) => {
           parse_mode: "Markdown",
           disable_web_page_preview: true,
           chat_id: getSecret("NOTIFICATION_TELEGRAM_CHAT_ID"),
+          message_thread_id: getSecret("NOTIFICATION_TELEGRAM_TOPIC_ID"),
           text: message.replace(/_/g, '\\_'),
         }
       );
