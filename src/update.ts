@@ -186,7 +186,7 @@ export const update = async (shouldCommit = false) => {
             const ws = new WebSocket(replaceEnvironmentVariables(site.url));
             ws.on("open", function open() {
               if (site.body) {
-                ws.send(site.body);
+                ws.send(replaceEnvironmentVariables(site.body));
               } else {
                 ws.send("");
               }
