@@ -1,3 +1,12 @@
+## v1.32.0 (2023-10-04)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.32.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.31.2...v1.32.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.32.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.32.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.32.0.tar.gz))
+
+### ✨ New features
+
+- [`08b4cb9`](https://github.com/upptime/uptime-monitor/commit/08b4cb9)  Introduce dynamic random numbers support in HTTP requests (#226)
+(Issues: [`#226`](https://github.com/upptime/uptime-monitor/issues/226))
+
 ## v1.31.2 (2023-08-28)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.31.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.31.1...v1.31.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.31.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.31.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.31.2.tar.gz))
