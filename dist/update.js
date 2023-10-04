@@ -172,7 +172,7 @@ const update = async (shouldCommit = false) => {
                         const ws = new ws_1.default(environment_1.replaceEnvironmentVariables(site.url));
                         ws.on("open", function open() {
                             if (site.body) {
-                                ws.send(site.body);
+                                ws.send(environment_1.replaceEnvironmentVariables(site.body));
                             }
                             else {
                                 ws.send("");
