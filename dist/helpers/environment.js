@@ -12,7 +12,9 @@ const replaceEnvironmentVariables = (str) => {
     Object.keys(secrets).forEach((key) => {
         str = str.replace(`$${key}`, secrets[key] || `$${key}`);
     });
-    return substituteRandomNumbers(str);
+    str = substituteRandomNumbers(str);
+    str = substituteDynamicAlphanumericString(str);
+    return str;
 };
 exports.replaceEnvironmentVariables = replaceEnvironmentVariables;
 const substituteRandomNumbers = (str) => {
@@ -23,6 +25,23 @@ const substituteRandomNumbers = (str) => {
     }
     return str;
 };
+const substituteDynamicAlphanumericString = (str) => {
+    if (str.includes(constants_1.DYNAMIC_ALPHANUMERIC_STRING)) {
+        const length = parseInt(process.env.DYNAMIC_STRING_LENGTH || constants_1.DYNAMIC_STRING_LENGTH_DEFAULT);
+        str = str.replaceAll(constants_1.DYNAMIC_ALPHANUMERIC_STRING, () => getRandomAlphanumericString(length));
+    }
+    return str;
+};
 /** Return a random integer N such that min <= N <= max */
 const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+/** Return a random alphanumeric string of given length */
+const getRandomAlphanumericString = (length) => {
+    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        result += charset[randomIndex];
+    }
+    return result;
+};
 //# sourceMappingURL=environment.js.map

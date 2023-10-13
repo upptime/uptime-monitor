@@ -9,3 +9,5 @@ export declare const DEFAULT_RUNNER = "ubuntu-latest";
 export declare const DYNAMIC_RANDOM_NUMBER = "$DYNAMIC_RANDOM_NUMBER";
 export declare const RANDOM_MIN_DEFAULT = "0";
 export declare const RANDOM_MAX_DEFAULT = "1000000";
+export declare const DYNAMIC_ALPHANUMERIC_STRING = "$DYNAMIC_ALPHANUMERIC_STRING";
+export declare const DYNAMIC_STRING_LENGTH_DEFAULT = "10";
