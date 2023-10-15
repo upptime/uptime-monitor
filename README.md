@@ -1,6 +1,6 @@
 # ⬆️📈 Upptime Uptime Monitor
 
-This repository contains Upptime's GitHub Action.
+This repository contains Upptime's GitHub Action's source code.
 
 [**To get started, visit upptime/upptime →**](https://github.com/upptime/upptime)
 
