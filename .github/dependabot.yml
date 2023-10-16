@@ -1,0 +1,15 @@
+version: 2  # Use version 2
+
+# List of update configs
+updates:
+  # Configuration for npm package ecosystem
+  - package-ecosystem: "npm"  
+    directory: "/"
+    schedule:
+      interval: "daily"
+
+  # Configuration for GitHub Actions package ecosystem
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
