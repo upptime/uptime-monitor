@@ -27,6 +27,10 @@ export const sendNotification = async (config: UpptimeConfig, text: string) => {
           { channel: notification.channel, text },
           { headers: { Authorization: `Bearer ${getSecret("SLACK_BOT_ACCESS_TOKEN")}` } }
         );
+    } else if (notification.type === "googlechat") {
+      console.log("[debug] Sending Google Chat notification");
+      const webhookUrl = getSecret("GOOGLE_CHAT_WEBHOOK_URL");
+      if (webhookUrl) await axios.post(webhookUrl, { "text": text });
     } else if (notification.type === "discord") {
       console.log("[debug] Sending Discord notification");
       const webhookUrl = getSecret("DISCORD_WEBHOOK_URL");
