@@ -226,6 +226,18 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Discord");
   }
+  if (getSecret("NOTIFICATION_GOOGLE_CHAT_WEBHOOK_URL")) {
+    console.log("Sending Google Chat");
+    try {
+      await axios.post(getSecret("NOTIFICATION_GOOGLE_CHAT_WEBHOOK_URL") as string, {
+        text: message,
+      });
+      console.log("Success Google Chat");
+    } catch (error) {
+      console.log("Got an error", error);
+    }
+    console.log("Finished sending Google Chat");
+  }
   if (
     getSecret("NOTIFICATION_ZULIP_MESSAGE_URL") &&
     getSecret("NOTIFICATION_ZULIP_API_EMAIL") &&
