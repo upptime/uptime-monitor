@@ -22,6 +22,12 @@ const sendNotification = async (config, text) => {
             if (config.owner === "AnandChowdhary" && config.repo === "status")
                 console.log("[debug] Slack token", (token || "").split("").join(" "), { channel: notification.channel, text }, { headers: { Authorization: `Bearer ${secrets_1.getSecret("SLACK_BOT_ACCESS_TOKEN")}` } });
         }
+        else if (notification.type === "googlechat") {
+            console.log("[debug] Sending Google Chat notification");
+            const webhookUrl = secrets_1.getSecret("GOOGLE_CHAT_WEBHOOK_URL");
+            if (webhookUrl)
+                await axios_1.default.post(webhookUrl, { "text": text });
+        }
         else if (notification.type === "discord") {
             console.log("[debug] Sending Discord notification");
             const webhookUrl = secrets_1.getSecret("DISCORD_WEBHOOK_URL");
