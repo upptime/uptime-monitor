@@ -1,3 +1,13 @@
+## v1.33.0 (2023-10-17)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.33.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.32.0...v1.33.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.33.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.33.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.33.0.tar.gz))
+
+### ✨ New features
+
+- [`b917b03`](https://github.com/upptime/uptime-monitor/commit/b917b03)  Trigger minor release
+- [`cb78cff`](https://github.com/upptime/uptime-monitor/commit/cb78cff)  Add Google Chat webhooks notifications (#229)
+(Issues: [`#229`](https://github.com/upptime/uptime-monitor/issues/229))
+
 ## v1.32.0 (2023-10-04)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.32.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.31.2...v1.32.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.32.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.32.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.32.0.tar.gz))
