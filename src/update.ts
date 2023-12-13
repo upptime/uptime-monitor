@@ -158,7 +158,7 @@ export const update = async (shouldCommit = false) => {
           // https://github.com/upptime/upptime/discussions/888
           const url = replaceEnvironmentVariables(site.url);
           let address = url;
-          if (isIP(url) {
+          if (isIP(url)) {
             if (site.ipv6 && !isIPv6(url))
               throw new Error("Site URL must be IPv6 for ipv6 check");
             else if (site.ipv6)
