@@ -1,6 +1,5 @@
-import dns from "node:dns";
-import { isIP, isIPv6 } from "node:net";
-
+import dns from "dns";
+import { isIP, isIPv6 } from "net";
 import slugify from "@sindresorhus/slugify";
 import dayjs from "dayjs";
 import { mkdirp, readFile, writeFile } from "fs-extra";
