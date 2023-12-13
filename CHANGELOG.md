@@ -1,3 +1,18 @@
+## v1.34.0 (2023-12-13)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.33.0...v1.34.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.0.tar.gz))
+
+### ✨ New features
+
+- [`fcebd9e`](https://github.com/upptime/uptime-monitor/commit/fcebd9e)  Add support for pinging IPv6 addresses and hostnames
+
+### 🐛 Bug fixes
+
+- [`7685333`](https://github.com/upptime/uptime-monitor/commit/7685333)  Fix TypeScript syntax, update IP condition
+- [`57632a6`](https://github.com/upptime/uptime-monitor/commit/57632a6)  Fix TypeScript syntax
+- [`1cf004c`](https://github.com/upptime/uptime-monitor/commit/1cf004c)  Import from global node
+- [`9362897`](https://github.com/upptime/uptime-monitor/commit/9362897)  Fix TS interface syntax
+
 ## v1.33.0 (2023-10-17)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.33.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.32.0...v1.33.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.33.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.33.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.33.0.tar.gz))
