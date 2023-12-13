@@ -160,12 +160,13 @@ export const update = async (shouldCommit = false) => {
           if (isIP(url)) {
             if (site.ipv6 && !isIPv6(url))
               throw new Error("Site URL must be IPv6 for ipv6 check");
-            else if (site.ipv6)
+          } else {
+            if (site.ipv6)
               address = (await dns.promises.resolve6(url))[0];
             else
               address = (await dns.promises.resolve4(url))[0];
 
-            if (isIP(url) && !isIP(address))
+            if (!isIP(address))
               throw new Error("Site IP address could not be resolved");
           }
 
