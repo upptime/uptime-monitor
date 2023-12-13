@@ -147,11 +147,13 @@ const update = async (shouldCommit = false) => {
                     if (net_1.isIP(url)) {
                         if (site.ipv6 && !net_1.isIPv6(url))
                             throw new Error("Site URL must be IPv6 for ipv6 check");
-                        else if (site.ipv6)
+                    }
+                    else {
+                        if (site.ipv6)
                             address = (await dns_1.default.promises.resolve6(url))[0];
                         else
                             address = (await dns_1.default.promises.resolve4(url))[0];
-                        if (net_1.isIP(url) && !net_1.isIP(address))
+                        if (!net_1.isIP(address))
                             throw new Error("Site IP address could not be resolved");
                     }
                     const tcpResult = await ping_1.ping({
