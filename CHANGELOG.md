@@ -1,3 +1,12 @@
+## v1.34.1 (2023-12-15)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.0...v1.34.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`3cc3be2`](https://github.com/upptime/uptime-monitor/commit/3cc3be2)  Fixed ipv6 check properly (#232)
+(Issues: [`#232`](https://github.com/upptime/uptime-monitor/issues/232))
+
 ## v1.34.0 (2023-12-13)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.33.0...v1.34.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.0.tar.gz))
