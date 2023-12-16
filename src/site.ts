@@ -32,9 +32,9 @@ export const generateSite = async () => {
   }
   exec("npm init -y");
   config.repo;
-  exec(`npm i ${sitePackage}`);
+  exec(`npm i ${sitePackage} --no-audit --no-fund --loglevel=error`);
   cp("-r", `node_modules/${sitePackage}/*`, ".");
-  exec("npm i");
+  exec("npm i --no-audit --no-fund --loglevel=error");
   exec("npm run export");
   mkdir("-p", "status-page/__sapper__/export");
   cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
