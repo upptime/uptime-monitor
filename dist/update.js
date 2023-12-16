@@ -107,11 +107,12 @@ const update = async (shouldCommit = false) => {
                 });
                 console.log("Closed maintenance completed event", incident.number);
             }
-            else
+            else if (dayjs_1.default(metadata.start).isBefore(dayjs_1.default())) {
                 ongoingMaintenanceEvents.push({
                     issueNumber: incident.number,
                     metadata: { start: metadata.start, end: metadata.end, expectedDegraded, expectedDown },
                 });
+            }
         }
     }
     for await (const site of config.sites) {
