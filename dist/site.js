@@ -18,7 +18,7 @@ const generateSite = async () => {
     const repoDetails = await octokit.repos.get({ owner, repo });
     const siteDir = "site";
     /* Configure shelljs to fail on failure */
-    var sh = require('shelljs');
+    var sh = require("shelljs");
     sh.config.fatal = true;
     shelljs_1.mkdir(siteDir);
     shelljs_1.cd(siteDir);
@@ -40,6 +40,7 @@ const generateSite = async () => {
     shelljs_1.exec("npm run export");
     shelljs_1.mkdir("-p", "status-page/__sapper__/export");
     shelljs_1.cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
+    shelljs_1.cp("-r", "../assets/*", "status-page/__sapper__/export");
     shelljs_1.cd("../..");
 };
 exports.generateSite = generateSite;
