@@ -1,3 +1,11 @@
+## v1.34.2 (2023-12-16)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.1...v1.34.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`9457cce`](https://github.com/upptime/uptime-monitor/commit/9457cce)  Copy assets during site script
+
 ## v1.34.1 (2023-12-15)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.0...v1.34.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.1.tar.gz))
