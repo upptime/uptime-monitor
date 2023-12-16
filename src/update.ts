@@ -109,11 +109,12 @@ export const update = async (shouldCommit = false) => {
           issue_number: incident.number,
         });
         console.log("Closed maintenance completed event", incident.number);
-      } else
+      } else if (dayjs(metadata.start).isBefore(dayjs())) {
         ongoingMaintenanceEvents.push({
           issueNumber: incident.number,
           metadata: { start: metadata.start, end: metadata.end, expectedDegraded, expectedDown },
         });
+      }
     }
   }
 
