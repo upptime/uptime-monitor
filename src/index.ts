@@ -2,6 +2,7 @@ import { debug, getInput, setFailed } from "@actions/core";
 import { updateDependencies } from "./dependencies";
 import { generateGraphs } from "./graphs";
 import { getSecret } from "./helpers/secrets";
+import { getUptimeMonitorVersion } from "./helpers/workflows";
 import { generateSite } from "./site";
 import { generateSummary } from "./summary";
 import { update } from "./update";
@@ -17,7 +18,15 @@ Object.keys(allSecrets).forEach((key) => {
 export const run = async () => {
   if (!token) throw new Error("GitHub token not found");
 
-  debug("Starting Upptime");
+  console.log(`
+
+🔼 Upptime @${await getUptimeMonitorVersion()}
+GitHub-powered open-source uptime monitor and status page by Anand Chowdhary
+
+* Source: https://github.com/upptime/upptime
+* Docs and more: https://upptime.js.org
+* More by Anand Chowdhary: https://anandchowdhary.com
+`);
 
   switch (getInput("command")) {
     case "summary":

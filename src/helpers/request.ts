@@ -21,12 +21,12 @@ export const curl = (
       curl.setOpt("SSL_VERIFYHOST", false);
     curl.setOpt("FOLLOWLOCATION", maxRedirects ? 1 : 0);
     curl.setOpt("MAXREDIRS", maxRedirects);
-    curl.setOpt("USERAGENT", "Koj Bot");
+    curl.setOpt("USERAGENT", "upptime.js.org");
     curl.setOpt("CONNECTTIMEOUT", 10);
     curl.setOpt("TIMEOUT", 30);
     curl.setOpt("HEADER", 1);
 
-    if(site.verbose) {
+    if (site.verbose) {
       curl.setOpt("VERBOSE", true);
     } else {
       curl.setOpt("VERBOSE", false);

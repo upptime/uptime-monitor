@@ -1,6 +1,6 @@
 name: "Upptime"
 description: "Uptime monitor and status page powered entirely by GitHub"
-author: "Koj <https://github.com/koj.co>"
+author: "Anand Chowdhary <https://github.com/AnandChowdhary>"
 inputs:
   command:
     required: true
