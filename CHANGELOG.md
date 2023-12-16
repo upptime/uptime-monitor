@@ -1,3 +1,84 @@
+## v1.34.2 (2023-12-16)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.1...v1.34.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`9457cce`](https://github.com/upptime/uptime-monitor/commit/9457cce)  Copy assets during site script
+
+## v1.34.1 (2023-12-15)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.0...v1.34.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`3cc3be2`](https://github.com/upptime/uptime-monitor/commit/3cc3be2)  Fixed ipv6 check properly (#232)
+(Issues: [`#232`](https://github.com/upptime/uptime-monitor/issues/232))
+
+## v1.34.0 (2023-12-13)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.33.0...v1.34.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.0.tar.gz))
+
+### ✨ New features
+
+- [`fcebd9e`](https://github.com/upptime/uptime-monitor/commit/fcebd9e)  Add support for pinging IPv6 addresses and hostnames
+
+### 🐛 Bug fixes
+
+- [`7685333`](https://github.com/upptime/uptime-monitor/commit/7685333)  Fix TypeScript syntax, update IP condition
+- [`57632a6`](https://github.com/upptime/uptime-monitor/commit/57632a6)  Fix TypeScript syntax
+- [`1cf004c`](https://github.com/upptime/uptime-monitor/commit/1cf004c)  Import from global node
+- [`9362897`](https://github.com/upptime/uptime-monitor/commit/9362897)  Fix TS interface syntax
+
+## v1.33.0 (2023-10-17)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.33.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.32.0...v1.33.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.33.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.33.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.33.0.tar.gz))
+
+### ✨ New features
+
+- [`b917b03`](https://github.com/upptime/uptime-monitor/commit/b917b03)  Trigger minor release
+- [`cb78cff`](https://github.com/upptime/uptime-monitor/commit/cb78cff)  Add Google Chat webhooks notifications (#229)
+(Issues: [`#229`](https://github.com/upptime/uptime-monitor/issues/229))
+
+## v1.32.0 (2023-10-04)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.32.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.31.2...v1.32.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.32.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.32.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.32.0.tar.gz))
+
+### ✨ New features
+
+- [`08b4cb9`](https://github.com/upptime/uptime-monitor/commit/08b4cb9)  Introduce dynamic random numbers support in HTTP requests (#226)
+(Issues: [`#226`](https://github.com/upptime/uptime-monitor/issues/226))
+
+## v1.31.2 (2023-08-28)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.31.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.31.1...v1.31.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.31.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.31.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.31.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`31c5aec`](https://github.com/upptime/uptime-monitor/commit/31c5aec)  Use issue created time for calculation
+
+## v1.31.1 (2023-08-21)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.31.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.31.0...v1.31.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.31.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.31.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.31.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`54100ae`](https://github.com/upptime/uptime-monitor/commit/54100ae)  Fix upptime/upptime#838 login for time difference
+(Issues: [`upptime/upptime#838`](https://github.com/upptime/upptime/issues/838))
+
+## v1.31.0 (2023-08-18)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.31.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.30.1...v1.31.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.31.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.31.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.31.0.tar.gz))
+
+### ✨ New features
+
+- [`d6ee428`](https://github.com/upptime/uptime-monitor/commit/d6ee428)  Deploy duration for downtime
+
+### 🐛 Bug fixes
+
+- [`e28761b`](https://github.com/upptime/uptime-monitor/commit/e28761b)  Update DEFAULT_RUNNER (#220)
+(Issues: [`#220`](https://github.com/upptime/uptime-monitor/issues/220))
+
 ## v1.30.1 (2023-06-15)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.30.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.30.0...v1.30.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.30.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.30.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.30.1.tar.gz))
