@@ -112,6 +112,9 @@ on:
   push:
     paths:
       - ".upptimerc.yml"
+    branches:
+      - "master"
+      - "main"
   repository_dispatch:
     types: [setup]
   workflow_dispatch:
