@@ -38,6 +38,10 @@ export const generateSite = async () => {
   exec("npm run export");
   mkdir("-p", "status-page/__sapper__/export");
   cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
-  cp("-r", "../assets/*", "status-page/__sapper__/export");
+  try {
+    cp("-r", "../assets/*", "status-page/__sapper__/export");
+  } catch (error) {
+    // Ignore errors if unable to find directory
+  }
   cd("../..");
 };
