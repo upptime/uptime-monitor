@@ -277,22 +277,22 @@ export const update = async (shouldCommit = false) => {
           : "down";
         if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
         if (status === "up" && typeof result.data === "string") {
-          if (site.__dangerous__body_down && result.data.includes(site.__dangerous__body_down))
+          if (site.__dangerous__body_down && result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down)))
             status = "down";
           if (
             site.__dangerous__body_degraded &&
-            result.data.includes(site.__dangerous__body_degraded)
+            result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded))
           )
             status = "degraded";
         }
         if (
           site.__dangerous__body_degraded_if_text_missing &&
-          !result.data.includes(site.__dangerous__body_degraded_if_text_missing)
+          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing))
         )
           status = "degraded";
         if (
           site.__dangerous__body_down_if_text_missing &&
-          !result.data.includes(site.__dangerous__body_down_if_text_missing)
+          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing))
         )
           status = "down";
         return { result, responseTime, status };
