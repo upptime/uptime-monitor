@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateSite = void 0;
+const fs_extra_1 = require("fs-extra");
 const shelljs_1 = require("shelljs");
 const config_1 = require("./helpers/config");
 const github_1 = require("./helpers/github");
@@ -41,7 +42,10 @@ const generateSite = async () => {
     shelljs_1.mkdir("-p", "status-page/__sapper__/export");
     shelljs_1.cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
     try {
-        shelljs_1.cp("-r", "../assets/*", "status-page/__sapper__/export");
+        console.log("../assets", (await fs_extra_1.stat("../assets")).size);
+        console.log("../../assets", (await fs_extra_1.stat("../../assets")).size);
+        console.log("../../../assets", (await fs_extra_1.stat("../../../assets")).size);
+        // cp("-r", "../assets/*", "status-page/__sapper__/export");
     }
     catch (error) {
         // Ignore errors if unable to find directory
