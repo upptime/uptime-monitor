@@ -39,13 +39,12 @@ export const generateSite = async () => {
   exec("npm run export");
   mkdir("-p", "status-page/__sapper__/export");
   cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
+  let assetsExists = false;
   try {
-    console.log("../assets", (await stat("../assets")).size);
-    console.log("../../assets", (await stat("../../assets")).size);
-    console.log("../../../assets", (await stat("../../../assets")).size);
-    // cp("-r", "../assets/*", "status-page/__sapper__/export");
+    assetsExists = (await stat("../assets")).size > 0;
   } catch (error) {
-    // Ignore errors if unable to find directory
+    // Ignore errors if assets folder doesn't exist
   }
+  if (assetsExists) cp("-r", "../assets/*", "status-page/__sapper__/export");
   cd("../..");
 };
