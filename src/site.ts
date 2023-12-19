@@ -1,3 +1,4 @@
+import { stat } from "fs-extra";
 import { cd, cp, exec, mkdir } from "shelljs";
 import { getConfig } from "./helpers/config";
 import { getOctokit } from "./helpers/github";
@@ -39,7 +40,10 @@ export const generateSite = async () => {
   mkdir("-p", "status-page/__sapper__/export");
   cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
   try {
-    cp("-r", "../assets/*", "status-page/__sapper__/export");
+    console.log("../assets", (await stat("../assets")).size);
+    console.log("../../assets", (await stat("../../assets")).size);
+    console.log("../../../assets", (await stat("../../../assets")).size);
+    // cp("-r", "../assets/*", "status-page/__sapper__/export");
   } catch (error) {
     // Ignore errors if unable to find directory
   }
