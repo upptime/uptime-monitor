@@ -1,3 +1,19 @@
+## v1.35.0 (2023-12-19)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.35.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.2...v1.35.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.35.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.35.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.35.0.tar.gz))
+
+### ✨ New features
+
+- [`7c9e179`](https://github.com/upptime/uptime-monitor/commit/7c9e179)  Make npm installs quieter and faster (#219)
+(Issues: [`#219`](https://github.com/upptime/uptime-monitor/issues/219))- [`0a20883`](https://github.com/upptime/uptime-monitor/commit/0a20883)  Add support for Action secrets everywhere (#233)
+(Issues: [`#233`](https://github.com/upptime/uptime-monitor/issues/233))
+
+### 🐛 Bug fixes
+
+- [`9ecdca4`](https://github.com/upptime/uptime-monitor/commit/9ecdca4)  Only add a maintenance event if start date has passed (#230)
+(Issues: [`#230`](https://github.com/upptime/uptime-monitor/issues/230))- [`ad82cd5`](https://github.com/upptime/uptime-monitor/commit/ad82cd5)  Skip errors in static site
+- [`4da4652`](https://github.com/upptime/uptime-monitor/commit/4da4652)  Ensure assets exists before copying
+
 ## v1.34.2 (2023-12-16)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.1...v1.34.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.2.tar.gz))
