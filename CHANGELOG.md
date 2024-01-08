@@ -1,3 +1,11 @@
+## v1.36.0 (2024-01-08)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.35.0...v1.36.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.0.tar.gz))
+
+### ✨ New features
+
+- [`e328be7`](https://github.com/upptime/uptime-monitor/commit/e328be7)  Add support for IPv6 via WARP
+
 ## v1.35.0 (2023-12-19)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.35.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.2...v1.35.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.35.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.35.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.35.0.tar.gz))
