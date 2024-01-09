@@ -103,8 +103,8 @@ jobs:
           token: \${{ secrets.GH_PAT || github.token }}${
             (await getHasIpV6Site())
               ? `
-    - name: Setup WARP
-    uses: fscarmen/warp-on-actions@v2`
+      - name: Setup WARP
+        uses: fscarmen/warp-on-actions@v2`
               : ""
           }
       - name: Update response time
@@ -150,8 +150,8 @@ jobs:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}${
             (await getHasIpV6Site())
               ? `
-    - name: Setup WARP
-    uses: fscarmen/warp-on-actions@v2`
+      - name: Setup WARP
+        uses: fscarmen/warp-on-actions@v2`
               : ""
           }
       - name: Update response time
