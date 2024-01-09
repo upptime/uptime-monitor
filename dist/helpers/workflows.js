@@ -92,8 +92,8 @@ jobs:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}${(await getHasIpV6Site())
         ? `
-    - name: Setup WARP
-    uses: fscarmen/warp-on-actions@v2`
+      - name: Setup WARP
+        uses: fscarmen/warp-on-actions@v2`
         : ""}
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
@@ -136,8 +136,8 @@ jobs:
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}${(await getHasIpV6Site())
         ? `
-    - name: Setup WARP
-    uses: fscarmen/warp-on-actions@v2`
+      - name: Setup WARP
+        uses: fscarmen/warp-on-actions@v2`
         : ""}
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
