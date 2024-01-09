@@ -1,3 +1,11 @@
+## v1.36.1 (2024-01-09)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.0...v1.36.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`b2ecd92`](https://github.com/upptime/uptime-monitor/commit/b2ecd92)  Fix indentation in Setup WARP
+
 ## v1.36.0 (2024-01-08)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.35.0...v1.36.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.0.tar.gz))
