@@ -75,7 +75,11 @@ jobs:
 
 const getHasIpV6Site = async (): Promise<boolean> => {
   const config = await getConfig();
-  return !!config.sites.find((site) => site.ipv6);
+  const hasIpV6 = !!config.sites.find((site) => site.ipv6);
+  if (hasIpV6) console.log("Detected IPv6 site, adding WARP setup step");
+  else
+    console.log("No IPv6 sites detected, skipping WARP setup step", JSON.stringify(config.sites));
+  return hasIpV6;
 };
 
 export const responseTimeCiWorkflow = async () => {
