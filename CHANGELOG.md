@@ -1,3 +1,17 @@
+## v1.36.2 (2024-01-21)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.1...v1.36.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`47e177b`](https://github.com/upptime/uptime-monitor/commit/47e177b)  Fix upptime/upptime#918 by adding warp
+(Issues: [`upptime/upptime#918`](https://github.com/upptime/upptime/issues/918))
+
+### ⬆️ Dependency updates
+
+- [`e47f23e`](https://github.com/upptime/uptime-monitor/commit/e47f23e)  Bump follow-redirects from 1.15.2 to 1.15.4 (#240)
+(Issues: [`#240`](https://github.com/upptime/uptime-monitor/issues/240))
+
 ## v1.36.1 (2024-01-09)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.0...v1.36.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.1.tar.gz))
