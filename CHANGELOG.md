@@ -1,3 +1,12 @@
+## v1.36.3 (2024-01-25)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.2...v1.36.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.3.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`9b7e7be`](https://github.com/upptime/uptime-monitor/commit/9b7e7be)  Fix upptime/upptime#918 by adding WARP globally
+(Issues: [`upptime/upptime#918`](https://github.com/upptime/upptime/issues/918))
+
 ## v1.36.2 (2024-01-21)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.1...v1.36.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.2.tar.gz))
