@@ -95,17 +95,6 @@ jobs:
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
-      - name: Install WARP to support IPv6
-        run: |
-          sudo apt-get -y update
-          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
-          sudo apt-get update
-          sudo apt-get install -y cloudflare-warp
-          sudo warp-cli --accept-tos register
-          sudo warp-cli --accept-tos set-mode warp+doh
-          sudo warp-cli --accept-tos connect
-        shell: bash
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
@@ -146,17 +135,6 @@ jobs:
           command: "update-template"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - name: Install WARP to support IPv6
-        run: |
-          sudo apt-get -y update
-          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
-          sudo apt-get update
-          sudo apt-get install -y cloudflare-warp
-          sudo warp-cli --accept-tos register
-          sudo warp-cli --accept-tos set-mode warp+doh
-          sudo warp-cli --accept-tos connect
-        shell: bash
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
