@@ -33,49 +33,6 @@ const introComment = async () => `#
 # * Docs and more: https://upptime.js.org
 # * More by Anand Chowdhary: https://anandchowdhary.com
 `;
-const WARP_ACTION = `      - name: Install WARP to support IPv6
-        run: |
-          if [ "\${{ inputs.mode }}" == 'client' ]; then
-            echo "WARP mode: client warp+doh."
-            sudo apt-get -y update
-            curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
-            echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
-            sudo apt-get update
-            sudo apt-get install -y cloudflare-warp
-            sudo warp-cli --accept-tos register
-            sudo warp-cli --accept-tos set-mode warp+doh
-            sudo warp-cli --accept-tos connect
-      
-          elif [ "\${{ inputs.mode }}" == 'wireguard' ]; then
-            echo "WARP mode: wireguard."
-            sudo apt-get -y update
-            sudo apt-get -y install --no-install-recommends net-tools iproute2 openresolv dnsutils iptables wireguard-tools
-            LAN=$(ip route get 192.168.193.10 | grep -oP 'src \K\S+')
-            echo "[Interface]
-            PrivateKey = cKE7LmCF61IhqqABGhvJ44jWXp8fKymcMAEVAzbDF2k=
-            Address = 172.16.0.2/32
-            Address = fd01:5ca1:ab1e:823e:e094:eb1c:ff87:1fab/128
-            PostUp = ip -4 rule add from $LAN lookup main
-            PostDown = ip -4 rule delete from $LAN lookup main
-            DNS = 8.8.8.8,8.8.4.4
-            MTU = 1280
-            
-            [Peer]
-            PublicKey = bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
-            AllowedIPs = 0.0.0.0/0
-            AllowedIPs = ::/0
-            Endpoint = 162.159.193.10:2408" | sed "s/^[ ]\+//g" | sudo tee /etc/wireguard/warp.conf
-            sudo wg-quick up warp
-      
-          else
-            echo -e "WARP mode: \${{ inputs.mode }}.\nYou can choose client or wireguard."
-            exit 1
-          fi
-      
-          sleep 1
-          sudo curl -s4m8 --retry 3 -A Mozilla https://api.ip.sb/geoip
-      
-        shell: bash`;
 const graphsCiWorkflow = async () => {
     const config = await config_1.getConfig();
     const workflowSchedule = config.workflowSchedule || {};
@@ -137,10 +94,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT || github.token }}${(await getHasIpV6Site())
-        ? `
-${WARP_ACTION}`
-        : ""}
+          token: \${{ secrets.GH_PAT || github.token }}
+      - name: Install WARP to support IPv6
+        run: |
+          sudo apt-get -y update
+          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+          sudo apt-get update
+          sudo apt-get install -y cloudflare-warp
+          sudo warp-cli --accept-tos register
+          sudo warp-cli --accept-tos set-mode warp+doh
+          sudo warp-cli --accept-tos connect
+        shell: bash
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
@@ -180,10 +145,18 @@ jobs:
         with:
           command: "update-template"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}${(await getHasIpV6Site())
-        ? `
-${WARP_ACTION}`
-        : ""}
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+      - name: Install WARP to support IPv6
+        run: |
+          sudo apt-get -y update
+          curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | sudo gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/cloudflare-client.list
+          sudo apt-get update
+          sudo apt-get install -y cloudflare-warp
+          sudo warp-cli --accept-tos register
+          sudo warp-cli --accept-tos set-mode warp+doh
+          sudo warp-cli --accept-tos connect
+        shell: bash
       - name: Update response time
         uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
         with:
