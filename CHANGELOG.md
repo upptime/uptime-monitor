@@ -1,3 +1,12 @@
+## v1.36.4 (2024-01-25)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.3...v1.36.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.4.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`a5560d2`](https://github.com/upptime/uptime-monitor/commit/a5560d2)  Remove WARP for upptime/upptime#918
+(Issues: [`upptime/upptime#918`](https://github.com/upptime/upptime/issues/918))
+
 ## v1.36.3 (2024-01-25)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.2...v1.36.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.3.tar.gz))
