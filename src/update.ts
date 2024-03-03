@@ -275,26 +275,29 @@ export const update = async (shouldCommit = false) => {
         )
           ? "up"
           : "down";
-        if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
-        if (status === "up" && typeof result.data === "string") {
-          if (site.__dangerous__body_down && result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down)))
+        if (status === "up") {
+          let is_down = site.__dangerous__body_down &&
+            result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down));
+          is_down = is_down || (
+            site.__dangerous__body_down_if_text_missing &&
+            !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing))
+          );
+          if (is_down)
             status = "down";
-          if (
-            site.__dangerous__body_degraded &&
-            result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded))
-          )
-            status = "degraded";
+          else {
+            let is_degraded = site.__dangerous__body_degraded &&
+              result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded));
+            is_degraded = is_degraded || (
+              site.__dangerous__body_degraded_if_text_missing &&
+              !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing))
+            );
+            is_degraded = is_degraded || (
+              parseInt(responseTime) > (site.maxResponseTime || 60000)
+            );
+            if (is_degraded)
+              status = "degraded";
+          }
         }
-        if (
-          site.__dangerous__body_degraded_if_text_missing &&
-          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing))
-        )
-          status = "degraded";
-        if (
-          site.__dangerous__body_down_if_text_missing &&
-          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing))
-        )
-          status = "down";
         return { result, responseTime, status };
       }
     };
