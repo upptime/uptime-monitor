@@ -1,3 +1,5 @@
+import dns from "dns";
+import { isIP, isIPv6 } from "net";
 import slugify from "@sindresorhus/slugify";
 import dayjs from "dayjs";
 import { mkdirp, readFile, writeFile } from "fs-extra";
@@ -153,8 +155,24 @@ export const update = async (shouldCommit = false) => {
         console.log("Using tcp-ping instead of curl");
         try {
           let status: "up" | "down" | "degraded" = "up";
+          // https://github.com/upptime/upptime/discussions/888
+          const url = replaceEnvironmentVariables(site.url);
+          let address = url;
+          if (isIP(url)) {
+            if (site.ipv6 && !isIPv6(url))
+              throw new Error("Site URL must be IPv6 for ipv6 check");
+          } else {
+            if (site.ipv6)
+              address = (await dns.promises.resolve6(url))[0];
+            else
+              address = (await dns.promises.resolve4(url))[0];
+
+            if (!isIP(address))
+              throw new Error("Site IP address could not be resolved");
+          }
+
           const tcpResult = await ping({
-            address: replaceEnvironmentVariables(site.url),
+            address,
             attempts: 5,
             port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
           });
@@ -259,22 +277,22 @@ export const update = async (shouldCommit = false) => {
           : "down";
         if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
         if (status === "up" && typeof result.data === "string") {
-          if (site.__dangerous__body_down && result.data.includes(site.__dangerous__body_down))
+          if (site.__dangerous__body_down && result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down)))
             status = "down";
           if (
             site.__dangerous__body_degraded &&
-            result.data.includes(site.__dangerous__body_degraded)
+            result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded))
           )
             status = "degraded";
         }
         if (
           site.__dangerous__body_degraded_if_text_missing &&
-          !result.data.includes(site.__dangerous__body_degraded_if_text_missing)
+          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing))
         )
           status = "degraded";
         if (
           site.__dangerous__body_down_if_text_missing &&
-          !result.data.includes(site.__dangerous__body_down_if_text_missing)
+          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing))
         )
           status = "down";
         return { result, responseTime, status };

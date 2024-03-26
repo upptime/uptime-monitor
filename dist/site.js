@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateSite = void 0;
+const fs_extra_1 = require("fs-extra");
 const shelljs_1 = require("shelljs");
 const config_1 = require("./helpers/config");
 const github_1 = require("./helpers/github");
@@ -18,7 +19,7 @@ const generateSite = async () => {
     const repoDetails = await octokit.repos.get({ owner, repo });
     const siteDir = "site";
     /* Configure shelljs to fail on failure */
-    var sh = require('shelljs');
+    var sh = require("shelljs");
     sh.config.fatal = true;
     shelljs_1.mkdir(siteDir);
     shelljs_1.cd(siteDir);
@@ -34,12 +35,21 @@ const generateSite = async () => {
     }
     shelljs_1.exec("npm init -y");
     config.repo;
-    shelljs_1.exec(`npm i ${sitePackage}`);
+    shelljs_1.exec(`npm i ${sitePackage} --no-audit --no-fund --loglevel=error`);
     shelljs_1.cp("-r", `node_modules/${sitePackage}/*`, ".");
-    shelljs_1.exec("npm i");
+    shelljs_1.exec("npm i --no-audit --no-fund --loglevel=error");
     shelljs_1.exec("npm run export");
     shelljs_1.mkdir("-p", "status-page/__sapper__/export");
     shelljs_1.cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
+    let assetsExists = false;
+    try {
+        assetsExists = (await fs_extra_1.stat("../assets")).size > 0;
+    }
+    catch (error) {
+        // Ignore errors if assets folder doesn't exist
+    }
+    if (assetsExists)
+        shelljs_1.cp("-r", "../assets/*", "status-page/__sapper__/export");
     shelljs_1.cd("../..");
 };
 exports.generateSite = generateSite;

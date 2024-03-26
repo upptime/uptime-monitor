@@ -1,3 +1,99 @@
+## v1.36.4 (2024-01-25)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.3...v1.36.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.4.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`a5560d2`](https://github.com/upptime/uptime-monitor/commit/a5560d2)  Remove WARP for upptime/upptime#918
+(Issues: [`upptime/upptime#918`](https://github.com/upptime/upptime/issues/918))
+
+## v1.36.3 (2024-01-25)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.2...v1.36.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.3.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`9b7e7be`](https://github.com/upptime/uptime-monitor/commit/9b7e7be)  Fix upptime/upptime#918 by adding WARP globally
+(Issues: [`upptime/upptime#918`](https://github.com/upptime/upptime/issues/918))
+
+## v1.36.2 (2024-01-21)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.1...v1.36.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`47e177b`](https://github.com/upptime/uptime-monitor/commit/47e177b)  Fix upptime/upptime#918 by adding warp
+(Issues: [`upptime/upptime#918`](https://github.com/upptime/upptime/issues/918))
+
+### ⬆️ Dependency updates
+
+- [`e47f23e`](https://github.com/upptime/uptime-monitor/commit/e47f23e)  Bump follow-redirects from 1.15.2 to 1.15.4 (#240)
+(Issues: [`#240`](https://github.com/upptime/uptime-monitor/issues/240))
+
+## v1.36.1 (2024-01-09)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.0...v1.36.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`b2ecd92`](https://github.com/upptime/uptime-monitor/commit/b2ecd92)  Fix indentation in Setup WARP
+
+## v1.36.0 (2024-01-08)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.35.0...v1.36.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.0.tar.gz))
+
+### ✨ New features
+
+- [`e328be7`](https://github.com/upptime/uptime-monitor/commit/e328be7)  Add support for IPv6 via WARP
+
+## v1.35.0 (2023-12-19)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.35.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.2...v1.35.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.35.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.35.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.35.0.tar.gz))
+
+### ✨ New features
+
+- [`7c9e179`](https://github.com/upptime/uptime-monitor/commit/7c9e179)  Make npm installs quieter and faster (#219)
+(Issues: [`#219`](https://github.com/upptime/uptime-monitor/issues/219))- [`0a20883`](https://github.com/upptime/uptime-monitor/commit/0a20883)  Add support for Action secrets everywhere (#233)
+(Issues: [`#233`](https://github.com/upptime/uptime-monitor/issues/233))
+
+### 🐛 Bug fixes
+
+- [`9ecdca4`](https://github.com/upptime/uptime-monitor/commit/9ecdca4)  Only add a maintenance event if start date has passed (#230)
+(Issues: [`#230`](https://github.com/upptime/uptime-monitor/issues/230))- [`ad82cd5`](https://github.com/upptime/uptime-monitor/commit/ad82cd5)  Skip errors in static site
+- [`4da4652`](https://github.com/upptime/uptime-monitor/commit/4da4652)  Ensure assets exists before copying
+
+## v1.34.2 (2023-12-16)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.1...v1.34.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`9457cce`](https://github.com/upptime/uptime-monitor/commit/9457cce)  Copy assets during site script
+
+## v1.34.1 (2023-12-15)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.34.0...v1.34.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`3cc3be2`](https://github.com/upptime/uptime-monitor/commit/3cc3be2)  Fixed ipv6 check properly (#232)
+(Issues: [`#232`](https://github.com/upptime/uptime-monitor/issues/232))
+
+## v1.34.0 (2023-12-13)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.34.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.33.0...v1.34.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.34.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.34.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.34.0.tar.gz))
+
+### ✨ New features
+
+- [`fcebd9e`](https://github.com/upptime/uptime-monitor/commit/fcebd9e)  Add support for pinging IPv6 addresses and hostnames
+
+### 🐛 Bug fixes
+
+- [`7685333`](https://github.com/upptime/uptime-monitor/commit/7685333)  Fix TypeScript syntax, update IP condition
+- [`57632a6`](https://github.com/upptime/uptime-monitor/commit/57632a6)  Fix TypeScript syntax
+- [`1cf004c`](https://github.com/upptime/uptime-monitor/commit/1cf004c)  Import from global node
+- [`9362897`](https://github.com/upptime/uptime-monitor/commit/9362897)  Fix TS interface syntax
+
 ## v1.33.0 (2023-10-17)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.33.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.32.0...v1.33.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.33.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.33.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.33.0.tar.gz))

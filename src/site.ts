@@ -1,3 +1,4 @@
+import { stat } from "fs-extra";
 import { cd, cp, exec, mkdir } from "shelljs";
 import { getConfig } from "./helpers/config";
 import { getOctokit } from "./helpers/github";
@@ -13,11 +14,11 @@ export const generateSite = async () => {
   const octokit = await getOctokit();
   const repoDetails = await octokit.repos.get({ owner, repo });
   const siteDir = "site";
-  
+
   /* Configure shelljs to fail on failure */
-  var sh = require('shelljs');
+  var sh = require("shelljs");
   sh.config.fatal = true;
-  
+
   mkdir(siteDir);
   cd(siteDir);
   /**
@@ -32,11 +33,18 @@ export const generateSite = async () => {
   }
   exec("npm init -y");
   config.repo;
-  exec(`npm i ${sitePackage}`);
+  exec(`npm i ${sitePackage} --no-audit --no-fund --loglevel=error`);
   cp("-r", `node_modules/${sitePackage}/*`, ".");
-  exec("npm i");
+  exec("npm i --no-audit --no-fund --loglevel=error");
   exec("npm run export");
   mkdir("-p", "status-page/__sapper__/export");
   cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
+  let assetsExists = false;
+  try {
+    assetsExists = (await stat("../assets")).size > 0;
+  } catch (error) {
+    // Ignore errors if assets folder doesn't exist
+  }
+  if (assetsExists) cp("-r", "../assets/*", "status-page/__sapper__/export");
   cd("../..");
 };
