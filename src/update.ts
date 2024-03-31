@@ -131,40 +131,29 @@ export const update = async (shouldCommit = false) => {
         .map((i) => i.trim())
         .filter((i) => i.length);
 
-    if (metadata.rrule && metadata.duration) {
-      if (!metadata.rrule.includes("DTSTART")) {
-        octokit.issues.createComment({
-          owner,
-          repo,
-          issue_number: incident.number,
-          body: "RRule must include a `DTSTART` parameter."
+    if (metadata.rrule && metadata.duration && metadata.start) {
+      const rule = rrulestr(metadata.rrule);
+
+      if (metadata.end && dayjs(metadata.end).isBefore(dayjs())) {
+        await closeMaintenanceIssue(octokit, owner, repo, incident.number);
+      } else {
+        // Get all potentially valid occurrences of this rule (started up to `duration` ago)
+        // Limit to 1000 results to avoid any potential long-running operations
+        const durationMinutes = getDurationMinutes(metadata.duration);
+        const after = dayjs(metadata.start).subtract(durationMinutes, "minutes").toDate();
+        rule.between(after, new Date(), true, (_, i) => i < 1000).forEach((startDate) => {
+            const endDate = dayjs(startDate).add(durationMinutes, "minutes").toDate();
+
+            const start = startDate.toISOString();
+            const end = endDate.toISOString();
+
+            ongoingMaintenanceEvents.push({
+              issueNumber: incident.number,
+              metadata: { start, end, expectedDegraded, expectedDown },
+            });
         });
       }
-      else {
-        const rule = rrulestr(metadata.rrule);
 
-        if (rule.options.until && dayjs(rule.options.until).isBefore(dayjs())) {
-          await closeMaintenanceIssue(octokit, owner, repo, incident.number);
-        } else {
-          // Get all potentially valid occurrences of this rule (started up to `duration` ago)
-          // Limit to 1000 results to avoid any potential long-running operations
-          const durationMinutes = getDurationMinutes(metadata.duration);
-          const durationMilliseconds = durationMinutes * 60 * 1000;
-          const after = new Date().getTime() - durationMilliseconds;
-          rule.between(new Date(after), new Date(), true, (_, i) => i < 1000).forEach((startDate) => {
-              const endDate = new Date(startDate.getTime() + durationMilliseconds);
-
-              const start = startDate.toISOString();
-              const end = endDate.toISOString();
-
-              ongoingMaintenanceEvents.push({
-                issueNumber: incident.number,
-                metadata: { start, end, expectedDegraded, expectedDown },
-              });
-          });
-        }
-
-      }
     } else if (metadata.start && metadata.end) {
       if (dayjs(metadata.end).isBefore(dayjs())) {
         await closeMaintenanceIssue(octokit, owner, repo, incident.number);
