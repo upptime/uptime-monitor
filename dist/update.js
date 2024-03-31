@@ -22,6 +22,7 @@ const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
 const secrets_1 = require("./helpers/secrets");
 const summary_1 = require("./summary");
+const rrule_1 = require("rrule");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 /**
  * Get a human-readable time difference between from now
@@ -43,6 +44,45 @@ function getHumanReadableTimeDifference(startTime) {
     if (diffMinutes > 0)
         result.push(`${diffMinutes.toLocaleString()} ${diffMinutes > 1 ? "minutes" : "minute"}`);
     return result.join(", ");
+}
+function getDurationMinutes(duration) {
+    const unit = duration.slice(-1).toUpperCase();
+    try {
+        if (unit === "M") {
+            return parseInt(duration.slice(0, -1));
+        }
+        else if (unit === "H") {
+            return parseInt(duration.slice(0, -1)) * 60;
+        }
+        else if (unit === "D") {
+            return parseInt(duration.slice(0, -1)) * 60 * 24;
+        }
+        else {
+            return 0;
+        }
+    }
+    catch (error) {
+        return 0;
+    }
+}
+async function closeMaintenanceIssue(octokit, owner, repo, incidentNumber) {
+    await octokit.issues.unlock({
+        owner,
+        repo,
+        issue_number: incidentNumber,
+    });
+    await octokit.issues.update({
+        owner,
+        repo,
+        issue_number: incidentNumber,
+        state: "closed",
+    });
+    await octokit.issues.lock({
+        owner,
+        repo,
+        issue_number: incidentNumber,
+    });
+    console.log("Closed maintenance completed event", incidentNumber);
 }
 const update = async (shouldCommit = false) => {
     if (!(await init_check_1.shouldContinue()))
@@ -75,37 +115,47 @@ const update = async (shouldCommit = false) => {
                 metadata[i.split(/:(.+)/)[0].trim()] = i.split(/:(.+)/)[1].trim();
             });
         }
-        if (metadata.start && metadata.end) {
-            let expectedDown = [];
-            let expectedDegraded = [];
-            if (metadata.expectedDown)
-                expectedDown = metadata.expectedDown
-                    .split(",")
-                    .map((i) => i.trim())
-                    .filter((i) => i.length);
-            if (metadata.expectedDown)
-                expectedDegraded = metadata.expectedDown
-                    .split(",")
-                    .map((i) => i.trim())
-                    .filter((i) => i.length);
+        let expectedDown = [];
+        let expectedDegraded = [];
+        if (metadata.expectedDown)
+            expectedDown = metadata.expectedDown
+                .split(",")
+                .map((i) => i.trim())
+                .filter((i) => i.length);
+        if (metadata.expectedDegraded)
+            expectedDegraded = metadata.expectedDegraded
+                .split(",")
+                .map((i) => i.trim())
+                .filter((i) => i.length);
+        if (metadata.rrule && metadata.duration && metadata.start) {
+            const rule = rrule_1.rrulestr(metadata.rrule);
+            console.log(metadata.rrule);
+            console.log(rule.options);
+            if (metadata.end && dayjs_1.default(metadata.end).isBefore(dayjs_1.default())) {
+                await closeMaintenanceIssue(octokit, owner, repo, incident.number);
+            }
+            else {
+                // Get all potentially valid occurrences of this rule (started up to `duration` ago)
+                // Limit to 1000 results to avoid any potential long-running operations
+                const durationMinutes = getDurationMinutes(metadata.duration);
+                const after = dayjs_1.default(metadata.start).subtract(durationMinutes, "minutes").toDate();
+                console.log("Duration", durationMinutes);
+                rule.between(after, new Date(), true, (_, i) => i < 1000).forEach((startDate) => {
+                    console.log("Start date", startDate);
+                    const endDate = dayjs_1.default(startDate).add(durationMinutes, "minutes").toDate();
+                    const start = startDate.toISOString();
+                    const end = endDate.toISOString();
+                    console.log("Start", start, "End", end);
+                    ongoingMaintenanceEvents.push({
+                        issueNumber: incident.number,
+                        metadata: { start, end, expectedDegraded, expectedDown },
+                    });
+                });
+            }
+        }
+        else if (metadata.start && metadata.end) {
             if (dayjs_1.default(metadata.end).isBefore(dayjs_1.default())) {
-                await octokit.issues.unlock({
-                    owner,
-                    repo,
-                    issue_number: incident.number,
-                });
-                await octokit.issues.update({
-                    owner,
-                    repo,
-                    issue_number: incident.number,
-                    state: "closed",
-                });
-                await octokit.issues.lock({
-                    owner,
-                    repo,
-                    issue_number: incident.number,
-                });
-                console.log("Closed maintenance completed event", incident.number);
+                await closeMaintenanceIssue(octokit, owner, repo, incident.number);
             }
             else if (dayjs_1.default(metadata.start).isBefore(dayjs_1.default())) {
                 ongoingMaintenanceEvents.push({
