@@ -134,6 +134,9 @@ export const update = async (shouldCommit = false) => {
     if (metadata.rrule && metadata.duration && metadata.start) {
       const rule = rrulestr(metadata.rrule);
 
+      console.log(metadata.rrule)
+      console.log(rule.options)
+
       if (metadata.end && dayjs(metadata.end).isBefore(dayjs())) {
         await closeMaintenanceIssue(octokit, owner, repo, incident.number);
       } else {
@@ -141,11 +144,16 @@ export const update = async (shouldCommit = false) => {
         // Limit to 1000 results to avoid any potential long-running operations
         const durationMinutes = getDurationMinutes(metadata.duration);
         const after = dayjs(metadata.start).subtract(durationMinutes, "minutes").toDate();
+
+        console.log("Duration", durationMinutes)
         rule.between(after, new Date(), true, (_, i) => i < 1000).forEach((startDate) => {
+            console.log("Start date", startDate)
             const endDate = dayjs(startDate).add(durationMinutes, "minutes").toDate();
 
             const start = startDate.toISOString();
             const end = endDate.toISOString();
+
+            console.log("Start", start, "End", end)
 
             ongoingMaintenanceEvents.push({
               issueNumber: incident.number,
