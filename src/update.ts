@@ -2,6 +2,7 @@ import dns from "dns";
 import { isIP, isIPv6 } from "net";
 import slugify from "@sindresorhus/slugify";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { mkdirp, readFile, writeFile } from "fs-extra";
 import { load } from "js-yaml";
 import { join } from "path";
@@ -19,6 +20,8 @@ import { SiteHistory } from "./interfaces";
 import { generateSummary } from "./summary";
 import {  rrulestr } from 'rrule';
 import { Octokit } from "@octokit/rest";
+
+dayjs.extend(utc);
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -132,16 +135,19 @@ export const update = async (shouldCommit = false) => {
         .filter((i) => i.length);
 
     if (metadata.rrule && metadata.duration && metadata.start) {
+      // The DTSTART and UNTIL params in RRules should be in UTC format without colons and dashes
       if (!metadata.rrule.includes("DTSTART")) {
-        const cleanStartTime = metadata.start
-          .replaceAll("+00:00", "Z")
+        const cleanStartTime = dayjs(metadata.start)
+          .utc()
+          .format()
           .replaceAll(":", "")
           .replaceAll("-", "");
         metadata.rrule += `;DTSTART=${cleanStartTime}`;
       }
       if (!metadata.rrule.includes("UNTIL") && metadata.end) {
-        const cleanEndTime = metadata.end
-          .replaceAll("+00:00", "Z")
+        const cleanEndTime = dayjs(metadata.end)
+          .utc()
+          .format()
           .replaceAll(":", "")
           .replaceAll("-", "");
         metadata.rrule += `;UNTIL=${cleanEndTime}`;

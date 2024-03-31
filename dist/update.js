@@ -8,6 +8,7 @@ const dns_1 = __importDefault(require("dns"));
 const net_1 = require("net");
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const dayjs_1 = __importDefault(require("dayjs"));
+const utc_1 = __importDefault(require("dayjs/plugin/utc"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
 const path_1 = require("path");
@@ -23,6 +24,7 @@ const request_1 = require("./helpers/request");
 const secrets_1 = require("./helpers/secrets");
 const summary_1 = require("./summary");
 const rrule_1 = require("rrule");
+dayjs_1.default.extend(utc_1.default);
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 /**
  * Get a human-readable time difference between from now
@@ -128,23 +130,24 @@ const update = async (shouldCommit = false) => {
                 .map((i) => i.trim())
                 .filter((i) => i.length);
         if (metadata.rrule && metadata.duration && metadata.start) {
+            // The DTSTART and UNTIL params in RRules should be in UTC format without colons and dashes
             if (!metadata.rrule.includes("DTSTART")) {
-                const cleanStartTime = metadata.start
-                    .replaceAll("+00:00", "Z")
+                const cleanStartTime = dayjs_1.default(metadata.start)
+                    .utc()
+                    .format()
                     .replaceAll(":", "")
                     .replaceAll("-", "");
                 metadata.rrule += `;DTSTART=${cleanStartTime}`;
             }
             if (!metadata.rrule.includes("UNTIL") && metadata.end) {
-                const cleanEndTime = metadata.end
-                    .replaceAll("+00:00", "Z")
+                const cleanEndTime = dayjs_1.default(metadata.end)
+                    .utc()
+                    .format()
                     .replaceAll(":", "")
                     .replaceAll("-", "");
                 metadata.rrule += `;UNTIL=${cleanEndTime}`;
             }
             const rule = rrule_1.rrulestr(metadata.rrule);
-            console.log(metadata.rrule);
-            console.log(rule.options);
             if (metadata.end && dayjs_1.default(metadata.end).isBefore(dayjs_1.default())) {
                 await closeMaintenanceIssue(octokit, owner, repo, incident.number);
             }
@@ -153,13 +156,10 @@ const update = async (shouldCommit = false) => {
                 // Limit to 1000 results to avoid any potential long-running operations
                 const durationMinutes = getDurationMinutes(metadata.duration);
                 const after = dayjs_1.default().subtract(durationMinutes, "minutes").toDate();
-                console.log("Duration", durationMinutes);
                 rule.between(after, new Date(), true, (_, i) => i < 1000).forEach((startDate) => {
-                    console.log("Start date", startDate);
                     const endDate = dayjs_1.default(startDate).add(durationMinutes, "minutes").toDate();
                     const start = startDate.toISOString();
                     const end = endDate.toISOString();
-                    console.log("Start", start, "End", end);
                     ongoingMaintenanceEvents.push({
                         issueNumber: incident.number,
                         metadata: { start, end, expectedDegraded, expectedDown },
