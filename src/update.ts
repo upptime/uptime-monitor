@@ -133,6 +133,8 @@ export const update = async (shouldCommit = false) => {
 
     if (metadata.rrule && metadata.duration && metadata.start) {
       const rule = rrulestr(metadata.rrule);
+      rule.options.dtstart = new Date(metadata.start);
+      if (metadata.end) rule.options.until = new Date(metadata.end);
 
       console.log(metadata.rrule)
       console.log(rule.options)

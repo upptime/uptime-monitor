@@ -129,6 +129,9 @@ const update = async (shouldCommit = false) => {
                 .filter((i) => i.length);
         if (metadata.rrule && metadata.duration && metadata.start) {
             const rule = rrule_1.rrulestr(metadata.rrule);
+            rule.options.dtstart = new Date(metadata.start);
+            if (metadata.end)
+                rule.options.until = new Date(metadata.end);
             console.log(metadata.rrule);
             console.log(rule.options);
             if (metadata.end && dayjs_1.default(metadata.end).isBefore(dayjs_1.default())) {
