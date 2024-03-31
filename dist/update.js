@@ -152,7 +152,7 @@ const update = async (shouldCommit = false) => {
                 // Get all potentially valid occurrences of this rule (started up to `duration` ago)
                 // Limit to 1000 results to avoid any potential long-running operations
                 const durationMinutes = getDurationMinutes(metadata.duration);
-                const after = dayjs_1.default(metadata.start).subtract(durationMinutes, "minutes").toDate();
+                const after = dayjs_1.default().subtract(durationMinutes, "minutes").toDate();
                 console.log("Duration", durationMinutes);
                 rule.between(after, new Date(), true, (_, i) => i < 1000).forEach((startDate) => {
                     console.log("Start date", startDate);
