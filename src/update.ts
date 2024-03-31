@@ -132,9 +132,21 @@ export const update = async (shouldCommit = false) => {
         .filter((i) => i.length);
 
     if (metadata.rrule && metadata.duration && metadata.start) {
+      if (!metadata.rrule.includes("DTSTART")) {
+        const cleanStartTime = metadata.start
+          .replaceAll("+00:00", "Z")
+          .replaceAll(":", "")
+          .replaceAll("-", "");
+        metadata.rrule += `;DTSTART=${cleanStartTime}`;
+      }
+      if (!metadata.rrule.includes("UNTIL") && metadata.end) {
+        const cleanEndTime = metadata.end
+          .replaceAll("+00:00", "Z")
+          .replaceAll(":", "")
+          .replaceAll("-", "");
+        metadata.rrule += `;UNTIL=${cleanEndTime}`;
+      }
       const rule = rrulestr(metadata.rrule);
-      rule.options.dtstart = new Date(metadata.start);
-      if (metadata.end) rule.options.until = new Date(metadata.end);
 
       console.log(metadata.rrule)
       console.log(rule.options)
