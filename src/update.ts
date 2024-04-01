@@ -60,6 +60,7 @@ function getDurationMinutes(duration: string): number {
       return 0;
     }
   } catch (error) {
+    console.error("Error parsing duration", duration, error);
     return 0;
   }
 }
