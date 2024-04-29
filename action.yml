@@ -7,7 +7,7 @@ inputs:
     description: "Command to run (see README for commands)"
     default: "update"
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
 branding:
   icon: "chevron-up"
