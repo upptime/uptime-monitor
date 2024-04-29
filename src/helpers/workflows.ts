@@ -59,7 +59,7 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
@@ -100,7 +100,7 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
@@ -135,7 +135,7 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
@@ -204,7 +204,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
@@ -246,7 +246,7 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
@@ -278,7 +278,7 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
@@ -310,7 +310,7 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
@@ -340,7 +340,7 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
