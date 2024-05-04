@@ -331,7 +331,7 @@ export const sendNotification = async (message: string) => {
   if (getSecret("NOTIFICATION_TELEGRAM") && getSecret("NOTIFICATION_TELEGRAM_BOT_KEY")) {
     console.log("Sending Telegram");
     try {
-      const chatIds = getSecret("NOTIFICATION_TELEGRAM_BOT_KEY").split(",").map((key) => key.trim());
+      const chatIds = getSecret("NOTIFICATION_TELEGRAM_BOT_KEY").split(",");
       for (const chatId of chatIds) {
         await axios.post(
           `https://api.telegram.org/bot${getSecret("NOTIFICATION_TELEGRAM_BOT_KEY")}/sendMessage`,
