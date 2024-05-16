@@ -2,6 +2,7 @@ import dns from "dns";
 import { isIP, isIPv6 } from "net";
 import slugify from "@sindresorhus/slugify";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { mkdirp, readFile, writeFile } from "fs-extra";
 import { load } from "js-yaml";
 import { join } from "path";
@@ -17,6 +18,10 @@ import { curl } from "./helpers/request";
 import { getOwnerRepo, getSecret } from "./helpers/secrets";
 import { SiteHistory } from "./interfaces";
 import { generateSummary } from "./summary";
+import {  rrulestr } from 'rrule';
+import { Octokit } from "@octokit/rest";
+
+dayjs.extend(utc);
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -39,6 +44,45 @@ function getHumanReadableTimeDifference(startTime: Date): string {
   if (diffMinutes > 0)
     result.push(`${diffMinutes.toLocaleString()} ${diffMinutes > 1 ? "minutes" : "minute"}`);
   return result.join(", ");
+}
+
+function getDurationMinutes(duration: string): number {
+  const unit = duration.slice(-1).toUpperCase();
+
+  try {
+    if (unit === "M") {
+      return parseInt(duration.slice(0, -1));
+    } else if (unit === "H") {
+      return parseInt(duration.slice(0, -1)) * 60;
+    } else if (unit === "D") {
+      return parseInt(duration.slice(0, -1)) * 60 * 24;
+    } else {
+      return 0;
+    }
+  } catch (error) {
+    console.error("Error parsing duration", duration, error);
+    return 0;
+  }
+}
+
+async function closeMaintenanceIssue(octokit: Octokit, owner: string, repo: string, incidentNumber: number) {
+  await octokit.issues.unlock({
+    owner,
+    repo,
+    issue_number: incidentNumber,
+  });
+  await octokit.issues.update({
+    owner,
+    repo,
+    issue_number: incidentNumber,
+    state: "closed",
+  });
+  await octokit.issues.lock({
+    owner,
+    repo,
+    issue_number: incidentNumber,
+  });
+  console.log("Closed maintenance completed event", incidentNumber);
 }
 
 export const update = async (shouldCommit = false) => {
@@ -77,38 +121,63 @@ export const update = async (shouldCommit = false) => {
         metadata[i.split(/:(.+)/)[0].trim()] = i.split(/:(.+)/)[1].trim();
       });
     }
-    if (metadata.start && metadata.end) {
-      let expectedDown: string[] = [];
-      let expectedDegraded: string[] = [];
-      if (metadata.expectedDown)
-        expectedDown = metadata.expectedDown
-          .split(",")
-          .map((i) => i.trim())
-          .filter((i) => i.length);
-      if (metadata.expectedDown)
-        expectedDegraded = metadata.expectedDown
-          .split(",")
-          .map((i) => i.trim())
-          .filter((i) => i.length);
 
+    let expectedDown: string[] = [];
+    let expectedDegraded: string[] = [];
+    if (metadata.expectedDown)
+      expectedDown = metadata.expectedDown
+        .split(",")
+        .map((i) => i.trim())
+        .filter((i) => i.length);
+    if (metadata.expectedDegraded)
+      expectedDegraded = metadata.expectedDegraded
+        .split(",")
+        .map((i) => i.trim())
+        .filter((i) => i.length);
+
+    if (metadata.rrule && metadata.duration && metadata.start) {
+      // The DTSTART and UNTIL params in RRules should be in UTC format without colons and dashes
+      if (!metadata.rrule.includes("DTSTART")) {
+        const cleanStartTime = dayjs(metadata.start)
+          .utc()
+          .format()
+          .replaceAll(":", "")
+          .replaceAll("-", "");
+        metadata.rrule += `;DTSTART=${cleanStartTime}`;
+      }
+      if (!metadata.rrule.includes("UNTIL") && metadata.end) {
+        const cleanEndTime = dayjs(metadata.end)
+          .utc()
+          .format()
+          .replaceAll(":", "")
+          .replaceAll("-", "");
+        metadata.rrule += `;UNTIL=${cleanEndTime}`;
+      }
+      const rule = rrulestr(metadata.rrule);
+
+      if (metadata.end && dayjs(metadata.end).isBefore(dayjs())) {
+        await closeMaintenanceIssue(octokit, owner, repo, incident.number);
+      } else {
+        // Get all potentially valid occurrences of this rule (started up to `duration` ago)
+        // Limit to 1000 results to avoid any potential long-running operations
+        const durationMinutes = getDurationMinutes(metadata.duration);
+        const after = dayjs().subtract(durationMinutes, "minutes").toDate();
+        rule.between(after, new Date(), true, (_, i) => i < 1000).forEach((startDate) => {
+            const endDate = dayjs(startDate).add(durationMinutes, "minutes").toDate();
+
+            const start = startDate.toISOString();
+            const end = endDate.toISOString();
+
+            ongoingMaintenanceEvents.push({
+              issueNumber: incident.number,
+              metadata: { start, end, expectedDegraded, expectedDown },
+            });
+        });
+      }
+
+    } else if (metadata.start && metadata.end) {
       if (dayjs(metadata.end).isBefore(dayjs())) {
-        await octokit.issues.unlock({
-          owner,
-          repo,
-          issue_number: incident.number,
-        });
-        await octokit.issues.update({
-          owner,
-          repo,
-          issue_number: incident.number,
-          state: "closed",
-        });
-        await octokit.issues.lock({
-          owner,
-          repo,
-          issue_number: incident.number,
-        });
-        console.log("Closed maintenance completed event", incident.number);
+        await closeMaintenanceIssue(octokit, owner, repo, incident.number);
       } else if (dayjs(metadata.start).isBefore(dayjs())) {
         ongoingMaintenanceEvents.push({
           issueNumber: incident.number,
@@ -519,3 +588,4 @@ generator: Upptime <https://github.com/upptime/upptime>
 };
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
