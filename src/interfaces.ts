@@ -19,6 +19,7 @@ export interface UpptimeConfig {
     maxRedirects?: number;
     verbose?: boolean;
     ipv6?: boolean;
+    attempts?: number;
     __dangerous__insecure?: boolean;
     __dangerous__disable_verify_peer?: boolean;
     __dangerous__disable_verify_host?: boolean;
