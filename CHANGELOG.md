@@ -1,3 +1,17 @@
+## v1.37.0 (2024-06-29)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.37.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.4...v1.37.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.37.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.37.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.37.0.tar.gz))
+
+### ✨ New features
+
+- [`1a286bd`](https://github.com/upptime/uptime-monitor/commit/1a286bd)  Add support for multiple Telegram channels (#249)
+(Issues: [`#249`](https://github.com/upptime/uptime-monitor/issues/249))
+
+### 🐛 Bug fixes
+
+- [`951fcf5`](https://github.com/upptime/uptime-monitor/commit/951fcf5)  Fix types in #249
+(Issues: [`#249`](https://github.com/upptime/uptime-monitor/issues/249))
+
 ## v1.36.4 (2024-01-25)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.36.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.3...v1.36.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.36.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.36.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.36.4.tar.gz))
