@@ -12,7 +12,7 @@ const getSecret = (key) => {
 exports.getSecret = getSecret;
 /** Get the GitHub repo */
 const getOwnerRepo = () => {
-    const result = (exports.getSecret("GITHUB_REPOSITORY") || "").split("/");
+    const result = ((0, exports.getSecret)("GITHUB_REPOSITORY") || "").split("/");
     if (result.length !== 2)
         throw new Error("Unable to find GitHub repo");
     return result;

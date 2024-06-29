@@ -8,49 +8,49 @@ const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
 const secrets_1 = require("./helpers/secrets");
 const generateSite = async () => {
-    if (!(await init_check_1.shouldContinue()))
+    if (!(await (0, init_check_1.shouldContinue)()))
         return;
-    const [owner, repo] = secrets_1.getOwnerRepo();
-    const config = await config_1.getConfig();
+    const [owner, repo] = (0, secrets_1.getOwnerRepo)();
+    const config = await (0, config_1.getConfig)();
     if (config.skipGeneratingWebsite)
         return;
     const sitePackage = config.customStatusWebsitePackage || "@upptime/status-page";
-    const octokit = await github_1.getOctokit();
+    const octokit = await (0, github_1.getOctokit)();
     const repoDetails = await octokit.repos.get({ owner, repo });
     const siteDir = "site";
     /* Configure shelljs to fail on failure */
     var sh = require("shelljs");
     sh.config.fatal = true;
-    shelljs_1.mkdir(siteDir);
-    shelljs_1.cd(siteDir);
+    (0, shelljs_1.mkdir)(siteDir);
+    (0, shelljs_1.cd)(siteDir);
     /**
      * If this is a private repository, we don't publish a status page
      * by default, but can be overwritten with `publish: true`
      */
     if (repoDetails.data.private && !(config["status-website"] || {}).publish) {
-        shelljs_1.mkdir("-p", "status-page/__sapper__/export");
-        shelljs_1.exec("echo 404 > status-page/__sapper__/export/index.html");
-        shelljs_1.cd("../..");
+        (0, shelljs_1.mkdir)("-p", "status-page/__sapper__/export");
+        (0, shelljs_1.exec)("echo 404 > status-page/__sapper__/export/index.html");
+        (0, shelljs_1.cd)("../..");
         return;
     }
-    shelljs_1.exec("npm init -y");
+    (0, shelljs_1.exec)("npm init -y");
     config.repo;
-    shelljs_1.exec(`npm i ${sitePackage} --no-audit --no-fund --loglevel=error`);
-    shelljs_1.cp("-r", `node_modules/${sitePackage}/*`, ".");
-    shelljs_1.exec("npm i --no-audit --no-fund --loglevel=error");
-    shelljs_1.exec("npm run export");
-    shelljs_1.mkdir("-p", "status-page/__sapper__/export");
-    shelljs_1.cp("-r", "__sapper__/export/*", "status-page/__sapper__/export");
+    (0, shelljs_1.exec)(`npm i ${sitePackage} --no-audit --no-fund --loglevel=error`);
+    (0, shelljs_1.cp)("-r", `node_modules/${sitePackage}/*`, ".");
+    (0, shelljs_1.exec)("npm i --no-audit --no-fund --loglevel=error");
+    (0, shelljs_1.exec)("npm run export");
+    (0, shelljs_1.mkdir)("-p", "status-page/__sapper__/export");
+    (0, shelljs_1.cp)("-r", "__sapper__/export/*", "status-page/__sapper__/export");
     let assetsExists = false;
     try {
-        assetsExists = (await fs_extra_1.stat("../assets")).size > 0;
+        assetsExists = (await (0, fs_extra_1.stat)("../assets")).size > 0;
     }
     catch (error) {
         // Ignore errors if assets folder doesn't exist
     }
     if (assetsExists)
-        shelljs_1.cp("-r", "../assets/*", "status-page/__sapper__/export");
-    shelljs_1.cd("../..");
+        (0, shelljs_1.cp)("-r", "../assets/*", "status-page/__sapper__/export");
+    (0, shelljs_1.cd)("../..");
 };
 exports.generateSite = generateSite;
 //# sourceMappingURL=site.js.map

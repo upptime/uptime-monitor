@@ -8,17 +8,17 @@ const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const secrets_1 = require("./helpers/secrets");
 const updateDependencies = async () => {
-    const [owner, repo] = secrets_1.getOwnerRepo();
+    const [owner, repo] = (0, secrets_1.getOwnerRepo)();
     if (`${owner}/${repo}` !== "upptime/upptime")
         return;
-    const config = await config_1.getConfig();
-    const octokit = await github_1.getOctokit();
+    const config = await (0, config_1.getConfig)();
+    const octokit = await (0, github_1.getOctokit)();
     let changes = 0;
-    await fs_extra_1.ensureDir(path_1.join(".", ".github", "workflows"));
-    const workflows = (await fs_extra_1.readdir(path_1.join(".", ".github", "workflows"))).filter((file) => file.endsWith(".yml") || file.endsWith(".yaml"));
+    await (0, fs_extra_1.ensureDir)((0, path_1.join)(".", ".github", "workflows"));
+    const workflows = (await (0, fs_extra_1.readdir)((0, path_1.join)(".", ".github", "workflows"))).filter((file) => file.endsWith(".yml") || file.endsWith(".yaml"));
     const uses = {};
     for await (const workflow of workflows) {
-        const contents = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", workflow), "utf8");
+        const contents = await (0, fs_extra_1.readFile)((0, path_1.join)(".", ".github", "workflows", workflow), "utf8");
         contents
             .split("\n")
             .filter((line) => line.includes("uses:"))
@@ -38,15 +38,15 @@ const updateDependencies = async () => {
     for await (const pkgOldVersion of Object.keys(uses)) {
         const pkgName = pkgOldVersion.split("@")[0];
         for await (const workflow of workflows) {
-            let contents = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", workflow), "utf8");
+            let contents = await (0, fs_extra_1.readFile)((0, path_1.join)(".", ".github", "workflows", workflow), "utf8");
             contents = contents.replace(pkgOldVersion, uses[pkgOldVersion]);
-            await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", workflow), contents);
+            await (0, fs_extra_1.writeFile)((0, path_1.join)(".", ".github", "workflows", workflow), contents);
         }
         if (pkgOldVersion.split("@")[1] !== uses[pkgOldVersion].split("@")[1])
             changes++;
-        git_1.commit(`:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](https://github.com/${pkgName}@${pkgOldVersion.split("@")[1]}...${uses[pkgOldVersion].split("@")[1]})\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>`, (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+        (0, git_1.commit)(`:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](https://github.com/${pkgName}@${pkgOldVersion.split("@")[1]}...${uses[pkgOldVersion].split("@")[1]})\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>`, (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     }
-    git_1.push();
+    (0, git_1.push)();
     if (changes) {
         const contents = await octokit.repos.getContent({ owner, repo, path: "README.md" });
         await octokit.repos.createOrUpdateFileContents({

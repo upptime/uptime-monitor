@@ -16,8 +16,8 @@ const secrets_1 = require("./secrets");
  * @param slug - Slug of the site
  */
 const getDowntimeSecondsForSite = async (slug) => {
-    const [owner, repo] = secrets_1.getOwnerRepo();
-    const octokit = await github_1.getOctokit();
+    const [owner, repo] = (0, secrets_1.getOwnerRepo)();
+    const octokit = await (0, github_1.getOctokit)();
     let day = 0;
     let week = 0;
     let month = 0;
@@ -44,8 +44,8 @@ const getDowntimeSecondsForSite = async (slug) => {
             end: new Date(issue.closed_at || new Date()).getTime(),
         };
         [...Array(365).keys()].forEach((day) => {
-            const date = dayjs_1.default().subtract(day, "day");
-            const overlap = overlap_1.checkOverlap(issueOverlap, {
+            const date = (0, dayjs_1.default)().subtract(day, "day");
+            const overlap = (0, overlap_1.checkOverlap)(issueOverlap, {
                 start: date.startOf("day").toDate().getTime(),
                 end: date.endOf("day").toDate().getTime(),
             });
@@ -55,21 +55,21 @@ const getDowntimeSecondsForSite = async (slug) => {
                 dailyMinutesDown[date.format("YYYY-MM-DD")] += Math.round(overlap / 60000);
             }
         });
-        const end = dayjs_1.default().toDate().getTime();
-        day += overlap_1.checkOverlap(issueOverlap, {
-            start: dayjs_1.default().subtract(1, "day").toDate().getTime(),
+        const end = (0, dayjs_1.default)().toDate().getTime();
+        day += (0, overlap_1.checkOverlap)(issueOverlap, {
+            start: (0, dayjs_1.default)().subtract(1, "day").toDate().getTime(),
             end,
         });
-        week += overlap_1.checkOverlap(issueOverlap, {
-            start: dayjs_1.default().subtract(1, "week").toDate().getTime(),
+        week += (0, overlap_1.checkOverlap)(issueOverlap, {
+            start: (0, dayjs_1.default)().subtract(1, "week").toDate().getTime(),
             end,
         });
-        month += overlap_1.checkOverlap(issueOverlap, {
-            start: dayjs_1.default().subtract(1, "month").toDate().getTime(),
+        month += (0, overlap_1.checkOverlap)(issueOverlap, {
+            start: (0, dayjs_1.default)().subtract(1, "month").toDate().getTime(),
             end,
         });
-        year += overlap_1.checkOverlap(issueOverlap, {
-            start: dayjs_1.default().subtract(1, "year").toDate().getTime(),
+        year += (0, overlap_1.checkOverlap)(issueOverlap, {
+            start: (0, dayjs_1.default)().subtract(1, "year").toDate().getTime(),
             end,
         });
     });
@@ -88,7 +88,7 @@ const getDowntimeSecondsForSite = async (slug) => {
  * @param slug - Slug of the site
  */
 const getUptimePercentForSite = async (slug) => {
-    const site = js_yaml_1.load((await fs_extra_1.readFile(path_1.join(".", "history", `${slug}.yml`), "utf8"))
+    const site = (0, js_yaml_1.load)((await (0, fs_extra_1.readFile)((0, path_1.join)(".", "history", `${slug}.yml`), "utf8"))
         .split("\n")
         .map((line) => (line.startsWith("- ") ? line.replace("- ", "") : line))
         .join("\n"));

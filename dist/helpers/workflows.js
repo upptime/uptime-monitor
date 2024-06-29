@@ -8,7 +8,7 @@ let release = undefined;
 const getUptimeMonitorVersion = async () => {
     if (release)
         return release;
-    const octokit = await github_1.getOctokit();
+    const octokit = await (0, github_1.getOctokit)();
     const releases = await octokit.repos.listReleases({
         owner: "upptime",
         repo: "uptime-monitor",
@@ -26,7 +26,7 @@ const introComment = async () => `#
 # Your changes will be overwritten when the Upptime template updates (by default, weekly)
 # Instead, change .upptimerc.yml configuration and the workflows will be generated accordingly.
 #
-# 🔼 Upptime @${await exports.getUptimeMonitorVersion()}
+# 🔼 Upptime @${await (0, exports.getUptimeMonitorVersion)()}
 # GitHub-powered open-source uptime monitor and status page by Anand Chowdhary
 
 # * Source: https://github.com/upptime/upptime
@@ -34,7 +34,7 @@ const introComment = async () => `#
 # * More by Anand Chowdhary: https://anandchowdhary.com
 `;
 const graphsCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
     return `${await introComment()}
 
@@ -56,7 +56,7 @@ jobs:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate graphs
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "graphs"
         env:
@@ -65,7 +65,7 @@ jobs:
 };
 exports.graphsCiWorkflow = graphsCiWorkflow;
 const getHasIpV6Site = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const hasIpV6 = !!config.sites.find((site) => site.ipv6);
     if (hasIpV6)
         console.log("Detected IPv6 site, adding WARP setup step");
@@ -74,7 +74,7 @@ const getHasIpV6Site = async () => {
     return hasIpV6;
 };
 const responseTimeCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
     return `${await introComment()}
 
@@ -96,7 +96,7 @@ jobs:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update response time
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "response-time"
         env:
@@ -106,7 +106,7 @@ jobs:
 };
 exports.responseTimeCiWorkflow = responseTimeCiWorkflow;
 const setupCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const commitMessages = config.commitMessages || {};
     const statusWebsite = config["status-website"] || {};
     return `${await introComment()}
@@ -130,20 +130,20 @@ jobs:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update template
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "update-template"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
       - name: Update response time
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "response-time"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
           SECRETS_CONTEXT: \${{ toJson(secrets) }}
       - name: Update summary in README
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "readme"
         env:
@@ -154,7 +154,7 @@ jobs:
           workflow: Graphs CI
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate site
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "site"
         env:
@@ -171,7 +171,7 @@ jobs:
 };
 exports.setupCiWorkflow = setupCiWorkflow;
 const siteCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
     const commitMessages = config.commitMessages || {};
     const statusWebsite = config["status-website"] || {};
@@ -196,7 +196,7 @@ jobs:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate site
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "site"
         env:
@@ -213,7 +213,7 @@ jobs:
 };
 exports.siteCiWorkflow = siteCiWorkflow;
 const summaryCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
     return `${await introComment()}
 
@@ -235,7 +235,7 @@ jobs:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update summary in README
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "readme"
         env:
@@ -244,7 +244,7 @@ jobs:
 };
 exports.summaryCiWorkflow = summaryCiWorkflow;
 const updateTemplateCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
     return `${await introComment()}
 
@@ -275,7 +275,7 @@ jobs:
 };
 exports.updateTemplateCiWorkflow = updateTemplateCiWorkflow;
 const updatesCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
     return `${await introComment()}
 
@@ -304,7 +304,7 @@ jobs:
 };
 exports.updatesCiWorkflow = updatesCiWorkflow;
 const uptimeCiWorkflow = async () => {
-    const config = await config_1.getConfig();
+    const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
     return `${await introComment()}
 
@@ -326,7 +326,7 @@ jobs:
           ref: \${{ github.head_ref }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Check endpoint status
-        uses: upptime/uptime-monitor@${await exports.getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
           command: "update"
         env:

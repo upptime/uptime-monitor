@@ -17,13 +17,13 @@ const init_check_1 = require("./helpers/init-check");
 const url_1 = require("url");
 const secrets_1 = require("./helpers/secrets");
 const generateSummary = async () => {
-    if (!(await init_check_1.shouldContinue()))
+    if (!(await (0, init_check_1.shouldContinue)()))
         return;
-    await fs_extra_1.mkdirp("history");
-    const [owner, repo] = secrets_1.getOwnerRepo();
-    const config = await config_1.getConfig();
-    const octokit = await github_1.getOctokit();
-    let readmeContent = await fs_extra_1.readFile(path_1.join(".", "README.md"), "utf8");
+    await (0, fs_extra_1.mkdirp)("history");
+    const [owner, repo] = (0, secrets_1.getOwnerRepo)();
+    const config = await (0, config_1.getConfig)();
+    const octokit = await (0, github_1.getOctokit)();
+    let readmeContent = await (0, fs_extra_1.readFile)((0, path_1.join)(".", "README.md"), "utf8");
     const startText = readmeContent.split(config.summaryStartHtmlComment || "<!--start: status pages-->")[0];
     const endText = readmeContent.split(config.summaryEndHtmlComment || "<!--end: status pages-->")[1];
     // This object will track the summary data of all sites
@@ -34,14 +34,14 @@ const generateSummary = async () => {
     let numberOfDegraded = 0;
     // Loop through each site and add compute the current status
     for await (const site of config.sites) {
-        const slug = site.slug || slugify_1.default(site.name);
-        const uptimes = await calculate_uptime_1.getUptimePercentForSite(slug);
+        const slug = site.slug || (0, slugify_1.default)(site.name);
+        const uptimes = await (0, calculate_uptime_1.getUptimePercentForSite)(slug);
         console.log("Uptimes", uptimes);
-        const responseTimes = await calculate_response_time_1.getResponseTimeForSite(slug);
+        const responseTimes = await (0, calculate_response_time_1.getResponseTimeForSite)(slug);
         console.log("Response times", responseTimes);
         let fallbackIcon = "";
         try {
-            fallbackIcon = `https://icons.duckduckgo.com/ip3/${url_1.parse(site.url).hostname}.ico`;
+            fallbackIcon = `https://icons.duckduckgo.com/ip3/${(0, url_1.parse)(site.url).hostname}.ico`;
         }
         catch (error) { }
         pageStatuses.push({
@@ -194,24 +194,24 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
         return line;
     })
         .join("\n");
-    await fs_extra_1.writeFile(path_1.join(".", "README.md"), prettier_1.format(readmeContent, { parser: "markdown" }));
-    await fs_extra_1.writeFile(path_1.join(".", ".gitattributes"), "# Markdown\n*.md linguist-detectable=true\n*.md linguist-documentation=false\n\n# JSON\n*.json linguist-detectable=true\n\n# YAML\n*.yml linguist-detectable=true\n");
-    git_1.commit((config.commitMessages || {}).readmeContent ||
+    await (0, fs_extra_1.writeFile)((0, path_1.join)(".", "README.md"), (0, prettier_1.format)(readmeContent, { parser: "markdown" }));
+    await (0, fs_extra_1.writeFile)((0, path_1.join)(".", ".gitattributes"), "# Markdown\n*.md linguist-detectable=true\n*.md linguist-documentation=false\n\n# JSON\n*.json linguist-detectable=true\n\n# YAML\n*.yml linguist-detectable=true\n");
+    (0, git_1.commit)((config.commitMessages || {}).readmeContent ||
         ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
     // If there are any old workflows left, fix them
-    const workflows = (await fs_extra_1.readdir(path_1.join(".", ".github", "workflows"))).filter((i) => i.endsWith(".yml"));
+    const workflows = (await (0, fs_extra_1.readdir)((0, path_1.join)(".", ".github", "workflows"))).filter((i) => i.endsWith(".yml"));
     for await (const workflow of workflows) {
-        const content = await fs_extra_1.readFile(path_1.join(".", ".github", "workflows", workflow), "utf8");
+        const content = await (0, fs_extra_1.readFile)((0, path_1.join)(".", ".github", "workflows", workflow), "utf8");
         const newContent = content.replace("actions/setup-node@v2.1.1", "actions/setup-node@v1.4.4");
         if (content !== newContent) {
             console.log("Updating workflow", workflow);
-            await fs_extra_1.writeFile(path_1.join(".", ".github", "workflows", workflow), newContent);
+            await (0, fs_extra_1.writeFile)((0, path_1.join)(".", ".github", "workflows", workflow), newContent);
         }
     }
-    await fs_extra_1.writeFile(path_1.join(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
-    git_1.commit((config.commitMessages || {}).summaryJson ||
+    await (0, fs_extra_1.writeFile)((0, path_1.join)(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
+    (0, git_1.commit)((config.commitMessages || {}).summaryJson ||
         ":card_file_box: Update status summary [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
-    git_1.push();
+    (0, git_1.push)();
     if (!config.skipDeleteIssues) {
         // Find all the opened issues that shouldn't have opened
         // Say, Upptime found a down monitor and it was back up within 5 min
