@@ -169,7 +169,7 @@ jobs:
           command: "site"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - uses: peaceiris/actions-gh-pages@v3.7.3
+      - uses: peaceiris/actions-gh-pages@v4
         name: GitHub Pages Deploy
         with:
           github_token: \${{ secrets.GH_PAT || github.token }}
@@ -214,7 +214,7 @@ jobs:
           command: "site"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - uses: peaceiris/actions-gh-pages@v3.7.3
+      - uses: peaceiris/actions-gh-pages@v4
         name: GitHub Pages Deploy
         with:
           github_token: \${{ secrets.GH_PAT || github.token }}
