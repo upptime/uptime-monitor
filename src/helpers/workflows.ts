@@ -50,9 +50,8 @@ name: Graphs CI
 on:
   schedule:
     - cron: "${workflowSchedule.graphs || GRAPHS_CI_SCHEDULE}"
-  repository_dispatch:
-    types: [graphs]
   workflow_dispatch:
+  workflow_call:
 jobs:
   release:
     name: Generate graphs
@@ -163,8 +162,6 @@ jobs:
           command: "readme"
         env:
           GH_PAT: ${{ secrets.GH_PAT || github.token }}
-      - name: Generate graphs
-        uses: ./.github/workflows/graphs.yml
       - name: Generate site
         uses: upptime/uptime-monitor@v1.37.0
         with:
@@ -176,7 +173,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site/status-page/__sapper__/export/         
+          path: site/status-page/__sapper__/export/
+  update_graphs:
+    uses: ./.github/workflows/graphs.yml                   
   deploy:
     environment:
       name: github-pages
