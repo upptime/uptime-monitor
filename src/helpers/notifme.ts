@@ -394,7 +394,7 @@ export const sendNotification = async (message: string) => {
   if (getSecret("NOTIFICATION_CUSTOM_WEBHOOK")) {
     console.log("Sending Webhook");
     try {
-      await axios.post(`${getSecret("NOTIFICATION_WEBHOOK_URL")}`,{
+      await axios.post(`${getSecret("NOTIFICATION_CUSTOM_WEBHOOK_URL")}`,{
         data: {
           message: JSON.stringify(message),
       }
