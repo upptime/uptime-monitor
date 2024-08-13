@@ -391,7 +391,7 @@ export const sendNotification = async (message: string) => {
     }
     console.log("Finished sending Microsoft Teams");
   }
-  if (getSecret("NOTIFICATION_WEBHOOK")) {
+  if (getSecret("NOTIFICATION_CUSTOM_WEBHOOK")) {
     console.log("Sending Webhook");
     try {
       await axios.post(`${getSecret("NOTIFICATION_WEBHOOK_URL")}`,{
