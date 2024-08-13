@@ -1,6 +1,6 @@
-import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
 import axios from "axios";
 import type { Channel } from "notifme-sdk";
+import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
 import { replaceEnvironmentVariables } from "./environment";
 import { getSecret } from "./secrets";
 
@@ -390,5 +390,24 @@ export const sendNotification = async (message: string) => {
       console.log("Got an error", error);
     }
     console.log("Finished sending Microsoft Teams");
+  }
+  if (getSecret("NOTIFICATION_CUSTOM_WEBHOOK")) {
+    console.log("Sending Webhook");
+    try {
+      await axios.post(`${getSecret("NOTIFICATION_CUSTOM_WEBHOOK_URL")}`,{
+        data: {
+          message: JSON.stringify(message),
+      }
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Success Webhook");
+    } catch (error) {
+      console.log("Got an error", error);
+    }
+    console.log("Finished sending Webhook");
   }
 };
