@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendNotification = void 0;
-const notifme_sdk_1 = __importDefault(require("notifme-sdk"));
 const axios_1 = __importDefault(require("axios"));
+const notifme_sdk_1 = __importDefault(require("notifme-sdk"));
 const environment_1 = require("./environment");
 const secrets_1 = require("./secrets");
 const channels = {};
@@ -366,6 +366,25 @@ const sendNotification = async (message) => {
             console.log("Got an error", error);
         }
         console.log("Finished sending Microsoft Teams");
+    }
+    if ((0, secrets_1.getSecret)("NOTIFICATION_CUSTOM_WEBHOOK")) {
+        console.log("Sending Webhook");
+        try {
+            await axios_1.default.post(`${(0, secrets_1.getSecret)("NOTIFICATION_CUSTOM_WEBHOOK_URL")}`, {
+                data: {
+                    message: JSON.stringify(message),
+                }
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log("Success Webhook");
+        }
+        catch (error) {
+            console.log("Got an error", error);
+        }
+        console.log("Finished sending Webhook");
     }
 };
 exports.sendNotification = sendNotification;
