@@ -1,3 +1,17 @@
+## v1.38.0 (2024-08-13)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.38.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.37.0...v1.38.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.38.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.38.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.38.0.tar.gz))
+
+### ✨ New features
+
+- [`ec5aeb2`](https://github.com/upptime/uptime-monitor/commit/ec5aeb2)  Add custom webhook as notification option (#254)
+(Issues: [`#254`](https://github.com/upptime/uptime-monitor/issues/254))
+
+### ⬆️ Dependency updates
+
+- [`116d6b6`](https://github.com/upptime/uptime-monitor/commit/116d6b6)  Update peaceiris/actions-gh-pages action to v4
+(Issues: [`#252`](https://github.com/upptime/uptime-monitor/issues/252))
+
 ## v1.37.0 (2024-06-29)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.37.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.36.4...v1.37.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.37.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.37.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.37.0.tar.gz))
