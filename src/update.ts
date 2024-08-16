@@ -1,22 +1,23 @@
-import dns from "dns";
-import { isIP, isIPv6 } from "net";
-import slugify from "@sindresorhus/slugify";
-import dayjs from "dayjs";
-import { mkdirp, readFile, writeFile } from "fs-extra";
-import { load } from "js-yaml";
-import { join } from "path";
-import WebSocket from "ws";
-import { getConfig } from "./helpers/config";
-import { replaceEnvironmentVariables } from "./helpers/environment";
 import { commit, lastCommit, push } from "./helpers/git";
-import { getOctokit } from "./helpers/github";
-import { shouldContinue } from "./helpers/init-check";
-import { sendNotification } from "./helpers/notifme";
-import { ping } from "./helpers/ping";
-import { curl } from "./helpers/request";
 import { getOwnerRepo, getSecret } from "./helpers/secrets";
+import { isIP, isIPv6 } from "net";
+import { mkdirp, readFile, writeFile } from "fs-extra";
+import { sendCustomNotification, sendNotification } from "./helpers/notifme";
+
 import { SiteHistory } from "./interfaces";
+import WebSocket from "ws";
+import { curl } from "./helpers/request";
+import dayjs from "dayjs";
+import dns from "dns";
 import { generateSummary } from "./summary";
+import { getConfig } from "./helpers/config";
+import { getOctokit } from "./helpers/github";
+import { join } from "path";
+import { load } from "js-yaml";
+import { ping } from "./helpers/ping";
+import { replaceEnvironmentVariables } from "./helpers/environment";
+import { shouldContinue } from "./helpers/init-check";
+import slugify from "@sindresorhus/slugify";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -437,6 +438,20 @@ generator: Upptime <https://github.com/upptime/upptime>
                         .replace("$STATUS", "experiencing **degraded performance**")
                         .replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟨"}`)}`
                 );
+
+                for await (const customNotification of site.customNotification) {
+                await sendCustomNotification(
+                  customNotification,
+                  status === "down"
+                    ? `${downmsg
+                        .replace("$STATUS", "**down**")
+                        .replace("$EMOJI", `${config.commitPrefixStatusDown || "🟥"}`)}`
+                    : `${downmsg
+                        .replace("$STATUS", "experiencing **degraded performance**")
+                        .replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟨"}`)}`
+                );
+              } 
+                
               } catch (error) {
                 console.log(error);
               }

@@ -1,8 +1,10 @@
-import axios from "axios";
-import type { Channel } from "notifme-sdk";
 import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
-import { replaceEnvironmentVariables } from "./environment";
+
+import type { Channel } from "notifme-sdk";
+import { CustomNotification } from "../interfaces";
+import axios from "axios";
 import { getSecret } from "./secrets";
+import { replaceEnvironmentVariables } from "./environment";
 
 const channels: {
   email?: Channel<EmailProvider>;
@@ -162,6 +164,34 @@ if (getSecret("NOTIFICATION_SLACK")) {
 const notifier = new NotifmeSdk({
   channels,
 });
+
+export const sendCustomNotification = async (config: CustomNotification, message: string) => {
+  console.log("Sending custom notification", config, message);
+  message = replaceEnvironmentVariables(message);
+
+  if (config.type === "custom_webhook") {
+    console.log("Sending Webhook");
+    try {
+      await axios.post(
+        config.url,
+        {
+          data: {
+            message: JSON.stringify(message),
+          },
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Success Webhook");
+    } catch (error) {
+      console.log("Got an error", error);
+    }
+    console.log("Finished sending Webhook");
+  }
+};
 
 export const sendNotification = async (message: string) => {
   console.log("Sending notification", message);
