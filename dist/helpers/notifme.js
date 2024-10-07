@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendNotification = void 0;
-const axios_1 = __importDefault(require("axios"));
+exports.sendNotification = exports.sendCustomNotification = void 0;
 const notifme_sdk_1 = __importDefault(require("notifme-sdk"));
-const environment_1 = require("./environment");
+const axios_1 = __importDefault(require("axios"));
 const secrets_1 = require("./secrets");
+const environment_1 = require("./environment");
 const channels = {};
 if ((0, secrets_1.getSecret)("NOTIFICATION_EMAIL_SENDGRID") ||
     (0, secrets_1.getSecret)("NOTIFICATION_EMAIL_SES") ||
@@ -149,6 +149,30 @@ if ((0, secrets_1.getSecret)("NOTIFICATION_SLACK")) {
 const notifier = new notifme_sdk_1.default({
     channels,
 });
+const sendCustomNotification = async (config, message) => {
+    console.log("Sending custom notification", config, message);
+    message = (0, environment_1.replaceEnvironmentVariables)(message);
+    if (config.type === "custom_webhook") {
+        console.log("Sending Webhook");
+        try {
+            await axios_1.default.post(config.url, {
+                data: {
+                    message: JSON.stringify(message),
+                },
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log("Success Webhook");
+        }
+        catch (error) {
+            console.log("Got an error", error);
+        }
+        console.log("Finished sending Webhook");
+    }
+};
+exports.sendCustomNotification = sendCustomNotification;
 const sendNotification = async (message) => {
     console.log("Sending notification", message);
     message = (0, environment_1.replaceEnvironmentVariables)(message);

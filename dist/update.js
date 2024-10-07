@@ -4,24 +4,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.update = void 0;
-const dns_1 = __importDefault(require("dns"));
-const net_1 = require("net");
-const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
-const dayjs_1 = __importDefault(require("dayjs"));
-const fs_extra_1 = require("fs-extra");
-const js_yaml_1 = require("js-yaml");
-const path_1 = require("path");
-const ws_1 = __importDefault(require("ws"));
-const config_1 = require("./helpers/config");
-const environment_1 = require("./helpers/environment");
 const git_1 = require("./helpers/git");
-const github_1 = require("./helpers/github");
-const init_check_1 = require("./helpers/init-check");
-const notifme_1 = require("./helpers/notifme");
-const ping_1 = require("./helpers/ping");
-const request_1 = require("./helpers/request");
 const secrets_1 = require("./helpers/secrets");
+const net_1 = require("net");
+const fs_extra_1 = require("fs-extra");
+const notifme_1 = require("./helpers/notifme");
+const ws_1 = __importDefault(require("ws"));
+const request_1 = require("./helpers/request");
+const dayjs_1 = __importDefault(require("dayjs"));
+const dns_1 = __importDefault(require("dns"));
 const summary_1 = require("./summary");
+const config_1 = require("./helpers/config");
+const github_1 = require("./helpers/github");
+const path_1 = require("path");
+const js_yaml_1 = require("js-yaml");
+const ping_1 = require("./helpers/ping");
+const environment_1 = require("./helpers/environment");
+const init_check_1 = require("./helpers/init-check");
+const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 /**
  * Get a human-readable time difference between from now
@@ -390,6 +390,15 @@ generator: Upptime <https://github.com/upptime/upptime>
                                     : `${downmsg
                                         .replace("$STATUS", "experiencing **degraded performance**")
                                         .replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟨"}`)}`);
+                                for await (const customNotification of site.customNotification) {
+                                    await (0, notifme_1.sendCustomNotification)(customNotification, status === "down"
+                                        ? `${downmsg
+                                            .replace("$STATUS", "**down**")
+                                            .replace("$EMOJI", `${config.commitPrefixStatusDown || "🟥"}`)}`
+                                        : `${downmsg
+                                            .replace("$STATUS", "experiencing **degraded performance**")
+                                            .replace("$EMOJI", `${config.commitPrefixStatusDegraded || "🟨"}`)}`);
+                                }
                             }
                             catch (error) {
                                 console.log(error);
