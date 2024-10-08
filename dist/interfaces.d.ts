@@ -2,31 +2,7 @@ export interface UpptimeConfig {
     owner: string;
     repo: string;
     "user-agent"?: string;
-    sites: {
-        check?: "http" | "tcp-ping" | "ws";
-        method?: string;
-        name: string;
-        url: string;
-        port?: number;
-        expectedStatusCodes?: number[];
-        assignees?: string[];
-        headers?: string[];
-        tags?: string[];
-        slug?: string;
-        body?: string;
-        icon?: string;
-        maxResponseTime?: number;
-        maxRedirects?: number;
-        verbose?: boolean;
-        ipv6?: boolean;
-        __dangerous__insecure?: boolean;
-        __dangerous__disable_verify_peer?: boolean;
-        __dangerous__disable_verify_host?: boolean;
-        __dangerous__body_down?: string;
-        __dangerous__body_down_if_text_missing?: string;
-        __dangerous__body_degraded?: string;
-        __dangerous__body_degraded_if_text_missing?: string;
-    }[];
+    sites: SiteConfig[];
     notifications?: {
         type: string;
         [index: string]: string;
@@ -104,6 +80,32 @@ export interface UpptimeConfig {
     customStatusWebsitePackage?: string;
     skipGeneratingWebsite?: boolean;
 }
+export interface SiteConfig {
+    check?: "http" | "tcp-ping" | "ws";
+    method?: string;
+    name: string;
+    url: string;
+    port?: number;
+    expectedStatusCodes?: number[];
+    assignees?: string[];
+    headers?: string[];
+    tags?: string[];
+    slug?: string;
+    body?: string;
+    icon?: string;
+    maxResponseTime?: number;
+    maxRedirects?: number;
+    verbose?: boolean;
+    ipv6?: boolean;
+    customNotification: CustomNotification[];
+    __dangerous__insecure?: boolean;
+    __dangerous__disable_verify_peer?: boolean;
+    __dangerous__disable_verify_host?: boolean;
+    __dangerous__body_down?: string;
+    __dangerous__body_down_if_text_missing?: string;
+    __dangerous__body_degraded?: string;
+    __dangerous__body_degraded_if_text_missing?: string;
+}
 export interface SiteHistory {
     url: string;
     status: "up" | "down" | "degraded";
@@ -155,3 +157,8 @@ export interface DownPecentages {
     all: string;
     dailyMinutesDown: Record<string, number>;
 }
+export interface CustomNotification {
+    type: NotificationType;
+    url: string;
+}
+export type NotificationType = "custom_webhook";
