@@ -1,3 +1,5 @@
+import NotifMeSdk from "notifme-sdk";
+
 export interface UpptimeConfig {
   owner: string;
   repo: string;
@@ -157,8 +159,106 @@ export interface DownPecentages {
 }
 
 export interface CustomNotification {
-  type: NotificationType;
-  url: string;
+  customWebhook?: CustomWebhookConfig;
+  discord?: DiscordConfig;
+  email?: EmailConfig;
+  googleChat?: GoogleChatConfig;
+  lark?: LarkConfig;
+  mastodon?: MastodonConfig;
+  misskey?: MisskeyConfig;
+  msTeams?: MSTeamsConfig;
+  slack?: SlackConfig;
+  sms?: SMSConfig;
+  telegram?: TelegramConfig;
+  zulip?: ZulipConfig;
 }
 
-export type NotificationType = "custom_webhook";
+export type NotificationType =
+  | "custom-webhook"
+  | "discord"
+  | "email"
+  | "google-chat"
+  | "lark"
+  | "mastodon"
+  | "misskey"
+  | "ms-teams"
+  | "slack"
+  | "sms"
+  | "telegram"
+  | "zulip";
+
+export interface CustomWebhookConfig {
+  url?: string;
+  message?: string;
+}
+export interface DiscordConfig {
+  url: string;
+  message?: string;
+}
+
+export interface EmailConfig {
+  to: string;
+  from: string;
+  subject?: string;
+  message?: string;
+}
+
+export interface GoogleChatConfig {
+  url: string;
+  message?: string;
+}
+
+export interface LarkConfig {
+  url: string;
+  message?: string;
+}
+
+export type MastodonVisibility = "public" | "unlisted" | "private" | "direct";
+export interface MastodonConfig {
+  url: string;
+  tootVisibility: MastodonVisibility;
+  apiKey: string;
+  message?: string;
+}
+
+export type MisskeyMessageMethod = "note" | "chat";
+export type MisskeyNoteVisibility = "public" | "home" | "followers" | "specified";
+export interface MisskeyConfig {
+  method: MisskeyMessageMethod;
+  url: string;
+  apiKey: string;
+  misskeyNoteVisibility?: MisskeyNoteVisibility;
+  userIdsString?: string;
+  message?: string;
+}
+
+export interface MSTeamsConfig {
+  url: string;
+  summary?: string;
+  message?: string;
+  themeColor?: string;
+}
+
+export interface SlackConfig {
+  notifier: NotifMeSdk;
+  message?: string;
+}
+
+export interface SMSConfig {
+  notifier: NotifMeSdk;
+  from: string;
+  to: string;
+  message?: string;
+}
+
+export interface TelegramConfig {
+  chatIdsString: string;
+  message?: string;
+}
+
+export interface ZulipConfig {
+  url: string;
+  apiUsername: string;
+  apiKey: string;
+  message?: string;
+}

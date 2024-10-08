@@ -1,3 +1,4 @@
+import { MastodonVisibility } from "../../../interfaces";
 import { getSecret } from "../../secrets";
 import axios from "axios";
 
@@ -26,7 +27,7 @@ export function checkMaybeSendMastodonMsg() {
 export async function sendMastodonMsg(message: string) {
   const instanceUrl = new URL(getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") as string);
   const baseUrl = `${instanceUrl.protocol}://${instanceUrl.hostname}/api`;
-  type MastodonVisibility = "public" | "unlisted" | "private" | "direct";
+
   let visibility: MastodonVisibility = "public";
   if (getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY")) {
     try {

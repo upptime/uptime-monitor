@@ -1,3 +1,4 @@
+import { MisskeyNoteVisibility } from "../../../interfaces";
 import { getSecret } from "../../secrets";
 import axios from "axios";
 
@@ -34,7 +35,6 @@ export async function sendMisskeyMsg(message: string) {
     });
   }
   if (getSecret("NOTIFICATION_MISSKEY_NOTE")) {
-    type MisskeyNoteVisibility = "public" | "home" | "followers" | "specified";
     let visibility: MisskeyNoteVisibility = "public";
     let visibleUserIds: string[] | undefined;
     if (getSecret("NOTIFICATION_MISSKEY_NOTE_VISIBILITY")) {
