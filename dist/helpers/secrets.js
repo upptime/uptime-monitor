@@ -7,7 +7,12 @@ const getSecret = (key) => {
     const allSecrets = JSON.parse(SECRETS_CONTEXT);
     if (allSecrets[key])
         return allSecrets[key];
-    return process.env[key];
+    if (process.env[key]) {
+        return process.env[key];
+    }
+    else {
+        throw new Error(`Unable to find secret: ${key}`);
+    }
 };
 exports.getSecret = getSecret;
 /** Get the GitHub repo */
