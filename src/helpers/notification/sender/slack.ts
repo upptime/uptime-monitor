@@ -1,6 +1,8 @@
 import NotifMeSdk from "notifme-sdk";
 import { getSecret } from "../../secrets";
 import { NotificationChannels } from "../types";
+import { SlackConfig } from "../../../interfaces";
+import * as core from "@actions/core";
 
 /**
  * Check if a slack message should be sent
@@ -43,16 +45,44 @@ export function setupNotifierSlackChannel(channels: NotificationChannels) {
  * @param message
  * @returns Promise<void>
  */
-export async function sendSlackMsg(notifier: NotifMeSdk, message: string) {
+export async function sendSlackMsg(
+  notifier: NotifMeSdk,
+  defaultMessage: string,
+  config?: SlackConfig
+) {
+  const { message, customUrl } = config ?? {};
+
+  // if customUrl is provided, override the default notifier config
+  if (customUrl) {
+    notifier = new NotifMeSdk({
+      channels: {
+        slack: {
+          providers: [
+            {
+              type: "webhook",
+              webhookUrl: customUrl,
+            },
+          ],
+        },
+      },
+    });
+  }
+
+  core.info("Sending slack message");
+
+  const messageToSend = message || defaultMessage;
+
+  core.debug(`Message: ${messageToSend}`);
+
   try {
     await notifier.send({
       slack: {
-        text: message,
+        text: messageToSend,
       },
     });
-    console.log("Success Slack");
-  } catch (error) {
-    console.log("Got an error", error);
+    core.info("Success Slack");
+  } catch (error: any) {
+    core.error(error);
   }
-  console.log("Finished sending Slack");
+  core.info("Finished sending Slack");
 }

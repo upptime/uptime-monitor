@@ -1,5 +1,7 @@
+import { GoogleChatConfig } from "../../../interfaces";
 import { getSecret } from "../../secrets";
 import axios from "axios";
+import * as core from "@actions/core";
 
 /**
  * Check if a google chat message should be sent
@@ -13,14 +15,24 @@ export function checkMaybeSendGoogleChatMsg() {
   return false;
 }
 
-export async function sendGoogleChatMsg(message: string) {
+export async function sendGoogleChatMsg(defaultMessage: string, config?: GoogleChatConfig) {
+  const { message, url } = config ?? {};
+
+  core.info("Sending google chat message");
+
+  const urlToSend = url || getSecret("NOTIFICATION_GOOGLE_CHAT_WEBHOOK_URL");
+  const messageToSend = message || defaultMessage;
+
+  core.debug(`URL: ${urlToSend}`);
+  core.debug(`Message: ${messageToSend}`);
+
   try {
-    await axios.post(getSecret("NOTIFICATION_GOOGLE_CHAT_WEBHOOK_URL") as string, {
-      text: message,
+    await axios.post(urlToSend, {
+      text: messageToSend,
     });
-    console.log("Success Google Chat");
-  } catch (error) {
-    console.log("Got an error", error);
+    core.info("Success Google Chat");
+  } catch (error: any) {
+    core.error(error);
   }
-  console.log("Finished sending Google Chat");
+  core.info("Finished sending Google Chat");
 }

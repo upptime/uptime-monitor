@@ -1,6 +1,7 @@
-import { MastodonVisibility } from "../../../interfaces";
+import { MastodonConfig, MastodonVisibility } from "../../../interfaces";
 import { getSecret } from "../../secrets";
 import axios from "axios";
+import * as core from "@actions/core";
 
 /**
  * Check if a mastodon message should be sent
@@ -24,31 +25,39 @@ export function checkMaybeSendMastodonMsg() {
  * @param message
  * @returns Promise<void>
  */
-export async function sendMastodonMsg(message: string) {
-  const instanceUrl = new URL(getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") as string);
+export async function sendMastodonMsg(defaultMessage: string, config?: MastodonConfig) {
+  const { message, url, apiKey, tootVisibility } = config ?? {};
+
+  core.info("Sending mastodon message");
+
+  const instanceUrl = new URL(url || (getSecret("NOTIFICATION_MASTODON_INSTANCE_URL") as string));
+  const messageToSend = message || defaultMessage;
   const baseUrl = `${instanceUrl.protocol}://${instanceUrl.hostname}/api`;
+  const apiKeyToSend = apiKey || getSecret("NOTIFICATION_MASTODON_API_KEY");
+
+  core.debug(`URL: ${baseUrl}`);
+  core.debug(`Message: ${messageToSend}`);
+  core.debug(`Visibility: ${tootVisibility}`);
 
   let visibility: MastodonVisibility = "public";
-  if (getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY")) {
+  if (tootVisibility || getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY")) {
     try {
-      visibility = getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY") as MastodonVisibility;
+      visibility =
+        tootVisibility ||
+        (getSecret("NOTIFICATION_MASTODON_TOOT_VISIBILITY") as MastodonVisibility);
     } catch (e) {
-      console.log(
-        `Unsupported Mastodon toot visibility mode: ${getSecret(
-          "NOTIFICATION_MASTODON_TOOT_VISIBILITY"
-        )}`
-      );
+      core.error('Unsupported Mastodon toot visibility mode');
     }
   }
   await axios.post(
     `${baseUrl}/v1/statuses`,
     {
       visibility: visibility,
-      status: message,
+      status: messageToSend,
     },
     {
       headers: {
-        Authorization: `Bearer ${getSecret("NOTIFICATION_MASTODON_API_KEY")}`,
+        Authorization: `Bearer ${apiKeyToSend}`,
       },
     }
   );

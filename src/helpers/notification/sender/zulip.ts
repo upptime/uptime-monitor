@@ -1,5 +1,7 @@
 import { getSecret } from "../../secrets";
 import axios from "axios";
+import * as core from "@actions/core";
+import { ZulipConfig } from "../../../interfaces";
 
 /**
  * Check if a zulip message should be sent
@@ -17,22 +19,34 @@ export function checkMaybeSendZulipMsg() {
   return false;
 }
 
-export async function sendZulipMsg(message: string) {
+export async function sendZulipMsg(defaultMessage: string, config?: ZulipConfig) {
+  const { url, apiUsername, apiKey, message } = config ?? {};
+
+  core.info("Sending zulip message");
+
+  const urlToSend = url || getSecret("NOTIFICATION_ZULIP_MESSAGE_URL");
+  const apiUsernameToSend = apiUsername || getSecret("NOTIFICATION_ZULIP_API_EMAIL");
+  const apiKeyToSend = apiKey || getSecret("NOTIFICATION_ZULIP_API_KEY");
+  const messageToSend = message || defaultMessage;
+
+  core.debug(`URL: ${urlToSend}`);
+  core.debug(`Message: ${messageToSend}`);
+
   try {
     await axios.request({
       method: "post",
-      url: getSecret("NOTIFICATION_ZULIP_MESSAGE_URL") as string,
+      url: urlToSend,
       auth: {
-        username: getSecret("NOTIFICATION_ZULIP_API_EMAIL") as string,
-        password: getSecret("NOTIFICATION_ZULIP_API_KEY") as string,
+        username: apiUsernameToSend,
+        password: apiKeyToSend,
       },
       params: {
-        content: message,
+        content: messageToSend,
       },
     });
-    console.log("Success Zulip");
-  } catch (error) {
-    console.log("Got an error", error);
+    core.info("Success Zulip");
+  } catch (error: any) {
+    core.error(error);
   }
-  console.log("Finished sending Zulip");
+  core.info("Finished sending Zulip");
 }

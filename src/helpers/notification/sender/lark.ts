@@ -1,5 +1,7 @@
+import { LarkConfig } from "../../../interfaces";
 import { getSecret } from "../../secrets";
 import axios from "axios";
+import * as core from "@actions/core";
 
 /**
  * Check if a lark message should be sent
@@ -19,9 +21,19 @@ export function checkMaybeSendLarkMsg() {
  * @param message
  * @returns Promise<void>
  */
-export async function sendLarkMsg(message: string) {
+export async function sendLarkMsg(defaultMessage: string, config?: LarkConfig) {
+  const { message, url } = config ?? {};
+
+  core.info("Sending lark message");
+
+  const urlToSend = url || getSecret("NOTIFICATION_LARK_BOT_WEBHOOK");
+  const messageToSend = message || defaultMessage;
+
+  core.debug(`URL: ${urlToSend}`);
+  core.debug(`Message: ${messageToSend}`);
+
   try {
-    await axios.post(`${getSecret("NOTIFICATION_LARK_BOT_WEBHOOK")}`, {
+    await axios.post(urlToSend, {
       msg_type: "interactive",
       card: {
         config: {
@@ -30,7 +42,7 @@ export async function sendLarkMsg(message: string) {
         elements: [
           {
             tag: "markdown",
-            content: message.replace(/_/g, "\\_"),
+            content: messageToSend.replace(/_/g, "\\_"),
           },
         ],
       },

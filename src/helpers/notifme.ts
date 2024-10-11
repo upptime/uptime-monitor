@@ -54,21 +54,20 @@ export const sendCustomNotification = async (config: CustomNotification, message
   console.log("Sending custom notification", config, message);
   message = replaceEnvironmentVariables(message);
 
-
   // TODO: Chnage notification to match custom webhook with optional config
   const notificationTasks = [
+    config.email && sendEmail(notifier, message, config.email),
+    config.sms && sendSMS(notifier, message, config.sms),
+    config.slack && sendSlackMsg(notifier, message, config.slack),
     config.customWebhook && sendCustomWebhookMsg(message, config.customWebhook),
-    config.discord && sendDiscordMsg(message),
-    config.email && sendEmail(notifier, message),
-    config.sms && sendSMS(notifier, message),
-    config.slack && sendSlackMsg(notifier, message),
-    config.googleChat && sendGoogleChatMsg(message),
-    config.zulip && sendZulipMsg(message),
-    config.mastodon && sendMastodonMsg(message),
-    config.misskey && sendMisskeyMsg(message),
-    config.telegram && sendTelegramMsg(message),
-    config.lark && sendLarkMsg(message),
-    config.msTeams && sendMSTeamsMsg(message),
+    config.discord && sendDiscordMsg(message, config.discord),
+    config.googleChat && sendGoogleChatMsg(message, config.googleChat),
+    config.zulip && sendZulipMsg(message, config.zulip),
+    config.mastodon && sendMastodonMsg(message, config.mastodon),
+    config.misskey && sendMisskeyMsg(message, config.misskey),
+    config.telegram && sendTelegramMsg(message, config.telegram),
+    config.lark && sendLarkMsg(message, config.lark),
+    config.msTeams && sendMSTeamsMsg(message, config.msTeams),
   ].filter(Boolean);
 
   await Promise.all(notificationTasks);

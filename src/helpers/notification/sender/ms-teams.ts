@@ -1,5 +1,7 @@
 import { getSecret } from "../../secrets";
 import axios from "axios";
+import * as core from "@actions/core";
+import { MSTeamsConfig } from "../../../interfaces";
 
 /**
  * Check if a ms teams message should be sent
@@ -19,18 +21,32 @@ export function checkMaybeSendMSTeamsMsg() {
  * @param message
  * @returns Promise<void>
  */
-export async function sendMSTeamsMsg(message: string) {
+export async function sendMSTeamsMsg(defaultMessage: string, config?: MSTeamsConfig) {
+  const { message, url, themeColor, summary } = config ?? {};
+
+  core.info("Sending ms teams message");
+
+  const urlToSend = url || getSecret("NOTIFICATION_TEAMS_WEBHOOK_URL");
+  const messageToSend = message || defaultMessage;
+  const themeColorToSend = themeColor || "0072C6";
+  const summaryToSend = summary || defaultMessage;
+
+  core.debug(`URL: ${urlToSend}`);
+  core.debug(`Message: ${messageToSend}`);
+  core.debug(`Theme Color: ${themeColorToSend}`);
+  core.debug(`Summary: ${summaryToSend}`);
+
   try {
-    await axios.post(`${getSecret("NOTIFICATION_TEAMS_WEBHOOK_URL")}`, {
+    await axios.post(urlToSend, {
       "@context": "https://schema.org/extensions",
       "@type": "MessageCard",
-      themeColor: "0072C6",
-      text: message,
-      summary: message,
+      themeColor: themeColorToSend,
+      text: messageToSend,
+      summary: summaryToSend,
     });
-    console.log("Success Microsoft Teams");
-  } catch (error) {
-    console.log("Got an error", error);
+    core.info("Success Microsoft Teams");
+  } catch (error: any) {
+    core.error(error);
   }
-  console.log("Finished sending Microsoft Teams");
+  core.info("Finished sending Microsoft Teams");
 }

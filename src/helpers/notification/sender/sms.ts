@@ -1,6 +1,8 @@
 import NotifMeSdk from "notifme-sdk";
 import { getSecret } from "../../secrets";
 import { NotificationChannels } from "../types";
+import { SMSConfig } from "../../../interfaces";
+import * as core from "@actions/core";
 
 /**
  * Check if a sms should be sent
@@ -103,18 +105,30 @@ export function setupNotifierSMSChannel(channels: NotificationChannels) {
  * @params message string
  * @returns Promise<void>
  */
-export async function sendSMS(notifier: NotifMeSdk, message: string) {
+export async function sendSMS(notifier: NotifMeSdk, defaultMessage: string, config?: SMSConfig) {
+  const { to, from, message } = config ?? {};
+
+  core.info("Sending SMS");
+
+  const messageToSend = message || defaultMessage;
+  const toSend = to || getSecret("NOTIFICATION_SMS_TO");
+  const fromSend = from || getSecret("NOTIFICATION_SMS_FROM");
+
+  core.debug(`To: ${toSend}`);
+  core.debug(`From: ${fromSend}`);
+  core.debug(`Message: ${messageToSend}`);
+
   try {
     await notifier.send({
       sms: {
-        from: getSecret("NOTIFICATION_SMS_FROM") as string,
-        to: getSecret("NOTIFICATION_SMS_TO") as string,
-        text: message,
+        from: fromSend,
+        to: toSend,
+        text: messageToSend,
       },
     });
-    console.log("Success SMS");
-  } catch (error) {
-    console.log("Got an error", error);
+    core.info("Success SMS");
+  } catch (error: any) {
+    core.error(error);
   }
-  console.log("Finished sending SMS");
+  core.info("Finished sending SMS");
 }

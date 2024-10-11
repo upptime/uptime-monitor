@@ -1,6 +1,8 @@
 import NotifMeSdk from "notifme-sdk";
 import { getSecret } from "../../secrets";
 import { NotificationChannels } from "../types";
+import { EmailConfig } from "../../../interfaces";
+import * as core from "@actions/core";
 
 /**
  * Check if a mail should be sent
@@ -84,19 +86,37 @@ export function setupNotifierEmailChannel(channels: NotificationChannels) {
  * @param message
  * @returns Promise<void>
  */
-export async function sendEmail(notifier: NotifMeSdk, message: string) {
+export async function sendEmail(
+  notifier: NotifMeSdk,
+  defaultMessage: string,
+  config?: EmailConfig
+) {
+  const { to, from, subject, message } = config ?? {};
+
+  core.info("Sending email");
+
+  const toSend = to || getSecret("NOTIFICATION_EMAIL_FROM") || getSecret("NOTIFICATION_EMAIL");
+  const fromSend = from || getSecret("NOTIFICATION_EMAIL_TO") || getSecret("NOTIFICATION_EMAIL");
+  const subjectSend = subject || defaultMessage;
+  const messageSend = message || defaultMessage;
+
+  core.debug(`To: ${to}`);
+  core.debug(`From: ${from}`);
+  core.debug(`Subject: ${subject}`);
+  core.debug(`Message: ${message}`);
+
   try {
     await notifier.send({
       email: {
-        from: (getSecret("NOTIFICATION_EMAIL_FROM") || getSecret("NOTIFICATION_EMAIL")) as string,
-        to: (getSecret("NOTIFICATION_EMAIL_TO") || getSecret("NOTIFICATION_EMAIL")) as string,
-        subject: message,
-        html: message,
+        from: fromSend,
+        to: toSend,
+        subject: subjectSend,
+        html: messageSend,
       },
     });
-    console.log("Success email");
-  } catch (error) {
-    console.log("Got an error", error);
+    core.info("Success email");
+  } catch (error: any) {
+    core.error(error);
   }
-  console.log("Finished sending email");
+  core.info("Finished sending email");
 }

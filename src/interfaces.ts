@@ -173,20 +173,6 @@ export interface CustomNotification {
   zulip?: ZulipConfig;
 }
 
-export type NotificationType =
-  | "custom-webhook"
-  | "discord"
-  | "email"
-  | "google-chat"
-  | "lark"
-  | "mastodon"
-  | "misskey"
-  | "ms-teams"
-  | "slack"
-  | "sms"
-  | "telegram"
-  | "zulip";
-
 export interface CustomWebhookConfig {
   url?: string;
   message?: string;
@@ -228,6 +214,7 @@ export interface MisskeyConfig {
   url: string;
   apiKey: string;
   misskeyNoteVisibility?: MisskeyNoteVisibility;
+  userId?: string;
   userIdsString?: string;
   message?: string;
 }
@@ -240,12 +227,11 @@ export interface MSTeamsConfig {
 }
 
 export interface SlackConfig {
-  notifier: NotifMeSdk;
+  customUrl?: string;
   message?: string;
 }
 
 export interface SMSConfig {
-  notifier: NotifMeSdk;
   from: string;
   to: string;
   message?: string;

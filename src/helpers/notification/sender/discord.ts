@@ -1,6 +1,7 @@
 import { getSecret } from "../../secrets";
 import axios from "axios";
 import * as core from "@actions/core";
+import { DiscordConfig } from "../../../interfaces";
 
 /**
  * Check if a discord message should be sent
@@ -14,15 +15,18 @@ export function checkMaybeSendDiscordMsg() {
   return false;
 }
 
-export async function sendDiscordMsg(message: string, url?: string) {
+export async function sendDiscordMsg(defaultMessage: string, config?: DiscordConfig) {
+  const { url, message } = config ?? {};
+
   core.info("Sending discord message");
   core.debug(`URL: ${url}`);
   core.debug(`Message: ${message}`);
 
   const urlToSend = url || getSecret("NOTIFICATION_DISCORD_WEBHOOK_URL");
+  const messageToSend = message || defaultMessage;
   try {
     await axios.post(urlToSend, {
-      content: message,
+      content: messageToSend,
     });
     core.info("Success Discord");
   } catch (error: any) {

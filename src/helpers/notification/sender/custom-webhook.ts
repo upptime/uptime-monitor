@@ -19,11 +19,13 @@ export async function sendCustomWebhookMsg(defaultMessage: string, config?: Cust
   const { url, message } = config ?? {};
 
   core.info("Sending custom webhook message");
-  core.debug(`URL: ${url}`);
-  core.debug(`Message: ${message}`);
 
   const urlToSend = url || getSecret("NOTIFICATION_CUSTOM_WEBHOOK_URL");
   const messageToSend = message || defaultMessage;
+
+  core.debug(`URL: ${urlToSend}`);
+  core.debug(`Message: ${messageToSend}`);
+  
   try {
     await axios.post(
       urlToSend,
