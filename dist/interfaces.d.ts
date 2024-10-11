@@ -2,31 +2,7 @@ export interface UpptimeConfig {
     owner: string;
     repo: string;
     "user-agent"?: string;
-    sites: {
-        check?: "http" | "tcp-ping" | "ws";
-        method?: string;
-        name: string;
-        url: string;
-        port?: number;
-        expectedStatusCodes?: number[];
-        assignees?: string[];
-        headers?: string[];
-        tags?: string[];
-        slug?: string;
-        body?: string;
-        icon?: string;
-        maxResponseTime?: number;
-        maxRedirects?: number;
-        verbose?: boolean;
-        ipv6?: boolean;
-        __dangerous__insecure?: boolean;
-        __dangerous__disable_verify_peer?: boolean;
-        __dangerous__disable_verify_host?: boolean;
-        __dangerous__body_down?: string;
-        __dangerous__body_down_if_text_missing?: string;
-        __dangerous__body_degraded?: string;
-        __dangerous__body_degraded_if_text_missing?: string;
-    }[];
+    sites: SiteConfig[];
     notifications?: {
         type: string;
         [index: string]: string;
@@ -104,6 +80,32 @@ export interface UpptimeConfig {
     customStatusWebsitePackage?: string;
     skipGeneratingWebsite?: boolean;
 }
+export interface SiteConfig {
+    check?: "http" | "tcp-ping" | "ws";
+    method?: string;
+    name: string;
+    url: string;
+    port?: number;
+    expectedStatusCodes?: number[];
+    assignees?: string[];
+    headers?: string[];
+    tags?: string[];
+    slug?: string;
+    body?: string;
+    icon?: string;
+    maxResponseTime?: number;
+    maxRedirects?: number;
+    verbose?: boolean;
+    ipv6?: boolean;
+    customNotification: CustomNotification[];
+    __dangerous__insecure?: boolean;
+    __dangerous__disable_verify_peer?: boolean;
+    __dangerous__disable_verify_host?: boolean;
+    __dangerous__body_down?: string;
+    __dangerous__body_down_if_text_missing?: string;
+    __dangerous__body_degraded?: string;
+    __dangerous__body_degraded_if_text_missing?: string;
+}
 export interface SiteHistory {
     url: string;
     status: "up" | "down" | "degraded";
@@ -154,4 +156,83 @@ export interface DownPecentages {
     year: string;
     all: string;
     dailyMinutesDown: Record<string, number>;
+}
+export interface CustomNotification {
+    customWebhook?: CustomWebhookConfig;
+    discord?: DiscordConfig;
+    email?: EmailConfig;
+    googleChat?: GoogleChatConfig;
+    lark?: LarkConfig;
+    mastodon?: MastodonConfig;
+    misskey?: MisskeyConfig;
+    msTeams?: MSTeamsConfig;
+    slack?: SlackConfig;
+    sms?: SMSConfig;
+    telegram?: TelegramConfig;
+    zulip?: ZulipConfig;
+}
+export interface CustomWebhookConfig {
+    url?: string;
+    message?: string;
+}
+export interface DiscordConfig {
+    url: string;
+    message?: string;
+}
+export interface EmailConfig {
+    to: string;
+    from: string;
+    subject?: string;
+    message?: string;
+}
+export interface GoogleChatConfig {
+    url: string;
+    message?: string;
+}
+export interface LarkConfig {
+    url: string;
+    message?: string;
+}
+export type MastodonVisibility = "public" | "unlisted" | "private" | "direct";
+export interface MastodonConfig {
+    url: string;
+    tootVisibility: MastodonVisibility;
+    apiKey: string;
+    message?: string;
+}
+export type MisskeyMessageMethod = "note" | "chat";
+export type MisskeyNoteVisibility = "public" | "home" | "followers" | "specified";
+export interface MisskeyConfig {
+    method: MisskeyMessageMethod;
+    url: string;
+    apiKey: string;
+    misskeyNoteVisibility?: MisskeyNoteVisibility;
+    userId?: string;
+    userIdsString?: string;
+    message?: string;
+}
+export interface MSTeamsConfig {
+    url: string;
+    summary?: string;
+    message?: string;
+    themeColor?: string;
+}
+export interface SlackConfig {
+    customUrl?: string;
+    message?: string;
+}
+export interface SMSConfig {
+    from: string;
+    to: string;
+    message?: string;
+}
+export interface TelegramConfig {
+    chatIdsString: string;
+    message?: string;
+}
+export interface ZulipConfig {
+    url: string;
+    apiUsername: string;
+    apiKey: string;
+    message?: string;
 }
