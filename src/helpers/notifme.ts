@@ -1,8 +1,8 @@
 import axios from "axios";
-import type {Channel} from "notifme-sdk";
-import NotifmeSdk, {EmailProvider, SlackProvider, SmsProvider} from "notifme-sdk";
-import {replaceEnvironmentVariables} from "./environment";
-import {getSecret} from "./secrets";
+import type { Channel } from "notifme-sdk";
+import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
+import { replaceEnvironmentVariables } from "./environment";
+import { getSecret } from "./secrets";
 
 const channels: {
   email?: Channel<EmailProvider>;
@@ -409,19 +409,5 @@ export const sendNotification = async (message: string) => {
       console.log("Got an error", error);
     }
     console.log("Finished sending Webhook");
-  }
-  if (getSecret("NOTIFICATION_GOTIFY")) {
-    console.log("Sending Gotify");
-    try {
-      await axios.post(`${getSecret("NOTIFICATION_GOTIFY_URL")}/message?token=${getSecret("NOTIFICATION_GOTIFY_TOKEN")}`, {
-        message: message,
-        title: (getSecret("NOTIFICATION_GOTIFY_TITLE") || "Upptime"),
-        priority: (getSecret("NOTIFICATION_GOTIFY_PRIORITY") || 5),
-      });
-      console.log("Success Gotify");
-    } catch (error) {
-      console.log("Got an error", error);
-    }
-    console.log("Finished sending Gotify");
   }
 };
