@@ -386,6 +386,21 @@ const sendNotification = async (message) => {
         }
         console.log("Finished sending Webhook");
     }
+    if ((0, secrets_1.getSecret)("NOTIFICATION_GOTIFY")) {
+        console.log("Sending Gotify");
+        try {
+            await axios_1.default.post(`${(0, secrets_1.getSecret)("NOTIFICATION_GOTIFY_URL")}/message?token=${(0, secrets_1.getSecret)("NOTIFICATION_GOTIFY_TOKEN")}`, {
+                message: message,
+                title: ((0, secrets_1.getSecret)("NOTIFICATION_GOTIFY_TITLE") || "Upptime"),
+                priority: ((0, secrets_1.getSecret)("NOTIFICATION_GOTIFY_PRIORITY") || 5),
+            });
+            console.log("Success Gotify");
+        }
+        catch (error) {
+            console.log("Got an error", error);
+        }
+        console.log("Finished sending Gotify");
+    }
 };
 exports.sendNotification = sendNotification;
 //# sourceMappingURL=notifme.js.map
