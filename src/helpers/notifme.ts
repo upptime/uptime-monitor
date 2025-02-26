@@ -187,13 +187,16 @@ export const sendNotification = async (message: string) => {
   if (channels.sms) {
     console.log("Sending SMS");
     try {
-      await notifier.send({
-        sms: {
-          from: getSecret("NOTIFICATION_SMS_FROM") as string,
-          to: getSecret("NOTIFICATION_SMS_TO") as string,
-          text: message,
-        },
-      });
+      const phoneNumbers = getSecret("NOTIFICATION_SMS_TO")?.split(",") ?? [];
+      for (const phoneNumber of phoneNumbers) {
+        await notifier.send({
+          sms: {
+            from: getSecret("NOTIFICATION_SMS_FROM") as string,
+            to: phoneNumber,
+            text: message,
+          },
+        });
+      }
       console.log("Success SMS");
     } catch (error) {
       console.log("Got an error", error);
