@@ -51,4 +51,4 @@ npx @upptime/uptime-monitor
 
 ## 📄 License
 
-[MIT](./LICENSE) © [Anand Chowdhary](https://anandchowdhary.com), supported by [Pabio](https://pabio.com)
+[MIT](./LICENSE) © [Anand Chowdhary](https://anandchowdhary.com)
