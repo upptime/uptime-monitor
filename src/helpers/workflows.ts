@@ -50,9 +50,8 @@ name: Graphs CI
 on:
   schedule:
     - cron: "${workflowSchedule.graphs || GRAPHS_CI_SCHEDULE}"
-  repository_dispatch:
-    types: [graphs]
   workflow_dispatch:
+  workflow_call:
 jobs:
   release:
     name: Generate graphs
@@ -129,56 +128,64 @@ on:
   repository_dispatch:
     types: [setup]
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  pages: write
+
 jobs:
   release:
     name: Setup Upptime
-    runs-on: ${config.runner || DEFAULT_RUNNER}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_PAT || github.token }}
       - name: Update template
-        uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@v1.37.0
         with:
           command: "update-template"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: ${{ secrets.GH_PAT || github.token }}
       - name: Update response time
-        uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@v1.37.0
         with:
           command: "response-time"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: \${{ toJson(secrets) }}
+          GH_PAT: ${{ secrets.GH_PAT || github.token }}
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
       - name: Update summary in README
-        uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@v1.37.0
         with:
           command: "readme"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - name: Generate graphs
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Graphs CI
-          token: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: ${{ secrets.GH_PAT || github.token }}
       - name: Generate site
-        uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@v1.37.0
         with:
           command: "site"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - uses: peaceiris/actions-gh-pages@v4
-        name: GitHub Pages Deploy
+          GH_PAT: ${{ secrets.GH_PAT || github.token }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: \${{ secrets.GH_PAT || github.token }}
-          publish_dir: "site/status-page/__sapper__/export/"
-          force_orphan: "${statusWebsite.singleCommit || false}"
-          user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
-          user_email: "${
-            commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"
-          }"
+          path: site/status-page/__sapper__/export/
+  update_graphs:
+    uses: ./.github/workflows/graphs.yml                   
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [release]
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 `;
 };
 
@@ -193,37 +200,47 @@ export const siteCiWorkflow = async () => {
 name: Static Site CI
 on:
   schedule:
-    - cron: "${workflowSchedule.staticSite || STATIC_SITE_CI_SCHEDULE}"
+    - cron: "0 1 * * *"
   repository_dispatch:
     types: [static_site]
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  pages: write
+
 jobs:
   release:
     name: Build and deploy site
-    runs-on: ${config.runner || DEFAULT_RUNNER}
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: \${{ github.head_ref }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_PAT || github.token }}
       - name: Generate site
-        uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
+        uses: upptime/uptime-monitor@v1.37.0
         with:
           command: "site"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - uses: peaceiris/actions-gh-pages@v4
-        name: GitHub Pages Deploy
+          GH_PAT: ${{ secrets.GH_PAT || github.token }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: \${{ secrets.GH_PAT || github.token }}
-          publish_dir: "site/status-page/__sapper__/export/"
-          force_orphan: "${statusWebsite.singleCommit || false}"
-          user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
-          user_email: "${
-            commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"
-          }"
+          path: site/status-page/__sapper__/export/         
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [release]
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 `;
 };
 
