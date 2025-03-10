@@ -3,7 +3,7 @@ export interface UpptimeConfig {
   repo: string;
   "user-agent"?: string;
   sites: {
-    check?: "http" | "tcp-ping" | "ws";
+    check?: "http" | "tcp-ping" | "ws" | "ssl";
     method?: string;
     name: string;
     url: string;
