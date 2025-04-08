@@ -58,7 +58,6 @@
     "notifme-sdk": "^1.10.0",
     "prettier": "^2.2.1",
     "shelljs": "^0.8.4",
-    "ssl-date-checker": "^2.2.0",
     "tcp-ping": "^0.1.1",
     "ws": "^7.4.6"
   },

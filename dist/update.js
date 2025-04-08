@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.update = void 0;
-const dns_1 = __importDefault(require("dns"));
-const net_1 = require("net");
 const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const dayjs_1 = __importDefault(require("dayjs"));
+const dns_1 = __importDefault(require("dns"));
 const fs_extra_1 = require("fs-extra");
 const js_yaml_1 = require("js-yaml");
+const net_1 = require("net");
 const path_1 = require("path");
 const ws_1 = __importDefault(require("ws"));
 const config_1 = require("./helpers/config");
@@ -21,6 +21,7 @@ const notifme_1 = require("./helpers/notifme");
 const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
 const secrets_1 = require("./helpers/secrets");
+const ssl_date_checker_1 = require("./ssl-date-checker");
 const summary_1 = require("./summary");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 /**
@@ -232,31 +233,46 @@ const update = async (shouldCommit = false) => {
                     return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
                 }
             }
+            else if (site.check === "ssl") {
+                console.log("Using ssl check instead of curl");
+                let success = false;
+                let status = "up";
+                let responseTime = "0";
+                try {
+                    const url = (0, environment_1.replaceEnvironmentVariables)(site.url);
+                    const port = Number((0, environment_1.replaceEnvironmentVariables)(site.port ? String(site.port) : "443"));
+                    const dateInfo = await (0, ssl_date_checker_1.checker)(url, port);
+                    const expires = new Date(dateInfo.valid_to);
+                    // if it expires 7+ days from now then it's OK
+                    if (!isNaN(expires.getTime()) &&
+                        expires.toString() !== "Invalid Date" &&
+                        expires.getTime() + 604800000 >= Date.now()) {
+                        success = true;
+                    }
+                    if (success) {
+                        status = "up";
+                    }
+                    else {
+                        status = "down";
+                    }
+                    return {
+                        result: { httpCode: 200 },
+                        responseTime,
+                        status,
+                    };
+                }
+                catch (error) {
+                    console.log("ERROR Got pinging error from async call", error);
+                    return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+                }
+            }
             else {
                 const result = await (0, request_1.curl)(site);
                 console.log("Result from test", result.httpCode, result.totalTime);
                 const responseTime = (result.totalTime * 1000).toFixed(0);
                 const expectedStatusCodes = (site.expectedStatusCodes || [
-                    200,
-                    201,
-                    202,
-                    203,
-                    200,
-                    204,
-                    205,
-                    206,
-                    207,
-                    208,
-                    226,
-                    300,
-                    301,
-                    302,
-                    303,
-                    304,
-                    305,
-                    306,
-                    307,
-                    308,
+                    200, 201, 202, 203, 200, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305,
+                    306, 307, 308,
                 ]).map(Number);
                 let status = expectedStatusCodes.includes(Number(result.httpCode))
                     ? "up"
@@ -264,7 +280,8 @@ const update = async (shouldCommit = false) => {
                 if (parseInt(responseTime) > (site.maxResponseTime || 60000))
                     status = "degraded";
                 if (status === "up" && typeof result.data === "string") {
-                    if (site.__dangerous__body_down && result.data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down)))
+                    if (site.__dangerous__body_down &&
+                        result.data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down)))
                         status = "down";
                     if (site.__dangerous__body_degraded &&
                         result.data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_degraded)))

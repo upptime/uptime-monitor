@@ -1,12 +1,11 @@
-import dns from "dns";
-import { isIP, isIPv6 } from "net";
 import slugify from "@sindresorhus/slugify";
 import dayjs from "dayjs";
+import dns from "dns";
 import { mkdirp, readFile, writeFile } from "fs-extra";
 import { load } from "js-yaml";
+import { isIP, isIPv6 } from "net";
 import { join } from "path";
 import WebSocket from "ws";
-import { default as checker } from "ssl-date-checker";
 import { getConfig } from "./helpers/config";
 import { replaceEnvironmentVariables } from "./helpers/environment";
 import { commit, lastCommit, push } from "./helpers/git";
@@ -17,6 +16,7 @@ import { ping } from "./helpers/ping";
 import { curl } from "./helpers/request";
 import { getOwnerRepo, getSecret } from "./helpers/secrets";
 import { SiteHistory } from "./interfaces";
+import { checker } from "./ssl-date-checker";
 import { generateSummary } from "./summary";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -160,16 +160,12 @@ export const update = async (shouldCommit = false) => {
           const url = replaceEnvironmentVariables(site.url);
           let address = url;
           if (isIP(url)) {
-            if (site.ipv6 && !isIPv6(url))
-              throw new Error("Site URL must be IPv6 for ipv6 check");
+            if (site.ipv6 && !isIPv6(url)) throw new Error("Site URL must be IPv6 for ipv6 check");
           } else {
-            if (site.ipv6)
-              address = (await dns.promises.resolve6(url))[0];
-            else
-              address = (await dns.promises.resolve4(url))[0];
+            if (site.ipv6) address = (await dns.promises.resolve6(url))[0];
+            else address = (await dns.promises.resolve4(url))[0];
 
-            if (!isIP(address))
-              throw new Error("Site IP address could not be resolved");
+            if (!isIP(address)) throw new Error("Site IP address could not be resolved");
           }
 
           const tcpResult = await ping({
@@ -250,11 +246,15 @@ export const update = async (shouldCommit = false) => {
         let responseTime = "0";
         try {
           const url = replaceEnvironmentVariables(site.url);
-          const port = Number(replaceEnvironmentVariables(site.port ? String(site.port) : 443));
+          const port = Number(replaceEnvironmentVariables(site.port ? String(site.port) : "443"));
           const dateInfo = await checker(url, port);
           const expires = new Date(dateInfo.valid_to);
           // if it expires 7+ days from now then it's OK
-          if (!isNaN(expires.getTime()) && expires.toString() !== 'Invalid Date' && expires.getTime() + 604800000 >= Date.now()) {
+          if (
+            !isNaN(expires.getTime()) &&
+            expires.toString() !== "Invalid Date" &&
+            expires.getTime() + 604800000 >= Date.now()
+          ) {
             success = true;
           }
           if (success) {
@@ -277,26 +277,8 @@ export const update = async (shouldCommit = false) => {
         const responseTime = (result.totalTime * 1000).toFixed(0);
         const expectedStatusCodes = (
           site.expectedStatusCodes || [
-            200,
-            201,
-            202,
-            203,
-            200,
-            204,
-            205,
-            206,
-            207,
-            208,
-            226,
-            300,
-            301,
-            302,
-            303,
-            304,
-            305,
-            306,
-            307,
-            308,
+            200, 201, 202, 203, 200, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305,
+            306, 307, 308,
           ]
         ).map(Number);
         let status: "up" | "down" | "degraded" = expectedStatusCodes.includes(
@@ -306,7 +288,10 @@ export const update = async (shouldCommit = false) => {
           : "down";
         if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
         if (status === "up" && typeof result.data === "string") {
-          if (site.__dangerous__body_down && result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down)))
+          if (
+            site.__dangerous__body_down &&
+            result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down))
+          )
             status = "down";
           if (
             site.__dangerous__body_degraded &&
@@ -316,12 +301,16 @@ export const update = async (shouldCommit = false) => {
         }
         if (
           site.__dangerous__body_degraded_if_text_missing &&
-          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing))
+          !result.data.includes(
+            replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing)
+          )
         )
           status = "degraded";
         if (
           site.__dangerous__body_down_if_text_missing &&
-          !result.data.includes(replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing))
+          !result.data.includes(
+            replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing)
+          )
         )
           status = "down";
         return { result, responseTime, status };
