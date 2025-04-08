@@ -254,8 +254,9 @@ export const update = async (shouldCommit = false) => {
           const dateInfo = await checker(url, port);
           const expires = new Date(dateInfo.valid_to);
           // if it expires 7+ days from now then it's OK
-          if (!isNaN(expires) && expires.toString() !== 'Invalid date' && expires.getTime() + 604800000 >= Date.now())
+          if (!isNaN(expires.getTime()) && expires.toString() !== 'Invalid Date' && expires.getTime() + 604800000 >= Date.now()) {
             success = true;
+          }
           if (success) {
             status = "up";
           } else {
