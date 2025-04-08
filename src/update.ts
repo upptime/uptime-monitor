@@ -296,7 +296,7 @@ export const update = async (shouldCommit = false) => {
             305,
             306,
             307,
-            308,
+            308,429
           ]
         ).map(Number);
         let status: "up" | "down" | "degraded" = expectedStatusCodes.includes(
