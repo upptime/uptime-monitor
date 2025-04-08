@@ -6,6 +6,7 @@ import { mkdirp, readFile, writeFile } from "fs-extra";
 import { load } from "js-yaml";
 import { join } from "path";
 import WebSocket from "ws";
+import { default as checker } from "ssl-date-checker";
 import { getConfig } from "./helpers/config";
 import { replaceEnvironmentVariables } from "./helpers/environment";
 import { commit, lastCommit, push } from "./helpers/git";
@@ -228,6 +229,33 @@ export const update = async (shouldCommit = false) => {
         try {
           const connection = await connect();
           if (connection) success = true;
+          if (success) {
+            status = "up";
+          } else {
+            status = "down";
+          }
+          return {
+            result: { httpCode: 200 },
+            responseTime,
+            status,
+          };
+        } catch (error) {
+          console.log("ERROR Got pinging error from async call", error);
+          return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+        }
+      } else if (site.check === "ssl") {
+        console.log("Using ssl check instead of curl");
+        let success = false;
+        let status: "up" | "down" | "degraded" = "up";
+        let responseTime = "0";
+        try {
+          const url = replaceEnvironmentVariables(site.url);
+          const port = Number(replaceEnvironmentVariables(site.port ? String(site.port) : 443)),
+          const dateInfo = await checker(url, port);
+          const expires = new Date(dateInfo.valid_to);
+          // if it expires 7+ days from now then it's OK
+          if (!isNaN(expires) && expires.toString() !== 'Invalid date' && expires.getTime() + 604800000 >= Date.now())
+            success = true;
           if (success) {
             status = "up";
           } else {
