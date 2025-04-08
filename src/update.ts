@@ -250,7 +250,7 @@ export const update = async (shouldCommit = false) => {
         let responseTime = "0";
         try {
           const url = replaceEnvironmentVariables(site.url);
-          const port = Number(replaceEnvironmentVariables(site.port ? String(site.port) : 443)),
+          const port = Number(replaceEnvironmentVariables(site.port ? String(site.port) : 443));
           const dateInfo = await checker(url, port);
           const expires = new Date(dateInfo.valid_to);
           // if it expires 7+ days from now then it's OK
