@@ -71,5 +71,3 @@ export async function checker(
     req.end();
   });
 }
-
-module.exports = checker;
