@@ -54,5 +54,4 @@ async function checker(host, port) {
     });
 }
 exports.checker = checker;
-module.exports = checker;
 //# sourceMappingURL=ssl-date-checker.js.map
