@@ -1,3 +1,11 @@
+## v1.40.1 (2025-04-09)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.40.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.40.0...v1.40.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.40.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.40.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.40.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`c7720cc`](https://github.com/upptime/uptime-monitor/commit/c7720cc)  Remove module.exports from ssl-date-checker.ts to align with ES module syntax.
+
 ## v1.40.0 (2025-04-08)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.40.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.39.0...v1.40.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.40.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.40.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.40.0.tar.gz))
