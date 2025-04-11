@@ -170,7 +170,7 @@ export const update = async (shouldCommit = false) => {
 
           const tcpResult = await ping({
             address,
-            attempts: 5,
+            attempts: site.attempts || 5,
             port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
           });
           if (
