@@ -12,6 +12,21 @@ import { SiteStatus } from "./interfaces";
 import { parse } from "url";
 import { getOwnerRepo } from "./helpers/secrets";
 
+// Helper function to join URL parts without double slashes
+const joinUrlParts = (...parts: string[]): string => {
+  return parts
+    .map((part, index) => {
+      if (index === 0) {
+        // First part: remove trailing slash
+        return part.replace(/\/$/, '');
+      }
+      // Other parts: remove leading and trailing slashes
+      return part.replace(/^\/|\/$/g, '');
+    })
+    .filter(part => part !== '')
+    .join('/');
+};
+
 export const generateSummary = async () => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
@@ -78,6 +93,8 @@ export const generateSummary = async () => {
   let website = `https://${config.owner}.github.io/${config.repo}`;
   if (config["status-website"] && config["status-website"].cname)
     website = `https://${config["status-website"].cname}`;
+  if (config["status-website"] && config["status-website"].baseUrl)
+    website = `${website}${config["status-website"].baseUrl}`;
 
   const i18n = config.i18n || {};
 
@@ -115,63 +132,63 @@ ${pageStatuses
         i18n.responseTimeGraphAlt || "Response time graph"
       }" src="./graphs/${page.slug}/response-time-week.png" height="20"> ${
         page.timeWeek
-      }${i18n.ms || "ms"}</summary><br><a href="${website}/history/${
+      }${i18n.ms || "ms"}</summary><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.responseTime || "Response time"} ${
         page.time
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fresponse-time.json"></a><br><a href="${website}/history/${
+      }%2Fresponse-time.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.responseTimeDay || "24-hour response time"} ${
         page.timeDay
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fresponse-time-day.json"></a><br><a href="${website}/history/${
+      }%2Fresponse-time-day.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.responseTimeWeek || "7-day response time"} ${
         page.timeWeek
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fresponse-time-week.json"></a><br><a href="${website}/history/${
+      }%2Fresponse-time-week.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.responseTimeMonth || "30-day response time"} ${
         page.timeMonth
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fresponse-time-month.json"></a><br><a href="${website}/history/${
+      }%2Fresponse-time-month.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.responseTimeYear || "1-year response time"} ${
         page.timeYear
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fresponse-time-year.json"></a></details> | <details><summary><a href="${website}/history/${
+      }%2Fresponse-time-year.json"></a></details> | <details><summary><a href="${joinUrlParts(website, 'history')}/${
         page.slug
-      }">${page.uptimeWeek}</a></summary><a href="${website}/history/${
+      }">${page.uptimeWeek}</a></summary><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.uptime || "All-time uptime"} ${
         page.uptime
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fuptime.json"></a><br><a href="${website}/history/${
+      }%2Fuptime.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.uptimeDay || "24-hour uptime"} ${
         page.uptimeDay
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fuptime-day.json"></a><br><a href="${website}/history/${
+      }%2Fuptime-day.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.uptimeWeek || "7-day uptime"} ${
         page.uptimeWeek
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fuptime-week.json"></a><br><a href="${website}/history/${
+      }%2Fuptime-week.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.uptimeMonth || "30-day uptime"} ${
         page.uptimeMonth
       }" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2F${owner}%2F${repo}%2FHEAD%2Fapi%2F${
         page.slug
-      }%2Fuptime-month.json"></a><br><a href="${website}/history/${
+      }%2Fuptime-month.json"></a><br><a href="${joinUrlParts(website, 'history')}/${
         page.slug
       }"><img alt="${i18n.uptimeYear || "1-year uptime"} ${
         page.uptimeYear
