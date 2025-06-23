@@ -8,6 +8,7 @@ const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const dayjs_1 = __importDefault(require("dayjs"));
 const dns_1 = __importDefault(require("dns"));
 const fs_extra_1 = require("fs-extra");
+const globalping_1 = require("globalping");
 const js_yaml_1 = require("js-yaml");
 const net_1 = require("net");
 const path_1 = require("path");
@@ -44,6 +45,45 @@ function getHumanReadableTimeDifference(startTime) {
     if (diffMinutes > 0)
         result.push(`${diffMinutes.toLocaleString()} ${diffMinutes > 1 ? "minutes" : "minute"}`);
     return result.join(", ");
+}
+function getStatusFromHttpResult(site, httpCode, data, responseTime) {
+    const expectedStatusCodes = (site.expectedStatusCodes || [
+        200, 201, 202, 203, 200, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307,
+        308,
+    ]).map(Number);
+    let status = expectedStatusCodes.includes(Number(httpCode))
+        ? "up"
+        : "down";
+    if (responseTime > (site.maxResponseTime || 60000))
+        status = "degraded";
+    if (status === "up" && typeof data === "string") {
+        if (site.__dangerous__body_down &&
+            data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down)))
+            status = "down";
+        if (site.__dangerous__body_degraded &&
+            data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_degraded)))
+            status = "degraded";
+    }
+    if (site.__dangerous__body_degraded_if_text_missing &&
+        !data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_degraded_if_text_missing)))
+        status = "degraded";
+    if (site.__dangerous__body_down_if_text_missing &&
+        !data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down_if_text_missing)))
+        status = "down";
+    return status;
+}
+function getStatusFromCertificateExpiresAt(expiresAt) {
+    if (!expiresAt) {
+        return "down";
+    }
+    const expires = new Date(expiresAt);
+    // if it expires 7+ days from now then it's OK
+    if (!isNaN(expires.getTime()) &&
+        expires.toString() !== "Invalid Date" &&
+        expires.getTime() + 604800000 >= Date.now()) {
+        return "up";
+    }
+    return "down";
 }
 const update = async (shouldCommit = false) => {
     if (!(await (0, init_check_1.shouldContinue)()))
@@ -139,6 +179,132 @@ const update = async (shouldCommit = false) => {
          * Check whether the site is online
          */
         const performTestOnce = async () => {
+            // globalping
+            if (site.type === "globalping") {
+                const client = new globalping_1.Globalping({
+                    auth: (0, secrets_1.getSecret)("GLOBALPING_TOKEN"),
+                    userAgent: "github.com/upptime/uptime-monitor",
+                });
+                let u = (0, environment_1.replaceEnvironmentVariables)(site.url);
+                let url;
+                try {
+                    if (!u.startsWith("http://") && !u.startsWith("https://")) {
+                        u = `https://${u}`;
+                    }
+                    url = new URL(u);
+                }
+                catch (error) {
+                    throw new Error(`invalid URL: ${site.url}`);
+                }
+                if (site.check === "ws") {
+                    throw new Error(`ws is not supported with globalping: ${site.url}`);
+                }
+                else if (site.check === "tcp-ping") {
+                    const res = await client.createMeasurement({
+                        type: "ping",
+                        target: url.hostname,
+                        inProgressUpdates: false,
+                        limit: 1,
+                        locations: [{ magic: site.location || "world" }],
+                        measurementOptions: {
+                            ipVersion: site.ipv6 ? globalping_1.IpVersion[6] : globalping_1.IpVersion[4],
+                        },
+                    });
+                    if (res.ok) {
+                        console.log("Fetching globalping measurement", res.data.id);
+                        const measurement = await client.awaitMeasurement(res.data.id);
+                        if (measurement.ok) {
+                            const result = measurement.data.results[0].result;
+                            const responseTime = result.stats.avg || 0;
+                            let status = "up";
+                            if (responseTime > (site.maxResponseTime || 60000)) {
+                                status = "degraded";
+                            }
+                            return {
+                                result: {
+                                    httpCode: 200,
+                                },
+                                responseTime: responseTime.toFixed(0),
+                                status,
+                            };
+                        }
+                        else {
+                            console.log("ERROR: failed to get measurement:", res.data);
+                            return {
+                                result: { httpCode: res.response.status },
+                                responseTime: "0",
+                                status: "down",
+                            };
+                        }
+                    }
+                    else {
+                        console.log("ERROR: failed to create measurement:", res.data);
+                        return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+                    }
+                }
+                else {
+                    const protocol = url.protocol === "http:" ? globalping_1.HttpProtocol.HTTP : globalping_1.HttpProtocol.HTTPS;
+                    const res = await client.createMeasurement({
+                        type: "http",
+                        target: url.hostname,
+                        inProgressUpdates: false,
+                        limit: 1,
+                        locations: [{ magic: site.location || "world" }],
+                        measurementOptions: {
+                            request: {
+                                host: url.hostname,
+                                path: url.pathname,
+                                query: url.search ? url.search.slice(1) : undefined,
+                                method: site.method || globalping_1.HttpRequestMethod.GET,
+                                headers: site.headers?.reduce((m, h) => {
+                                    const splitIndex = h.indexOf(":");
+                                    m[h.substring(0, splitIndex)] = (0, environment_1.replaceEnvironmentVariables)(h.substring(splitIndex + 1).trimStart());
+                                    return m;
+                                }, {}),
+                            },
+                            port: site.port || parseInt(url.port) || undefined,
+                            protocol: site.check === "ssl" ? globalping_1.HttpProtocol.HTTPS : protocol,
+                            ipVersion: site.ipv6 ? globalping_1.IpVersion[6] : globalping_1.IpVersion[4],
+                        },
+                    });
+                    if (res.ok) {
+                        console.log("Fetching globalping measurement", res.data.id);
+                        const measurement = await client.awaitMeasurement(res.data.id);
+                        if (measurement.ok) {
+                            const result = measurement.data.results[0].result;
+                            if (site.check === "ssl") {
+                                return {
+                                    result: { httpCode: 200 },
+                                    responseTime: "0",
+                                    status: getStatusFromCertificateExpiresAt(result.tls?.expiresAt),
+                                };
+                            }
+                            const responseTime = result.timings.total || 0;
+                            const status = getStatusFromHttpResult(site, result.statusCode, result.rawBody || "", responseTime);
+                            return {
+                                result: {
+                                    httpCode: result.statusCode,
+                                },
+                                responseTime: responseTime.toFixed(0),
+                                status,
+                            };
+                        }
+                        else {
+                            console.log("ERROR: failed to get measurement:", res.data);
+                            return {
+                                result: { httpCode: res.response.status },
+                                responseTime: "0",
+                                status: "down",
+                            };
+                        }
+                    }
+                    else {
+                        console.log("ERROR: failed to create measurement:", res.data);
+                        return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+                    }
+                }
+            }
+            // local
             if (site.check === "tcp-ping") {
                 console.log("Using tcp-ping instead of curl");
                 try {
@@ -235,30 +401,14 @@ const update = async (shouldCommit = false) => {
             }
             else if (site.check === "ssl") {
                 console.log("Using ssl check instead of curl");
-                let success = false;
-                let status = "up";
-                let responseTime = "0";
                 try {
                     const url = (0, environment_1.replaceEnvironmentVariables)(site.url);
                     const port = Number((0, environment_1.replaceEnvironmentVariables)(site.port ? String(site.port) : "443"));
                     const dateInfo = await (0, ssl_date_checker_1.checker)(url, port);
-                    const expires = new Date(dateInfo.valid_to);
-                    // if it expires 7+ days from now then it's OK
-                    if (!isNaN(expires.getTime()) &&
-                        expires.toString() !== "Invalid Date" &&
-                        expires.getTime() + 604800000 >= Date.now()) {
-                        success = true;
-                    }
-                    if (success) {
-                        status = "up";
-                    }
-                    else {
-                        status = "down";
-                    }
                     return {
                         result: { httpCode: 200 },
-                        responseTime,
-                        status,
+                        responseTime: "0",
+                        status: getStatusFromCertificateExpiresAt(dateInfo.valid_to),
                     };
                 }
                 catch (error) {
@@ -269,31 +419,9 @@ const update = async (shouldCommit = false) => {
             else {
                 const result = await (0, request_1.curl)(site);
                 console.log("Result from test", result.httpCode, result.totalTime);
-                const responseTime = (result.totalTime * 1000).toFixed(0);
-                const expectedStatusCodes = (site.expectedStatusCodes || [
-                    200, 201, 202, 203, 200, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305,
-                    306, 307, 308,
-                ]).map(Number);
-                let status = expectedStatusCodes.includes(Number(result.httpCode))
-                    ? "up"
-                    : "down";
-                if (parseInt(responseTime) > (site.maxResponseTime || 60000))
-                    status = "degraded";
-                if (status === "up" && typeof result.data === "string") {
-                    if (site.__dangerous__body_down &&
-                        result.data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down)))
-                        status = "down";
-                    if (site.__dangerous__body_degraded &&
-                        result.data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_degraded)))
-                        status = "degraded";
-                }
-                if (site.__dangerous__body_degraded_if_text_missing &&
-                    !result.data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_degraded_if_text_missing)))
-                    status = "degraded";
-                if (site.__dangerous__body_down_if_text_missing &&
-                    !result.data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down_if_text_missing)))
-                    status = "down";
-                return { result, responseTime, status };
+                const responseTime = result.totalTime * 1000;
+                const status = getStatusFromHttpResult(site, result.httpCode, result.data, responseTime);
+                return { result, responseTime: responseTime.toFixed(0), status };
             }
         };
         let { result, responseTime, status } = await performTestOnce();
