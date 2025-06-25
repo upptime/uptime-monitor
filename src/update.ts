@@ -67,27 +67,39 @@ function getStatusFromHttpResult(
     : "down";
   if (responseTime > (site.maxResponseTime || 60000)) status = "degraded";
   if (status === "up" && typeof data === "string") {
-    if (
-      site.__dangerous__body_down &&
-      data.includes(replaceEnvironmentVariables(site.__dangerous__body_down))
-    )
-      status = "down";
-    if (
-      site.__dangerous__body_degraded &&
-      data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded))
-    )
-      status = "degraded";
+    if (site.__dangerous__body_down) {
+      const downStrings = replaceEnvironmentVariables(site.__dangerous__body_down)
+        .split('|')
+        .map(s => s.trim());
+      if (downStrings.some(str => str && data.includes(str))) {
+        status = "down";
+      }
+    }
+    if (site.__dangerous__body_degraded) {
+      const degradedStrings = replaceEnvironmentVariables(site.__dangerous__body_degraded)
+        .split('|')
+        .map(s => s.trim());
+      if (degradedStrings.some(str => str && data.includes(str))) {
+        status = "degraded";
+      }
+    }
   }
-  if (
-    site.__dangerous__body_degraded_if_text_missing &&
-    !data.includes(replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing))
-  )
-    status = "degraded";
-  if (
-    site.__dangerous__body_down_if_text_missing &&
-    !data.includes(replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing))
-  )
-    status = "down";
+  if (site.__dangerous__body_degraded_if_text_missing) {
+    const degradedMissingStrings = replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing)
+      .split('|')
+      .map(s => s.trim());
+    if (degradedMissingStrings.every(str => str && !data.includes(str))) {
+      status = "degraded";
+    }
+  }
+  if (site.__dangerous__body_down_if_text_missing) {
+    const downMissingStrings = replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing)
+      .split('|')
+      .map(s => s.trim());
+    if (downMissingStrings.every(str => str && !data.includes(str))) {
+      status = "down";
+    }
+  }
   return status;
 }
 
