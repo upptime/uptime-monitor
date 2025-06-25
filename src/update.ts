@@ -83,21 +83,21 @@ function getStatusFromHttpResult(
         status = "degraded";
       }
     }
-    if (site.__dangerous__body_degraded_if_text_missing) {
-      const degradedMissingStrings = replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing)
-        .split('|')
-        .map(s => s.trim());
-      if (degradedMissingStrings.every(str => str && !data.includes(str))) {
-        status = "degraded";
-      }
+  }
+  if (site.__dangerous__body_degraded_if_text_missing) {
+    const degradedMissingStrings = replaceEnvironmentVariables(site.__dangerous__body_degraded_if_text_missing)
+      .split('|')
+      .map(s => s.trim());
+    if (degradedMissingStrings.every(str => str && !data.includes(str))) {
+      status = "degraded";
     }
-    if (site.__dangerous__body_down_if_text_missing) {
-      const downMissingStrings = replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing)
-        .split('|')
-        .map(s => s.trim());
-      if (downMissingStrings.every(str => str && !data.includes(str))) {
-        status = "down";
-      }
+  }
+  if (site.__dangerous__body_down_if_text_missing) {
+    const downMissingStrings = replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing)
+      .split('|')
+      .map(s => s.trim());
+    if (downMissingStrings.every(str => str && !data.includes(str))) {
+      status = "down";
     }
   }
   return status;
