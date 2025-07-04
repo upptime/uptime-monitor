@@ -158,7 +158,7 @@ export const update = async (shouldCommit = false) => {
           .map((i) => i.trim())
           .filter((i) => i.length);
 
-      if (dayjs(metadata.end).isBefore(dayjs())) {
+      if ((metadata.end !== "unknown") && dayjs(metadata.end).isBefore(dayjs())) {
         await octokit.issues.unlock({
           owner,
           repo,
@@ -546,24 +546,56 @@ generator: Upptime <https://github.com/upptime/upptime>
 
           // If the site was just recorded as down or degraded, open an issue
           if ((status === "down" || status === "degraded") && !expected) {
+            const issueTitle = (config.issueTitle || "$PREFIX $SITE_NAME is $STATUS")
+              .replace(
+                "$PREFIX",
+                status === "down"
+                  ? config.issuePrefixStatusDown || "🛑"
+                  : config.issuePrefixStatusDegraded || "⚠️"
+              )
+              .replace("$SITE_NAME", site.name)
+              .replace("$SITE_URL", site.url)
+              .replace("$SITE_METHOD", site.method || "GET")
+              .replace(
+                "$STATUS",
+                status === "down"
+                  ? status
+                  : "experiencing degraded performance"
+              )
+              .replace("$RESPONSE_CODE", result.httpCode.toString())
+              .replace("$RESPONSE_TIME", responseTime)
+              .replace("$COMMIT", lastCommitSha.substr(0, 7))
+              .replace("$COMMIT_URL", `https://github.com/${owner}/${repo}/commit/${lastCommitSha}`);
+            const issueBody = (config.issueBody || `[[\`$COMMIT\`]($COMMIT_URL)] $SITE_NAME ($SITE_URL) is **$STATUS**.
+- HTTP code: $RESPONSE_CODE
+- Response time: $RESPONSE_TIME ms
+`)
+              .replace(
+                "$PREFIX",
+                status === "down"
+                  ? config.issuePrefixStatusDown || "🛑"
+                  : config.issuePrefixStatusDegraded || "⚠️"
+              )
+              .replace("$SITE_NAME", site.name)
+              .replace("$SITE_URL", site.url)
+              .replace("$SITE_METHOD", site.method || "GET")
+              .replace(
+                "$STATUS",
+                status === "down"
+                  ? status
+                  : "experiencing degraded performance"
+              )
+              .replace("$RESPONSE_CODE", result.httpCode.toString())
+              .replace("$RESPONSE_TIME", responseTime)
+              .replace("$COMMIT", lastCommitSha.substr(0, 7))
+              .replace("$COMMIT_URL", `https://github.com/${owner}/${repo}/commit/${lastCommitSha}`);
             if (!issues.data.length) {
               const newIssue = await octokit.issues.create({
                 owner,
                 repo,
-                title:
-                  status === "down"
-                    ? `🛑 ${site.name} is down`
-                    : `⚠️ ${site.name} has degraded performance`,
-                body: `In [\`${lastCommitSha.substr(
-                  0,
-                  7
-                )}\`](https://github.com/${owner}/${repo}/commit/${lastCommitSha}), ${site.name} (${
-                  site.url
-                }) ${status === "down" ? "was **down**" : "experienced **degraded performance**"}:
-- HTTP code: ${result.httpCode}
-- Response time: ${responseTime} ms
-`,
-                labels: ["status", slug, ...(site.tags || [])],
+                title: issueTitle,
+                body: issueBody,
+                labels: ["status", slug, ...site.tags || []],
               });
               const assignees = [...(config.assignees || []), ...(site.assignees || [])];
               await octokit.issues.addAssignees({
