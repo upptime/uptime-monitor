@@ -380,23 +380,23 @@ export const update = async (shouldCommit = false) => {
           ) {
             // Assume data.results is an array of objects, each with an 'err' property that may be an Error or null/undefined.
             // First, filter out the actual errors from data.results
-            const errors = data.results
-              .map(item => item.err)  // Extract err from each result
-              .filter(err => Boolean(err)); // Only keep actual Error instances
-            
+            const errors = tcpResult.results
+              .map((item) => item.err) // Extract err from each result
+              .filter((err) => Boolean(err)); // Only keep actual Error instances
+
             // If there are no errors, you might want to handle that case separately
             if (errors.length === 0) {
               throw Error("all attempts failed");
             }
-            
+
             // Create a combined message by joining individual error messages
             const combinedMessage = errors
-              .map(err => err.message)  // Get message from each error
-              .join('; ');  // Join with semicolons, or use '\n' for newlines if preferred
-            
+              .map((err) => err?.message) // Get message from each error
+              .join("; "); // Join with semicolons, or use '\n' for newlines if preferred
+
             // Create the AggregateError with the array of errors and the combined message
             const aggregateError = new AggregateError(errors, combinedMessage);
-            
+
             // Optionally, log or inspect the aggregateError
             console.error(aggregateError);
             // Access individual errors via aggregateError.errors
