@@ -6,9 +6,13 @@ import {
   FinishedHttpTestResult,
   FinishedPingTestResult,
   Globalping,
+  HttpMeasurementRequest,
   HttpProtocol,
   HttpRequestMethod,
   IpVersion,
+  MeasurementHttpOptions,
+  MeasurementPingOptions,
+  PingMeasurementRequest,
 } from "globalping";
 import { load } from "js-yaml";
 import { isIP, isIPv6 } from "net";
@@ -107,6 +111,167 @@ function getStatusFromCertificateExpiresAt(expiresAt: string | undefined) {
   }
   return "down";
 }
+
+export const performGlobalpingTest = async (
+  site: UpptimeConfig["sites"][number],
+  client: Globalping<boolean>
+): Promise<{
+  result: {
+    httpCode: number;
+  };
+  responseTime: string;
+  status: "up" | "down" | "degraded";
+}> => {
+  const location = site.location ? replaceEnvironmentVariables(site.location) : "world";
+
+  let u = replaceEnvironmentVariables(site.url);
+  let parsedURL: URL;
+  try {
+    if (!u.startsWith("http://") && !u.startsWith("https://")) {
+      u = `https://${u}`;
+    }
+    parsedURL = new URL(u);
+  } catch (error) {
+    throw new Error(`invalid URL: ${site.url}`);
+  }
+
+  if (site.check === "ws") {
+    throw new Error(`ws is not supported with globalping: ${site.url}`);
+  }
+
+  if (site.check === "icmp-ping" || site.check === "tcp-ping") {
+    const opts: PingMeasurementRequest = {
+      type: "ping",
+      target: parsedURL.hostname,
+      inProgressUpdates: false,
+      limit: 1,
+      locations: [{ magic: location }],
+      measurementOptions: {
+        protocol: site.check === "icmp-ping" ? "ICMP" : "TCP",
+      },
+    };
+    if (site.check === "tcp-ping" && site.port) {
+      (opts.measurementOptions as MeasurementPingOptions).port = Number(
+        replaceEnvironmentVariables(site.port ? String(site.port) : "")
+      );
+    }
+    if (site.ipv6 === true) {
+      (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[6];
+    } else if (site.ipv6 === false) {
+      (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[4];
+    }
+
+    const res = await client.createMeasurement(opts);
+
+    if (!res.ok) {
+      console.log("ERROR: failed to get measurement:", res.data);
+      return {
+        result: { httpCode: res.response.status },
+        responseTime: "0",
+        status: "down",
+      };
+    }
+
+    console.log("Fetching globalping measurement", res.data.id);
+    const measurement = await client.awaitMeasurement(res.data.id);
+
+    if (!measurement.ok) {
+      console.log("ERROR: failed to create measurement:", res.data);
+      return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+    }
+
+    const result = measurement.data.results[0].result as FinishedPingTestResult;
+    const responseTime = result.stats.avg || 0;
+    let status: "up" | "down" | "degraded" = "up";
+    if (responseTime > (site.maxResponseTime || 60000)) {
+      status = "degraded";
+    }
+    return {
+      result: {
+        httpCode: 200,
+      },
+      responseTime: responseTime.toFixed(0),
+      status,
+    };
+  }
+
+  const protocol = parsedURL.protocol === "http:" ? HttpProtocol.HTTP : HttpProtocol.HTTPS;
+  const opts: HttpMeasurementRequest = {
+    type: "http",
+    target: parsedURL.hostname,
+    inProgressUpdates: false,
+    limit: 1,
+    locations: [{ magic: location }],
+    measurementOptions: {
+      request: {
+        host: parsedURL.hostname,
+        path: parsedURL.pathname,
+        query: parsedURL.search ? parsedURL.search.slice(1) : undefined,
+        method: (site.method as HttpRequestMethod) || HttpRequestMethod.GET,
+        headers: site.headers?.reduce((m, h) => {
+          const splitIndex = h.indexOf(":");
+          m[h.substring(0, splitIndex)] = replaceEnvironmentVariables(
+            h.substring(splitIndex + 1).trimStart()
+          );
+          return m;
+        }, {} as Record<string, string>),
+      },
+      protocol: site.check === "ssl" ? HttpProtocol.HTTPS : protocol,
+    },
+  };
+  if (site.port) {
+    (opts.measurementOptions as MeasurementHttpOptions).port = Number(
+      replaceEnvironmentVariables(site.port ? String(site.port) : "")
+    );
+  }
+  if (site.ipv6 === true) {
+    (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[6];
+  } else if (site.ipv6 === false) {
+    (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[4];
+  }
+
+  const res = await client.createMeasurement(opts);
+
+  if (!res.ok) {
+    console.log("ERROR: failed to create measurement:", res.data);
+    return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+  }
+
+  console.log("Fetching globalping measurement", res.data.id);
+  const measurement = await client.awaitMeasurement(res.data.id);
+
+  if (!measurement.ok) {
+    console.log("ERROR: failed to get measurement:", measurement.data);
+    return {
+      result: { httpCode: measurement.response.status },
+      responseTime: "0",
+      status: "down",
+    };
+  }
+
+  const result = measurement.data.results[0].result as FinishedHttpTestResult;
+  if (site.check === "ssl") {
+    return {
+      result: { httpCode: 200 },
+      responseTime: "0",
+      status: getStatusFromCertificateExpiresAt(result.tls?.expiresAt),
+    };
+  }
+  const responseTime = result.timings.total || 0;
+  const status = getStatusFromHttpResult(
+    site,
+    result.statusCode,
+    result.rawBody || "",
+    responseTime
+  );
+  return {
+    result: {
+      httpCode: result.statusCode,
+    },
+    responseTime: responseTime.toFixed(0),
+    status,
+  };
+};
 
 export const update = async (shouldCommit = false) => {
   if (!(await shouldContinue())) return;
@@ -224,126 +389,7 @@ export const update = async (shouldCommit = false) => {
           auth: getSecret("GLOBALPING_TOKEN"),
           userAgent: "github.com/upptime/uptime-monitor",
         });
-
-        let u = replaceEnvironmentVariables(site.url);
-        let url: URL;
-        try {
-          if (!u.startsWith("http://") && !u.startsWith("https://")) {
-            u = `https://${u}`;
-          }
-          url = new URL(u);
-        } catch (error) {
-          throw new Error(`invalid URL: ${site.url}`);
-        }
-
-        if (site.check === "ws") {
-          throw new Error(`ws is not supported with globalping: ${site.url}`);
-        } else if (site.check === "tcp-ping") {
-          const res = await client.createMeasurement({
-            type: "ping",
-            target: url.hostname,
-            inProgressUpdates: false,
-            limit: 1,
-            locations: [{ magic: site.location || "world" }],
-            measurementOptions: {
-              ipVersion: site.ipv6 ? IpVersion[6] : IpVersion[4],
-            },
-          });
-          if (res.ok) {
-            console.log("Fetching globalping measurement", res.data.id);
-            const measurement = await client.awaitMeasurement(res.data.id);
-            if (measurement.ok) {
-              const result = measurement.data.results[0].result as FinishedPingTestResult;
-              const responseTime = result.stats.avg || 0;
-              let status: "up" | "down" | "degraded" = "up";
-              if (responseTime > (site.maxResponseTime || 60000)) {
-                status = "degraded";
-              }
-              return {
-                result: {
-                  httpCode: 200,
-                },
-                responseTime: responseTime.toFixed(0),
-                status,
-              };
-            } else {
-              console.log("ERROR: failed to get measurement:", res.data);
-              return {
-                result: { httpCode: res.response.status },
-                responseTime: "0",
-                status: "down",
-              };
-            }
-          } else {
-            console.log("ERROR: failed to create measurement:", res.data);
-            return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
-          }
-        } else {
-          const protocol = url.protocol === "http:" ? HttpProtocol.HTTP : HttpProtocol.HTTPS;
-          const res = await client.createMeasurement({
-            type: "http",
-            target: url.hostname,
-            inProgressUpdates: false,
-            limit: 1,
-            locations: [{ magic: site.location || "world" }],
-            measurementOptions: {
-              request: {
-                host: url.hostname,
-                path: url.pathname,
-                query: url.search ? url.search.slice(1) : undefined,
-                method: (site.method as HttpRequestMethod) || HttpRequestMethod.GET,
-                headers: site.headers?.reduce((m, h) => {
-                  const splitIndex = h.indexOf(":");
-                  m[h.substring(0, splitIndex)] = replaceEnvironmentVariables(
-                    h.substring(splitIndex + 1).trimStart()
-                  );
-                  return m;
-                }, {} as Record<string, string>),
-              },
-              port: site.port || parseInt(url.port) || undefined,
-              protocol: site.check === "ssl" ? HttpProtocol.HTTPS : protocol,
-              ipVersion: site.ipv6 ? IpVersion[6] : IpVersion[4],
-            },
-          });
-          if (res.ok) {
-            console.log("Fetching globalping measurement", res.data.id);
-            const measurement = await client.awaitMeasurement(res.data.id);
-            if (measurement.ok) {
-              const result = measurement.data.results[0].result as FinishedHttpTestResult;
-              if (site.check === "ssl") {
-                return {
-                  result: { httpCode: 200 },
-                  responseTime: "0",
-                  status: getStatusFromCertificateExpiresAt(result.tls?.expiresAt),
-                };
-              }
-              const responseTime = result.timings.total || 0;
-              const status = getStatusFromHttpResult(
-                site,
-                result.statusCode,
-                result.rawBody || "",
-                responseTime
-              );
-              return {
-                result: {
-                  httpCode: result.statusCode,
-                },
-                responseTime: responseTime.toFixed(0),
-                status,
-              };
-            } else {
-              console.log("ERROR: failed to get measurement:", res.data);
-              return {
-                result: { httpCode: res.response.status },
-                responseTime: "0",
-                status: "down",
-              };
-            }
-          } else {
-            console.log("ERROR: failed to create measurement:", res.data);
-            return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
-          }
-        }
+        return await performGlobalpingTest(site, client);
       }
 
       // local
