@@ -6,9 +6,13 @@ import {
   FinishedHttpTestResult,
   FinishedPingTestResult,
   Globalping,
+  HttpMeasurementRequest,
   HttpProtocol,
   HttpRequestMethod,
   IpVersion,
+  MeasurementHttpOptions,
+  MeasurementPingOptions,
+  PingMeasurementRequest,
 } from "globalping";
 import { load } from "js-yaml";
 import { isIP, isIPv6 } from "net";
@@ -118,6 +122,8 @@ export const performGlobalpingTest = async (
   responseTime: string;
   status: "up" | "down" | "degraded";
 }> => {
+  const location = site.location ? replaceEnvironmentVariables(site.location) : "world";
+
   let u = replaceEnvironmentVariables(site.url);
   let parsedURL: URL;
   try {
@@ -133,17 +139,29 @@ export const performGlobalpingTest = async (
     throw new Error(`ws is not supported with globalping: ${site.url}`);
   }
 
-  if (site.check === "tcp-ping") {
-    const res = await client.createMeasurement({
+  if (site.check === "icmp-ping" || site.check === "tcp-ping") {
+    const opts: PingMeasurementRequest = {
       type: "ping",
       target: parsedURL.hostname,
       inProgressUpdates: false,
       limit: 1,
-      locations: [{ magic: site.location || "world" }],
+      locations: [{ magic: location }],
       measurementOptions: {
-        ipVersion: site.ipv6 ? IpVersion[6] : IpVersion[4],
+        protocol: site.check === "icmp-ping" ? "ICMP" : "TCP",
       },
-    });
+    };
+    if (site.check === "tcp-ping" && site.port) {
+      (opts.measurementOptions as MeasurementPingOptions).port = Number(
+        replaceEnvironmentVariables(site.port ? String(site.port) : "")
+      );
+    }
+    if (site.ipv6 === true) {
+      (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[6];
+    } else if (site.ipv6 === false) {
+      (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[4];
+    }
+
+    const res = await client.createMeasurement(opts);
 
     if (!res.ok) {
       console.log("ERROR: failed to get measurement:", res.data);
@@ -178,12 +196,12 @@ export const performGlobalpingTest = async (
   }
 
   const protocol = parsedURL.protocol === "http:" ? HttpProtocol.HTTP : HttpProtocol.HTTPS;
-  const res = await client.createMeasurement({
+  const opts: HttpMeasurementRequest = {
     type: "http",
     target: parsedURL.hostname,
     inProgressUpdates: false,
     limit: 1,
-    locations: [{ magic: site.location || "world" }],
+    locations: [{ magic: location }],
     measurementOptions: {
       request: {
         host: parsedURL.hostname,
@@ -198,11 +216,21 @@ export const performGlobalpingTest = async (
           return m;
         }, {} as Record<string, string>),
       },
-      port: site.port || parseInt(parsedURL.port) || undefined,
       protocol: site.check === "ssl" ? HttpProtocol.HTTPS : protocol,
-      ipVersion: site.ipv6 ? IpVersion[6] : IpVersion[4],
     },
-  });
+  };
+  if (site.port) {
+    (opts.measurementOptions as MeasurementHttpOptions).port = Number(
+      replaceEnvironmentVariables(site.port ? String(site.port) : "")
+    );
+  }
+  if (site.ipv6 === true) {
+    (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[6];
+  } else if (site.ipv6 === false) {
+    (opts.measurementOptions as MeasurementHttpOptions).ipVersion = IpVersion[4];
+  }
+
+  const res = await client.createMeasurement(opts);
 
   if (!res.ok) {
     console.log("ERROR: failed to create measurement:", res.data);
@@ -213,9 +241,9 @@ export const performGlobalpingTest = async (
   const measurement = await client.awaitMeasurement(res.data.id);
 
   if (!measurement.ok) {
-    console.log("ERROR: failed to get measurement:", res.data);
+    console.log("ERROR: failed to get measurement:", measurement.data);
     return {
-      result: { httpCode: res.response.status },
+      result: { httpCode: measurement.response.status },
       responseTime: "0",
       status: "down",
     };
