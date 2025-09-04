@@ -35,6 +35,7 @@ export interface UpptimeConfig {
   PAT?: string;
   "status-website"?: {
     cname?: string;
+    baseUrl?: string;
     logoUrl?: string;
     name?: string;
     introTitle?: string;
