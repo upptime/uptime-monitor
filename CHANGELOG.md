@@ -1,3 +1,17 @@
+## v1.41.0 (2025-09-04)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.40.1...v1.41.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.0.tar.gz))
+
+### ✨ New features
+
+- [`5523b41`](https://github.com/upptime/uptime-monitor/commit/5523b41)  Add globalping support (#262)
+(Issues: [`#262`](https://github.com/upptime/uptime-monitor/issues/262))
+
+### 🐛 Bug fixes
+
+- [`a5d7ec8`](https://github.com/upptime/uptime-monitor/commit/a5d7ec8)  Implemented better error handling/debug output for tcp-ping false positives (closes &lt;https://github.com/upptime/upptime/issues/1083&gt;) (#266)
+(Issues: [`#266`](https://github.com/upptime/uptime-monitor/issues/266))- [`68ecdea`](https://github.com/upptime/uptime-monitor/commit/68ecdea)  Refactor error handling in update function for improved clarity
+
 ## v1.40.1 (2025-04-09)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.40.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.40.0...v1.40.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.40.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.40.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.40.1.tar.gz))
