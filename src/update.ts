@@ -101,7 +101,7 @@ function getStatusFromCertificateExpiresAt(expiresAt: string | undefined) {
   if (
     !isNaN(expires.getTime()) &&
     expires.toString() !== "Invalid Date" &&
-    expires.getTime() + 604800000 >= Date.now()
+    expires.getTime() >= Date.now() + 604800000 
   ) {
     return "up";
   }

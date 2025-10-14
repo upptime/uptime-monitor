@@ -12,7 +12,7 @@ export const generateGraphs = async () => {
   await mkdirp("graphs");
   await mkdirp("api");
   const config = load(await readFile(join(".", ".upptimerc.yml"), "utf8")) as UpptimeConfig;
-  exec("npx @upptime/graphs");
+  exec("node ../../graphs/dist/cli.js");
   exec("npx imagemin-cli graphs/* --out-dir=graphs");
   try {
     await remove(join(".", "graphs", "response-time.png"));
@@ -29,3 +29,5 @@ export const generateGraphs = async () => {
   );
   push();
 };
+
+generateGraphs();
