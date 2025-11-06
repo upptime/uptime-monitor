@@ -22,8 +22,10 @@ export const curl = (
     curl.setOpt("FOLLOWLOCATION", maxRedirects ? 1 : 0);
     curl.setOpt("MAXREDIRS", maxRedirects);
     curl.setOpt("USERAGENT", "upptime.js.org");
-    curl.setOpt("CONNECTTIMEOUT", 10);
-    curl.setOpt("TIMEOUT", 30);
+    // Increased CONNECTTIMEOUT to 20 seconds for more forgiving TLS negotiation
+    curl.setOpt("CONNECTTIMEOUT", 20);
+    // Increased TIMEOUT to 45 seconds to accommodate longer connection times
+    curl.setOpt("TIMEOUT", 45);
     curl.setOpt("HEADER", 1);
 
     if (site.verbose) {

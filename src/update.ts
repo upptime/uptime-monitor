@@ -488,28 +488,73 @@ export const update = async (shouldCommit = false) => {
       }
     };
 
-    let { result, responseTime, status } = await performTestOnce();
     /**
-     * If the site is down, we perform the test 2 more times to make
-     * sure that it's not a false alarm
+     * Perform multiple checks (5 total) to reduce false positives.
+     * Use majority voting to determine the final status instead of
+     * marking as down from the first try.
      */
-    if (status === "down" || status === "degraded") {
-      wait(1000);
-      const secondTry = await performTestOnce();
-      if (secondTry.status === "up") {
-        result = secondTry.result;
-        responseTime = secondTry.responseTime;
-        status = secondTry.status;
-      } else {
-        wait(10000);
-        const thirdTry = await performTestOnce();
-        if (thirdTry.status === "up") {
-          result = thirdTry.result;
-          responseTime = thirdTry.responseTime;
-          status = thirdTry.status;
-        }
+    const NUM_CHECKS = 5;
+    const checkResults: Array<{
+      result: { httpCode: number };
+      responseTime: string;
+      status: "up" | "down" | "degraded";
+    }> = [];
+
+    // Perform all checks with delays between them
+    for (let i = 0; i < NUM_CHECKS; i++) {
+      const checkResult = await performTestOnce();
+      checkResults.push(checkResult);
+      
+      // Wait between checks (except after the last one)
+      if (i < NUM_CHECKS - 1) {
+        // Use shorter delays for early checks, longer for later checks
+        const delayMs = i === 0 ? 1000 : i === 1 ? 2000 : 3000;
+        await wait(delayMs);
       }
     }
+
+    // Count status occurrences
+    const statusCounts = {
+      up: 0,
+      down: 0,
+      degraded: 0,
+    };
+    checkResults.forEach((check) => {
+      statusCounts[check.status]++;
+    });
+
+    // Determine final status using majority voting
+    // Priority: up > degraded > down (if tied, prefer better status)
+    let finalStatus: "up" | "down" | "degraded";
+    if (statusCounts.up >= statusCounts.down && statusCounts.up >= statusCounts.degraded) {
+      finalStatus = "up";
+    } else if (statusCounts.degraded >= statusCounts.down) {
+      finalStatus = "degraded";
+    } else {
+      finalStatus = "down";
+    }
+
+    // Use the result from the check that matches the final status
+    // Prefer "up" results if available, otherwise use the first matching result
+    let result = checkResults[0].result;
+    let responseTime = checkResults[0].responseTime;
+    let status = finalStatus;
+
+    // Find the best matching result (prefer up, then degraded, then down)
+    const preferredOrder: Array<"up" | "degraded" | "down"> = ["up", "degraded", "down"];
+    for (const preferredStatus of preferredOrder) {
+      const matchingCheck = checkResults.find((check) => check.status === preferredStatus);
+      if (matchingCheck) {
+        result = matchingCheck.result;
+        responseTime = matchingCheck.responseTime;
+        break;
+      }
+    }
+
+    // Log the check results for debugging
+    console.log(
+      `Check results: ${statusCounts.up} up, ${statusCounts.degraded} degraded, ${statusCounts.down} down. Final status: ${status}`
+    );
 
     try {
       if (shouldCommit || currentStatus !== status) {
