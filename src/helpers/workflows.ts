@@ -86,11 +86,11 @@ const getSecretsContext = (config: UpptimeConfig): string => {
   let secretsContext = "${{ toJson(secrets) }}";
   if (config.secrets !== undefined) {
     const context: Record<string, string> = {};
-    for (const secret in config.secrets) {
+    for (const secret of config.secrets) {
       context[secret] = `\${{ secrets.${secret} }}`;
     }
 
-    secretsContext = JSON.stringify(context);
+    secretsContext = `'${JSON.stringify(context)}'`;
   }
 
   return secretsContext;
