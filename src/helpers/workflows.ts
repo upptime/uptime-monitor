@@ -1,3 +1,4 @@
+import { UpptimeConfig } from "../interfaces";
 import { getConfig } from "./config";
 import {
   DEFAULT_RUNNER,
@@ -81,6 +82,20 @@ const getHasIpV6Site = async (): Promise<boolean> => {
   return hasIpV6;
 };
 
+const getSecretsContext = (config: UpptimeConfig): string => {
+  let secretsContext = "${{ toJson(secrets) }}";
+  if (config.secrets !== undefined) {
+    const context: Record<string, string> = {};
+    for (const secret in config.secrets) {
+      context[secret] = `\${{ secrets.${secret} }}`;
+    }
+
+    secretsContext = JSON.stringify(context);
+  }
+
+  return secretsContext;
+}
+
 export const responseTimeCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
@@ -110,7 +125,7 @@ jobs:
           command: "response-time"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: \${{ toJson(secrets) }}
+          SECRETS_CONTEXT: ${getSecretsContext(config)}
 `;
 };
 
@@ -151,7 +166,7 @@ jobs:
           command: "response-time"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: \${{ toJson(secrets) }}
+          SECRETS_CONTEXT: ${getSecretsContext(config)}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
@@ -350,6 +365,6 @@ jobs:
           command: "update"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: \${{ toJson(secrets) }}
+          SECRETS_CONTEXT: ${getSecretsContext(config)}
 `;
 };
