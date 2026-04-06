@@ -349,73 +349,82 @@ export const update = async (shouldCommit = false) => {
       // local
       if (site.check === "tcp-ping") {
         console.log("Using tcp-ping instead of curl");
-        try {
-          let status: "up" | "down" | "degraded" = "up";
-          // https://github.com/upptime/upptime/discussions/888
-          const url = replaceEnvironmentVariables(site.url);
-          let address = url;
-          if (isIP(url)) {
-            if (site.ipv6 && !isIPv6(url)) throw new Error("Site URL must be IPv6 for ipv6 check");
-          } else {
-            if (site.ipv6) address = (await dns.promises.resolve6(url))[0];
-            else address = (await dns.promises.resolve4(url))[0];
+        const maxRetries = site.maxRetries ?? 3;
+        let lastError: unknown = null;
 
-            if (!isIP(address)) throw new Error("Site IP address could not be resolved");
-          }
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+          try {
+            let status: "up" | "down" | "degraded" = "up";
+            // https://github.com/upptime/upptime/discussions/888
+            const url = replaceEnvironmentVariables(site.url);
+            let address = url;
+            if (isIP(url)) {
+              if (site.ipv6 && !isIPv6(url)) throw new Error("Site URL must be IPv6 for ipv6 check");
+            } else {
+              if (site.ipv6) address = (await dns.promises.resolve6(url))[0];
+              else address = (await dns.promises.resolve4(url))[0];
 
-          const tcpResult = await ping({
-            address,
-            attempts: 5,
-            port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
-          });
-
-          //
-          // NOTE: this was implemented in order to provide more insight into potential false positives
-          // <https://github.com/upptime/upptime/issues/1083>
-          //
-          if (
-            tcpResult.results.every(
-              (result) => Object.prototype.toString.call((result as any).err) === "[object Error]"
-            )
-          ) {
-            // Assume data.results is an array of objects, each with an 'err' property that may be an Error or null/undefined.
-            // First, filter out the actual errors from data.results
-            const errors = tcpResult.results
-              .map((item) => item.err) // Extract err from each result
-              .filter((err) => Boolean(err)); // Only keep actual Error instances
-
-            // If there are no errors, you might want to handle that case separately
-            if (errors.length === 0) {
-              throw Error("all attempts failed");
+              if (!isIP(address)) throw new Error("Site IP address could not be resolved");
             }
 
-            // Create a combined message by joining individual error messages
-            const combinedMessage = errors
-              .map((err) => err?.message) // Get message from each error
-              .join("; "); // Join with semicolons, or use '\n' for newlines if preferred
+            const tcpResult = await ping({
+              address,
+              attempts: 5,
+              port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
+            });
 
-            // Create the AggregateError with the array of errors and the combined message
-            const aggregateError = new AggregateError(errors, combinedMessage);
+            //
+            // NOTE: this was implemented in order to provide more insight into potential false positives
+            // <https://github.com/upptime/upptime/issues/1083>
+            //
+            const successfulResults = tcpResult.results.filter(
+              (result) => Object.prototype.toString.call((result as any).err) !== "[object Error]"
+            );
 
-            // Optionally, log or inspect the aggregateError
-            console.error(aggregateError);
-            // Access individual errors via aggregateError.errors
-            // Each error's stack trace is preserved in aggregateError.errors[i].stack
-            throw aggregateError;
+            if (successfulResults.length === 0) {
+              // All 5 ping attempts failed — collect errors for diagnostics
+              const errors = tcpResult.results
+                .map((item) => item.err)
+                .filter((err) => Boolean(err));
+
+              if (errors.length === 0) {
+                throw Error("all attempts failed with no error details");
+              }
+
+              const combinedMessage = errors
+                .map((err) => err?.message)
+                .join("; ");
+
+              const aggregateError = new AggregateError(errors, combinedMessage);
+              console.error(`tcp-ping attempt ${attempt}/${maxRetries}: all pings failed:`, combinedMessage);
+              throw aggregateError;
+            }
+
+            // At least some pings succeeded
+            if (attempt > 1) {
+              console.log(`tcp-ping succeeded on attempt ${attempt}`);
+            }
+            console.log("Got result", tcpResult);
+            let responseTime = (tcpResult.avg || 0).toFixed(0);
+            if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
+            return {
+              result: { httpCode: 200 },
+              responseTime,
+              status,
+            };
+          } catch (error) {
+            lastError = error;
+            if (attempt < maxRetries) {
+              const delayMs = 1000 * Math.pow(2, attempt - 1);
+              console.log(`tcp-ping attempt ${attempt}/${maxRetries} failed, retrying in ${delayMs}ms...`);
+              await wait(delayMs);
+            }
           }
-
-          console.log("Got result", tcpResult);
-          let responseTime = (tcpResult.avg || 0).toFixed(0);
-          if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
-          return {
-            result: { httpCode: 200 },
-            responseTime,
-            status,
-          };
-        } catch (error) {
-          console.log("ERROR Got pinging error", error);
-          return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
         }
+
+        // All retries exhausted
+        console.log("ERROR tcp-ping all attempts failed", lastError);
+        return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
       } else if (site.check === "ws") {
         console.log("Using websocket check instead of curl");
         let success = false;
@@ -490,20 +499,35 @@ export const update = async (shouldCommit = false) => {
 
     let { result, responseTime, status } = await performTestOnce();
     /**
-     * If the site is down, we perform the test 2 more times to make
-     * sure that it's not a false alarm
+     * If the site is down or degraded, we perform the test 2 more times
+     * to make sure that it's not a false alarm. Each retry waits
+     * progressively longer to allow transient issues to resolve.
+     *
+     * Bug fix: previously `wait()` was called without `await`, so the
+     * delays were never actually applied and retries fired immediately.
+     * See: https://github.com/upptime/upptime/issues/171
      */
     if (status === "down" || status === "degraded") {
-      wait(1000);
+      console.log(`Site ${site.name} appears ${status} (HTTP ${result.httpCode}), retrying after 2s...`);
+      await wait(2000);
       const secondTry = await performTestOnce();
       if (secondTry.status === "up") {
+        console.log(`Site ${site.name} recovered on second attempt`);
         result = secondTry.result;
         responseTime = secondTry.responseTime;
         status = secondTry.status;
       } else {
-        wait(10000);
+        console.log(`Site ${site.name} still ${secondTry.status} on second attempt (HTTP ${secondTry.result.httpCode}), retrying after 10s...`);
+        await wait(10000);
         const thirdTry = await performTestOnce();
         if (thirdTry.status === "up") {
+          console.log(`Site ${site.name} recovered on third attempt`);
+          result = thirdTry.result;
+          responseTime = thirdTry.responseTime;
+          status = thirdTry.status;
+        } else {
+          console.log(`Site ${site.name} confirmed ${thirdTry.status} after 3 attempts (HTTP ${thirdTry.result.httpCode})`);
+          // Use the last attempt's result as it's the most recent
           result = thirdTry.result;
           responseTime = thirdTry.responseTime;
           status = thirdTry.status;
