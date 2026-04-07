@@ -18,6 +18,9 @@ export interface UpptimeConfig {
         icon?: string;
         maxResponseTime?: number;
         maxRedirects?: number;
+        maxRetries?: number;
+        connectTimeout?: number;
+        requestTimeout?: number;
         verbose?: boolean;
         ipv6?: boolean;
         location?: string;
