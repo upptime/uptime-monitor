@@ -4,7 +4,7 @@ export interface UpptimeConfig {
   "user-agent"?: string;
   sites: {
     type?: "local" | "globalping";
-    check?: "http" | "tcp-ping" | "ws" | "ssl";
+    check?: "http" | "icmp-ping" | "tcp-ping" | "ws" | "ssl";
     method?: string;
     name: string;
     url: string;
