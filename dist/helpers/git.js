@@ -1,22 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lastCommit = exports.push = exports.commit = void 0;
-const shelljs_1 = require("shelljs");
+const child_process_1 = require("child_process");
+const runGit = (args, throwOnError = false) => {
+    const result = (0, child_process_1.spawnSync)("git", args, { encoding: "utf8" });
+    const stdout = result.stdout || "";
+    const stderr = result.stderr || "";
+    const output = `${stdout}${stderr}`;
+    if (throwOnError && result.status !== 0) {
+        throw new Error(output || `git ${args.join(" ")} failed with exit code ${result.status}`);
+    }
+    return output;
+};
 const commit = (message, name = "Upptime Bot", email = "73812536+upptime-bot@users.noreply.github.com") => {
-    (0, shelljs_1.exec)(`git config --global user.email "${email}"`);
-    (0, shelljs_1.exec)(`git config --global user.name "${name}"`);
-    (0, shelljs_1.exec)(`git add .`);
-    (0, shelljs_1.exec)(`git commit -m "${message.replace(/\"/g, "''")}"`);
+    runGit(["config", "--global", "user.email", email]);
+    runGit(["config", "--global", "user.name", name]);
+    runGit(["add", "."]);
+    runGit(["commit", "-m", message]);
 };
 exports.commit = commit;
 const push = () => {
-    const result = (0, shelljs_1.exec)("git push");
-    if (result.includes("error:"))
-        throw new Error(result);
+    runGit(["push"], true);
 };
 exports.push = push;
 const lastCommit = () => {
-    return (0, shelljs_1.exec)(`git log --format="%H" -n 1`).stdout;
+    return runGit(["log", "--format=%H", "-n", "1"]);
 };
 exports.lastCommit = lastCommit;
 //# sourceMappingURL=git.js.map
