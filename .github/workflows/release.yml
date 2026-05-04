@@ -22,16 +22,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
           cache: 'npm'
 
-      - name: Upgrade npm
-        run: npm install -g npm@latest && npm --version
-
       - name: Install Dependencies
-        run: npm ci
+        run: npx npm@latest ci
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-        run: npx semantic-release
+        run: npx npm@latest exec -- semantic-release
