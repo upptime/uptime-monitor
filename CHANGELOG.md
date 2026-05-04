@@ -1,3 +1,13 @@
+## v1.41.1 (2026-05-04)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.0...v1.41.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`732fdce`](https://github.com/upptime/uptime-monitor/commit/732fdce)  Fixed SSL expiration bug (#269)
+(Issues: [`#269`](https://github.com/upptime/uptime-monitor/issues/269))- [`35da82a`](https://github.com/upptime/uptime-monitor/commit/35da82a)  Retry on HTTP 0, fix missing await in retry delays, improve curl defaults (#277)
+(Issues: [`#277`](https://github.com/upptime/uptime-monitor/issues/277) [`#171`](https://github.com/upptime/uptime-monitor/issues/171) [`#495`](https://github.com/upptime/uptime-monitor/issues/495) [`#1083`](https://github.com/upptime/uptime-monitor/issues/1083))
+
 ## v1.41.0 (2025-09-04)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.40.1...v1.41.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.0.tar.gz))
