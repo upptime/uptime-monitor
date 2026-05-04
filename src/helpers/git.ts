@@ -1,21 +1,33 @@
-import { exec } from "shelljs";
+import { spawnSync } from "child_process";
+
+const runGit = (args: string[], throwOnError = false) => {
+  const result = spawnSync("git", args, { encoding: "utf8" });
+  const stdout = result.stdout || "";
+  const stderr = result.stderr || "";
+  const output = `${stdout}${stderr}`;
+
+  if (throwOnError && result.status !== 0) {
+    throw new Error(output || `git ${args.join(" ")} failed with exit code ${result.status}`);
+  }
+
+  return output;
+};
 
 export const commit = (
   message: string,
   name = "Upptime Bot",
   email = "73812536+upptime-bot@users.noreply.github.com"
 ) => {
-  exec(`git config --global user.email "${email}"`);
-  exec(`git config --global user.name "${name}"`);
-  exec(`git add .`);
-  exec(`git commit -m "${message.replace(/\"/g, "''")}"`);
+  runGit(["config", "--global", "user.email", email]);
+  runGit(["config", "--global", "user.name", name]);
+  runGit(["add", "."]);
+  runGit(["commit", "-m", message]);
 };
 
 export const push = () => {
-  const result = exec("git push");
-  if (result.includes("error:")) throw new Error(result);
+  runGit(["push"], true);
 };
 
 export const lastCommit = () => {
-  return exec(`git log --format="%H" -n 1`).stdout;
+  return runGit(["log", "--format=%H", "-n", "1"]);
 };
