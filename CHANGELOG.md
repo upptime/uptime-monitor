@@ -1,3 +1,11 @@
+## v1.41.2 (2026-05-05)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.1...v1.41.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.2.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`c2290f8`](https://github.com/upptime/uptime-monitor/commit/c2290f8)  Release Node 24 action runtime fix
+
 ## v1.41.1 (2026-05-04)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.0...v1.41.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.1.tar.gz))
