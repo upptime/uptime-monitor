@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checker = void 0;
+exports.checker = checker;
 // Source: https://github.com/rheh/ssl-date-checker/blob/master/src/Checker.js
 const https_1 = __importDefault(require("https"));
 function checkHost(newHost) {
@@ -53,5 +53,4 @@ async function checker(host, port) {
         req.end();
     });
 }
-exports.checker = checker;
 //# sourceMappingURL=ssl-date-checker.js.map
