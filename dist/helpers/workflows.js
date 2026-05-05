@@ -9,12 +9,17 @@ const getUptimeMonitorVersion = async () => {
     if (release)
         return release;
     const octokit = await (0, github_1.getOctokit)();
-    const releases = await octokit.repos.listReleases({
-        owner: "upptime",
-        repo: "uptime-monitor",
-        per_page: 1,
-    });
-    release = releases.data[0].tag_name;
+    try {
+        const releases = await octokit.repos.listReleases({
+            owner: "upptime",
+            repo: "uptime-monitor",
+            per_page: 1,
+        });
+        release = releases.data[0]?.tag_name ?? "v1.41.0";
+    }
+    catch {
+        release = "v1.41.0";
+    }
     return release;
 };
 exports.getUptimeMonitorVersion = getUptimeMonitorVersion;
