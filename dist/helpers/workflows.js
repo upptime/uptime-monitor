@@ -14,7 +14,21 @@ const getUptimeMonitorVersion = async () => {
         repo: "uptime-monitor",
         per_page: 1,
     });
-    release = releases.data[0].tag_name;
+    const latestRelease = releases.data[0]?.tag_name;
+    if (latestRelease) {
+        release = latestRelease;
+        return release;
+    }
+    const tags = await octokit.repos.listTags({
+        owner: "upptime",
+        repo: "uptime-monitor",
+        per_page: 1,
+    });
+    const latestTag = tags.data[0]?.name;
+    if (!latestTag) {
+        throw new Error("Unable to find a release or tag for upptime/uptime-monitor");
+    }
+    release = latestTag;
     return release;
 };
 exports.getUptimeMonitorVersion = getUptimeMonitorVersion;
