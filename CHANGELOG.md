@@ -1,3 +1,12 @@
+## v1.41.4 (2026-05-20)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.3...v1.41.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.4.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`dbd7240`](https://github.com/upptime/uptime-monitor/commit/dbd7240)  Fall back to tags when release lookup fails (#285)
+(Issues: [`#285`](https://github.com/upptime/uptime-monitor/issues/285))
+
 ## v1.41.3 (2026-05-07)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.2...v1.41.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.3.tar.gz))
