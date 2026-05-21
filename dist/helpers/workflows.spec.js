@@ -2,11 +2,15 @@
 jest.mock("./github", () => ({
     getOctokit: jest.fn(),
 }));
+jest.mock("./config", () => ({
+    getConfig: jest.fn(),
+}));
 const loadWorkflowHelpers = () => {
     jest.resetModules();
     const { getOctokit } = require("./github");
-    const { getUptimeMonitorVersion } = require("./workflows");
-    return { getOctokit, getUptimeMonitorVersion };
+    const { getConfig } = require("./config");
+    const workflows = require("./workflows");
+    return { getConfig, getOctokit, ...workflows };
 };
 describe("workflow helpers", () => {
     it("falls back to tags when uptime-monitor has no GitHub releases", async () => {
@@ -41,6 +45,35 @@ describe("workflow helpers", () => {
             repo: "uptime-monitor",
             per_page: 1,
         });
+    });
+    it("generates workflows with the Node 24-compatible checkout action", async () => {
+        const { getConfig, getOctokit, graphsCiWorkflow, responseTimeCiWorkflow, setupCiWorkflow, siteCiWorkflow, summaryCiWorkflow, updateTemplateCiWorkflow, updatesCiWorkflow, uptimeCiWorkflow, } = loadWorkflowHelpers();
+        const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.4" }] });
+        const listTags = jest.fn();
+        getConfig.mockResolvedValue({
+            sites: [{ name: "Example", url: "https://example.com" }],
+            workflowSchedule: {},
+            commitMessages: {},
+            "status-website": {},
+        });
+        getOctokit.mockResolvedValue({
+            repos: { listReleases, listTags },
+        });
+        const workflows = await Promise.all([
+            graphsCiWorkflow(),
+            responseTimeCiWorkflow(),
+            setupCiWorkflow(),
+            siteCiWorkflow(),
+            summaryCiWorkflow(),
+            updateTemplateCiWorkflow(),
+            updatesCiWorkflow(),
+            uptimeCiWorkflow(),
+        ]);
+        for (const workflow of workflows) {
+            expect(workflow).toContain("uses: actions/checkout@v5");
+            expect(workflow).not.toContain("actions/checkout@v4");
+        }
+        expect(listTags).not.toHaveBeenCalled();
     });
 });
 //# sourceMappingURL=workflows.spec.js.map
