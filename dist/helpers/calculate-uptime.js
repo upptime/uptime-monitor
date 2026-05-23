@@ -11,6 +11,21 @@ const path_1 = require("path");
 const github_1 = require("./github");
 const overlap_1 = require("./overlap");
 const secrets_1 = require("./secrets");
+const mergeOverlappingDowntimeRanges = (ranges) => {
+    const sortedRanges = ranges
+        .filter(({ start, end }) => end > start)
+        .sort((a, b) => a.start - b.start);
+    return sortedRanges.reduce((merged, range) => {
+        const previousRange = merged[merged.length - 1];
+        if (!previousRange || range.start > previousRange.end) {
+            merged.push({ ...range });
+        }
+        else {
+            previousRange.end = Math.max(previousRange.end, range.end);
+        }
+        return merged;
+    }, []);
+};
 /**
  * Get the number of seconds a website has been down
  * @param slug - Slug of the site
@@ -33,19 +48,19 @@ const getDowntimeSecondsForSite = async (slug) => {
         state: "all",
         per_page: 100,
     });
-    // If this issue has been closed already, calculate the difference
-    // between when it was closed and when it was opened
-    // If this issue is still open, calculate the time since it was opened
-    data.forEach((issue) => {
-        const issueDowntime = new Date(issue.closed_at || new Date()).getTime() - new Date(issue.created_at).getTime();
+    const now = new Date();
+    const downtimeRanges = mergeOverlappingDowntimeRanges(data.map((issue) => ({
+        start: new Date(issue.created_at).getTime(),
+        end: new Date(issue.closed_at || now).getTime(),
+    })));
+    // If an incident overlaps another one for the same site, count that
+    // downtime only once. Multiple open issues can describe the same outage.
+    downtimeRanges.forEach((downtimeRange) => {
+        const issueDowntime = downtimeRange.end - downtimeRange.start;
         all += issueDowntime;
-        const issueOverlap = {
-            start: new Date(issue.created_at).getTime(),
-            end: new Date(issue.closed_at || new Date()).getTime(),
-        };
-        [...Array(365).keys()].forEach((day) => {
-            const date = (0, dayjs_1.default)().subtract(day, "day");
-            const overlap = (0, overlap_1.checkOverlap)(issueOverlap, {
+        [...Array(365).keys()].forEach((daysAgo) => {
+            const date = (0, dayjs_1.default)().subtract(daysAgo, "day");
+            const overlap = (0, overlap_1.checkOverlap)(downtimeRange, {
                 start: date.startOf("day").toDate().getTime(),
                 end: date.endOf("day").toDate().getTime(),
             });
@@ -56,19 +71,19 @@ const getDowntimeSecondsForSite = async (slug) => {
             }
         });
         const end = (0, dayjs_1.default)().toDate().getTime();
-        day += (0, overlap_1.checkOverlap)(issueOverlap, {
+        day += (0, overlap_1.checkOverlap)(downtimeRange, {
             start: (0, dayjs_1.default)().subtract(1, "day").toDate().getTime(),
             end,
         });
-        week += (0, overlap_1.checkOverlap)(issueOverlap, {
+        week += (0, overlap_1.checkOverlap)(downtimeRange, {
             start: (0, dayjs_1.default)().subtract(1, "week").toDate().getTime(),
             end,
         });
-        month += (0, overlap_1.checkOverlap)(issueOverlap, {
+        month += (0, overlap_1.checkOverlap)(downtimeRange, {
             start: (0, dayjs_1.default)().subtract(1, "month").toDate().getTime(),
             end,
         });
-        year += (0, overlap_1.checkOverlap)(issueOverlap, {
+        year += (0, overlap_1.checkOverlap)(downtimeRange, {
             start: (0, dayjs_1.default)().subtract(1, "year").toDate().getTime(),
             end,
         });
