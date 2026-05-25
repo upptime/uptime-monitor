@@ -1,0 +1,130 @@
+import { mkdtempSync, rmSync } from "fs";
+import { tmpdir } from "os";
+import { join } from "path";
+
+const mockCreateMeasurement = jest.fn();
+const mockAwaitMeasurement = jest.fn();
+
+jest.mock("globalping", () => ({
+  Globalping: jest.fn().mockImplementation(() => ({
+    createMeasurement: mockCreateMeasurement,
+    awaitMeasurement: mockAwaitMeasurement,
+  })),
+  HttpProtocol: { HTTP: "http", HTTPS: "https" },
+  HttpRequestMethod: { GET: "GET" },
+  IpVersion: { 4: 4, 6: 6 },
+}));
+
+jest.mock("./helpers/config", () => ({
+  getConfig: jest.fn(),
+}));
+
+jest.mock("./helpers/github", () => ({
+  getOctokit: jest.fn(),
+}));
+
+jest.mock("./helpers/init-check", () => ({
+  shouldContinue: jest.fn(),
+}));
+
+jest.mock("./helpers/git", () => ({
+  commit: jest.fn(),
+  lastCommit: jest.fn(() => "abc1234"),
+  push: jest.fn(),
+}));
+
+jest.mock("./helpers/secrets", () => ({
+  getOwnerRepo: jest.fn(),
+  getSecret: jest.fn(),
+}));
+
+jest.mock("./helpers/notifme", () => ({
+  sendNotification: jest.fn(),
+}));
+
+jest.mock("./summary", () => ({
+  generateSummary: jest.fn(),
+}));
+
+const { update } = require("./update") as typeof import("./update");
+const { getConfig } = require("./helpers/config") as typeof import("./helpers/config");
+const { getOctokit } = require("./helpers/github") as typeof import("./helpers/github");
+const { shouldContinue } = require("./helpers/init-check") as typeof import("./helpers/init-check");
+const { commit, push } = require("./helpers/git") as typeof import("./helpers/git");
+const { getOwnerRepo, getSecret } = require("./helpers/secrets") as typeof import("./helpers/secrets");
+
+describe("update globalping handling", () => {
+  const originalCwd = process.cwd();
+  let testCwd: string;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    testCwd = mkdtempSync(join(tmpdir(), "upptime-update-test-"));
+    process.chdir(testCwd);
+
+    (shouldContinue as jest.Mock).mockResolvedValue(true);
+    (getOwnerRepo as jest.Mock).mockReturnValue(["owner", "repo"]);
+    (getSecret as jest.Mock).mockReturnValue("globalping-token");
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "Blocked by Globalping",
+          url: "https://blocked.example",
+          type: "globalping",
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+    });
+
+    const issueApi = {
+      listForRepo: jest.fn().mockResolvedValue({ data: [] }),
+      create: jest.fn().mockResolvedValue({ data: { number: 1, html_url: "https://example.test/1" } }),
+      addAssignees: jest.fn().mockResolvedValue({}),
+      lock: jest.fn().mockResolvedValue({}),
+      unlock: jest.fn().mockResolvedValue({}),
+      createComment: jest.fn().mockResolvedValue({}),
+      update: jest.fn().mockResolvedValue({}),
+    };
+    (getOctokit as jest.Mock).mockResolvedValue({ issues: issueApi });
+  });
+
+  afterEach(() => {
+    process.chdir(originalCwd);
+    rmSync(testCwd, { recursive: true, force: true });
+  });
+
+  it("fails the action instead of recording downtime when Globalping rejects a measurement", async () => {
+    mockCreateMeasurement.mockResolvedValue({
+      ok: false,
+      response: { status: 403 },
+      data: { message: "Security Reasons" },
+    });
+
+    await expect(update(true)).rejects.toThrow(
+      /Globalping create measurement failed with HTTP 403.*Security Reasons/
+    );
+    expect(commit).not.toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it("fails the action instead of recording downtime when Globalping rejects measurement results", async () => {
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: false,
+      response: { status: 500 },
+      data: "measurement failed",
+    });
+
+    await expect(update(true)).rejects.toThrow(
+      /Globalping get measurement failed with HTTP 500.*measurement failed/
+    );
+    expect(commit).not.toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalled();
+  });
+});

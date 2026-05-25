@@ -86,6 +86,23 @@ function getStatusFromCertificateExpiresAt(expiresAt) {
     }
     return "down";
 }
+const stringifyGlobalpingErrorData = (data) => {
+    if (typeof data === "string")
+        return data;
+    if (data === undefined || data === null)
+        return "no details returned";
+    try {
+        return JSON.stringify(data);
+    }
+    catch {
+        return String(data);
+    }
+};
+const throwGlobalpingApiError = (action, failure) => {
+    const status = failure.response?.status;
+    const statusText = status ? ` with HTTP ${status}` : "";
+    throw new Error(`Globalping ${action} failed${statusText}: ${stringifyGlobalpingErrorData(failure.data)}`);
+};
 const update = async (shouldCommit = false) => {
     if (!(await (0, init_check_1.shouldContinue)()))
         return;
@@ -230,17 +247,13 @@ const update = async (shouldCommit = false) => {
                             };
                         }
                         else {
-                            console.log("ERROR: failed to get measurement:", res.data);
-                            return {
-                                result: { httpCode: res.response.status },
-                                responseTime: "0",
-                                status: "down",
-                            };
+                            console.log("ERROR: failed to get measurement:", measurement.data);
+                            throwGlobalpingApiError("get measurement", measurement);
                         }
                     }
                     else {
                         console.log("ERROR: failed to create measurement:", res.data);
-                        return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+                        throwGlobalpingApiError("create measurement", res);
                     }
                 }
                 else {
@@ -291,17 +304,13 @@ const update = async (shouldCommit = false) => {
                             };
                         }
                         else {
-                            console.log("ERROR: failed to get measurement:", res.data);
-                            return {
-                                result: { httpCode: res.response.status },
-                                responseTime: "0",
-                                status: "down",
-                            };
+                            console.log("ERROR: failed to get measurement:", measurement.data);
+                            throwGlobalpingApiError("get measurement", measurement);
                         }
                     }
                     else {
                         console.log("ERROR: failed to create measurement:", res.data);
-                        return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+                        throwGlobalpingApiError("create measurement", res);
                     }
                 }
             }
