@@ -1,3 +1,12 @@
+## v1.41.7 (2026-05-25)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.7) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.6...v1.41.7) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.7) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.7.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.7.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`749c6f5`](https://github.com/upptime/uptime-monitor/commit/749c6f5)  Fail on Globalping API errors (#288)
+(Issues: [`#288`](https://github.com/upptime/uptime-monitor/issues/288) [`upptime/upptime#1143`](https://github.com/upptime/upptime/issues/1143))
+
 ## v1.41.6 (2026-05-23)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.6) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.5...v1.41.6) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.6) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.6.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.6.tar.gz))
