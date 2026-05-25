@@ -108,6 +108,25 @@ function getStatusFromCertificateExpiresAt(expiresAt: string | undefined) {
   return "down";
 }
 
+const stringifyGlobalpingErrorData = (data: unknown) => {
+  if (typeof data === "string") return data;
+  if (data === undefined || data === null) return "no details returned";
+  try {
+    return JSON.stringify(data);
+  } catch {
+    return String(data);
+  }
+};
+
+const throwGlobalpingApiError = (
+  action: "create measurement" | "get measurement",
+  failure: { response?: { status?: number }; data?: unknown }
+): never => {
+  const status = failure.response?.status;
+  const statusText = status ? ` with HTTP ${status}` : "";
+  throw new Error(`Globalping ${action} failed${statusText}: ${stringifyGlobalpingErrorData(failure.data)}`);
+};
+
 export const update = async (shouldCommit = false) => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
@@ -267,16 +286,12 @@ export const update = async (shouldCommit = false) => {
                 status,
               };
             } else {
-              console.log("ERROR: failed to get measurement:", res.data);
-              return {
-                result: { httpCode: res.response.status },
-                responseTime: "0",
-                status: "down",
-              };
+              console.log("ERROR: failed to get measurement:", measurement.data);
+              throwGlobalpingApiError("get measurement", measurement);
             }
           } else {
             console.log("ERROR: failed to create measurement:", res.data);
-            return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+            throwGlobalpingApiError("create measurement", res);
           }
         } else {
           const protocol = url.protocol === "http:" ? HttpProtocol.HTTP : HttpProtocol.HTTPS;
@@ -332,16 +347,12 @@ export const update = async (shouldCommit = false) => {
                 status,
               };
             } else {
-              console.log("ERROR: failed to get measurement:", res.data);
-              return {
-                result: { httpCode: res.response.status },
-                responseTime: "0",
-                status: "down",
-              };
+              console.log("ERROR: failed to get measurement:", measurement.data);
+              throwGlobalpingApiError("get measurement", measurement);
             }
           } else {
             console.log("ERROR: failed to create measurement:", res.data);
-            return { result: { httpCode: res.response.status }, responseTime: "0", status: "down" };
+            throwGlobalpingApiError("create measurement", res);
           }
         }
       }
