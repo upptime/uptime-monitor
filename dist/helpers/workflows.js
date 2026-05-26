@@ -199,6 +199,9 @@ const siteCiWorkflow = async () => {
 
 name: Static Site CI
 on:
+  push:
+    paths:
+      - "assets/**"
   schedule:
     - cron: "${workflowSchedule.staticSite || constants_1.STATIC_SITE_CI_SCHEDULE}"
   repository_dispatch:

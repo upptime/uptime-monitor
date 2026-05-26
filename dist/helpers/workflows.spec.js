@@ -75,5 +75,22 @@ describe("workflow helpers", () => {
         }
         expect(listTags).not.toHaveBeenCalled();
     });
+    it("generates the static site workflow for assets changes", async () => {
+        const { getConfig, getOctokit, siteCiWorkflow } = loadWorkflowHelpers();
+        const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.7" }] });
+        getConfig.mockResolvedValue({
+            workflowSchedule: {},
+            commitMessages: {},
+            "status-website": {},
+        });
+        getOctokit.mockResolvedValue({
+            repos: { listReleases },
+        });
+        const workflow = await siteCiWorkflow();
+        expect(workflow).toContain(`on:
+  push:
+    paths:
+      - "assets/**"`);
+    });
 });
 //# sourceMappingURL=workflows.spec.js.map
