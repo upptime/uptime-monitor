@@ -1,3 +1,12 @@
+## v1.41.8 (2026-05-26)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.8) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.7...v1.41.8) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.8) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.8.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.8.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`77adaf7`](https://github.com/upptime/uptime-monitor/commit/77adaf7)  Trigger static site build on asset changes (#289)
+(Issues: [`#289`](https://github.com/upptime/uptime-monitor/issues/289) [`upptime/upptime#1046`](https://github.com/upptime/upptime/issues/1046))
+
 ## v1.41.7 (2026-05-25)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.7) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.6...v1.41.7) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.7) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.7.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.7.tar.gz))
