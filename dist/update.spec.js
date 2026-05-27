@@ -106,5 +106,43 @@ describe("update globalping handling", () => {
         expect(commit).not.toHaveBeenCalled();
         expect(push).not.toHaveBeenCalled();
     });
+    it("writes history for Unicode-only site names when no explicit slug is set", async () => {
+        getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [
+                {
+                    name: "鸭鸭梨",
+                    url: "https://example.com",
+                    type: "globalping",
+                },
+            ],
+            assignees: [],
+            workflowSchedule: {},
+        });
+        mockCreateMeasurement.mockResolvedValue({
+            ok: true,
+            data: { id: "measurement-id" },
+        });
+        mockAwaitMeasurement.mockResolvedValue({
+            ok: true,
+            data: {
+                results: [
+                    {
+                        result: {
+                            statusCode: 200,
+                            timings: { total: 123 },
+                            rawBody: "",
+                        },
+                    },
+                ],
+            },
+        });
+        await update(true);
+        const historyPath = (0, path_1.join)(testCwd, "history", "鸭鸭梨.yml");
+        expect((0, fs_1.existsSync)(historyPath)).toBe(true);
+        expect((0, fs_1.readFileSync)(historyPath, "utf8")).toContain("url: https://example.com");
+        expect(commit).toHaveBeenCalledWith(expect.stringContaining("鸭鸭梨 is up (200 in 123 ms)"), undefined, undefined);
+    });
 });
 //# sourceMappingURL=update.spec.js.map

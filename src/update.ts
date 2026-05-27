@@ -1,4 +1,3 @@
-import slugify from "@sindresorhus/slugify";
 import dayjs from "dayjs";
 import dns from "dns";
 import { mkdirp, readFile, writeFile } from "fs-extra";
@@ -23,6 +22,7 @@ import { sendNotification } from "./helpers/notifme";
 import { ping } from "./helpers/ping";
 import { curl } from "./helpers/request";
 import { getOwnerRepo, getSecret } from "./helpers/secrets";
+import { getSiteSlug } from "./helpers/slug";
 import { SiteHistory, UpptimeConfig } from "./interfaces";
 import { checker } from "./ssl-date-checker";
 import { generateSummary } from "./summary";
@@ -212,7 +212,7 @@ export const update = async (shouldCommit = false) => {
       await delay(config.delay);
     }
 
-    const slug = site.slug || slugify(site.name);
+    const slug = getSiteSlug(site);
     let currentStatus = "unknown";
     let startTime = new Date();
     try {
@@ -225,7 +225,7 @@ export const update = async (shouldCommit = false) => {
       currentStatus = siteHistory.status || "unknown";
       startTime = new Date(siteHistory.startTime || new Date());
     } catch (error) {}
-    console.log("Current status", site.slug || slugify(site.name), currentStatus, startTime);
+    console.log("Current status", slug, currentStatus, startTime);
 
     /**
      * Check whether the site is online
