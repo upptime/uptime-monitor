@@ -1,10 +1,6 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateSummary = void 0;
-const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const prettier_1 = require("prettier");
@@ -14,6 +10,7 @@ const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const init_check_1 = require("./helpers/init-check");
+const slug_1 = require("./helpers/slug");
 const url_1 = require("url");
 const secrets_1 = require("./helpers/secrets");
 const generateSummary = async () => {
@@ -34,7 +31,7 @@ const generateSummary = async () => {
     let numberOfDegraded = 0;
     // Loop through each site and add compute the current status
     for await (const site of config.sites) {
-        const slug = site.slug || (0, slugify_1.default)(site.name);
+        const slug = (0, slug_1.getSiteSlug)(site);
         const uptimes = await (0, calculate_uptime_1.getUptimePercentForSite)(slug);
         console.log("Uptimes", uptimes);
         const responseTimes = await (0, calculate_response_time_1.getResponseTimeForSite)(slug);

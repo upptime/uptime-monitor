@@ -1,9 +1,9 @@
-import slugify from "@sindresorhus/slugify";
 import { ensureDir, readdir, remove, writeFile } from "fs-extra";
 import { join } from "path";
 import { getConfig } from "./helpers/config";
 import { commit, push } from "./helpers/git";
 import { getOwnerRepo } from "./helpers/secrets";
+import { getSiteSlug } from "./helpers/slug";
 import {
   graphsCiWorkflow,
   responseTimeCiWorkflow,
@@ -57,7 +57,7 @@ export const updateTemplate = async () => {
     } catch (error) {}
   console.log("Removed template files");
 
-  const slugs = config.sites.map((site) => site.slug || slugify(site.name));
+  const slugs = config.sites.map(getSiteSlug);
   const filesToKeep = ["LICENSE", "summary.json"];
 
   // Remove old data from ./api

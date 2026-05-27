@@ -1,15 +1,12 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateTemplate = void 0;
-const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const fs_extra_1 = require("fs-extra");
 const path_1 = require("path");
 const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const secrets_1 = require("./helpers/secrets");
+const slug_1 = require("./helpers/slug");
 const workflows_1 = require("./helpers/workflows");
 const updateTemplate = async () => {
     const [owner, repo] = (0, secrets_1.getOwnerRepo)();
@@ -44,7 +41,7 @@ const updateTemplate = async () => {
         }
         catch (error) { }
     console.log("Removed template files");
-    const slugs = config.sites.map((site) => site.slug || (0, slugify_1.default)(site.name));
+    const slugs = config.sites.map(slug_1.getSiteSlug);
     const filesToKeep = ["LICENSE", "summary.json"];
     // Remove old data from ./api
     try {

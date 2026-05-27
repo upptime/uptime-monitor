@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from "fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
 
@@ -126,5 +126,50 @@ describe("update globalping handling", () => {
     );
     expect(commit).not.toHaveBeenCalled();
     expect(push).not.toHaveBeenCalled();
+  });
+
+  it("writes history for Unicode-only site names when no explicit slug is set", async () => {
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "鸭鸭梨",
+          url: "https://example.com",
+          type: "globalping",
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+    });
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: true,
+      data: {
+        results: [
+          {
+            result: {
+              statusCode: 200,
+              timings: { total: 123 },
+              rawBody: "",
+            },
+          },
+        ],
+      },
+    });
+
+    await update(true);
+
+    const historyPath = join(testCwd, "history", "鸭鸭梨.yml");
+    expect(existsSync(historyPath)).toBe(true);
+    expect(readFileSync(historyPath, "utf8")).toContain("url: https://example.com");
+    expect(commit).toHaveBeenCalledWith(
+      expect.stringContaining("鸭鸭梨 is up (200 in 123 ms)"),
+      undefined,
+      undefined
+    );
   });
 });

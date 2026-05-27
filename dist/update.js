@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.update = void 0;
-const slugify_1 = __importDefault(require("@sindresorhus/slugify"));
 const dayjs_1 = __importDefault(require("dayjs"));
 const dns_1 = __importDefault(require("dns"));
 const fs_extra_1 = require("fs-extra");
@@ -22,6 +21,7 @@ const notifme_1 = require("./helpers/notifme");
 const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
 const secrets_1 = require("./helpers/secrets");
+const slug_1 = require("./helpers/slug");
 const ssl_date_checker_1 = require("./ssl-date-checker");
 const summary_1 = require("./summary");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -180,7 +180,7 @@ const update = async (shouldCommit = false) => {
             console.log(`Waiting for ${config.delay}ms`);
             await delay(config.delay);
         }
-        const slug = site.slug || (0, slugify_1.default)(site.name);
+        const slug = (0, slug_1.getSiteSlug)(site);
         let currentStatus = "unknown";
         let startTime = new Date();
         try {
@@ -192,7 +192,7 @@ const update = async (shouldCommit = false) => {
             startTime = new Date(siteHistory.startTime || new Date());
         }
         catch (error) { }
-        console.log("Current status", site.slug || (0, slugify_1.default)(site.name), currentStatus, startTime);
+        console.log("Current status", slug, currentStatus, startTime);
         /**
          * Check whether the site is online
          */

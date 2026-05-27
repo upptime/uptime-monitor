@@ -1,4 +1,3 @@
-import slugify from "@sindresorhus/slugify";
 import { mkdirp, readdir, readFile, writeFile } from "fs-extra";
 import { join } from "path";
 import { format } from "prettier";
@@ -8,6 +7,7 @@ import { getConfig } from "./helpers/config";
 import { commit, push } from "./helpers/git";
 import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
+import { getSiteSlug } from "./helpers/slug";
 import { SiteStatus } from "./interfaces";
 import { parse } from "url";
 import { getOwnerRepo } from "./helpers/secrets";
@@ -38,7 +38,7 @@ export const generateSummary = async () => {
 
   // Loop through each site and add compute the current status
   for await (const site of config.sites) {
-    const slug = site.slug || slugify(site.name);
+    const slug = getSiteSlug(site);
 
     const uptimes = await getUptimePercentForSite(slug);
     console.log("Uptimes", uptimes);
