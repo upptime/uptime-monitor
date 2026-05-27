@@ -1,3 +1,12 @@
+## v1.41.9 (2026-05-27)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.9) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.8...v1.41.9) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.9) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.9.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.9.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`38c76ec`](https://github.com/upptime/uptime-monitor/commit/38c76ec)  Support Unicode site names in history slugs (#290)
+(Issues: [`#290`](https://github.com/upptime/uptime-monitor/issues/290))
+
 ## v1.41.8 (2026-05-26)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.8) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.7...v1.41.8) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.8) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.8.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.8.tar.gz))
