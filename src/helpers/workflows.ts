@@ -10,6 +10,7 @@ import {
   UPTIME_CI_SCHEDULE,
 } from "./constants";
 import { getOctokit } from "./github";
+import { UpptimeConfig } from "../interfaces";
 
 let release: string | undefined = undefined;
 export const getUptimeMonitorVersion = async () => {
@@ -61,6 +62,53 @@ const introComment = async () => `#
 # * Docs and more: https://upptime.js.org
 # * More by Anand Chowdhary: https://anandchowdhary.com
 `;
+
+const publishPagePrelude = async(config: UpptimeConfig) => {
+  const statusWebsite = config["status-website"] || {};
+  if (statusWebsite.actions || false) {
+    return `
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: \${{ steps.deployment.outputs.page_url }}
+`
+  } else {
+    return `
+`
+  }
+}
+
+const publishPage = async(config: UpptimeConfig) => {
+  const commitMessages = config.commitMessages || {};
+  const statusWebsite = config["status-website"] || {};
+  if (statusWebsite.actions || false) {
+    return `
+      - uses: actions/configure-pages@v5
+        name: Setup Pages
+      - uses: actions/upload-pages-artifact@v3
+        name: Upload Pages artifact
+        with:
+          path: "site/status-page/__sapper__/export/"
+      - uses: actions/deploy-pages@v4
+        name: Deploy to GitHub Pages
+    `
+  } else {
+    return `
+      - uses: peaceiris/actions-gh-pages@v4
+        name: GitHub Pages Deploy
+        with:
+          github_token: \${{ secrets.GH_PAT || github.token }}
+          publish_dir: "site/status-page/__sapper__/export/"
+          force_orphan: "${statusWebsite.singleCommit || false}"
+          user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
+          user_email: "${
+      commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"
+    }"`
+  }
+}
 
 export const graphsCiWorkflow = async () => {
   const config = await getConfig();
@@ -155,6 +203,7 @@ jobs:
   release:
     name: Setup Upptime
     runs-on: ${config.runner || DEFAULT_RUNNER}
+    ${await publishPagePrelude(config)}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -191,16 +240,7 @@ jobs:
           command: "site"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - uses: peaceiris/actions-gh-pages@v4
-        name: GitHub Pages Deploy
-        with:
-          github_token: \${{ secrets.GH_PAT || github.token }}
-          publish_dir: "site/status-page/__sapper__/export/"
-          force_orphan: "${statusWebsite.singleCommit || false}"
-          user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
-          user_email: "${
-            commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"
-          }"
+${await publishPage(config)}
 `;
 };
 
@@ -226,6 +266,7 @@ jobs:
   release:
     name: Build and deploy site
     runs-on: ${config.runner || DEFAULT_RUNNER}
+    ${await publishPagePrelude(config)}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
@@ -239,16 +280,7 @@ jobs:
           command: "site"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-      - uses: peaceiris/actions-gh-pages@v4
-        name: GitHub Pages Deploy
-        with:
-          github_token: \${{ secrets.GH_PAT || github.token }}
-          publish_dir: "site/status-page/__sapper__/export/"
-          force_orphan: "${statusWebsite.singleCommit || false}"
-          user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
-          user_email: "${
-            commitMessages.commitAuthorEmail || "73812536+upptime-bot@users.noreply.github.com"
-          }"
+${await publishPage(config)}
 `;
 };
 
