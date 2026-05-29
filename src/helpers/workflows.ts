@@ -62,6 +62,10 @@ const introComment = async () => `#
 # * More by Anand Chowdhary: https://anandchowdhary.com
 `;
 
+const concurrencyBlock = `concurrency:
+  group: \${{ github.repository }}-\${{ github.head_ref || github.ref_name }}-upptime
+  cancel-in-progress: false`;
+
 export const graphsCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
@@ -75,6 +79,7 @@ on:
   repository_dispatch:
     types: [graphs]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Generate graphs
@@ -83,7 +88,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate graphs
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
@@ -116,6 +121,7 @@ on:
   repository_dispatch:
     types: [response_time]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Check status
@@ -124,7 +130,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update response time
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
@@ -151,6 +157,7 @@ on:
   repository_dispatch:
     types: [setup]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Setup Upptime
@@ -159,7 +166,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update template
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
@@ -222,6 +229,7 @@ on:
   repository_dispatch:
     types: [static_site]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Build and deploy site
@@ -231,7 +239,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Generate site
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
@@ -265,6 +273,7 @@ on:
   repository_dispatch:
     types: [summary]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Generate README
@@ -273,7 +282,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
@@ -297,6 +306,7 @@ on:
   repository_dispatch:
     types: [update_template]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Build
@@ -305,7 +315,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update template
         uses: upptime/uptime-monitor@master
@@ -329,6 +339,7 @@ on:
   repository_dispatch:
     types: [updates]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Deploy updates
@@ -337,7 +348,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Update code
         uses: upptime/updates@master
@@ -359,6 +370,7 @@ on:
   repository_dispatch:
     types: [uptime]
   workflow_dispatch:
+${concurrencyBlock}
 jobs:
   release:
     name: Check status
@@ -367,7 +379,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: \${{ github.head_ref }}
+          ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
       - name: Check endpoint status
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}

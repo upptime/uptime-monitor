@@ -92,5 +92,34 @@ describe("workflow helpers", () => {
     paths:
       - "assets/**"`);
     });
+    it("generates workflows that serialize branch writes from the live branch tip", async () => {
+        const { getConfig, getOctokit, graphsCiWorkflow, responseTimeCiWorkflow, setupCiWorkflow, siteCiWorkflow, summaryCiWorkflow, updateTemplateCiWorkflow, updatesCiWorkflow, uptimeCiWorkflow, } = loadWorkflowHelpers();
+        const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.9" }] });
+        getConfig.mockResolvedValue({
+            sites: [{ name: "Example", url: "https://example.com" }],
+            workflowSchedule: {},
+            commitMessages: {},
+            "status-website": {},
+        });
+        getOctokit.mockResolvedValue({
+            repos: { listReleases },
+        });
+        const workflows = await Promise.all([
+            graphsCiWorkflow(),
+            responseTimeCiWorkflow(),
+            setupCiWorkflow(),
+            siteCiWorkflow(),
+            summaryCiWorkflow(),
+            updateTemplateCiWorkflow(),
+            updatesCiWorkflow(),
+            uptimeCiWorkflow(),
+        ]);
+        for (const workflow of workflows) {
+            expect(workflow).toContain(`concurrency:
+  group: \${{ github.repository }}-\${{ github.head_ref || github.ref_name }}-upptime
+  cancel-in-progress: false`);
+            expect(workflow).toContain("ref: \${{ github.head_ref || github.ref_name }}");
+        }
+    });
 });
 //# sourceMappingURL=workflows.spec.js.map
