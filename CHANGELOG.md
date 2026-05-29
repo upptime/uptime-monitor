@@ -1,3 +1,11 @@
+## v1.41.10 (2026-05-29)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.10) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.9...v1.41.10) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.10) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.10.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.10.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`8528963`](https://github.com/upptime/uptime-monitor/commit/8528963)  Serialize generated workflow writes
+
 ## v1.41.9 (2026-05-27)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.41.9) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.8...v1.41.9) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.41.9) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.41.9.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.41.9.tar.gz))
