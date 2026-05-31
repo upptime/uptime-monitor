@@ -1,3 +1,5 @@
+import yaml from "js-yaml";
+
 jest.mock("./github", () => ({
   getOctokit: jest.fn(),
 }));
@@ -161,5 +163,141 @@ describe("workflow helpers", () => {
   cancel-in-progress: false`);
       expect(workflow).toContain("ref: \${{ github.head_ref || github.ref_name }}");
     }
+  });
+
+  it("keeps passing the full GitHub Actions secrets context by default", async () => {
+    const { getConfig, getOctokit, responseTimeCiWorkflow, setupCiWorkflow, uptimeCiWorkflow } =
+      loadWorkflowHelpers();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.10" }] });
+
+    (getConfig as jest.Mock).mockResolvedValue({
+      sites: [{ name: "Example", url: "https://example.com" }],
+      workflowSchedule: {},
+      commitMessages: {},
+      "status-website": {},
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { listReleases },
+    });
+
+    const workflows = await Promise.all([responseTimeCiWorkflow(), setupCiWorkflow(), uptimeCiWorkflow()]);
+
+    for (const workflow of workflows) {
+      expect(workflow).toContain("SECRETS_CONTEXT: ${{ toJson(secrets) }}");
+    }
+  });
+
+  it("generates an allowlisted secrets context when config.secrets is set", async () => {
+    const { getConfig, getOctokit, responseTimeCiWorkflow, setupCiWorkflow, uptimeCiWorkflow } =
+      loadWorkflowHelpers();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.10" }] });
+
+    (getConfig as jest.Mock).mockResolvedValue({
+      sites: [{ name: "Example", url: "https://example.com" }],
+      workflowSchedule: {},
+      commitMessages: {},
+      "status-website": {},
+      secrets: ["GH_PAT", "SLACK_WEBHOOK_URL"],
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { listReleases },
+    });
+
+    const workflows = await Promise.all([responseTimeCiWorkflow(), setupCiWorkflow(), uptimeCiWorkflow()]);
+    const expected =
+      'SECRETS_CONTEXT: \'{"GH_PAT":${{ toJson(secrets.GH_PAT) }},"SLACK_WEBHOOK_URL":${{ toJson(secrets.SLACK_WEBHOOK_URL) }}}\'';
+
+    for (const workflow of workflows) {
+      expect(workflow).toContain(expected);
+      expect(workflow).not.toContain("SECRETS_CONTEXT: ${{ toJson(secrets) }}");
+      expect(() => yaml.load(workflow)).not.toThrow();
+      expect(yaml.load(workflow)).toHaveProperty("jobs");
+    }
+  });
+
+  it("deduplicates configured secret names", () => {
+    const { getSecretsContext } = loadWorkflowHelpers();
+
+    expect(getSecretsContext({ secrets: ["GH_PAT", "GH_PAT"] } as never)).toBe(
+      '\'{"GH_PAT":${{ toJson(secrets.GH_PAT) }}}\''
+    );
+  });
+
+  it("allows uppercase secret names that start with an underscore", () => {
+    const { getSecretsContext } = loadWorkflowHelpers();
+
+    expect(getSecretsContext({ secrets: ["_PRIVATE"] } as never)).toBe(
+      '\'{"_PRIVATE":${{ toJson(secrets._PRIVATE) }}}\''
+    );
+  });
+
+  it("rejects reserved, lowercase, and digit-prefixed secret names", () => {
+    const { getSecretsContext } = loadWorkflowHelpers();
+
+    for (const secret of ["GITHUB_TOKEN", "gh_pat", "1PASSWORD"]) {
+      expect(() => getSecretsContext({ secrets: [secret] } as never)).toThrow(
+        `Invalid secret name in .upptimerc.yml secrets allowlist: ${secret}`
+      );
+    }
+  });
+
+  it("generates an empty secrets object when config.secrets is empty", async () => {
+    const { getConfig, getOctokit, uptimeCiWorkflow } = loadWorkflowHelpers();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.10" }] });
+
+    (getConfig as jest.Mock).mockResolvedValue({
+      sites: [{ name: "Example", url: "https://example.com" }],
+      workflowSchedule: {},
+      secrets: [],
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { listReleases },
+    });
+
+    await expect(uptimeCiWorkflow()).resolves.toContain("SECRETS_CONTEXT: '{}'");
+  });
+
+  it("rejects a non-list secrets allowlist", async () => {
+    const { getConfig, getOctokit, uptimeCiWorkflow } = loadWorkflowHelpers();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.10" }] });
+
+    (getConfig as jest.Mock).mockResolvedValue({
+      sites: [{ name: "Example", url: "https://example.com" }],
+      workflowSchedule: {},
+      secrets: "GH_PAT" as unknown as string[],
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { listReleases },
+    });
+
+    await expect(uptimeCiWorkflow()).rejects.toThrow(
+      "Invalid .upptimerc.yml secrets allowlist: expected a list of GitHub secret names."
+    );
+  });
+
+  it("rejects non-string secret names in the allowlist", () => {
+    const { getSecretsContext } = loadWorkflowHelpers();
+
+    expect(() => getSecretsContext({ secrets: [42] } as never)).toThrow(
+      "Invalid .upptimerc.yml secrets allowlist: expected every secret name to be a string."
+    );
+  });
+
+  it("rejects secret names that cannot be referenced safely in GitHub expressions", async () => {
+    const { getConfig, getOctokit, uptimeCiWorkflow } = loadWorkflowHelpers();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.10" }] });
+
+    (getConfig as jest.Mock).mockResolvedValue({
+      sites: [{ name: "Example", url: "https://example.com" }],
+      workflowSchedule: {},
+      secrets: ["BAD-NAME"],
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { listReleases },
+    });
+
+    await expect(uptimeCiWorkflow()).rejects.toThrow(
+      "Invalid secret name in .upptimerc.yml secrets allowlist: BAD-NAME"
+    );
   });
 });

@@ -1,5 +1,7 @@
+import { UpptimeConfig } from "../interfaces";
 export declare const getUptimeMonitorVersion: () => Promise<string>;
 export declare const graphsCiWorkflow: () => Promise<string>;
+export declare const getSecretsContext: (config: UpptimeConfig) => string;
 export declare const responseTimeCiWorkflow: () => Promise<string>;
 export declare const setupCiWorkflow: () => Promise<string>;
 export declare const siteCiWorkflow: () => Promise<string>;
