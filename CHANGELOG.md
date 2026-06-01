@@ -1,3 +1,12 @@
+## v1.42.1 (2026-06-01)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.0...v1.42.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`3af0dae`](https://github.com/upptime/uptime-monitor/commit/3af0dae)  Scope recovery issue matching to incidents (#293)
+(Issues: [`#293`](https://github.com/upptime/uptime-monitor/issues/293))
+
 ## v1.42.0 (2026-05-31)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.41.10...v1.42.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.0.tar.gz))
