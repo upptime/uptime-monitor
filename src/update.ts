@@ -590,7 +590,7 @@ generator: Upptime <https://github.com/upptime/upptime>
           const issues = await octokit.issues.listForRepo({
             owner,
             repo,
-            labels: slug,
+            labels: `status,${slug}`,
             filter: "all",
             state: "open",
             sort: "created",
