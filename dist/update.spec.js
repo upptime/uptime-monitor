@@ -47,6 +47,7 @@ const { getOwnerRepo, getSecret } = require("./helpers/secrets");
 describe("update globalping handling", () => {
     const originalCwd = process.cwd();
     let testCwd;
+    let issueApi;
     beforeEach(() => {
         jest.clearAllMocks();
         testCwd = (0, fs_1.mkdtempSync)((0, path_1.join)((0, os_1.tmpdir)(), "upptime-update-test-"));
@@ -67,7 +68,7 @@ describe("update globalping handling", () => {
             assignees: [],
             workflowSchedule: {},
         });
-        const issueApi = {
+        issueApi = {
             listForRepo: jest.fn().mockResolvedValue({ data: [] }),
             create: jest.fn().mockResolvedValue({ data: { number: 1, html_url: "https://example.test/1" } }),
             addAssignees: jest.fn().mockResolvedValue({}),
@@ -143,6 +144,70 @@ describe("update globalping handling", () => {
         expect((0, fs_1.existsSync)(historyPath)).toBe(true);
         expect((0, fs_1.readFileSync)(historyPath, "utf8")).toContain("url: https://example.com");
         expect(commit).toHaveBeenCalledWith(expect.stringContaining("鸭鸭梨 is up (200 in 123 ms)"), undefined, undefined);
+    });
+    it("only closes Upptime-created status incidents for a recovered site", async () => {
+        (0, fs_1.mkdirSync)((0, path_1.join)(testCwd, "history"));
+        (0, fs_1.writeFileSync)((0, path_1.join)(testCwd, "history", "blocked-by-globalping.yml"), [
+            "url: https://blocked.example",
+            "status: down",
+            "code: 0",
+            "responseTime: 0",
+            "lastUpdated: 2026-03-26T00:00:00Z",
+            "startTime: 2026-03-26T00:00:00Z",
+            "generator: Upptime <https://github.com/upptime/upptime>",
+        ].join("\n"));
+        issueApi.listForRepo
+            .mockResolvedValueOnce({ data: [] })
+            .mockResolvedValueOnce({
+            data: [
+                {
+                    number: 42,
+                    title: "🛑 Blocked by Globalping is down",
+                    created_at: "2026-03-26T00:00:00Z",
+                },
+            ],
+        });
+        mockCreateMeasurement.mockResolvedValue({
+            ok: true,
+            data: { id: "measurement-id" },
+        });
+        mockAwaitMeasurement.mockResolvedValue({
+            ok: true,
+            data: {
+                results: [
+                    {
+                        result: {
+                            statusCode: 200,
+                            timings: { total: 123 },
+                            rawBody: "",
+                        },
+                    },
+                ],
+            },
+        });
+        await update(true);
+        expect(issueApi.listForRepo).toHaveBeenNthCalledWith(2, {
+            owner: "owner",
+            repo: "repo",
+            labels: "status,blocked-by-globalping",
+            filter: "all",
+            state: "open",
+            sort: "created",
+            direction: "desc",
+            per_page: 1,
+        });
+        expect(issueApi.create).not.toHaveBeenCalled();
+        expect(issueApi.unlock).toHaveBeenCalledWith({
+            owner: "owner",
+            repo: "repo",
+            issue_number: 42,
+        });
+        expect(issueApi.update).toHaveBeenCalledWith({
+            owner: "owner",
+            repo: "repo",
+            issue_number: 42,
+            state: "closed",
+        });
     });
 });
 //# sourceMappingURL=update.spec.js.map
