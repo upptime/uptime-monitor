@@ -12,6 +12,49 @@ import { SiteStatus } from "./interfaces";
 import { parse } from "url";
 import { getOwnerRepo } from "./helpers/secrets";
 
+const workflowBadges = [
+  { label: "Uptime CI", workflowName: "Uptime%20CI", file: "uptime.yml" },
+  {
+    label: "Response Time CI",
+    workflowName: "Response%20Time%20CI",
+    file: "response-time.yml",
+  },
+  { label: "Graphs CI", workflowName: "Graphs%20CI", file: "graphs.yml" },
+  {
+    label: "Static Site CI",
+    workflowName: "Static%20Site%20CI",
+    file: "site.yml",
+  },
+  { label: "Summary CI", workflowName: "Summary%20CI", file: "summary.yml" },
+];
+
+const escapeRegExp = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const workflowBadgeMarkdown = (
+  owner: string,
+  repo: string,
+  badge: (typeof workflowBadges)[number]
+) =>
+  `[![${badge.label}](https://github.com/${owner}/${repo}/workflows/${badge.workflowName}/badge.svg)](https://github.com/${owner}/${repo}/actions/workflows/${badge.file})`;
+
+export const normalizeWorkflowBadges = (
+  readmeContent: string,
+  owner: string,
+  repo: string
+) =>
+  workflowBadges.reduce((content, badge) => {
+    const label = escapeRegExp(badge.label);
+    const workflowName = escapeRegExp(badge.workflowName);
+    const file = escapeRegExp(badge.file);
+    const workflowBadgePattern = new RegExp(
+      String.raw`\[!\[${label}\]\(https:\/\/github\.com\/[^/]+\/[^/]+\/(?:workflows\/${workflowName}|actions\/workflows\/${file})\/badge\.svg\)\]\(https:\/\/github\.com\/[^/]+\/[^/]+\/actions(?:\/workflows\/${file})?(?:\?query=workflow%3A%22[^)]*%22)?\)`,
+      "g"
+    );
+
+    return content.replace(workflowBadgePattern, workflowBadgeMarkdown(owner, repo, badge));
+  }, readmeContent);
+
 export const generateSummary = async () => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
@@ -258,9 +301,10 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     }
 
     // Change badges
-    readmeContent = readmeContent.replace(
-      new RegExp("upptime/upptime/(workflows|actions)", "g"),
-      `${config.owner}/${config.repo}/$1`
+    readmeContent = normalizeWorkflowBadges(
+      readmeContent,
+      config.owner,
+      config.repo
     );
 
     // Add repo description, topics, etc.
