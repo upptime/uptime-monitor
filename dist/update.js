@@ -516,13 +516,14 @@ lastUpdated: ${new Date().toISOString()}
 startTime: ${startTime.toISOString()}
 generator: Upptime <https://github.com/upptime/upptime>
 `);
-                (0, git_1.commit)(((config.commitMessages || {}).statusChange ||
-                    "$PREFIX $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]")
-                    .replace("$PREFIX", status === "up"
+                const statusPrefix = status === "up"
                     ? config.commitPrefixStatusUp || "🟩"
                     : status === "degraded"
                         ? config.commitPrefixStatusDegraded || "🟨"
-                        : config.commitPrefixStatusDown || "🟥")
+                        : config.commitPrefixStatusDown || "🟥";
+                (0, git_1.commit)(((config.commitMessages || {}).statusChange ||
+                    "$PREFIX $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]")
+                    .replace(/\$PREFIX|\$EMOJI/g, statusPrefix)
                     .replace("$SITE_NAME", site.name)
                     .replace("$SITE_URL", site.url)
                     .replace("$SITE_METHOD", site.method || "GET")
