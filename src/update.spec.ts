@@ -174,6 +174,52 @@ describe("update globalping handling", () => {
     );
   });
 
+  it("supports $EMOJI in custom status change commit messages", async () => {
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "Custom Commit Site",
+          url: "https://example.com",
+          type: "globalping",
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+      commitMessages: {
+        statusChange:
+          "$EMOJI $SITE_NAME is $STATUS ($RESPONSE_CODE in $RESPONSE_TIME ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>",
+      },
+    });
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: true,
+      data: {
+        results: [
+          {
+            result: {
+              statusCode: 200,
+              timings: { total: 123 },
+              rawBody: "",
+            },
+          },
+        ],
+      },
+    });
+
+    await update(true);
+
+    expect(commit).toHaveBeenCalledWith(
+      "🟩 Custom Commit Site is up (200 in 123 ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>",
+      undefined,
+      undefined
+    );
+  });
+
   it("only closes Upptime-created status incidents for a recovered site", async () => {
     mkdirSync(join(testCwd, "history"));
     writeFileSync(
