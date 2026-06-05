@@ -1,3 +1,12 @@
+## v1.42.3 (2026-06-05)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.2...v1.42.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.3.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`99b7045`](https://github.com/upptime/uptime-monitor/commit/99b7045)  Support $EMOJI status change messages (#295)
+(Issues: [`#295`](https://github.com/upptime/uptime-monitor/issues/295))
+
 ## v1.42.2 (2026-06-04)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.1...v1.42.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.2.tar.gz))
