@@ -7,6 +7,36 @@ const config_1 = require("./helpers/config");
 const git_1 = require("./helpers/git");
 const github_1 = require("./helpers/github");
 const secrets_1 = require("./helpers/secrets");
+const getLatestPackageVersion = async (octokit, pkgName, currentVersion) => {
+    const [owner, repo] = pkgName.split("/");
+    try {
+        const releases = await octokit.repos.listReleases({
+            owner,
+            repo,
+            per_page: 1,
+        });
+        const latestRelease = releases.data[0]?.tag_name;
+        if (latestRelease)
+            return latestRelease;
+    }
+    catch (_) {
+        // Fall through to tags when GitHub release lookup is temporarily unavailable.
+    }
+    try {
+        const tags = await octokit.repos.listTags({
+            owner,
+            repo,
+            per_page: 1,
+        });
+        const latestTag = tags.data[0]?.name;
+        if (latestTag)
+            return latestTag;
+    }
+    catch (_) {
+        // Keep the current version rather than crashing the updater on API failures.
+    }
+    return currentVersion;
+};
 const updateDependencies = async () => {
     const [owner, repo] = (0, secrets_1.getOwnerRepo)();
     if (`${owner}/${repo}` !== "upptime/upptime")
@@ -27,13 +57,9 @@ const updateDependencies = async () => {
             .forEach((pkg) => (uses[pkg] = pkg));
     }
     for await (const pkgOldVersion of Object.keys(uses)) {
-        const pkgName = pkgOldVersion.split("@")[0];
-        const releases = await octokit.repos.listReleases({
-            owner: pkgName.split("/")[0],
-            repo: pkgName.split("/")[1],
-            per_page: 1,
-        });
-        uses[pkgOldVersion] = `${pkgName}@${releases.data[0].tag_name}`;
+        const [pkgName, currentVersion] = pkgOldVersion.split("@");
+        const latestVersion = await getLatestPackageVersion(octokit, pkgName, currentVersion);
+        uses[pkgOldVersion] = latestVersion ? `${pkgName}@${latestVersion}` : pkgName;
     }
     for await (const pkgOldVersion of Object.keys(uses)) {
         const pkgName = pkgOldVersion.split("@")[0];
