@@ -1,3 +1,11 @@
+## v1.42.4 (2026-06-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.3...v1.42.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.4.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`187afb5`](https://github.com/upptime/uptime-monitor/commit/187afb5)  Handle empty dependency release lookups
+
 ## v1.42.3 (2026-06-05)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.2...v1.42.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.3.tar.gz))
