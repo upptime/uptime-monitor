@@ -1,3 +1,12 @@
+## v1.42.5 (2026-06-10)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.5) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.4...v1.42.5) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.5) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.5.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.5.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`31ba5e2`](https://github.com/upptime/uptime-monitor/commit/31ba5e2)  Update generated checkout workflows to v6 (#297)
+(Issues: [`#297`](https://github.com/upptime/uptime-monitor/issues/297))
+
 ## v1.42.4 (2026-06-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.3...v1.42.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.4.tar.gz))
