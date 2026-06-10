@@ -94,7 +94,8 @@ describe("workflow helpers", () => {
     ]);
 
     for (const workflow of workflows) {
-      expect(workflow).toContain("uses: actions/checkout@v5");
+      expect(workflow).toContain("uses: actions/checkout@v6");
+      expect(workflow).not.toContain("actions/checkout@v5");
       expect(workflow).not.toContain("actions/checkout@v4");
     }
     expect(listTags).not.toHaveBeenCalled();
