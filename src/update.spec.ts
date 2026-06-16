@@ -220,6 +220,65 @@ describe("update globalping handling", () => {
     );
   });
 
+  it("does not open an incident for expected degraded maintenance", async () => {
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "Slow Site",
+          url: "https://example.com",
+          type: "globalping",
+          maxResponseTime: 50,
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+    });
+    issueApi.listForRepo
+      .mockResolvedValueOnce({
+        data: [
+          {
+            number: 99,
+            body: [
+              "Scheduled maintenance",
+              "<!--",
+              "start: 2000-01-01T00:00:00.000Z",
+              "end: 2999-01-01T00:00:00.000Z",
+              "expectedDegraded: slow-site",
+              "-->",
+            ].join("\n"),
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ data: [] });
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: true,
+      data: {
+        results: [
+          {
+            result: {
+              statusCode: 200,
+              timings: { total: 123 },
+              rawBody: "",
+            },
+          },
+        ],
+      },
+    });
+
+    await update(true);
+
+    const history = readFileSync(join(testCwd, "history", "slow-site.yml"), "utf8");
+    expect(history).toContain("status: degraded");
+    expect(history).toContain("responseTime: 123");
+    expect(issueApi.create).not.toHaveBeenCalled();
+  }, 15000);
+
   it("only closes Upptime-created status incidents for a recovered site", async () => {
     mkdirSync(join(testCwd, "history"));
     writeFileSync(

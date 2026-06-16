@@ -183,6 +183,62 @@ describe("update globalping handling", () => {
         await update(true);
         expect(commit).toHaveBeenCalledWith("🟩 Custom Commit Site is up (200 in 123 ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>", undefined, undefined);
     });
+    it("does not open an incident for expected degraded maintenance", async () => {
+        getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [
+                {
+                    name: "Slow Site",
+                    url: "https://example.com",
+                    type: "globalping",
+                    maxResponseTime: 50,
+                },
+            ],
+            assignees: [],
+            workflowSchedule: {},
+        });
+        issueApi.listForRepo
+            .mockResolvedValueOnce({
+            data: [
+                {
+                    number: 99,
+                    body: [
+                        "Scheduled maintenance",
+                        "<!--",
+                        "start: 2000-01-01T00:00:00.000Z",
+                        "end: 2999-01-01T00:00:00.000Z",
+                        "expectedDegraded: slow-site",
+                        "-->",
+                    ].join("\n"),
+                },
+            ],
+        })
+            .mockResolvedValueOnce({ data: [] });
+        mockCreateMeasurement.mockResolvedValue({
+            ok: true,
+            data: { id: "measurement-id" },
+        });
+        mockAwaitMeasurement.mockResolvedValue({
+            ok: true,
+            data: {
+                results: [
+                    {
+                        result: {
+                            statusCode: 200,
+                            timings: { total: 123 },
+                            rawBody: "",
+                        },
+                    },
+                ],
+            },
+        });
+        await update(true);
+        const history = (0, fs_1.readFileSync)((0, path_1.join)(testCwd, "history", "slow-site.yml"), "utf8");
+        expect(history).toContain("status: degraded");
+        expect(history).toContain("responseTime: 123");
+        expect(issueApi.create).not.toHaveBeenCalled();
+    }, 15000);
     it("only closes Upptime-created status incidents for a recovered site", async () => {
         (0, fs_1.mkdirSync)((0, path_1.join)(testCwd, "history"));
         (0, fs_1.writeFileSync)((0, path_1.join)(testCwd, "history", "blocked-by-globalping.yml"), [
