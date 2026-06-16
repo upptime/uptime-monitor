@@ -142,8 +142,8 @@ const update = async (shouldCommit = false) => {
                     .split(",")
                     .map((i) => i.trim())
                     .filter((i) => i.length);
-            if (metadata.expectedDown)
-                expectedDegraded = metadata.expectedDown
+            if (metadata.expectedDegraded)
+                expectedDegraded = metadata.expectedDegraded
                     .split(",")
                     .map((i) => i.trim())
                     .filter((i) => i.length);
