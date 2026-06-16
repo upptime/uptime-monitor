@@ -1,3 +1,12 @@
+## v1.42.6 (2026-06-16)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.6) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.5...v1.42.6) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.6) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.6.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.6.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`fb388c1`](https://github.com/upptime/uptime-monitor/commit/fb388c1)  Parse expectedDegraded maintenance metadata (#298)
+(Issues: [`#298`](https://github.com/upptime/uptime-monitor/issues/298))
+
 ## v1.42.5 (2026-06-10)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.5) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.4...v1.42.5) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.5) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.5.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.5.tar.gz))
