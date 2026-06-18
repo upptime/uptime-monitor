@@ -45,7 +45,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  */
 const curlOnce = (site) => new Promise((resolve) => {
     const url = (0, environment_1.replaceEnvironmentVariables)(site.url);
-    const method = site.method || "GET";
+    const method = (site.method || "GET").toUpperCase();
     const maxRedirects = Number.isInteger(site.maxRedirects) ? Number(site.maxRedirects) : 3;
     const connectTimeout = site.connectTimeout || DEFAULT_CONNECT_TIMEOUT;
     const requestTimeout = site.requestTimeout || DEFAULT_REQUEST_TIMEOUT;
@@ -79,6 +79,12 @@ const curlOnce = (site) => new Promise((resolve) => {
     }
     else {
         curlHandle.setOpt("VERBOSE", false);
+    }
+    if (method === "HEAD") {
+        // CURLOPT_CUSTOMREQUEST only changes the verb string; CURLOPT_NOBODY tells
+        // libcurl to perform a real header-only HEAD request and not wait for the
+        // response body implied by Content-Length.
+        curlHandle.setOpt("NOBODY", true);
     }
     curlHandle.setOpt("CUSTOMREQUEST", method);
     curlHandle.on("error", (error) => {
