@@ -1,3 +1,12 @@
+## v1.42.7 (2026-06-18)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.7) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.6...v1.42.7) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.7) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.7.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.7.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`a6a9fd0`](https://github.com/upptime/uptime-monitor/commit/a6a9fd0)  Handle HEAD requests without response bodies (#299)
+(Issues: [`#299`](https://github.com/upptime/uptime-monitor/issues/299) [`upptime/upptime#150`](https://github.com/upptime/upptime/issues/150))
+
 ## v1.42.6 (2026-06-16)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.6) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.5...v1.42.6) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.6) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.6.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.6.tar.gz))
