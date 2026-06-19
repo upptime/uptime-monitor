@@ -1,3 +1,12 @@
+## v1.43.0 (2026-06-19)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.7...v1.43.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.0.tar.gz))
+
+### ✨ New features
+
+- [`4e578fe`](https://github.com/upptime/uptime-monitor/commit/4e578fe)  Add DCO sign-off support (#300)
+(Issues: [`#300`](https://github.com/upptime/uptime-monitor/issues/300))
+
 ## v1.42.7 (2026-06-18)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.42.7) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.6...v1.42.7) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.42.7) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.42.7.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.42.7.tar.gz))
