@@ -12,11 +12,11 @@ const runGit = (args, throwOnError = false) => {
     }
     return output;
 };
-const commit = (message, name = "Upptime Bot", email = "73812536+upptime-bot@users.noreply.github.com") => {
+const commit = (message, name = "Upptime Bot", email = "73812536+upptime-bot@users.noreply.github.com", signoff = false) => {
     runGit(["config", "--global", "user.email", email]);
     runGit(["config", "--global", "user.name", name]);
     runGit(["add", "."]);
-    runGit(["commit", "-m", message]);
+    runGit(["commit", ...(signoff ? ["--signoff"] : []), "-m", message]);
 };
 exports.commit = commit;
 const push = () => {

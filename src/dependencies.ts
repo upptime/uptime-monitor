@@ -44,6 +44,7 @@ export const updateDependencies = async () => {
   if (`${owner}/${repo}` !== "upptime/upptime") return;
 
   const config = await getConfig();
+  const commitMessages = config.commitMessages || {};
   const octokit = await getOctokit();
 
   let changes = 0;
@@ -87,9 +88,10 @@ export const updateDependencies = async () => {
         pkgOldVersion.split("@")[1]
       }...${
         uses[pkgOldVersion].split("@")[1]
-      })\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>`,
-      (config.commitMessages || {}).commitAuthorName,
-      (config.commitMessages || {}).commitAuthorEmail
+      })${commitMessages.signoff ? "" : "\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>"}`,
+      commitMessages.commitAuthorName,
+      commitMessages.commitAuthorEmail,
+      commitMessages.signoff
     );
   }
   push();

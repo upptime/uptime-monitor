@@ -45,5 +45,12 @@ describe("git helper", () => {
         expect(git(["log", "-1", "--format=%B"], cwd)).toBe("Endpoint $UPPTIME_TOKEN_VALUE is down");
         expect((0, fs_1.readFileSync)((0, path_1.join)(cwd, ".git", "COMMIT_EDITMSG"), "utf8")).not.toContain("expanded-value-123");
     });
+    it("can add a DCO sign-off trailer using the configured git identity", () => {
+        const cwd = createRepo();
+        process.chdir(cwd);
+        (0, fs_1.writeFileSync)((0, path_1.join)(cwd, "status.yml"), "status: signed\n");
+        (0, git_1.commit)("Signed status update", "Upptime Bot", "bot@example.com", true);
+        expect(git(["log", "-1", "--format=%B"], cwd)).toBe("Signed status update\n\nSigned-off-by: Upptime Bot <bot@example.com>");
+    });
 });
 //# sourceMappingURL=git.spec.js.map

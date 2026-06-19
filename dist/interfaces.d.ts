@@ -64,6 +64,7 @@ export interface UpptimeConfig {
         graphsUpdate?: string;
         commitAuthorName?: string;
         commitAuthorEmail?: string;
+        signoff?: boolean;
     };
     summaryStartHtmlComment?: string;
     summaryEndHtmlComment?: string;

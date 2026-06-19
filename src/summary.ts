@@ -389,7 +389,8 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     (config.commitMessages || {}).readmeContent ||
       ":pencil: Update summary in README [skip ci] [upptime]",
     (config.commitMessages || {}).commitAuthorName,
-    (config.commitMessages || {}).commitAuthorEmail
+    (config.commitMessages || {}).commitAuthorEmail,
+    (config.commitMessages || {}).signoff
   );
 
   // If there are any old workflows left, fix them
@@ -419,7 +420,8 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     (config.commitMessages || {}).summaryJson ||
       ":card_file_box: Update status summary [skip ci] [upptime]",
     (config.commitMessages || {}).commitAuthorName,
-    (config.commitMessages || {}).commitAuthorEmail
+    (config.commitMessages || {}).commitAuthorEmail,
+    (config.commitMessages || {}).signoff
   );
 
   push();

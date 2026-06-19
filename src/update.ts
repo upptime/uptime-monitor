@@ -578,7 +578,8 @@ generator: Upptime <https://github.com/upptime/upptime>
             .replace("$RESPONSE_CODE", result.httpCode.toString())
             .replace("$RESPONSE_TIME", responseTime),
           (config.commitMessages || {}).commitAuthorName,
-          (config.commitMessages || {}).commitAuthorEmail
+          (config.commitMessages || {}).commitAuthorEmail,
+          (config.commitMessages || {}).signoff
         );
         const lastCommitSha = lastCommit();
 

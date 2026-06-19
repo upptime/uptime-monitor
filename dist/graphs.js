@@ -25,7 +25,7 @@ const generateGraphs = async () => {
     }
     catch (error) { }
     await (0, temp_1.tempFixes)();
-    (0, git_1.commit)((config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+    (0, git_1.commit)((config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail, (config.commitMessages || {}).signoff);
     (0, git_1.push)();
 };
 exports.generateGraphs = generateGraphs;

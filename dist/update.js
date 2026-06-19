@@ -529,7 +529,7 @@ generator: Upptime <https://github.com/upptime/upptime>
                     .replace("$SITE_METHOD", site.method || "GET")
                     .replace("$STATUS", status)
                     .replace("$RESPONSE_CODE", result.httpCode.toString())
-                    .replace("$RESPONSE_TIME", responseTime), (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+                    .replace("$RESPONSE_TIME", responseTime), (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail, (config.commitMessages || {}).signoff);
                 const lastCommitSha = (0, git_1.lastCommit)();
                 if (currentStatus !== status) {
                     console.log("Status is different", currentStatus, "to", status);

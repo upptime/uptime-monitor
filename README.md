@@ -49,6 +49,15 @@ Check uptime, but don't make git commits with network requests:
 npx @upptime/uptime-monitor
 ```
 
+To add Developer Certificate of Origin sign-off trailers to commits created by Upptime, enable `commitMessages.signoff` in `.upptimerc.yml`:
+
+```yaml
+commitMessages:
+  signoff: true
+```
+
+This uses Git's native `--signoff` flag, so the trailer is generated from the configured commit author.
+
 ## 📄 License
 
 [MIT](./LICENSE) © [Anand Chowdhary](https://anandchowdhary.com)

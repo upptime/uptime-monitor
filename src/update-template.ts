@@ -93,7 +93,12 @@ export const updateTemplate = async () => {
     console.log(error);
   }
 
-  commit(`:arrow_up: Update @upptime to ${await getUptimeMonitorVersion()}`);
+  commit(
+    `:arrow_up: Update @upptime to ${await getUptimeMonitorVersion()}`,
+    (config.commitMessages || {}).commitAuthorName,
+    (config.commitMessages || {}).commitAuthorEmail,
+    (config.commitMessages || {}).signoff
+  );
   push();
   console.log("All done!");
 };

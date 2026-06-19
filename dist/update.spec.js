@@ -143,7 +143,7 @@ describe("update globalping handling", () => {
         const historyPath = (0, path_1.join)(testCwd, "history", "鸭鸭梨.yml");
         expect((0, fs_1.existsSync)(historyPath)).toBe(true);
         expect((0, fs_1.readFileSync)(historyPath, "utf8")).toContain("url: https://example.com");
-        expect(commit).toHaveBeenCalledWith(expect.stringContaining("鸭鸭梨 is up (200 in 123 ms)"), undefined, undefined);
+        expect(commit).toHaveBeenCalledWith(expect.stringContaining("鸭鸭梨 is up (200 in 123 ms)"), undefined, undefined, undefined);
     });
     it("supports $EMOJI in custom status change commit messages", async () => {
         getConfig.mockResolvedValue({
@@ -181,7 +181,47 @@ describe("update globalping handling", () => {
             },
         });
         await update(true);
-        expect(commit).toHaveBeenCalledWith("🟩 Custom Commit Site is up (200 in 123 ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>", undefined, undefined);
+        expect(commit).toHaveBeenCalledWith("🟩 Custom Commit Site is up (200 in 123 ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>", undefined, undefined, undefined);
+    });
+    it("passes commitMessages.signoff to status change commits", async () => {
+        getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [
+                {
+                    name: "DCO Site",
+                    url: "https://example.com",
+                    type: "globalping",
+                },
+            ],
+            assignees: [],
+            workflowSchedule: {},
+            commitMessages: {
+                commitAuthorName: "DCO Bot",
+                commitAuthorEmail: "dco@example.com",
+                signoff: true,
+            },
+        });
+        mockCreateMeasurement.mockResolvedValue({
+            ok: true,
+            data: { id: "measurement-id" },
+        });
+        mockAwaitMeasurement.mockResolvedValue({
+            ok: true,
+            data: {
+                results: [
+                    {
+                        result: {
+                            statusCode: 200,
+                            timings: { total: 123 },
+                            rawBody: "",
+                        },
+                    },
+                ],
+            },
+        });
+        await update(true);
+        expect(commit).toHaveBeenCalledWith(expect.stringContaining("DCO Site is up (200 in 123 ms)"), "DCO Bot", "dco@example.com", true);
     });
     it("does not open an incident for expected degraded maintenance", async () => {
         getConfig.mockResolvedValue({

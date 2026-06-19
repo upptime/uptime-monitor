@@ -170,6 +170,7 @@ describe("update globalping handling", () => {
     expect(commit).toHaveBeenCalledWith(
       expect.stringContaining("鸭鸭梨 is up (200 in 123 ms)"),
       undefined,
+      undefined,
       undefined
     );
   });
@@ -216,7 +217,56 @@ describe("update globalping handling", () => {
     expect(commit).toHaveBeenCalledWith(
       "🟩 Custom Commit Site is up (200 in 123 ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>",
       undefined,
+      undefined,
       undefined
+    );
+  });
+
+  it("passes commitMessages.signoff to status change commits", async () => {
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "DCO Site",
+          url: "https://example.com",
+          type: "globalping",
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+      commitMessages: {
+        commitAuthorName: "DCO Bot",
+        commitAuthorEmail: "dco@example.com",
+        signoff: true,
+      },
+    });
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: true,
+      data: {
+        results: [
+          {
+            result: {
+              statusCode: 200,
+              timings: { total: 123 },
+              rawBody: "",
+            },
+          },
+        ],
+      },
+    });
+
+    await update(true);
+
+    expect(commit).toHaveBeenCalledWith(
+      expect.stringContaining("DCO Site is up (200 in 123 ms)"),
+      "DCO Bot",
+      "dco@example.com",
+      true
     );
   });
 

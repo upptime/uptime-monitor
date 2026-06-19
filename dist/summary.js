@@ -219,7 +219,7 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     await (0, fs_extra_1.writeFile)((0, path_1.join)(".", "README.md"), (0, prettier_1.format)(readmeContent, { parser: "markdown" }));
     await (0, fs_extra_1.writeFile)((0, path_1.join)(".", ".gitattributes"), "# Markdown\n*.md linguist-detectable=true\n*.md linguist-documentation=false\n\n# JSON\n*.json linguist-detectable=true\n\n# YAML\n*.yml linguist-detectable=true\n");
     (0, git_1.commit)((config.commitMessages || {}).readmeContent ||
-        ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+        ":pencil: Update summary in README [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail, (config.commitMessages || {}).signoff);
     // If there are any old workflows left, fix them
     const workflows = (await (0, fs_extra_1.readdir)((0, path_1.join)(".", ".github", "workflows"))).filter((i) => i.endsWith(".yml"));
     for await (const workflow of workflows) {
@@ -232,7 +232,7 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
     }
     await (0, fs_extra_1.writeFile)((0, path_1.join)(".", "history", "summary.json"), JSON.stringify(pageStatuses, null, 2));
     (0, git_1.commit)((config.commitMessages || {}).summaryJson ||
-        ":card_file_box: Update status summary [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+        ":card_file_box: Update status summary [skip ci] [upptime]", (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail, (config.commitMessages || {}).signoff);
     (0, git_1.push)();
     if (!config.skipDeleteIssues) {
         // Find all the opened issues that shouldn't have opened

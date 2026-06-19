@@ -25,7 +25,8 @@ export const generateGraphs = async () => {
   commit(
     (config.commitMessages || {}).graphsUpdate || ":bento: Update graphs [skip ci]",
     (config.commitMessages || {}).commitAuthorName,
-    (config.commitMessages || {}).commitAuthorEmail
+    (config.commitMessages || {}).commitAuthorEmail,
+    (config.commitMessages || {}).signoff
   );
   push();
 };
