@@ -59,7 +59,7 @@ jobs:
   });
 
   it("updates dependencies from the latest GitHub release", async () => {
-    const { getConfig, getOctokit, getOwnerRepo, updateDependencies } = loadDependencies();
+    const { commit, getConfig, getOctokit, getOwnerRepo, updateDependencies } = loadDependencies();
     const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.42.4" }] });
     const listTags = jest.fn();
     const getContent = jest.fn().mockResolvedValue({ data: { content: "", sha: "readme-sha" } });
@@ -76,6 +76,41 @@ jobs:
     expect(listReleases).toHaveBeenCalledWith({ owner: "upptime", repo: "uptime-monitor", per_page: 1 });
     expect(listTags).not.toHaveBeenCalled();
     expect(readFileSync(workflowPath, "utf8")).toContain("uses: upptime/uptime-monitor@v1.42.4");
+    expect(commit).toHaveBeenCalledWith(
+      expect.stringContaining("Signed-off-by: Anand Chowdhary <github@anandchowdhary.com>"),
+      undefined,
+      undefined,
+      undefined
+    );
+  });
+
+  it("uses native git signoff for dependency bumps without duplicating the built-in trailer", async () => {
+    const { commit, getConfig, getOctokit, getOwnerRepo, updateDependencies } = loadDependencies();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.42.4" }] });
+    const listTags = jest.fn();
+    const getContent = jest.fn().mockResolvedValue({ data: { content: "", sha: "readme-sha" } });
+    const createOrUpdateFileContents = jest.fn().mockResolvedValue({});
+
+    (getOwnerRepo as jest.Mock).mockReturnValue(["upptime", "upptime"]);
+    (getConfig as jest.Mock).mockResolvedValue({
+      commitMessages: {
+        commitAuthorName: "DCO Bot",
+        commitAuthorEmail: "dco@example.com",
+        signoff: true,
+      },
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { createOrUpdateFileContents, getContent, listReleases, listTags },
+    });
+
+    await updateDependencies();
+
+    expect(commit).toHaveBeenCalledWith(
+      expect.not.stringContaining("Signed-off-by:"),
+      "DCO Bot",
+      "dco@example.com",
+      true
+    );
   });
 
   it("falls back to tags when a dependency has no GitHub releases", async () => {

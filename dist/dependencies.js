@@ -42,6 +42,7 @@ const updateDependencies = async () => {
     if (`${owner}/${repo}` !== "upptime/upptime")
         return;
     const config = await (0, config_1.getConfig)();
+    const commitMessages = config.commitMessages || {};
     const octokit = await (0, github_1.getOctokit)();
     let changes = 0;
     await (0, fs_extra_1.ensureDir)((0, path_1.join)(".", ".github", "workflows"));
@@ -70,7 +71,7 @@ const updateDependencies = async () => {
         }
         if (pkgOldVersion.split("@")[1] !== uses[pkgOldVersion].split("@")[1])
             changes++;
-        (0, git_1.commit)(`:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](https://github.com/${pkgName}@${pkgOldVersion.split("@")[1]}...${uses[pkgOldVersion].split("@")[1]})\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>`, (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail);
+        (0, git_1.commit)(`:arrow_up: Bump ${pkgName} from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}\n\nBumps [${pkgName}](https://github.com/${pkgName}) from ${pkgOldVersion.split("@")[1]} to ${uses[pkgOldVersion].split("@")[1]}.\n- [Release notes](https://github.com/${pkgName}/releases)\n- [Commits](https://github.com/${pkgName}@${pkgOldVersion.split("@")[1]}...${uses[pkgOldVersion].split("@")[1]})${commitMessages.signoff ? "" : "\n\nSigned-off-by: Anand Chowdhary <github@anandchowdhary.com>"}`, commitMessages.commitAuthorName, commitMessages.commitAuthorEmail, commitMessages.signoff);
     }
     (0, git_1.push)();
     if (changes) {

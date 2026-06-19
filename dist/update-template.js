@@ -76,7 +76,7 @@ const updateTemplate = async () => {
     catch (error) {
         console.log(error);
     }
-    (0, git_1.commit)(`:arrow_up: Update @upptime to ${await (0, workflows_1.getUptimeMonitorVersion)()}`);
+    (0, git_1.commit)(`:arrow_up: Update @upptime to ${await (0, workflows_1.getUptimeMonitorVersion)()}`, (config.commitMessages || {}).commitAuthorName, (config.commitMessages || {}).commitAuthorEmail, (config.commitMessages || {}).signoff);
     (0, git_1.push)();
     console.log("All done!");
 };
