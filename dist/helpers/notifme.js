@@ -3,11 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendNotification = void 0;
+exports.sendNotification = exports.formatTelegramHtmlMessage = void 0;
 const axios_1 = __importDefault(require("axios"));
 const notifme_sdk_1 = __importDefault(require("notifme-sdk"));
 const environment_1 = require("./environment");
 const secrets_1 = require("./secrets");
+const formatTelegramHtmlMessage = (message) => message
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\*\*([\s\S]*?)\*\*/g, "<b>$1</b>");
+exports.formatTelegramHtmlMessage = formatTelegramHtmlMessage;
 const channels = {};
 if ((0, secrets_1.getSecret)("NOTIFICATION_EMAIL_SENDGRID") ||
     (0, secrets_1.getSecret)("NOTIFICATION_EMAIL_SES") ||
@@ -316,10 +322,10 @@ const sendNotification = async (message) => {
             const chatIds = (0, secrets_1.getSecret)("NOTIFICATION_TELEGRAM_CHAT_ID")?.split(",") ?? [];
             for (const chatId of chatIds) {
                 await axios_1.default.post(`https://api.telegram.org/bot${(0, secrets_1.getSecret)("NOTIFICATION_TELEGRAM_BOT_KEY")}/sendMessage`, {
-                    parse_mode: "Markdown",
+                    parse_mode: "HTML",
                     disable_web_page_preview: true,
                     chat_id: chatId.trim(),
-                    text: message.replace(/_/g, '\\_'),
+                    text: (0, exports.formatTelegramHtmlMessage)(message),
                 });
             }
             console.log("Success Telegram");
