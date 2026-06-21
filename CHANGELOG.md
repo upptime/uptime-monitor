@@ -1,3 +1,12 @@
+## v1.43.1 (2026-06-21)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.0...v1.43.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`143b22d`](https://github.com/upptime/uptime-monitor/commit/143b22d)  Format Telegram notifications as HTML (#301)
+(Issues: [`#301`](https://github.com/upptime/uptime-monitor/issues/301))
+
 ## v1.43.0 (2026-06-19)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.42.7...v1.43.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.0.tar.gz))
