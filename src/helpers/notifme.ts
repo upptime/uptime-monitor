@@ -4,6 +4,13 @@ import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-s
 import { replaceEnvironmentVariables } from "./environment";
 import { getSecret } from "./secrets";
 
+export const formatTelegramHtmlMessage = (message: string) =>
+  message
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\*\*([\s\S]*?)\*\*/g, "<b>$1</b>");
+
 const channels: {
   email?: Channel<EmailProvider>;
   sms?: Channel<SmsProvider>;
@@ -339,10 +346,10 @@ export const sendNotification = async (message: string) => {
         await axios.post(
           `https://api.telegram.org/bot${getSecret("NOTIFICATION_TELEGRAM_BOT_KEY")}/sendMessage`,
           {
-            parse_mode: "Markdown",
+            parse_mode: "HTML",
             disable_web_page_preview: true,
             chat_id: chatId.trim(),
-            text: message.replace(/_/g, '\\_'),
+            text: formatTelegramHtmlMessage(message),
           }
         );
       }
