@@ -35,6 +35,9 @@ jest.mock("./helpers/secrets", () => ({
 jest.mock("./helpers/notifme", () => ({
     sendNotification: jest.fn(),
 }));
+jest.mock("./helpers/ping", () => ({
+    ping: jest.fn(),
+}));
 jest.mock("./summary", () => ({
     generateSummary: jest.fn(),
 }));
@@ -43,6 +46,7 @@ const { getConfig } = require("./helpers/config");
 const { getOctokit } = require("./helpers/github");
 const { shouldContinue } = require("./helpers/init-check");
 const { commit, push } = require("./helpers/git");
+const { ping } = require("./helpers/ping");
 const { getOwnerRepo, getSecret } = require("./helpers/secrets");
 describe("update globalping handling", () => {
     const originalCwd = process.cwd();
@@ -182,6 +186,58 @@ describe("update globalping handling", () => {
         });
         await update(true);
         expect(commit).toHaveBeenCalledWith("🟩 Custom Commit Site is up (200 in 123 ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>", undefined, undefined, undefined);
+    });
+    it("does not log raw tcp-ping endpoints when URL and port come from secrets", async () => {
+        const oldSecretHost = process.env.SECRET_TCP_HOST;
+        const oldSecretPort = process.env.SECRET_TCP_PORT;
+        process.env.SECRET_TCP_HOST = "10.0.0.10";
+        process.env.SECRET_TCP_PORT = "8443";
+        getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [
+                {
+                    name: "Secret TCP",
+                    url: "$SECRET_TCP_HOST",
+                    check: "tcp-ping",
+                    port: "$SECRET_TCP_PORT",
+                },
+            ],
+            assignees: [],
+            workflowSchedule: {},
+        });
+        ping.mockResolvedValue({
+            address: "10.0.0.10",
+            port: 8443,
+            attempts: 5,
+            avg: 12.4,
+            max: 15,
+            min: 10,
+            results: [{ seq: 1, time: 12.4 }],
+        });
+        const logSpy = jest.spyOn(console, "log").mockImplementation(() => { });
+        const errorSpy = jest.spyOn(console, "error").mockImplementation(() => { });
+        let serializedLogs = "";
+        try {
+            await update(false);
+            serializedLogs = [...logSpy.mock.calls, ...errorSpy.mock.calls]
+                .map((args) => args.map((arg) => (typeof arg === "string" ? arg : JSON.stringify(arg))).join(" "))
+                .join("\n");
+        }
+        finally {
+            logSpy.mockRestore();
+            errorSpy.mockRestore();
+            if (oldSecretHost === undefined)
+                delete process.env.SECRET_TCP_HOST;
+            else
+                process.env.SECRET_TCP_HOST = oldSecretHost;
+            if (oldSecretPort === undefined)
+                delete process.env.SECRET_TCP_PORT;
+            else
+                process.env.SECRET_TCP_PORT = oldSecretPort;
+        }
+        expect(serializedLogs).not.toContain("10.0.0.10");
+        expect(serializedLogs).not.toContain("8443");
     });
     it("passes commitMessages.signoff to status change commits", async () => {
         getConfig.mockResolvedValue({
