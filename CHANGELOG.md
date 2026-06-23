@@ -1,3 +1,12 @@
+## v1.43.2 (2026-06-23)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.1...v1.43.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.2.tar.gz))
+
+### 🔒 Security issues
+
+- [`5542b75`](https://github.com/upptime/uptime-monitor/commit/5542b75)  Avoid logging tcp-ping endpoints (#302)
+(Issues: [`#302`](https://github.com/upptime/uptime-monitor/issues/302))
+
 ## v1.43.1 (2026-06-21)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.0...v1.43.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.1.tar.gz))
