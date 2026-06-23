@@ -46,6 +46,10 @@ function getHumanReadableTimeDifference(startTime) {
         result.push(`${diffMinutes.toLocaleString()} ${diffMinutes > 1 ? "minutes" : "minute"}`);
     return result.join(", ");
 }
+function sanitizeTcpPingResultForLog(tcpResult) {
+    const { address: _address, port: _port, ...safeResult } = tcpResult;
+    return safeResult;
+}
 function getStatusFromHttpResult(site, httpCode, data, responseTime) {
     const expectedStatusCodes = (site.expectedStatusCodes || [
         200, 201, 202, 203, 200, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307,
@@ -366,7 +370,7 @@ const update = async (shouldCommit = false) => {
                         if (attempt > 1) {
                             console.log(`tcp-ping succeeded on attempt ${attempt}`);
                         }
-                        console.log("Got result", tcpResult);
+                        console.log("Got result", sanitizeTcpPingResultForLog(tcpResult));
                         let responseTime = (tcpResult.avg || 0).toFixed(0);
                         if (parseInt(responseTime) > (site.maxResponseTime || 60000))
                             status = "degraded";

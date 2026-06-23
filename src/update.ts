@@ -50,6 +50,11 @@ function getHumanReadableTimeDifference(startTime: Date): string {
   return result.join(", ");
 }
 
+function sanitizeTcpPingResultForLog<T extends { address?: unknown; port?: unknown }>(tcpResult: T) {
+  const { address: _address, port: _port, ...safeResult } = tcpResult;
+  return safeResult;
+}
+
 function getStatusFromHttpResult(
   site: UpptimeConfig["sites"][number],
   httpCode: number,
@@ -415,7 +420,7 @@ export const update = async (shouldCommit = false) => {
             if (attempt > 1) {
               console.log(`tcp-ping succeeded on attempt ${attempt}`);
             }
-            console.log("Got result", tcpResult);
+            console.log("Got result", sanitizeTcpPingResultForLog(tcpResult));
             let responseTime = (tcpResult.avg || 0).toFixed(0);
             if (parseInt(responseTime) > (site.maxResponseTime || 60000)) status = "degraded";
             return {
