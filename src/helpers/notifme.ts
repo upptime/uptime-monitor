@@ -11,6 +11,28 @@ export const formatTelegramHtmlMessage = (message: string) =>
     .replace(/>/g, "&gt;")
     .replace(/\*\*([\s\S]*?)\*\*/g, "<b>$1</b>");
 
+export const createTeamsAdaptiveCardPayload = (message: string) => ({
+  type: "message",
+  attachments: [
+    {
+      contentType: "application/vnd.microsoft.card.adaptive",
+      contentUrl: null,
+      content: {
+        $schema: "https://adaptivecards.io/schemas/adaptive-card.json",
+        type: "AdaptiveCard",
+        version: "1.2",
+        body: [
+          {
+            type: "TextBlock",
+            text: message,
+            wrap: true,
+          },
+        ],
+      },
+    },
+  ],
+});
+
 const channels: {
   email?: Channel<EmailProvider>;
   sms?: Channel<SmsProvider>;
@@ -388,13 +410,10 @@ export const sendNotification = async (message: string) => {
   if (getSecret("NOTIFICATION_TEAMS")) {
     console.log("Sending Microsoft Teams");
     try {
-      await axios.post(`${getSecret("NOTIFICATION_TEAMS_WEBHOOK_URL")}`, {
-        "@context": "https://schema.org/extensions",
-        "@type": "MessageCard",
-        themeColor: "0072C6",
-        text: message,
-        summary: message
-      });
+      await axios.post(
+        `${getSecret("NOTIFICATION_TEAMS_WEBHOOK_URL")}`,
+        createTeamsAdaptiveCardPayload(message)
+      );
       console.log("Success Microsoft Teams");
     } catch (error) {
       console.log("Got an error", error);
