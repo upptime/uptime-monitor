@@ -18,12 +18,12 @@ const loadNotifme = (secrets: Record<string, string>) => {
   return { axios, ...notifme };
 };
 
-describe("Telegram notifications", () => {
-  afterEach(() => {
-    process.env = originalEnv;
-    jest.clearAllMocks();
-  });
+afterEach(() => {
+  process.env = originalEnv;
+  jest.clearAllMocks();
+});
 
+describe("Telegram notifications", () => {
   it("formats Upptime's default GitHub-flavored status message for Telegram HTML", async () => {
     const { axios, sendNotification } = loadNotifme({
       NOTIFICATION_TELEGRAM: "true",
@@ -47,5 +47,38 @@ describe("Telegram notifications", () => {
     expect(formatTelegramHtmlMessage("**down <again>** & needs attention")).toBe(
       "<b>down &lt;again&gt;</b> &amp; needs attention"
     );
+  });
+});
+
+describe("Microsoft Teams notifications", () => {
+  it("sends Adaptive Card payloads for Teams workflow webhooks", async () => {
+    const { axios, sendNotification } = loadNotifme({
+      NOTIFICATION_TEAMS: "true",
+      NOTIFICATION_TEAMS_WEBHOOK_URL: "https://teams.example/webhook",
+    });
+
+    await sendNotification("🟥 My Site (https://example.com/) is **down** : https://github.com/o/r/issues/1");
+
+    expect(axios.post).toHaveBeenCalledWith("https://teams.example/webhook", {
+      type: "message",
+      attachments: [
+        {
+          contentType: "application/vnd.microsoft.card.adaptive",
+          contentUrl: null,
+          content: {
+            $schema: "https://adaptivecards.io/schemas/adaptive-card.json",
+            type: "AdaptiveCard",
+            version: "1.2",
+            body: [
+              {
+                type: "TextBlock",
+                text: "🟥 My Site (https://example.com/) is **down** : https://github.com/o/r/issues/1",
+                wrap: true,
+              },
+            ],
+          },
+        },
+      ],
+    });
   });
 });

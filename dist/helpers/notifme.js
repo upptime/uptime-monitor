@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendNotification = exports.formatTelegramHtmlMessage = void 0;
+exports.sendNotification = exports.createTeamsAdaptiveCardPayload = exports.formatTelegramHtmlMessage = void 0;
 const axios_1 = __importDefault(require("axios"));
 const notifme_sdk_1 = __importDefault(require("notifme-sdk"));
 const environment_1 = require("./environment");
@@ -14,6 +14,28 @@ const formatTelegramHtmlMessage = (message) => message
     .replace(/>/g, "&gt;")
     .replace(/\*\*([\s\S]*?)\*\*/g, "<b>$1</b>");
 exports.formatTelegramHtmlMessage = formatTelegramHtmlMessage;
+const createTeamsAdaptiveCardPayload = (message) => ({
+    type: "message",
+    attachments: [
+        {
+            contentType: "application/vnd.microsoft.card.adaptive",
+            contentUrl: null,
+            content: {
+                $schema: "https://adaptivecards.io/schemas/adaptive-card.json",
+                type: "AdaptiveCard",
+                version: "1.2",
+                body: [
+                    {
+                        type: "TextBlock",
+                        text: message,
+                        wrap: true,
+                    },
+                ],
+            },
+        },
+    ],
+});
+exports.createTeamsAdaptiveCardPayload = createTeamsAdaptiveCardPayload;
 const channels = {};
 if ((0, secrets_1.getSecret)("NOTIFICATION_EMAIL_SENDGRID") ||
     (0, secrets_1.getSecret)("NOTIFICATION_EMAIL_SES") ||
@@ -362,13 +384,7 @@ const sendNotification = async (message) => {
     if ((0, secrets_1.getSecret)("NOTIFICATION_TEAMS")) {
         console.log("Sending Microsoft Teams");
         try {
-            await axios_1.default.post(`${(0, secrets_1.getSecret)("NOTIFICATION_TEAMS_WEBHOOK_URL")}`, {
-                "@context": "https://schema.org/extensions",
-                "@type": "MessageCard",
-                themeColor: "0072C6",
-                text: message,
-                summary: message
-            });
+            await axios_1.default.post(`${(0, secrets_1.getSecret)("NOTIFICATION_TEAMS_WEBHOOK_URL")}`, (0, exports.createTeamsAdaptiveCardPayload)(message));
             console.log("Success Microsoft Teams");
         }
         catch (error) {
