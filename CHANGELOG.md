@@ -1,3 +1,12 @@
+## v1.43.3 (2026-06-26)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.2...v1.43.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.3.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`6972c44`](https://github.com/upptime/uptime-monitor/commit/6972c44)  Send Microsoft Teams Adaptive Cards (#303)
+(Issues: [`#303`](https://github.com/upptime/uptime-monitor/issues/303))
+
 ## v1.43.2 (2026-06-23)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.1...v1.43.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.2.tar.gz))
