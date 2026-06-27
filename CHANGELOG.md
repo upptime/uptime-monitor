@@ -1,3 +1,12 @@
+## v1.43.4 (2026-06-27)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.3...v1.43.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.4.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`2120991`](https://github.com/upptime/uptime-monitor/commit/2120991)  Use Slack webhook URLs for notifications (#304)
+(Issues: [`#304`](https://github.com/upptime/uptime-monitor/issues/304))
+
 ## v1.43.3 (2026-06-26)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.2...v1.43.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.3.tar.gz))
