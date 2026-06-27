@@ -161,18 +161,18 @@ if ((0, secrets_1.getSecret)("NOTIFICATION_SMS_46ELKS") ||
         });
     }
 }
-if ((0, secrets_1.getSecret)("NOTIFICATION_SLACK")) {
+const slackWebhookUrl = (0, secrets_1.getSecret)("NOTIFICATION_SLACK_WEBHOOK_URL");
+if ((0, secrets_1.getSecret)("NOTIFICATION_SLACK") && slackWebhookUrl) {
     channels.slack = {
-        providers: [],
+        providers: [
+            {
+                type: "webhook",
+                webhookUrl: slackWebhookUrl,
+            },
+        ],
         multiProviderStrategy: (0, secrets_1.getSecret)("NOTIFICATION_SLACK_STRATEGY") ||
             "roundrobin",
     };
-    if ((0, secrets_1.getSecret)("NOTIFICATION_SLACK_WEBHOOK")) {
-        channels.slack.providers.push({
-            type: "webhook",
-            webhookUrl: (0, secrets_1.getSecret)("NOTIFICATION_SLACK_WEBHOOK_URL"),
-        });
-    }
 }
 const notifier = new notifme_sdk_1.default({
     channels,

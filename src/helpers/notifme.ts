@@ -172,20 +172,19 @@ if (
   }
 }
 
-if (getSecret("NOTIFICATION_SLACK")) {
+const slackWebhookUrl = getSecret("NOTIFICATION_SLACK_WEBHOOK_URL");
+if (getSecret("NOTIFICATION_SLACK") && slackWebhookUrl) {
   channels.slack = {
-    providers: [],
+    providers: [
+      {
+        type: "webhook",
+        webhookUrl: slackWebhookUrl as string,
+      },
+    ],
     multiProviderStrategy:
       (getSecret("NOTIFICATION_SLACK_STRATEGY") as "fallback" | "roundrobin" | "no-fallback") ||
       "roundrobin",
   };
-
-  if (getSecret("NOTIFICATION_SLACK_WEBHOOK")) {
-    channels.slack.providers.push({
-      type: "webhook",
-      webhookUrl: getSecret("NOTIFICATION_SLACK_WEBHOOK_URL") as string,
-    });
-  }
 }
 
 const notifier = new NotifmeSdk({
