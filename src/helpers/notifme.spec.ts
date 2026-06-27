@@ -1,3 +1,14 @@
+const mockNotifmeSend = jest.fn();
+const mockNotifmeConstructor = jest.fn();
+
+jest.mock("notifme-sdk", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation((config) => {
+    mockNotifmeConstructor(config);
+    return { send: mockNotifmeSend };
+  }),
+}));
+
 jest.mock("axios", () => ({
   __esModule: true,
   default: {
@@ -21,6 +32,36 @@ const loadNotifme = (secrets: Record<string, string>) => {
 afterEach(() => {
   process.env = originalEnv;
   jest.clearAllMocks();
+});
+
+describe("Slack notifications", () => {
+  it("uses the webhook URL secret without requiring the legacy boolean webhook flag", async () => {
+    const { sendNotification } = loadNotifme({
+      NOTIFICATION_SLACK: "true",
+      NOTIFICATION_SLACK_WEBHOOK_URL: "https://hooks.slack.example/services/T000/B000/secret",
+    });
+
+    await sendNotification("🟥 My Site is **down**");
+
+    expect(mockNotifmeConstructor).toHaveBeenCalledWith({
+      channels: {
+        slack: {
+          providers: [
+            {
+              type: "webhook",
+              webhookUrl: "https://hooks.slack.example/services/T000/B000/secret",
+            },
+          ],
+          multiProviderStrategy: "roundrobin",
+        },
+      },
+    });
+    expect(mockNotifmeSend).toHaveBeenCalledWith({
+      slack: {
+        text: "🟥 My Site is **down**",
+      },
+    });
+  });
 });
 
 describe("Telegram notifications", () => {
