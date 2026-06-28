@@ -1,3 +1,12 @@
+## v1.43.5 (2026-06-28)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.5) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.4...v1.43.5) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.5) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.5.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.5.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`737242b`](https://github.com/upptime/uptime-monitor/commit/737242b)  Report notification provider send failures (#305)
+(Issues: [`#305`](https://github.com/upptime/uptime-monitor/issues/305))
+
 ## v1.43.4 (2026-06-27)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.3...v1.43.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.4.tar.gz))
