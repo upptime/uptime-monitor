@@ -1,8 +1,40 @@
 import axios from "axios";
-import type { Channel } from "notifme-sdk";
+import type { Channel, Notification, NotificationStatus } from "notifme-sdk";
 import NotifmeSdk, { EmailProvider, SlackProvider, SmsProvider } from "notifme-sdk";
 import { replaceEnvironmentVariables } from "./environment";
 import { getSecret } from "./secrets";
+
+type NotifmeChannel = "email" | "sms" | "slack";
+
+const notifmeChannelLabels: Record<NotifmeChannel, string> = {
+  email: "email",
+  sms: "SMS",
+  slack: "Slack",
+};
+
+export const formatNotificationError = (error: unknown): string => {
+  if (error instanceof Error) return error.message;
+  if (typeof error === "string") return error;
+  if (error && typeof error === "object" && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string") return message;
+  }
+  return String(error);
+};
+
+const logNotificationError = (channel: string, error: unknown) => {
+  console.log(`Error sending ${channel}: ${formatNotificationError(error)}`);
+};
+
+const logNotifmeSendResult = (channel: NotifmeChannel, result: NotificationStatus | undefined) => {
+  const label = notifmeChannelLabels[channel];
+  if (result?.status === "error") {
+    logNotificationError(label, result.errors?.[channel] || result.errors || result);
+    return false;
+  }
+  console.log(`Success ${label}`);
+  return true;
+};
 
 export const formatTelegramHtmlMessage = (message: string) =>
   message
@@ -198,17 +230,17 @@ export const sendNotification = async (message: string) => {
   if (channels.email) {
     console.log("Sending email");
     try {
-      await notifier.send({
+      const result = await notifier.send({
         email: {
           from: (getSecret("NOTIFICATION_EMAIL_FROM") || getSecret("NOTIFICATION_EMAIL")) as string,
           to: (getSecret("NOTIFICATION_EMAIL_TO") || getSecret("NOTIFICATION_EMAIL")) as string,
           subject: message,
           html: message,
         },
-      });
-      console.log("Success email");
+      } as Notification);
+      logNotifmeSendResult("email", result);
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("email", error);
     }
     console.log("Finished sending email");
   }
@@ -217,31 +249,31 @@ export const sendNotification = async (message: string) => {
     try {
       const phoneNumbers = getSecret("NOTIFICATION_SMS_TO")?.split(",") ?? [];
       for (const phoneNumber of phoneNumbers) {
-        await notifier.send({
+        const result = await notifier.send({
           sms: {
             from: getSecret("NOTIFICATION_SMS_FROM") as string,
             to: phoneNumber,
             text: message,
           },
-        });
+        } as Notification);
+        if (!logNotifmeSendResult("sms", result)) break;
       }
-      console.log("Success SMS");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("SMS", error);
     }
     console.log("Finished sending SMS");
   }
   if (channels.slack) {
     console.log("Sending Slack");
     try {
-      await notifier.send({
+      const result = await notifier.send({
         slack: {
           text: message,
         },
-      });
-      console.log("Success Slack");
+      } as Notification);
+      logNotifmeSendResult("slack", result);
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Slack", error);
     }
     console.log("Finished sending Slack");
   }
@@ -253,7 +285,7 @@ export const sendNotification = async (message: string) => {
       });
       console.log("Success Discord");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Discord", error);
     }
     console.log("Finished sending Discord");
   }
@@ -265,7 +297,7 @@ export const sendNotification = async (message: string) => {
       });
       console.log("Success Google Chat");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Google Chat", error);
     }
     console.log("Finished sending Google Chat");
   }
@@ -289,7 +321,7 @@ export const sendNotification = async (message: string) => {
       });
       console.log("Success Zulip");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Zulip", error);
     }
     console.log("Finished sending Zulip");
   }
@@ -376,7 +408,7 @@ export const sendNotification = async (message: string) => {
       }
       console.log("Success Telegram");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Telegram", error);
     }
     console.log("Finished sending Telegram");
   }
@@ -402,7 +434,7 @@ export const sendNotification = async (message: string) => {
       );
       console.log("Success Lark");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Lark", error);
     }
     console.log("Finished sending Lark");
   }
@@ -415,7 +447,7 @@ export const sendNotification = async (message: string) => {
       );
       console.log("Success Microsoft Teams");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Microsoft Teams", error);
     }
     console.log("Finished sending Microsoft Teams");
   }
@@ -434,7 +466,7 @@ export const sendNotification = async (message: string) => {
       });
       console.log("Success Webhook");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Webhook", error);
     }
     console.log("Finished sending Webhook");
   }
@@ -448,7 +480,7 @@ export const sendNotification = async (message: string) => {
       });
       console.log("Success Gotify");
     } catch (error) {
-      console.log("Got an error", error);
+      logNotificationError("Gotify", error);
     }
     console.log("Finished sending Gotify");
   }

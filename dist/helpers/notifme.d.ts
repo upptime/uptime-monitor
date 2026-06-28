@@ -1,3 +1,4 @@
+export declare const formatNotificationError: (error: unknown) => string;
 export declare const formatTelegramHtmlMessage: (message: string) => string;
 export declare const createTeamsAdaptiveCardPayload: (message: string) => {
     type: string;

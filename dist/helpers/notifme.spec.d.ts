@@ -2,6 +2,7 @@ declare const mockNotifmeSend: jest.Mock<any, any, any>;
 declare const mockNotifmeConstructor: jest.Mock<any, any, any>;
 declare const originalEnv: NodeJS.ProcessEnv;
 declare const loadNotifme: (secrets: Record<string, string>) => {
+    formatNotificationError: (error: unknown) => string;
     formatTelegramHtmlMessage: (message: string) => string;
     createTeamsAdaptiveCardPayload: (message: string) => {
         type: string;

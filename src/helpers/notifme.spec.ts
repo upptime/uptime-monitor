@@ -20,6 +20,7 @@ const originalEnv = process.env;
 
 const loadNotifme = (secrets: Record<string, string>) => {
   jest.resetModules();
+  mockNotifmeSend.mockResolvedValue({ status: "success" });
   process.env = { ...originalEnv, SECRETS_CONTEXT: JSON.stringify(secrets) };
 
   const axios = require("axios").default as { post: jest.Mock };
@@ -61,6 +62,57 @@ describe("Slack notifications", () => {
         text: "🟥 My Site is **down**",
       },
     });
+  });
+});
+
+describe("Notifme result handling", () => {
+  it("logs provider result errors instead of reporting successful email delivery", async () => {
+    const { sendNotification } = loadNotifme({
+      NOTIFICATION_EMAIL: "true",
+      NOTIFICATION_EMAIL_FROM: "sender@example.com",
+      NOTIFICATION_EMAIL_TO: "recipient@example.com",
+      NOTIFICATION_EMAIL_SES: "true",
+      NOTIFICATION_EMAIL_SES_ACCESS_KEY_ID: "aws-access-key-id",
+      NOTIFICATION_EMAIL_SES_SECRET_ACCESS_KEY: "aws-secret-access-key",
+      NOTIFICATION_EMAIL_SES_REGION: "eu-west-1",
+    });
+    mockNotifmeSend.mockResolvedValueOnce({
+      status: "error",
+      errors: {
+        email: "403 - SignatureDoesNotMatch",
+      },
+    });
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await sendNotification("🟩 My Site is back up");
+
+    const logged = consoleSpy.mock.calls.map((call) => call.join("\n")).join("\n");
+    expect(logged).toContain("Error sending email: 403 - SignatureDoesNotMatch");
+    expect(logged).not.toContain("Success email");
+    consoleSpy.mockRestore();
+  });
+
+  it("logs webhook errors without dumping axios request configuration", async () => {
+    const { axios, sendNotification } = loadNotifme({
+      NOTIFICATION_TELEGRAM: "true",
+      NOTIFICATION_TELEGRAM_BOT_KEY: "telegram-bot-key",
+      NOTIFICATION_TELEGRAM_CHAT_ID: "12345",
+    });
+    axios.post.mockRejectedValueOnce({
+      message: "Request failed with status code 401",
+      config: {
+        url: "https://api.telegram.org/bottelegram-bot-key/sendMessage",
+      },
+    });
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await sendNotification("🟥 My Site is **down**");
+
+    const logged = consoleSpy.mock.calls.map((call) => call.join("\n")).join("\n");
+    expect(logged).toContain("Error sending Telegram: Request failed with status code 401");
+    expect(logged).not.toContain("bottelegram-bot-key");
+    expect(logged).not.toContain("sendMessage");
+    consoleSpy.mockRestore();
   });
 });
 
