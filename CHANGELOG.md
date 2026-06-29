@@ -1,3 +1,12 @@
+## v1.43.6 (2026-06-29)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.6) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.5...v1.43.6) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.6) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.6.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.6.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`66d0cce`](https://github.com/upptime/uptime-monitor/commit/66d0cce)  Fall back when Graphs CI dispatch is not ready (#306)
+(Issues: [`#306`](https://github.com/upptime/uptime-monitor/issues/306))
+
 ## v1.43.5 (2026-06-28)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.5) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.4...v1.43.5) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.5) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.5.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.5.tar.gz))
