@@ -201,10 +201,19 @@ jobs:
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
       - name: Generate graphs
+        id: dispatch_graphs
         uses: benc-uk/workflow-dispatch@v1
+        continue-on-error: true
         with:
           workflow: Graphs CI
           token: \${{ secrets.GH_PAT || github.token }}
+      - name: Generate graphs directly if dispatch fails
+        if: steps.dispatch_graphs.outcome == 'failure'
+        uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
+        with:
+          command: "graphs"
+        env:
+          GH_PAT: \${{ secrets.GH_PAT || github.token }}
       - name: Generate site
         uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
