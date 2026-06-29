@@ -122,6 +122,47 @@ describe("workflow helpers", () => {
       - "assets/**"`);
   });
 
+  it("falls back to direct graph generation when workflow dispatch cannot find Graphs CI", async () => {
+    const { getConfig, getOctokit, setupCiWorkflow } = loadWorkflowHelpers();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.9" }] });
+
+    (getConfig as jest.Mock).mockResolvedValue({
+      sites: [{ name: "Example", url: "https://example.com" }],
+      workflowSchedule: {},
+      commitMessages: {},
+      "status-website": {},
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { listReleases },
+    });
+
+    const workflow = await setupCiWorkflow();
+    const parsed = yaml.load(workflow) as any;
+    const steps = parsed.jobs.release.steps;
+    const dispatchStep = steps.find((step: any) => step.id === "dispatch_graphs");
+    const fallbackStep = steps.find((step: any) => step.name === "Generate graphs directly if dispatch fails");
+
+    expect(dispatchStep).toMatchObject({
+      name: "Generate graphs",
+      uses: "benc-uk/workflow-dispatch@v1",
+      "continue-on-error": true,
+      with: {
+        workflow: "Graphs CI",
+        token: "${{ secrets.GH_PAT || github.token }}",
+      },
+    });
+    expect(fallbackStep).toMatchObject({
+      if: "steps.dispatch_graphs.outcome == 'failure'",
+      uses: "upptime/uptime-monitor@v1.41.9",
+      with: {
+        command: "graphs",
+      },
+      env: {
+        GH_PAT: "${{ secrets.GH_PAT || github.token }}",
+      },
+    });
+  });
+
   it("generates workflows that serialize branch writes from the live branch tip", async () => {
     const {
       getConfig,

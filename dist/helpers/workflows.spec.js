@@ -98,6 +98,43 @@ describe("workflow helpers", () => {
     paths:
       - "assets/**"`);
     });
+    it("falls back to direct graph generation when workflow dispatch cannot find Graphs CI", async () => {
+        const { getConfig, getOctokit, setupCiWorkflow } = loadWorkflowHelpers();
+        const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.9" }] });
+        getConfig.mockResolvedValue({
+            sites: [{ name: "Example", url: "https://example.com" }],
+            workflowSchedule: {},
+            commitMessages: {},
+            "status-website": {},
+        });
+        getOctokit.mockResolvedValue({
+            repos: { listReleases },
+        });
+        const workflow = await setupCiWorkflow();
+        const parsed = js_yaml_1.default.load(workflow);
+        const steps = parsed.jobs.release.steps;
+        const dispatchStep = steps.find((step) => step.id === "dispatch_graphs");
+        const fallbackStep = steps.find((step) => step.name === "Generate graphs directly if dispatch fails");
+        expect(dispatchStep).toMatchObject({
+            name: "Generate graphs",
+            uses: "benc-uk/workflow-dispatch@v1",
+            "continue-on-error": true,
+            with: {
+                workflow: "Graphs CI",
+                token: "${{ secrets.GH_PAT || github.token }}",
+            },
+        });
+        expect(fallbackStep).toMatchObject({
+            if: "steps.dispatch_graphs.outcome == 'failure'",
+            uses: "upptime/uptime-monitor@v1.41.9",
+            with: {
+                command: "graphs",
+            },
+            env: {
+                GH_PAT: "${{ secrets.GH_PAT || github.token }}",
+            },
+        });
+    });
     it("generates workflows that serialize branch writes from the live branch tip", async () => {
         const { getConfig, getOctokit, graphsCiWorkflow, responseTimeCiWorkflow, setupCiWorkflow, siteCiWorkflow, summaryCiWorkflow, updateTemplateCiWorkflow, updatesCiWorkflow, uptimeCiWorkflow, } = loadWorkflowHelpers();
         const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.9" }] });
