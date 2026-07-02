@@ -48,6 +48,7 @@ const { shouldContinue } = require("./helpers/init-check");
 const { commit, push } = require("./helpers/git");
 const { ping } = require("./helpers/ping");
 const { getOwnerRepo, getSecret } = require("./helpers/secrets");
+const { sendNotification } = require("./helpers/notifme");
 describe("update globalping handling", () => {
     const originalCwd = process.cwd();
     let testCwd;
@@ -186,6 +187,75 @@ describe("update globalping handling", () => {
         });
         await update(true);
         expect(commit).toHaveBeenCalledWith("🟩 Custom Commit Site is up (200 in 123 ms) [skip ci] [upptime]\n\nSigned-off-by: Upptime Bot <73812536+upptime-bot@users.noreply.github.com>", undefined, undefined, undefined);
+    });
+    it("redacts secret-backed site URLs in notifications", async () => {
+        const oldPrivateUrl = process.env.PRIVATE_STATUS_URL;
+        process.env.PRIVATE_STATUS_URL = "https://private.example/path?session=abc123";
+        (0, fs_1.mkdirSync)((0, path_1.join)(testCwd, "history"));
+        (0, fs_1.writeFileSync)((0, path_1.join)(testCwd, "history", "secret-url.yml"), [
+            "url: $PRIVATE_STATUS_URL",
+            "status: down",
+            "code: 500",
+            "responseTime: 0",
+            "lastUpdated: 2026-01-01T00:00:00.000Z",
+            "startTime: 2026-01-01T00:00:00.000Z",
+            "generator: Upptime <https://github.com/upptime/upptime>",
+        ].join("\n"));
+        getSecret.mockImplementation((key) => key === "GLOBALPING_TOKEN" ? "globalping-token" : undefined);
+        getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [
+                {
+                    name: "Secret URL",
+                    url: "$PRIVATE_STATUS_URL",
+                    type: "globalping",
+                },
+            ],
+            assignees: [],
+            workflowSchedule: {},
+        });
+        issueApi.listForRepo
+            .mockResolvedValueOnce({ data: [] })
+            .mockResolvedValueOnce({
+            data: [
+                {
+                    number: 42,
+                    title: "🛑 Secret URL is down",
+                    created_at: "2026-01-01T00:00:00.000Z",
+                },
+            ],
+        });
+        mockCreateMeasurement.mockResolvedValue({
+            ok: true,
+            data: { id: "measurement-id" },
+        });
+        mockAwaitMeasurement.mockResolvedValue({
+            ok: true,
+            data: {
+                results: [
+                    {
+                        result: {
+                            statusCode: 200,
+                            timings: { total: 123 },
+                            rawBody: "",
+                        },
+                    },
+                ],
+            },
+        });
+        try {
+            await update(true);
+        }
+        finally {
+            if (oldPrivateUrl === undefined)
+                delete process.env.PRIVATE_STATUS_URL;
+            else
+                process.env.PRIVATE_STATUS_URL = oldPrivateUrl;
+        }
+        expect(sendNotification).toHaveBeenCalledWith("🟩 Secret URL ([redacted]) is back up");
+        expect(JSON.stringify(sendNotification.mock.calls)).not.toContain("https://private.example/path?session=abc123");
+        expect(JSON.stringify(sendNotification.mock.calls)).not.toContain("$PRIVATE_STATUS_URL");
     });
     it("does not log raw tcp-ping endpoints when URL and port come from secrets", async () => {
         const oldSecretHost = process.env.SECRET_TCP_HOST;

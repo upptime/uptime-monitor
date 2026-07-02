@@ -50,6 +50,12 @@ function sanitizeTcpPingResultForLog(tcpResult) {
     const { address: _address, port: _port, ...safeResult } = tcpResult;
     return safeResult;
 }
+function redactEnvironmentVariableReferences(value) {
+    return value.replace(/\$[A-Za-z_][A-Za-z0-9_]*/g, "[redacted]");
+}
+function getNotificationSiteUrl(site) {
+    return redactEnvironmentVariableReferences(site.url);
+}
 function getStatusFromHttpResult(site, httpCode, data, responseTime) {
     const expectedStatusCodes = (site.expectedStatusCodes || [
         200, 201, 202, 203, 200, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307,
@@ -185,6 +191,7 @@ const update = async (shouldCommit = false) => {
             await delay(config.delay);
         }
         const slug = (0, slug_1.getSiteSlug)(site);
+        const notificationSiteUrl = getNotificationSiteUrl(site);
         let currentStatus = "unknown";
         let startTime = new Date();
         try {
@@ -588,10 +595,10 @@ generator: Upptime <https://github.com/upptime/upptime>
                                 const downmsg = (await (0, secrets_1.getSecret)("NOTIFICATIONS_DOWN_MESSAGE"))
                                     ? ((0, secrets_1.getSecret)("NOTIFICATIONS_DOWN_MESSAGE") || "")
                                         .replace("$SITE_NAME", site.name)
-                                        .replace("$SITE_URL", `(${site.url})`)
+                                        .replace("$SITE_URL", `(${notificationSiteUrl})`)
                                         .replace("$ISSUE_URL", `${newIssue.data.html_url}`)
                                         .replace("$RESPONSE_CODE", result.httpCode.toString())
-                                    : `$EMOJI ${site.name} (${site.url}) is $STATUS : ${newIssue.data.html_url}`;
+                                    : `$EMOJI ${site.name} (${notificationSiteUrl}) is $STATUS : ${newIssue.data.html_url}`;
                                 await (0, notifme_1.sendNotification)(status === "down"
                                     ? `${downmsg
                                         .replace("$STATUS", "**down**")
@@ -640,8 +647,8 @@ generator: Upptime <https://github.com/upptime/upptime>
                             const upmsg = (await (0, secrets_1.getSecret)("NOTIFICATIONS_UP_MESSAGE"))
                                 ? ((0, secrets_1.getSecret)("NOTIFICATIONS_UP_MESSAGE") || "")
                                     .replace("$SITE_NAME", site.name)
-                                    .replace("$SITE_URL", `(${site.url})`)
-                                : `$EMOJI ${site.name} (${site.url}) $STATUS`;
+                                    .replace("$SITE_URL", `(${notificationSiteUrl})`)
+                                : `$EMOJI ${site.name} (${notificationSiteUrl}) $STATUS`;
                             await (0, notifme_1.sendNotification)(upmsg
                                 .replace("$EMOJI", `${config.commitPrefixStatusUp || "🟩"}`)
                                 .replace("$STATUS", `${issues.data[0].title.includes("degraded")

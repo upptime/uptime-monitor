@@ -55,6 +55,14 @@ function sanitizeTcpPingResultForLog<T extends { address?: unknown; port?: unkno
   return safeResult;
 }
 
+function redactEnvironmentVariableReferences(value: string) {
+  return value.replace(/\$[A-Za-z_][A-Za-z0-9_]*/g, "[redacted]");
+}
+
+function getNotificationSiteUrl(site: UpptimeConfig["sites"][number]) {
+  return redactEnvironmentVariableReferences(site.url);
+}
+
 function getStatusFromHttpResult(
   site: UpptimeConfig["sites"][number],
   httpCode: number,
@@ -218,6 +226,7 @@ export const update = async (shouldCommit = false) => {
     }
 
     const slug = getSiteSlug(site);
+    const notificationSiteUrl = getNotificationSiteUrl(site);
     let currentStatus = "unknown";
     let startTime = new Date();
     try {
@@ -652,10 +661,10 @@ generator: Upptime <https://github.com/upptime/upptime>
                 const downmsg = (await getSecret("NOTIFICATIONS_DOWN_MESSAGE"))
                   ? (getSecret("NOTIFICATIONS_DOWN_MESSAGE") || "")
                       .replace("$SITE_NAME", site.name)
-                      .replace("$SITE_URL", `(${site.url})`)
+                      .replace("$SITE_URL", `(${notificationSiteUrl})`)
                       .replace("$ISSUE_URL", `${newIssue.data.html_url}`)
                       .replace("$RESPONSE_CODE", result.httpCode.toString())
-                  : `$EMOJI ${site.name} (${site.url}) is $STATUS : ${newIssue.data.html_url}`;
+                  : `$EMOJI ${site.name} (${notificationSiteUrl}) is $STATUS : ${newIssue.data.html_url}`;
 
                 await sendNotification(
                   status === "down"
@@ -711,8 +720,8 @@ generator: Upptime <https://github.com/upptime/upptime>
               const upmsg = (await getSecret("NOTIFICATIONS_UP_MESSAGE"))
                 ? (getSecret("NOTIFICATIONS_UP_MESSAGE") || "")
                     .replace("$SITE_NAME", site.name)
-                    .replace("$SITE_URL", `(${site.url})`)
-                : `$EMOJI ${site.name} (${site.url}) $STATUS`;
+                    .replace("$SITE_URL", `(${notificationSiteUrl})`)
+                : `$EMOJI ${site.name} (${notificationSiteUrl}) $STATUS`;
 
               await sendNotification(
                 upmsg

@@ -57,6 +57,7 @@ const { shouldContinue } = require("./helpers/init-check") as typeof import("./h
 const { commit, push } = require("./helpers/git") as typeof import("./helpers/git");
 const { ping } = require("./helpers/ping") as typeof import("./helpers/ping");
 const { getOwnerRepo, getSecret } = require("./helpers/secrets") as typeof import("./helpers/secrets");
+const { sendNotification } = require("./helpers/notifme") as typeof import("./helpers/notifme");
 
 describe("update globalping handling", () => {
   const originalCwd = process.cwd();
@@ -224,6 +225,84 @@ describe("update globalping handling", () => {
       undefined,
       undefined,
       undefined
+    );
+  });
+
+  it("redacts secret-backed site URLs in notifications", async () => {
+    const oldPrivateUrl = process.env.PRIVATE_STATUS_URL;
+    process.env.PRIVATE_STATUS_URL = "https://private.example/path?session=abc123";
+    mkdirSync(join(testCwd, "history"));
+    writeFileSync(
+      join(testCwd, "history", "secret-url.yml"),
+      [
+        "url: $PRIVATE_STATUS_URL",
+        "status: down",
+        "code: 500",
+        "responseTime: 0",
+        "lastUpdated: 2026-01-01T00:00:00.000Z",
+        "startTime: 2026-01-01T00:00:00.000Z",
+        "generator: Upptime <https://github.com/upptime/upptime>",
+      ].join("\n")
+    );
+    (getSecret as jest.Mock).mockImplementation((key: string) =>
+      key === "GLOBALPING_TOKEN" ? "globalping-token" : undefined
+    );
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "Secret URL",
+          url: "$PRIVATE_STATUS_URL",
+          type: "globalping",
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+    });
+    issueApi.listForRepo
+      .mockResolvedValueOnce({ data: [] })
+      .mockResolvedValueOnce({
+        data: [
+          {
+            number: 42,
+            title: "🛑 Secret URL is down",
+            created_at: "2026-01-01T00:00:00.000Z",
+          },
+        ],
+      });
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: true,
+      data: {
+        results: [
+          {
+            result: {
+              statusCode: 200,
+              timings: { total: 123 },
+              rawBody: "",
+            },
+          },
+        ],
+      },
+    });
+
+    try {
+      await update(true);
+    } finally {
+      if (oldPrivateUrl === undefined) delete process.env.PRIVATE_STATUS_URL;
+      else process.env.PRIVATE_STATUS_URL = oldPrivateUrl;
+    }
+
+    expect(sendNotification).toHaveBeenCalledWith("🟩 Secret URL ([redacted]) is back up");
+    expect(JSON.stringify((sendNotification as jest.Mock).mock.calls)).not.toContain(
+      "https://private.example/path?session=abc123"
+    );
+    expect(JSON.stringify((sendNotification as jest.Mock).mock.calls)).not.toContain(
+      "$PRIVATE_STATUS_URL"
     );
   });
 
