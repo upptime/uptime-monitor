@@ -1,3 +1,12 @@
+## v1.43.7 (2026-07-02)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.7) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.6...v1.43.7) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.7) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.7.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.7.tar.gz))
+
+### 🔒 Security issues
+
+- [`f0c92a9`](https://github.com/upptime/uptime-monitor/commit/f0c92a9)  Redact secret-backed URLs in notifications (#307)
+(Issues: [`#307`](https://github.com/upptime/uptime-monitor/issues/307))
+
 ## v1.43.6 (2026-06-29)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.6) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.5...v1.43.6) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.6) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.6.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.6.tar.gz))
