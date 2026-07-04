@@ -1,3 +1,12 @@
+## v1.43.8 (2026-07-04)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.8) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.7...v1.43.8) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.8) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.8.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.8.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`e86cf2a`](https://github.com/upptime/uptime-monitor/commit/e86cf2a)  Set up Node 20 for generated graphs (#308)
+(Issues: [`#308`](https://github.com/upptime/uptime-monitor/issues/308))
+
 ## v1.43.7 (2026-07-02)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.7) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.6...v1.43.7) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.7) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.7.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.7.tar.gz))
