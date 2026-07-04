@@ -79,6 +79,10 @@ jobs:
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ secrets.GH_PAT || github.token }}
+      - name: Setup Node.js for graphs
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
       - name: Generate graphs
         uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
@@ -207,6 +211,11 @@ jobs:
         with:
           workflow: Graphs CI
           token: \${{ secrets.GH_PAT || github.token }}
+      - name: Setup Node.js for direct graph generation
+        if: steps.dispatch_graphs.outcome == 'failure'
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
       - name: Generate graphs directly if dispatch fails
         if: steps.dispatch_graphs.outcome == 'failure'
         uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
