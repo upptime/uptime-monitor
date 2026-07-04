@@ -98,6 +98,35 @@ describe("workflow helpers", () => {
     paths:
       - "assets/**"`);
     });
+    it("pins generated graph rendering to Node 20", async () => {
+        const { getConfig, getOctokit, graphsCiWorkflow } = loadWorkflowHelpers();
+        const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.9" }] });
+        getConfig.mockResolvedValue({
+            sites: [{ name: "Example", url: "https://example.com" }],
+            workflowSchedule: {},
+            commitMessages: {},
+            "status-website": {},
+        });
+        getOctokit.mockResolvedValue({
+            repos: { listReleases },
+        });
+        const workflow = await graphsCiWorkflow();
+        const parsed = js_yaml_1.default.load(workflow);
+        const steps = parsed.jobs.release.steps;
+        expect(steps).toEqual(expect.arrayContaining([
+            expect.objectContaining({
+                name: "Setup Node.js for graphs",
+                uses: "actions/setup-node@v6",
+                with: { "node-version": "20" },
+            }),
+            expect.objectContaining({
+                name: "Generate graphs",
+                uses: "upptime/uptime-monitor@v1.41.9",
+                with: { command: "graphs" },
+            }),
+        ]));
+        expect(steps.findIndex((step) => step.name === "Setup Node.js for graphs")).toBeLessThan(steps.findIndex((step) => step.name === "Generate graphs"));
+    });
     it("falls back to direct graph generation when workflow dispatch cannot find Graphs CI", async () => {
         const { getConfig, getOctokit, setupCiWorkflow } = loadWorkflowHelpers();
         const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.9" }] });
@@ -114,6 +143,7 @@ describe("workflow helpers", () => {
         const parsed = js_yaml_1.default.load(workflow);
         const steps = parsed.jobs.release.steps;
         const dispatchStep = steps.find((step) => step.id === "dispatch_graphs");
+        const setupNodeStep = steps.find((step) => step.name === "Setup Node.js for direct graph generation");
         const fallbackStep = steps.find((step) => step.name === "Generate graphs directly if dispatch fails");
         expect(dispatchStep).toMatchObject({
             name: "Generate graphs",
@@ -122,6 +152,13 @@ describe("workflow helpers", () => {
             with: {
                 workflow: "Graphs CI",
                 token: "${{ secrets.GH_PAT || github.token }}",
+            },
+        });
+        expect(setupNodeStep).toMatchObject({
+            if: "steps.dispatch_graphs.outcome == 'failure'",
+            uses: "actions/setup-node@v6",
+            with: {
+                "node-version": "20",
             },
         });
         expect(fallbackStep).toMatchObject({
@@ -134,6 +171,7 @@ describe("workflow helpers", () => {
                 GH_PAT: "${{ secrets.GH_PAT || github.token }}",
             },
         });
+        expect(steps.indexOf(setupNodeStep)).toBeLessThan(steps.indexOf(fallbackStep));
     });
     it("generates workflows that serialize branch writes from the live branch tip", async () => {
         const { getConfig, getOctokit, graphsCiWorkflow, responseTimeCiWorkflow, setupCiWorkflow, siteCiWorkflow, summaryCiWorkflow, updateTemplateCiWorkflow, updatesCiWorkflow, uptimeCiWorkflow, } = loadWorkflowHelpers();
