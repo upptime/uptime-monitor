@@ -1,3 +1,12 @@
+## v1.43.9 (2026-07-06)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.9) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.8...v1.43.9) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.9) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.9.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.9.tar.gz))
+
+### 🔒 Security issues
+
+- [`0c7dd36`](https://github.com/upptime/uptime-monitor/commit/0c7dd36)  Refresh vulnerable transitive dependencies (#309)
+(Issues: [`#309`](https://github.com/upptime/uptime-monitor/issues/309))
+
 ## v1.43.8 (2026-07-04)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.8) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.7...v1.43.8) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.8) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.8.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.8.tar.gz))
