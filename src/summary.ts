@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { mkdirp, readdir, readFile, writeFile } from "fs-extra";
 import { join } from "path";
 import { format } from "prettier";
@@ -9,7 +10,6 @@ import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
 import { getSiteSlug } from "./helpers/slug";
 import { SiteStatus } from "./interfaces";
-import { parse } from "url";
 import { getOwnerRepo } from "./helpers/secrets";
 
 const workflowBadges = [
@@ -92,7 +92,7 @@ export const generateSummary = async () => {
     let fallbackIcon = "";
     try {
       fallbackIcon = `https://icons.duckduckgo.com/ip3/${
-        parse(site.url).hostname
+        new URL(site.url).hostname
       }.ico`;
     } catch (error) {}
 
