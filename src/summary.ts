@@ -370,7 +370,9 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
             : numberOfDown === config.sites.length
             ? i18n.completeOutage || "🟥 Complete outage"
             : i18n.partialOutage || "🟧 Partial outage"
-        }**`;
+        }** _(${i18n.lastUpdated || "Last updated"}: ${dayjs().format(
+          "DD/MM/YYYY HH:mm:ss"
+        )})_`;
       }
       return line;
     })
