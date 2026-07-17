@@ -16,7 +16,7 @@ import WebSocket from "ws";
 import { getConfig } from "./helpers/config";
 import { replaceEnvironmentVariables } from "./helpers/environment";
 import { commit, lastCommit, push } from "./helpers/git";
-import { getOctokit } from "./helpers/github";
+import { getOctokit, retryTransientGitHubRequest } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
 import { sendNotification } from "./helpers/notifme";
 import { ping } from "./helpers/ping";
@@ -150,15 +150,17 @@ export const update = async (shouldCommit = false) => {
 
   let hasDelta = false;
 
-  const _ongoingMaintenanceEvents = await octokit.issues.listForRepo({
-    owner,
-    repo,
-    state: "open",
-    filter: "all",
-    sort: "created",
-    direction: "desc",
-    labels: "maintenance",
-  });
+  const _ongoingMaintenanceEvents = await retryTransientGitHubRequest(() =>
+    octokit.issues.listForRepo({
+      owner,
+      repo,
+      state: "open",
+      filter: "all",
+      sort: "created",
+      direction: "desc",
+      labels: "maintenance",
+    })
+  );
   console.log("Found ongoing maintenance events", _ongoingMaintenanceEvents.data.length);
   const ongoingMaintenanceEvents: {
     issueNumber: number;

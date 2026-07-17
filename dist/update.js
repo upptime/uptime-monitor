@@ -121,7 +121,7 @@ const update = async (shouldCommit = false) => {
     const config = await (0, config_1.getConfig)();
     const octokit = await (0, github_1.getOctokit)();
     let hasDelta = false;
-    const _ongoingMaintenanceEvents = await octokit.issues.listForRepo({
+    const _ongoingMaintenanceEvents = await (0, github_1.retryTransientGitHubRequest)(() => octokit.issues.listForRepo({
         owner,
         repo,
         state: "open",
@@ -129,7 +129,7 @@ const update = async (shouldCommit = false) => {
         sort: "created",
         direction: "desc",
         labels: "maintenance",
-    });
+    }));
     console.log("Found ongoing maintenance events", _ongoingMaintenanceEvents.data.length);
     const ongoingMaintenanceEvents = [];
     for await (const incident of _ongoingMaintenanceEvents.data) {
