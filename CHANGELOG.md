@@ -1,3 +1,12 @@
+## v1.43.10 (2026-07-17)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.10) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.9...v1.43.10) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.10) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.10.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.10.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`42a950d`](https://github.com/upptime/uptime-monitor/commit/42a950d)  Retry transient GitHub API failures (#311)
+(Issues: [`#311`](https://github.com/upptime/uptime-monitor/issues/311))
+
 ## v1.43.9 (2026-07-06)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.9) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.8...v1.43.9) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.9) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.9.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.9.tar.gz))
