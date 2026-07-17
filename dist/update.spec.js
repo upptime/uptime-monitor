@@ -18,6 +18,7 @@ jest.mock("./helpers/config", () => ({
     getConfig: jest.fn(),
 }));
 jest.mock("./helpers/github", () => ({
+    ...jest.requireActual("./helpers/github"),
     getOctokit: jest.fn(),
 }));
 jest.mock("./helpers/init-check", () => ({
@@ -87,6 +88,21 @@ describe("update globalping handling", () => {
     afterEach(() => {
         process.chdir(originalCwd);
         (0, fs_1.rmSync)(testCwd, { recursive: true, force: true });
+    });
+    it("retries transient GitHub API failures while loading maintenance events", async () => {
+        getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [],
+            assignees: [],
+            workflowSchedule: {},
+        });
+        issueApi.listForRepo
+            .mockRejectedValueOnce({ status: 503 })
+            .mockResolvedValueOnce({ data: [] });
+        await update(false);
+        expect(issueApi.listForRepo).toHaveBeenCalledTimes(2);
+        expect(push).toHaveBeenCalled();
     });
     it("fails the action instead of recording downtime when Globalping rejects a measurement", async () => {
         mockCreateMeasurement.mockResolvedValue({
