@@ -11,6 +11,7 @@ import {
   UPTIME_CI_SCHEDULE,
 } from "./constants";
 import { getOctokit } from "./github";
+import { getWorkflowSecretNames, renderSecretsContext } from "./workflow-secrets";
 
 let release: string | undefined = undefined;
 export const getUptimeMonitorVersion = async () => {
@@ -113,36 +114,6 @@ const getHasIpV6Site = async (): Promise<boolean> => {
   return hasIpV6;
 };
 
-const SECRET_NAME_PATTERN = /^[A-Z_][A-Z0-9_]*$/;
-
-export const getSecretsContext = (config: UpptimeConfig): string => {
-  if (config.secrets === undefined) return "${{ toJson(secrets) }}";
-  if (!Array.isArray(config.secrets)) {
-    throw new Error("Invalid .upptimerc.yml secrets allowlist: expected a list of GitHub secret names.");
-  }
-
-  const configuredSecrets = [...new Set(config.secrets)];
-  for (const secret of configuredSecrets) {
-    if (typeof secret !== "string") {
-      throw new Error("Invalid .upptimerc.yml secrets allowlist: expected every secret name to be a string.");
-    }
-    if (!SECRET_NAME_PATTERN.test(secret) || /^GITHUB_/.test(secret)) {
-      throw new Error(
-        `Invalid secret name in .upptimerc.yml secrets allowlist: ${secret}. ` +
-          "GitHub secret names must contain only uppercase letters, numbers, and underscores, " +
-          "must not start with a number, and must not start with GITHUB_."
-      );
-    }
-  }
-
-  const secretPairs = configuredSecrets
-    .map((secret) => `${JSON.stringify(secret)}:\${{ toJson(secrets.${secret}) }}`)
-    .join(",");
-  // GitHub Actions evaluates expressions inside YAML string scalars, so this
-  // keeps JSON structure static while each allowlisted secret is resolved at runtime.
-  return `'{${secretPairs}}'`;
-};
-
 export const responseTimeCiWorkflow = async () => {
   const config = await getConfig();
   const workflowSchedule = config.workflowSchedule || {};
@@ -173,7 +144,8 @@ jobs:
           command: "response-time"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: ${getSecretsContext(config)}
+          # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
+          SECRETS_CONTEXT: ${renderSecretsContext(getWorkflowSecretNames(config))}
 `;
 };
 
@@ -215,7 +187,8 @@ jobs:
           command: "response-time"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: ${getSecretsContext(config)}
+          # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
+          SECRETS_CONTEXT: ${renderSecretsContext(getWorkflowSecretNames(config))}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
@@ -436,6 +409,7 @@ jobs:
           command: "update"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: ${getSecretsContext(config)}
+          # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
+          SECRETS_CONTEXT: ${renderSecretsContext(getWorkflowSecretNames(config))}
 `;
 };
