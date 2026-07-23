@@ -1,3 +1,12 @@
+## v1.43.11 (2026-07-23)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.11) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.10...v1.43.11) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.11) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.11.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.11.tar.gz))
+
+### 🔒 Security issues
+
+- [`0ae0e69`](https://github.com/upptime/uptime-monitor/commit/0ae0e69)  Harden generated workflow secret access (#312)
+(Issues: [`#312`](https://github.com/upptime/uptime-monitor/issues/312))
+
 ## v1.43.10 (2026-07-17)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.10) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.9...v1.43.10) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.10) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.10.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.10.tar.gz))
