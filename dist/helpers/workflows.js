@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uptimeCiWorkflow = exports.updatesCiWorkflow = exports.updateTemplateCiWorkflow = exports.summaryCiWorkflow = exports.siteCiWorkflow = exports.setupCiWorkflow = exports.responseTimeCiWorkflow = exports.getSecretsContext = exports.graphsCiWorkflow = exports.getUptimeMonitorVersion = void 0;
+exports.uptimeCiWorkflow = exports.updatesCiWorkflow = exports.updateTemplateCiWorkflow = exports.summaryCiWorkflow = exports.siteCiWorkflow = exports.setupCiWorkflow = exports.responseTimeCiWorkflow = exports.graphsCiWorkflow = exports.getUptimeMonitorVersion = void 0;
 const config_1 = require("./config");
 const constants_1 = require("./constants");
 const github_1 = require("./github");
+const workflow_secrets_1 = require("./workflow-secrets");
 let release = undefined;
 const getUptimeMonitorVersion = async () => {
     if (release)
@@ -101,32 +102,6 @@ const getHasIpV6Site = async () => {
         console.log("No IPv6 sites detected, skipping WARP setup step", JSON.stringify(config.sites));
     return hasIpV6;
 };
-const SECRET_NAME_PATTERN = /^[A-Z_][A-Z0-9_]*$/;
-const getSecretsContext = (config) => {
-    if (config.secrets === undefined)
-        return "${{ toJson(secrets) }}";
-    if (!Array.isArray(config.secrets)) {
-        throw new Error("Invalid .upptimerc.yml secrets allowlist: expected a list of GitHub secret names.");
-    }
-    const configuredSecrets = [...new Set(config.secrets)];
-    for (const secret of configuredSecrets) {
-        if (typeof secret !== "string") {
-            throw new Error("Invalid .upptimerc.yml secrets allowlist: expected every secret name to be a string.");
-        }
-        if (!SECRET_NAME_PATTERN.test(secret) || /^GITHUB_/.test(secret)) {
-            throw new Error(`Invalid secret name in .upptimerc.yml secrets allowlist: ${secret}. ` +
-                "GitHub secret names must contain only uppercase letters, numbers, and underscores, " +
-                "must not start with a number, and must not start with GITHUB_.");
-        }
-    }
-    const secretPairs = configuredSecrets
-        .map((secret) => `${JSON.stringify(secret)}:\${{ toJson(secrets.${secret}) }}`)
-        .join(",");
-    // GitHub Actions evaluates expressions inside YAML string scalars, so this
-    // keeps JSON structure static while each allowlisted secret is resolved at runtime.
-    return `'{${secretPairs}}'`;
-};
-exports.getSecretsContext = getSecretsContext;
 const responseTimeCiWorkflow = async () => {
     const config = await (0, config_1.getConfig)();
     const workflowSchedule = config.workflowSchedule || {};
@@ -156,7 +131,8 @@ jobs:
           command: "response-time"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: ${(0, exports.getSecretsContext)(config)}
+          # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
+          SECRETS_CONTEXT: ${(0, workflow_secrets_1.renderSecretsContext)((0, workflow_secrets_1.getWorkflowSecretNames)(config))}
 `;
 };
 exports.responseTimeCiWorkflow = responseTimeCiWorkflow;
@@ -197,7 +173,8 @@ jobs:
           command: "response-time"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: ${(0, exports.getSecretsContext)(config)}
+          # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
+          SECRETS_CONTEXT: ${(0, workflow_secrets_1.renderSecretsContext)((0, workflow_secrets_1.getWorkflowSecretNames)(config))}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await (0, exports.getUptimeMonitorVersion)()}
         with:
@@ -409,7 +386,8 @@ jobs:
           command: "update"
         env:
           GH_PAT: \${{ secrets.GH_PAT || github.token }}
-          SECRETS_CONTEXT: ${(0, exports.getSecretsContext)(config)}
+          # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
+          SECRETS_CONTEXT: ${(0, workflow_secrets_1.renderSecretsContext)((0, workflow_secrets_1.getWorkflowSecretNames)(config))}
 `;
 };
 exports.uptimeCiWorkflow = uptimeCiWorkflow;
