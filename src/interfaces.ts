@@ -86,6 +86,7 @@ export interface UpptimeConfig {
     uptimeYear?: string;
     responseTimeGraphAlt?: string;
     liveStatus?: string;
+    lastUpdated?: string;
     allSystemsOperational?: string;
     degradedPerformance?: string;
     completeOutage?: string;

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { mkdirp, readdir, readFile, writeFile } from "fs-extra";
 import { join } from "path";
 import { format } from "prettier";
@@ -9,7 +10,6 @@ import { getOctokit } from "./helpers/github";
 import { shouldContinue } from "./helpers/init-check";
 import { getSiteSlug } from "./helpers/slug";
 import { SiteStatus } from "./interfaces";
-import { parse } from "url";
 import { getOwnerRepo } from "./helpers/secrets";
 
 const workflowBadges = [
@@ -92,7 +92,7 @@ export const generateSummary = async () => {
     let fallbackIcon = "";
     try {
       fallbackIcon = `https://icons.duckduckgo.com/ip3/${
-        parse(site.url).hostname
+        new URL(site.url).hostname
       }.ico`;
     } catch (error) {}
 
@@ -370,7 +370,9 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
             : numberOfDown === config.sites.length
             ? i18n.completeOutage || "🟥 Complete outage"
             : i18n.partialOutage || "🟧 Partial outage"
-        }**`;
+        }** _(${i18n.lastUpdated || "Last updated"}: ${dayjs().format(
+          "DD/MM/YYYY HH:mm:ss"
+        )})_`;
       }
       return line;
     })
