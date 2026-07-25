@@ -1,3 +1,12 @@
+## v1.43.12 (2026-07-25)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.12) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.11...v1.43.12) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.12) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.12.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.12.tar.gz))
+
+### 🔒 Security issues
+
+- [`f7e8dde`](https://github.com/upptime/uptime-monitor/commit/f7e8dde)  Update fast-xml-parser to 5.10.1 (#313)
+(Issues: [`#313`](https://github.com/upptime/uptime-monitor/issues/313))
+
 ## v1.43.11 (2026-07-23)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.11) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.10...v1.43.11) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.11) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.11.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.11.tar.gz))
