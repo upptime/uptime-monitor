@@ -1,3 +1,11 @@
+## v1.43.13 (2026-08-01)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.13) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.12...v1.43.13) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.13) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.13.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.13.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`57074ea`](https://github.com/upptime/uptime-monitor/commit/57074ea)  Fix maintenance reliability edge cases
+
 ## v1.43.12 (2026-07-25)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.12) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.11...v1.43.12) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.12) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.12.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.12.tar.gz))
