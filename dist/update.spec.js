@@ -50,6 +50,7 @@ const { commit, push } = require("./helpers/git");
 const { ping } = require("./helpers/ping");
 const { getOwnerRepo, getSecret } = require("./helpers/secrets");
 const { sendNotification } = require("./helpers/notifme");
+const { generateSummary } = require("./summary");
 describe("update globalping handling", () => {
     const originalCwd = process.cwd();
     let testCwd;
@@ -165,6 +166,29 @@ describe("update globalping handling", () => {
         expect((0, fs_1.existsSync)(historyPath)).toBe(true);
         expect((0, fs_1.readFileSync)(historyPath, "utf8")).toContain("url: https://example.com");
         expect(commit).toHaveBeenCalledWith(expect.stringContaining("鸭鸭梨 is up (200 in 123 ms)"), undefined, undefined, undefined);
+    });
+    it("waits for summary generation and surfaces its failures", async () => {
+        mockCreateMeasurement.mockResolvedValue({
+            ok: true,
+            data: { id: "measurement-id" },
+        });
+        mockAwaitMeasurement.mockResolvedValue({
+            ok: true,
+            data: {
+                results: [
+                    {
+                        result: {
+                            statusCode: 200,
+                            timings: { total: 123 },
+                            rawBody: "",
+                        },
+                    },
+                ],
+            },
+        });
+        generateSummary.mockRejectedValueOnce(new Error("summary failed"));
+        await expect(update(true)).rejects.toThrow("summary failed");
+        expect(generateSummary).toHaveBeenCalledTimes(1);
     });
     it("supports $EMOJI in custom status change commit messages", async () => {
         getConfig.mockResolvedValue({
