@@ -59,6 +59,7 @@ const { commit, push } = require("./helpers/git") as typeof import("./helpers/gi
 const { ping } = require("./helpers/ping") as typeof import("./helpers/ping");
 const { getOwnerRepo, getSecret } = require("./helpers/secrets") as typeof import("./helpers/secrets");
 const { sendNotification } = require("./helpers/notifme") as typeof import("./helpers/notifme");
+const { generateSummary } = require("./summary") as typeof import("./summary");
 
 describe("update globalping handling", () => {
   const originalCwd = process.cwd();
@@ -198,6 +199,31 @@ describe("update globalping handling", () => {
       undefined,
       undefined
     );
+  });
+
+  it("waits for summary generation and surfaces its failures", async () => {
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: true,
+      data: {
+        results: [
+          {
+            result: {
+              statusCode: 200,
+              timings: { total: 123 },
+              rawBody: "",
+            },
+          },
+        ],
+      },
+    });
+    (generateSummary as jest.Mock).mockRejectedValueOnce(new Error("summary failed"));
+
+    await expect(update(true)).rejects.toThrow("summary failed");
+    expect(generateSummary).toHaveBeenCalledTimes(1);
   });
 
   it("supports $EMOJI in custom status change commit messages", async () => {

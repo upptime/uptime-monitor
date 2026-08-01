@@ -23,4 +23,39 @@ describe("summary README workflow badges", () => {
         expect((0, summary_1.normalizeWorkflowBadges)(readme, "owner", "status")).toBe("[![Uptime CI](https://github.com/owner/status/workflows/Uptime%20CI/badge.svg)](https://github.com/owner/status/actions/workflows/uptime.yml)");
     });
 });
+describe("recent status issue cleanup", () => {
+    it("paginates recent issues without deleting old short incidents", async () => {
+        const now = Date.parse("2026-08-01T12:00:00.000Z");
+        const recentIssue = {
+            number: 42,
+            node_id: "recent-node",
+            created_at: "2026-08-01T11:50:00.000Z",
+            closed_at: "2026-08-01T11:55:00.000Z",
+            comments: 1,
+        };
+        const oldIssue = {
+            number: 7,
+            node_id: "old-node",
+            created_at: "2025-01-01T00:00:00.000Z",
+            closed_at: "2025-01-01T00:05:00.000Z",
+            comments: 1,
+        };
+        const listForRepo = jest.fn();
+        const paginate = jest.fn().mockResolvedValue([recentIssue, oldIssue]);
+        const graphql = jest.fn().mockResolvedValue({});
+        await (0, summary_1.deleteRecentStatusIssues)({ issues: { listForRepo }, paginate, graphql }, "owner", "repo", now);
+        expect(paginate).toHaveBeenCalledWith(listForRepo, {
+            owner: "owner",
+            repo: "repo",
+            state: "closed",
+            labels: "status",
+            since: "2026-08-01T11:45:00.000Z",
+            per_page: 100,
+        });
+        expect(graphql).toHaveBeenCalledTimes(1);
+        expect(graphql.mock.calls[0][0]).toContain("$issueId: ID!");
+        expect(graphql.mock.calls[0][1]).toEqual({ issueId: "recent-node" });
+        expect(JSON.stringify(graphql.mock.calls)).not.toContain("old-node");
+    });
+});
 //# sourceMappingURL=summary.spec.js.map

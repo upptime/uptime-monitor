@@ -677,7 +677,7 @@ generator: Upptime <https://github.com/upptime/upptime>
     }
     (0, git_1.push)();
     if (hasDelta)
-        (0, summary_1.generateSummary)();
+        await (0, summary_1.generateSummary)();
 };
 exports.update = update;
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

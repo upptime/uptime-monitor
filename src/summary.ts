@@ -55,6 +55,55 @@ export const normalizeWorkflowBadges = (
     return content.replace(workflowBadgePattern, workflowBadgeMarkdown(owner, repo, badge));
   }, readmeContent);
 
+const recentIssueWindowMs = 15 * 60 * 1000;
+
+export const deleteRecentStatusIssues = async (
+  octokit: Awaited<ReturnType<typeof getOctokit>>,
+  owner: string,
+  repo: string,
+  now = Date.now()
+) => {
+  const cutoff = now - recentIssueWindowMs;
+  const issuesRecentlyClosed = await octokit.paginate(
+    octokit.issues.listForRepo,
+    {
+      owner,
+      repo,
+      state: "closed",
+      labels: "status",
+      // `since` filters by updated_at, so the closed_at check below is still required.
+      since: new Date(cutoff).toISOString(),
+      per_page: 100,
+    }
+  );
+  console.log("Found recently closed issues", issuesRecentlyClosed.length);
+  for await (const issue of issuesRecentlyClosed) {
+    const closedAt = issue.closed_at ? new Date(issue.closed_at).getTime() : 0;
+    if (
+      closedAt >= cutoff &&
+      // If this issue was closed within 15 minutes
+      closedAt - new Date(issue.created_at).getTime() < recentIssueWindowMs &&
+      // It has 1 comment (the default Upptime one)
+      issue.comments === 1
+    ) {
+      try {
+        console.log("Trying to delete issue", issue.number, issue.node_id);
+        const result = await octokit.graphql(
+          `mutation deleteIssue($issueId: ID!) {
+            deleteIssue(input: { issueId: $issueId }) {
+              clientMutationId
+            }
+          }`,
+          { issueId: issue.node_id }
+        );
+        console.log("Success", result);
+      } catch (error) {
+        console.log("Error deleting this issue", error);
+      }
+    }
+  }
+};
+
 export const generateSummary = async () => {
   if (!(await shouldContinue())) return;
   await mkdirp("history");
@@ -429,43 +478,6 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
   if (!config.skipDeleteIssues) {
     // Find all the opened issues that shouldn't have opened
     // Say, Upptime found a down monitor and it was back up within 5 min
-    const issuesRecentlyClosed = await octokit.paginate(
-      octokit.issues.listForRepo,
-      {
-        owner,
-        repo,
-        state: "closed",
-        labels: "status",
-        per_page: 100,
-      }
-    );
-    console.log(
-      "Found recently closed issues",
-      issuesRecentlyClosed.length
-    );
-    for await (const issue of issuesRecentlyClosed) {
-      if (
-        issue.closed_at &&
-        // If this issue was closed within 15 minutes
-        new Date(issue.closed_at).getTime() -
-          new Date(issue.created_at).getTime() <
-          900000 &&
-        // It has 1 comment (the default Upptime one)
-        issue.comments === 1
-      ) {
-        try {
-          console.log("Trying to delete issue", issue.number, issue.node_id);
-          const result = await octokit.graphql(`
-      mutation deleteIssue {
-        deleteIssue(input:{issueId:"${issue.node_id}"}) {
-          clientMutationId
-        }
-      }`);
-          console.log("Success", result);
-        } catch (error) {
-          console.log("Error deleting this issue", error);
-        }
-      }
-    }
+    await deleteRecentStatusIssues(octokit, owner, repo);
   }
 };

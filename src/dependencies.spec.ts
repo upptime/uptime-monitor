@@ -84,6 +84,35 @@ jobs:
     );
   });
 
+  it("updates every occurrence of a dependency in a workflow", async () => {
+    const { getConfig, getOctokit, getOwnerRepo, updateDependencies } = loadDependencies();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.42.4" }] });
+    const listTags = jest.fn();
+    const getContent = jest.fn().mockResolvedValue({ data: { content: "", sha: "readme-sha" } });
+    const createOrUpdateFileContents = jest.fn().mockResolvedValue({});
+
+    writeWorkflow(`name: Updates CI
+jobs:
+  first:
+    steps:
+      - uses: upptime/uptime-monitor@v1.41.2
+  second:
+    steps:
+      - uses: upptime/uptime-monitor@v1.41.2
+`);
+    (getOwnerRepo as jest.Mock).mockReturnValue(["upptime", "upptime"]);
+    (getConfig as jest.Mock).mockResolvedValue({ commitMessages: {} });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { createOrUpdateFileContents, getContent, listReleases, listTags },
+    });
+
+    await updateDependencies();
+
+    const updatedWorkflow = readFileSync(workflowPath, "utf8");
+    expect(updatedWorkflow.match(/upptime\/uptime-monitor@v1\.42\.4/g)).toHaveLength(2);
+    expect(updatedWorkflow).not.toContain("upptime/uptime-monitor@v1.41.2");
+  });
+
   it("uses native git signoff for dependency bumps without duplicating the built-in trailer", async () => {
     const { commit, getConfig, getOctokit, getOwnerRepo, updateDependencies } = loadDependencies();
     const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.42.4" }] });
