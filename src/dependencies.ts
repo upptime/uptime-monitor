@@ -73,7 +73,7 @@ export const updateDependencies = async () => {
     const pkgName = pkgOldVersion.split("@")[0];
     for await (const workflow of workflows) {
       let contents = await readFile(join(".", ".github", "workflows", workflow), "utf8");
-      contents = contents.replace(pkgOldVersion, uses[pkgOldVersion]);
+      contents = contents.replaceAll(pkgOldVersion, uses[pkgOldVersion]);
       await writeFile(join(".", ".github", "workflows", workflow), contents);
     }
     if (pkgOldVersion.split("@")[1] !== uses[pkgOldVersion].split("@")[1]) changes++;

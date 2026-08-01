@@ -429,18 +429,21 @@ ${config.summaryEndHtmlComment || "<!--end: status pages-->"}${endText}`;
   if (!config.skipDeleteIssues) {
     // Find all the opened issues that shouldn't have opened
     // Say, Upptime found a down monitor and it was back up within 5 min
-    const issuesRecentlyClosed = await octokit.issues.listForRepo({
-      owner,
-      repo,
-      state: "closed",
-      labels: "status",
-      per_page: 10,
-    });
+    const issuesRecentlyClosed = await octokit.paginate(
+      octokit.issues.listForRepo,
+      {
+        owner,
+        repo,
+        state: "closed",
+        labels: "status",
+        per_page: 100,
+      }
+    );
     console.log(
       "Found recently closed issues",
-      issuesRecentlyClosed.data.length
+      issuesRecentlyClosed.length
     );
-    for await (const issue of issuesRecentlyClosed.data) {
+    for await (const issue of issuesRecentlyClosed) {
       if (
         issue.closed_at &&
         // If this issue was closed within 15 minutes

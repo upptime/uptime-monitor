@@ -755,7 +755,7 @@ generator: Upptime <https://github.com/upptime/upptime>
   }
   push();
 
-  if (hasDelta) generateSummary();
+  if (hasDelta) await generateSummary();
 };
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
