@@ -88,13 +88,12 @@ jobs:
     name: Generate graphs
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
-${getTokenSteps()}
       - name: Setup Node.js for graphs
         uses: actions/setup-node@v6
         with:
@@ -136,12 +135,12 @@ jobs:
     name: Check status
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
       - name: Update response time
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
@@ -174,12 +173,12 @@ jobs:
     name: Setup Upptime
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
       - name: Update template
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
@@ -263,12 +262,12 @@ jobs:
     runs-on: ${config.runner || DEFAULT_RUNNER}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
       - name: Generate site
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
@@ -307,12 +306,12 @@ jobs:
     name: Generate README
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
@@ -341,12 +340,12 @@ jobs:
     name: Build
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
       - name: Update template
         uses: upptime/uptime-monitor@master
         with:
@@ -375,12 +374,12 @@ jobs:
     name: Deploy updates
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
       - name: Update code
         uses: upptime/updates@master
         env:
@@ -407,12 +406,12 @@ jobs:
     name: Check status
     runs-on: ${config.runner || DEFAULT_RUNNER}
     steps:
+${getTokenSteps()}
       - name: Checkout
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
           token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
-${getTokenSteps()}
       - name: Check endpoint status
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:

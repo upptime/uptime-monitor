@@ -29,10 +29,5 @@ export const getTokenSteps= (): string => {
         id: token
         with:
           client-id: \${{ vars.GH_APP_ID }}
-          private-key: \${{ secrets.GH_APP_PRIVATE_KEY }}
-      - name: Checkout with credentials
-        uses: actions/checkout@v6
-        with:
-          ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}`;
+          private-key: \${{ secrets.GH_APP_PRIVATE_KEY }}`;
 }
