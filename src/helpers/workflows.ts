@@ -12,6 +12,7 @@ import {
 } from "./constants";
 import { getOctokit } from "./github";
 import { getWorkflowSecretNames, renderSecretsContext } from "./workflow-secrets";
+import { getTokenSteps } from "./secrets";
 
 let release: string | undefined = undefined;
 export const getUptimeMonitorVersion = async () => {
@@ -91,7 +92,9 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
+${getTokenSteps()}
       - name: Setup Node.js for graphs
         uses: actions/setup-node@v6
         with:
@@ -101,7 +104,7 @@ jobs:
         with:
           command: "graphs"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
 `;
 };
 
@@ -137,13 +140,14 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
       - name: Update response time
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
           command: "response-time"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
           # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
           SECRETS_CONTEXT: ${renderSecretsContext(getWorkflowSecretNames(config))}
 `;
@@ -174,19 +178,20 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
       - name: Update template
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
           command: "update-template"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
       - name: Update response time
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
           command: "response-time"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
           # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
           SECRETS_CONTEXT: ${renderSecretsContext(getWorkflowSecretNames(config))}
       - name: Update summary in README
@@ -194,14 +199,14 @@ jobs:
         with:
           command: "readme"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
       - name: Generate graphs
         id: dispatch_graphs
         uses: benc-uk/workflow-dispatch@v1
         continue-on-error: true
         with:
           workflow: Graphs CI
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
       - name: Setup Node.js for direct graph generation
         if: steps.dispatch_graphs.outcome == 'failure'
         uses: actions/setup-node@v6
@@ -213,17 +218,17 @@ jobs:
         with:
           command: "graphs"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
       - name: Generate site
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
           command: "site"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
       - uses: peaceiris/actions-gh-pages@v4
         name: GitHub Pages Deploy
         with:
-          github_token: \${{ secrets.GH_PAT || github.token }}
+          github_token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
           publish_dir: "site/status-page/__sapper__/export/"
           force_orphan: "${statusWebsite.singleCommit || false}"
           user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
@@ -262,17 +267,18 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
       - name: Generate site
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
           command: "site"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
       - uses: peaceiris/actions-gh-pages@v4
         name: GitHub Pages Deploy
         with:
-          github_token: \${{ secrets.GH_PAT || github.token }}
+          github_token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
           publish_dir: "site/status-page/__sapper__/export/"
           force_orphan: "${statusWebsite.singleCommit || false}"
           user_name: "${commitMessages.commitAuthorName || "Upptime Bot"}"
@@ -305,13 +311,14 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
       - name: Update summary in README
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
           command: "readme"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
 `;
 };
 
@@ -338,13 +345,14 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
       - name: Update template
         uses: upptime/uptime-monitor@master
         with:
           command: "update-template"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
 `;
 };
 
@@ -371,11 +379,12 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
       - name: Update code
         uses: upptime/updates@master
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
 `;
 };
 
@@ -402,13 +411,14 @@ jobs:
         uses: actions/checkout@v6
         with:
           ref: \${{ github.head_ref || github.ref_name }}
-          token: \${{ secrets.GH_PAT || github.token }}
+          token: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
+${getTokenSteps()}
       - name: Check endpoint status
         uses: upptime/uptime-monitor@${await getUptimeMonitorVersion()}
         with:
           command: "update"
         env:
-          GH_PAT: \${{ secrets.GH_PAT || github.token }}
+          GH_PAT: \${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}
           # Configure the secret allowlist in .upptimerc.yml; do not edit this workflow directly.
           SECRETS_CONTEXT: ${renderSecretsContext(getWorkflowSecretNames(config))}
 `;
