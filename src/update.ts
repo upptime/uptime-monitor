@@ -280,9 +280,13 @@ export const update = async (shouldCommit = false) => {
             inProgressUpdates: false,
             limit: 1,
             locations: [{ magic: site.location || "world" }],
-            measurementOptions: {
-              ipVersion: site.ipv6 ? IpVersion[6] : IpVersion[4],
-            },
+            ...(isIP(url.hostname)
+              ? {}
+              : {
+                  measurementOptions: {
+                    ipVersion: site.ipv6 ? IpVersion[6] : IpVersion[4],
+                  },
+                }),
           });
           if (res.ok) {
             console.log("Fetching globalping measurement", res.data.id);
