@@ -1,3 +1,12 @@
+## v1.43.15 (2026-08-18)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.15) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.14...v1.43.15) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.15) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.15.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.15.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`2213779`](https://github.com/upptime/uptime-monitor/commit/2213779)  Fix Globalping IP ping targets (#318)
+(Issues: [`#318`](https://github.com/upptime/uptime-monitor/issues/318))
+
 ## v1.43.14 (2026-08-14)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.14) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.13...v1.43.14) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.14) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.14.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.14.tar.gz))
