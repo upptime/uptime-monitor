@@ -155,6 +155,47 @@ describe("update globalping handling", () => {
     expect(push).not.toHaveBeenCalled();
   });
 
+  it("omits ipVersion when a Globalping ping target is an IP address", async () => {
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "IP target",
+          url: "198.51.100.42",
+          type: "globalping",
+          check: "tcp-ping",
+          location: "Singapore",
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+    });
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement.mockResolvedValue({
+      ok: true,
+      data: {
+        results: [
+          {
+            result: {
+              stats: { avg: 12 },
+            },
+          },
+        ],
+      },
+    });
+
+    await update(true);
+
+    expect(mockCreateMeasurement).toHaveBeenCalledTimes(1);
+    const request = mockCreateMeasurement.mock.calls[0][0];
+    expect(request.target).toBe("198.51.100.42");
+    expect(request).not.toHaveProperty("measurementOptions.ipVersion");
+  });
+
   it("writes history for Unicode-only site names when no explicit slug is set", async () => {
     (getConfig as jest.Mock).mockResolvedValue({
       owner: "owner",
