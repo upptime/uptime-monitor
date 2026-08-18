@@ -190,7 +190,7 @@ describe("workflow helpers", () => {
       "continue-on-error": true,
       with: {
         workflow: "Graphs CI",
-        token: "${{ secrets.GH_PAT || github.token }}",
+        token: "${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}",
       },
     });
     expect(setupNodeStep).toMatchObject({
@@ -207,7 +207,7 @@ describe("workflow helpers", () => {
         command: "graphs",
       },
       env: {
-        GH_PAT: "${{ secrets.GH_PAT || github.token }}",
+        GH_PAT: "${{ steps.token.outputs.token || secrets.GH_PAT || github.token }}",
       },
     });
     expect(steps.indexOf(setupNodeStep)).toBeLessThan(steps.indexOf(fallbackStep));
