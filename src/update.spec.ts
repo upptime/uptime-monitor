@@ -155,6 +155,109 @@ describe("update globalping handling", () => {
     expect(push).not.toHaveBeenCalled();
   });
 
+  it("retries a failed Globalping HTTP probe result", async () => {
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement
+      .mockResolvedValueOnce({
+        ok: true,
+        data: {
+          results: [
+            {
+              result: {
+                status: "failed",
+                rawHeaders: "",
+                rawBody: "",
+                rawOutput: "The measurement timed out.",
+                failureSource: "internal",
+              },
+            },
+          ],
+        },
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        data: {
+          results: [
+            {
+              result: {
+                status: "finished",
+                statusCode: 200,
+                timings: { total: 123 },
+                rawBody: "",
+              },
+            },
+          ],
+        },
+      });
+
+    await update(true);
+
+    expect(mockCreateMeasurement).toHaveBeenCalledTimes(2);
+    expect(mockAwaitMeasurement).toHaveBeenCalledTimes(2);
+    expect(readFileSync(join(testCwd, "history", "blocked-by-globalping.yml"), "utf8")).toContain(
+      "status: up"
+    );
+  });
+
+  it("retries a failed Globalping ping probe result", async () => {
+    (getConfig as jest.Mock).mockResolvedValue({
+      owner: "owner",
+      repo: "repo",
+      sites: [
+        {
+          name: "Ping target",
+          url: "example.com",
+          type: "globalping",
+          check: "tcp-ping",
+        },
+      ],
+      assignees: [],
+      workflowSchedule: {},
+    });
+    mockCreateMeasurement.mockResolvedValue({
+      ok: true,
+      data: { id: "measurement-id" },
+    });
+    mockAwaitMeasurement
+      .mockResolvedValueOnce({
+        ok: true,
+        data: {
+          results: [
+            {
+              result: {
+                status: "offline",
+                rawOutput: "Probe disconnected.",
+              },
+            },
+          ],
+        },
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        data: {
+          results: [
+            {
+              result: {
+                status: "finished",
+                stats: { avg: 12 },
+              },
+            },
+          ],
+        },
+      });
+
+    await update(true);
+
+    expect(mockCreateMeasurement).toHaveBeenCalledTimes(2);
+    expect(mockAwaitMeasurement).toHaveBeenCalledTimes(2);
+    expect(readFileSync(join(testCwd, "history", "ping-target.yml"), "utf8")).toContain(
+      "status: up"
+    );
+  });
+
   it("omits ipVersion when a Globalping ping target is an IP address", async () => {
     (getConfig as jest.Mock).mockResolvedValue({
       owner: "owner",

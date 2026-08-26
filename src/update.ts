@@ -292,8 +292,13 @@ export const update = async (shouldCommit = false) => {
             console.log("Fetching globalping measurement", res.data.id);
             const measurement = await client.awaitMeasurement(res.data.id);
             if (measurement.ok) {
-              const result = measurement.data.results[0].result as FinishedPingTestResult;
-              const responseTime = result.stats.avg || 0;
+              const result = measurement.data.results[0].result;
+              if (result.status === "failed" || result.status === "offline") {
+                console.log("Globalping ping measurement failed:", result.status);
+                return { result: { httpCode: 0 }, responseTime: "0", status: "down" };
+              }
+              const finishedResult = result as FinishedPingTestResult;
+              const responseTime = finishedResult.stats.avg || 0;
               let status: "up" | "down" | "degraded" = "up";
               if (responseTime > (site.maxResponseTime || 60000)) {
                 status = "degraded";
@@ -344,24 +349,29 @@ export const update = async (shouldCommit = false) => {
             console.log("Fetching globalping measurement", res.data.id);
             const measurement = await client.awaitMeasurement(res.data.id);
             if (measurement.ok) {
-              const result = measurement.data.results[0].result as FinishedHttpTestResult;
+              const result = measurement.data.results[0].result;
+              if (result.status === "failed" || result.status === "offline") {
+                console.log("Globalping HTTP measurement failed:", result.status);
+                return { result: { httpCode: 0 }, responseTime: "0", status: "down" };
+              }
+              const finishedResult = result as FinishedHttpTestResult;
               if (site.check === "ssl") {
                 return {
                   result: { httpCode: 200 },
                   responseTime: "0",
-                  status: getStatusFromCertificateExpiresAt(result.tls?.expiresAt),
+                  status: getStatusFromCertificateExpiresAt(finishedResult.tls?.expiresAt),
                 };
               }
-              const responseTime = result.timings.total || 0;
+              const responseTime = finishedResult.timings.total || 0;
               const status = getStatusFromHttpResult(
                 site,
-                result.statusCode,
-                result.rawBody || "",
+                finishedResult.statusCode,
+                finishedResult.rawBody || "",
                 responseTime
               );
               return {
                 result: {
-                  httpCode: result.statusCode,
+                  httpCode: finishedResult.statusCode,
                 },
                 responseTime: responseTime.toFixed(0),
                 status,
