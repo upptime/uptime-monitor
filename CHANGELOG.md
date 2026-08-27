@@ -1,3 +1,12 @@
+## v1.43.16 (2026-08-27)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.16) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.15...v1.43.16) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.16) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.16.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.16.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`585da15`](https://github.com/upptime/uptime-monitor/commit/585da15)  Handle failed Globalping probe results (#319)
+(Issues: [`#319`](https://github.com/upptime/uptime-monitor/issues/319))
+
 ## v1.43.15 (2026-08-18)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.15) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.14...v1.43.15) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.15) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.15.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.15.tar.gz))
