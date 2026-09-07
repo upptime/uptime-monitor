@@ -101,6 +101,74 @@ describe("workflow helpers", () => {
     expect(listTags).not.toHaveBeenCalled();
   });
 
+  it("generates optional GitHub App token support without using secrets in conditions", async () => {
+    const {
+      getConfig,
+      getOctokit,
+      graphsCiWorkflow,
+      responseTimeCiWorkflow,
+      setupCiWorkflow,
+      siteCiWorkflow,
+      summaryCiWorkflow,
+      updateTemplateCiWorkflow,
+      updatesCiWorkflow,
+      uptimeCiWorkflow,
+    } = loadWorkflowHelpers();
+    const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.43.16" }] });
+
+    (getConfig as jest.Mock).mockResolvedValue({
+      sites: [{ name: "Example", url: "https://example.com" }],
+      workflowSchedule: {},
+      commitMessages: {},
+      "status-website": {},
+    });
+    (getOctokit as jest.Mock).mockResolvedValue({
+      repos: { listReleases },
+    });
+
+    const workflows = await Promise.all([
+      graphsCiWorkflow(),
+      responseTimeCiWorkflow(),
+      setupCiWorkflow(),
+      siteCiWorkflow(),
+      summaryCiWorkflow(),
+      updateTemplateCiWorkflow(),
+      updatesCiWorkflow(),
+      uptimeCiWorkflow(),
+    ]);
+
+    for (const workflow of workflows) {
+      const parsed = yaml.load(workflow) as any;
+      const steps = parsed.jobs.release.steps;
+      const appTokenStep = steps.find((step: any) => step.id === "app_token");
+      const clearPrivateKeyStep = steps.find(
+        (step: any) => step.name === "Clear GitHub App private key"
+      );
+
+      expect(parsed.jobs.release.env).toMatchObject({
+        GH_APP_PRIVATE_KEY: "${{ secrets.GH_APP_PRIVATE_KEY }}",
+      });
+      expect(appTokenStep).toMatchObject({
+        name: "Create GitHub App token",
+        if: "${{ vars.GH_APP_ID != '' && env.GH_APP_PRIVATE_KEY != '' }}",
+        uses: "actions/create-github-app-token@v3",
+        with: {
+          "client-id": "${{ vars.GH_APP_ID }}",
+          "private-key": "${{ env.GH_APP_PRIVATE_KEY }}",
+        },
+      });
+      expect(clearPrivateKeyStep).toMatchObject({
+        if: "${{ always() }}",
+        shell: "bash",
+        run: 'echo "GH_APP_PRIVATE_KEY=" >> "$GITHUB_ENV"',
+      });
+      expect(workflow).toContain(
+        "${{ steps.app_token.outputs.token || secrets.GH_PAT || github.token }}"
+      );
+      expect(workflow).not.toMatch(/if: \$\{\{[^\n]*secrets\./);
+    }
+  });
+
   it("generates the static site workflow for assets changes", async () => {
     const { getConfig, getOctokit, siteCiWorkflow } = loadWorkflowHelpers();
     const listReleases = jest.fn().mockResolvedValue({ data: [{ tag_name: "v1.41.7" }] });
@@ -190,7 +258,7 @@ describe("workflow helpers", () => {
       "continue-on-error": true,
       with: {
         workflow: "Graphs CI",
-        token: "${{ secrets.GH_PAT || github.token }}",
+        token: "${{ steps.app_token.outputs.token || secrets.GH_PAT || github.token }}",
       },
     });
     expect(setupNodeStep).toMatchObject({
@@ -207,7 +275,7 @@ describe("workflow helpers", () => {
         command: "graphs",
       },
       env: {
-        GH_PAT: "${{ secrets.GH_PAT || github.token }}",
+        GH_PAT: "${{ steps.app_token.outputs.token || secrets.GH_PAT || github.token }}",
       },
     });
     expect(steps.indexOf(setupNodeStep)).toBeLessThan(steps.indexOf(fallbackStep));
