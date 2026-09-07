@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOwnerRepo = exports.getSecret = exports.hydrateSecretsEnvironment = void 0;
+exports.generatedWorkflowToken = exports.githubAppTokenSteps = exports.githubAppTokenJobEnvironment = exports.getOwnerRepo = exports.getSecret = exports.hydrateSecretsEnvironment = void 0;
 const hydrateSecretsEnvironment = (serialized = process.env.SECRETS_CONTEXT || "{}") => {
     const secrets = JSON.parse(serialized);
     for (const [name, value] of Object.entries(secrets)) {
@@ -26,4 +26,18 @@ const getOwnerRepo = () => {
     return result;
 };
 exports.getOwnerRepo = getOwnerRepo;
+exports.githubAppTokenJobEnvironment = `    env:
+      GH_APP_PRIVATE_KEY: \${{ secrets.GH_APP_PRIVATE_KEY }}`;
+exports.githubAppTokenSteps = `      - name: Create GitHub App token
+        id: app_token
+        if: \${{ vars.GH_APP_ID != '' && env.GH_APP_PRIVATE_KEY != '' }}
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: \${{ vars.GH_APP_ID }}
+          private-key: \${{ env.GH_APP_PRIVATE_KEY }}
+      - name: Clear GitHub App private key
+        if: \${{ always() }}
+        shell: bash
+        run: echo "GH_APP_PRIVATE_KEY=" >> "$GITHUB_ENV"`;
+exports.generatedWorkflowToken = "\${{ steps.app_token.outputs.token || secrets.GH_PAT || github.token }}";
 //# sourceMappingURL=secrets.js.map
