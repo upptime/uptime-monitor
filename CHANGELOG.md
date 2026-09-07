@@ -1,3 +1,12 @@
+## v1.44.0 (2026-09-07)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.44.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.16...v1.44.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.44.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.44.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.44.0.tar.gz))
+
+### ✨ New features
+
+- [`078dc45`](https://github.com/upptime/uptime-monitor/commit/078dc45)  Support GitHub App tokens in generated workflows (#320)
+(Issues: [`#320`](https://github.com/upptime/uptime-monitor/issues/320))
+
 ## v1.43.16 (2026-08-27)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.43.16) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.15...v1.43.16) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.43.16) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.43.16.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.43.16.tar.gz))
