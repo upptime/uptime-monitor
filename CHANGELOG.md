@@ -1,3 +1,12 @@
+## v1.44.1 (2026-09-21)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.44.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.44.0...v1.44.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.44.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.44.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.44.1.tar.gz))
+
+### 🔒 Security issues
+
+- [`c84002a`](https://github.com/upptime/uptime-monitor/commit/c84002a)  Update js-yaml to 4.3.2 (#321)
+(Issues: [`#321`](https://github.com/upptime/uptime-monitor/issues/321))
+
 ## v1.44.0 (2026-09-07)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.44.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.43.16...v1.44.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.44.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.44.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.44.0.tar.gz))
