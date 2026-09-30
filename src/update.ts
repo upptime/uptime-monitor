@@ -21,6 +21,7 @@ import { shouldContinue } from "./helpers/init-check";
 import { sendNotification } from "./helpers/notifme";
 import { ping } from "./helpers/ping";
 import { curl } from "./helpers/request";
+import { tcpRead } from "./helpers/tcp";
 import { getOwnerRepo, getSecret } from "./helpers/secrets";
 import { getSiteSlug } from "./helpers/slug";
 import { SiteHistory, UpptimeConfig } from "./interfaces";
@@ -101,7 +102,31 @@ function getStatusFromHttpResult(
     !data.includes(replaceEnvironmentVariables(site.__dangerous__body_down_if_text_missing))
   )
     status = "down";
+  const bodyRegex = getBodyRegex(site);
+  if (bodyRegex && !bodyRegex.test(data)) status = "down";
   return status;
+}
+
+/**
+ * Compile `__dangerous__body_down_if_regex_missing`, if it is set
+ * An invalid pattern is a configuration error, so the error is thrown
+ */
+function getBodyRegex(site: UpptimeConfig["sites"][number]) {
+  if (!site.__dangerous__body_down_if_regex_missing) return undefined;
+  return new RegExp(replaceEnvironmentVariables(site.__dangerous__body_down_if_regex_missing));
+}
+
+/**
+ * Whether the site has a rule that checks the response body
+ */
+function hasBodyChecks(site: UpptimeConfig["sites"][number]) {
+  return Boolean(
+    site.__dangerous__body_down ||
+      site.__dangerous__body_degraded ||
+      site.__dangerous__body_down_if_text_missing ||
+      site.__dangerous__body_degraded_if_text_missing ||
+      site.__dangerous__body_down_if_regex_missing
+  );
 }
 
 function getStatusFromCertificateExpiresAt(expiresAt: string | undefined) {
@@ -273,6 +298,8 @@ export const update = async (shouldCommit = false) => {
 
         if (site.check === "ws") {
           throw new Error(`ws is not supported with globalping: ${site.url}`);
+        } else if (site.check === "tcp") {
+          throw new Error(`tcp is not supported with globalping: ${site.url}`);
         } else if (site.check === "tcp-ping") {
           const res = await client.createMeasurement({
             type: "ping",
@@ -466,6 +493,34 @@ export const update = async (shouldCommit = false) => {
         // All retries exhausted
         console.log("ERROR tcp-ping all attempts failed", lastError);
         return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+      } else if (site.check === "tcp") {
+        console.log("Using tcp check instead of curl");
+        // Validate the regex before connecting, so that a bad pattern fails the run
+        getBodyRegex(site);
+        try {
+          const result = await tcpRead({
+            host: replaceEnvironmentVariables(site.url),
+            port: Number(replaceEnvironmentVariables(site.port ? String(site.port) : "")),
+            payload: site.body ? replaceEnvironmentVariables(site.body) : undefined,
+            family: site.ipv6 ? 6 : 4,
+            connectTimeout: (site.connectTimeout || 30) * 1000,
+            readTimeout: (site.requestTimeout || 10) * 1000,
+            isDone: hasBodyChecks(site)
+              ? (data) => getStatusFromHttpResult(site, 200, data, 0) === "up"
+              : undefined,
+          });
+          const status = getStatusFromHttpResult(site, 200, result.data, result.responseTime);
+          console.log("Result from tcp check", status, result.responseTime);
+          return {
+            result: { httpCode: status === "down" ? 0 : 200 },
+            responseTime: result.responseTime.toFixed(0),
+            status,
+          };
+        } catch (error) {
+          // Log only the error code: the message can contain a secret host or port
+          console.log("ERROR tcp check could not connect", (error as NodeJS.ErrnoException).code);
+          return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+        }
       } else if (site.check === "ws") {
         console.log("Using websocket check instead of curl");
         let success = false;
