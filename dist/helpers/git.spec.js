@@ -36,6 +36,18 @@ describe("git helper", () => {
         expect((0, fs_1.existsSync)((0, path_1.join)(cwd, "pwned"))).toBe(false);
         expect(git(["log", "-1", "--format=%an"], cwd)).toBe(`Bot"; touch ${(0, path_1.join)(cwd, "pwned")}; #`);
     });
+    it("sets the commit identity in the repository, not in the global git config", () => {
+        const cwd = createRepo();
+        process.chdir(cwd);
+        const globalIdentity = () => ["user.name", "user.email"].map((key) => (0, child_process_1.spawnSync)("git", ["config", "--global", "--get", key], { encoding: "utf8" }).stdout.trim());
+        const before = globalIdentity();
+        (0, fs_1.writeFileSync)((0, path_1.join)(cwd, "status.yml"), "status: up\n");
+        (0, git_1.commit)("Local identity", "Local Upptime Bot", "local-bot@example.com");
+        expect(globalIdentity()).toEqual(before);
+        expect(git(["config", "--local", "user.name"], cwd)).toBe("Local Upptime Bot");
+        expect(git(["config", "--local", "user.email"], cwd)).toBe("local-bot@example.com");
+        expect(git(["log", "-1", "--format=%an <%ae>"], cwd)).toBe("Local Upptime Bot <local-bot@example.com>");
+    });
     it("does not let the shell expand variables in commit messages", () => {
         const cwd = createRepo();
         process.chdir(cwd);
