@@ -1,4 +1,4 @@
-import { execFileSync } from "child_process";
+import { execFileSync, spawnSync } from "child_process";
 import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
@@ -45,6 +45,26 @@ describe("git helper", () => {
 
     expect(existsSync(join(cwd, "pwned"))).toBe(false);
     expect(git(["log", "-1", "--format=%an"], cwd)).toBe(`Bot"; touch ${join(cwd, "pwned")}; #`);
+  });
+
+  it("sets the commit identity in the repository, not in the global git config", () => {
+    const cwd = createRepo();
+    process.chdir(cwd);
+    const globalIdentity = () =>
+      ["user.name", "user.email"].map((key) =>
+        spawnSync("git", ["config", "--global", "--get", key], { encoding: "utf8" }).stdout.trim()
+      );
+    const before = globalIdentity();
+    writeFileSync(join(cwd, "status.yml"), "status: up\n");
+
+    commit("Local identity", "Local Upptime Bot", "local-bot@example.com");
+
+    expect(globalIdentity()).toEqual(before);
+    expect(git(["config", "--local", "user.name"], cwd)).toBe("Local Upptime Bot");
+    expect(git(["config", "--local", "user.email"], cwd)).toBe("local-bot@example.com");
+    expect(git(["log", "-1", "--format=%an <%ae>"], cwd)).toBe(
+      "Local Upptime Bot <local-bot@example.com>"
+    );
   });
 
   it("does not let the shell expand variables in commit messages", () => {
