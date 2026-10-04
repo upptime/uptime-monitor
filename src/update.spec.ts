@@ -1,4 +1,5 @@
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { AddressInfo, createServer, Server, Socket } from "net";
 import { tmpdir } from "os";
 import { join } from "path";
 
@@ -719,6 +720,91 @@ describe("update globalping handling", () => {
       repo: "repo",
       issue_number: 42,
       state: "closed",
+    });
+  });
+
+  describe("tcp check", () => {
+    let server: Server;
+    const sockets: Socket[] = [];
+
+    const listen = (onConnection: (socket: Socket) => void) =>
+      new Promise<number>((resolve) => {
+        server = createServer((socket) => {
+          sockets.push(socket);
+          socket.on("error", () => undefined);
+          onConnection(socket);
+        });
+        server.listen(0, "127.0.0.1", () => resolve((server.address() as AddressInfo).port));
+      });
+
+    const useTcpSite = (port: number, site: Record<string, unknown>) =>
+      (getConfig as jest.Mock).mockResolvedValue({
+        owner: "owner",
+        repo: "repo",
+        sites: [{ name: "Gateway", url: "127.0.0.1", check: "tcp", port, requestTimeout: 0.2, ...site }],
+        assignees: [],
+        workflowSchedule: {},
+      });
+
+    const history = () => readFileSync(join(testCwd, "history", "gateway.yml"), "utf8");
+
+    afterEach(async () => {
+      sockets.forEach((socket) => socket.destroy());
+      sockets.length = 0;
+      await new Promise((resolve) => server.close(resolve));
+    });
+
+    it("is up when the banner matches the regex", async () => {
+      const port = await listen((socket) => socket.write("SSH-2.0-OpenSSH_9.9\r\n"));
+      useTcpSite(port, { __dangerous__body_down_if_regex_missing: "^SSH-2\\.0-" });
+
+      await update(true);
+
+      expect(history()).toContain("status: up");
+    });
+
+    it("is down when the port accepts the connection but sends no banner", async () => {
+      const port = await listen(() => undefined);
+      useTcpSite(port, { __dangerous__body_down_if_regex_missing: "^SSH-2\\.0-" });
+
+      await update(true);
+
+      expect(history()).toContain("status: down");
+    }, 20000);
+
+    it("is down when the reply does not match the regex", async () => {
+      const port = await listen((socket) =>
+        socket.on("data", () => socket.write('{"status":"starting"}'))
+      );
+      useTcpSite(port, {
+        body: "GET /health\r\n",
+        __dangerous__body_down_if_regex_missing: '"status":\\s*"healthy"',
+      });
+
+      await update(true);
+
+      expect(history()).toContain("status: down");
+    }, 20000);
+
+    it("sends the body and supports the substring rules", async () => {
+      const port = await listen((socket) =>
+        socket.on("data", (data) => {
+          if (data.toString() === "PING\r\n") socket.write("+PONG\r\n");
+        })
+      );
+      useTcpSite(port, { body: "PING\r\n", __dangerous__body_down_if_text_missing: "PONG" });
+
+      await update(true);
+
+      expect(history()).toContain("status: up");
+    });
+
+    it("fails the action when the regex is not valid", async () => {
+      const port = await listen(() => undefined);
+      useTcpSite(port, { __dangerous__body_down_if_regex_missing: "(" });
+
+      await expect(update(true)).rejects.toThrow(SyntaxError);
+      expect(commit).not.toHaveBeenCalled();
     });
   });
 });
