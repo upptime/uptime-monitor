@@ -255,6 +255,12 @@ export const update = async (shouldCommit = false) => {
     }> => {
       // globalping
       if (site.type === "globalping") {
+        const globalpingTimeout = site.globalpingTimeout;
+        if (globalpingTimeout !== undefined && ![15, 20, 30].includes(globalpingTimeout)) {
+          throw new Error(`globalpingTimeout must be 15, 20, or 30 seconds for site ${site.name}`);
+        }
+        const timeoutOptions =
+          globalpingTimeout === undefined ? {} : { timeout: globalpingTimeout };
         const client = new Globalping({
           auth: getSecret("GLOBALPING_TOKEN"),
           userAgent: "github.com/upptime/uptime-monitor",
@@ -280,6 +286,7 @@ export const update = async (shouldCommit = false) => {
             inProgressUpdates: false,
             limit: 1,
             locations: [{ magic: site.location || "world" }],
+            ...timeoutOptions,
             ...(isIP(url.hostname)
               ? {}
               : {
@@ -326,6 +333,7 @@ export const update = async (shouldCommit = false) => {
             inProgressUpdates: false,
             limit: 1,
             locations: [{ magic: site.location || "world" }],
+            ...timeoutOptions,
             measurementOptions: {
               request: {
                 host: url.hostname,

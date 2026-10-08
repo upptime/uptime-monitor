@@ -58,6 +58,31 @@ commitMessages:
 
 This uses Git's native `--signoff` flag, so the trailer is generated from the configured commit author.
 
+### Globalping timeouts
+
+For a site with `type: globalping`, set `globalpingTimeout` to **15**, **20**, or
+**30** seconds to select the probe's total test timeout:
+
+```yaml
+sites:
+  - name: Blog
+    url: https://example.com
+    type: globalping
+    globalpingTimeout: 30
+```
+
+This applies to Globalping HTTP, SSL and ping checks. When omitted, no timeout
+override is sent, preserving Globalping's existing calculated defaults. Local
+checks continue to use their own settings, such as `requestTimeout`.
+Invalid values fail the check with a configuration error rather than recording
+a site outage.
+
+The total timeout includes DNS resolution and the rest of the test. The current
+Globalping HTTP probe allocates 40% of that budget to DNS: totals of 15, 20 and
+30 seconds give DNS 6, 8 and 12 seconds respectively. This option does not set
+an independent DNS timeout or change the monitor's retry policy. See the
+[Globalping API specification](https://api.globalping.io/v1/spec.yaml).
+
 ## 📄 License
 
 [MIT](./LICENSE) © [Anand Chowdhary](https://anandchowdhary.com)
