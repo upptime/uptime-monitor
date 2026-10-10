@@ -21,6 +21,7 @@ export interface UpptimeConfig {
     maxRetries?: number;
     connectTimeout?: number;
     requestTimeout?: number;
+    globalpingTimeout?: 15 | 20 | 30;
     verbose?: boolean;
     ipv6?: boolean;
     location?: string;
