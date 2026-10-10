@@ -1,3 +1,17 @@
+## v1.45.0 (2026-10-10)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.45.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.44.1...v1.45.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.45.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.45.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.45.0.tar.gz))
+
+### ✨ New features
+
+- [`0bc4360`](https://github.com/upptime/uptime-monitor/commit/0bc4360)  Add configurable Globalping measurement timeout (#324)
+(Issues: [`#324`](https://github.com/upptime/uptime-monitor/issues/324))
+
+### 🐛 Bug fixes
+
+- [`ffa8226`](https://github.com/upptime/uptime-monitor/commit/ffa8226)  Set the commit identity in the repository, not in the global git config (#323)
+(Issues: [`#323`](https://github.com/upptime/uptime-monitor/issues/323))
+
 ## v1.44.1 (2026-09-21)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.44.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.44.0...v1.44.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.44.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.44.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.44.1.tar.gz))
