@@ -90,6 +90,110 @@ describe("update globalping handling", () => {
         process.chdir(originalCwd);
         (0, fs_1.rmSync)(testCwd, { recursive: true, force: true });
     });
+    describe("globalpingTimeout", () => {
+        beforeEach(() => {
+            mockCreateMeasurement.mockResolvedValue({
+                ok: true,
+                data: { id: "measurement-id" },
+            });
+            mockAwaitMeasurement.mockResolvedValue({
+                ok: true,
+                data: {
+                    results: [
+                        {
+                            result: {
+                                status: "finished",
+                                statusCode: 200,
+                                timings: { total: 123 },
+                                stats: { avg: 12 },
+                                tls: { expiresAt: "2999-01-01T00:00:00.000Z" },
+                                rawBody: "",
+                            },
+                        },
+                    ],
+                },
+            });
+        });
+        describe.each([undefined, "http", "ssl", "tcp-ping"])("check %s", (check) => {
+            it.each([undefined, 15, 20, 30])("forwards only an explicit timeout (%s)", async (timeout) => {
+                getConfig.mockResolvedValue({
+                    owner: "owner",
+                    repo: "repo",
+                    sites: [
+                        {
+                            name: "Timeout target",
+                            url: "https://example.com",
+                            type: "globalping",
+                            check,
+                            globalpingTimeout: timeout,
+                        },
+                    ],
+                    assignees: [],
+                    workflowSchedule: {},
+                });
+                await update(true);
+                expect(mockCreateMeasurement).toHaveBeenCalledTimes(1);
+                const request = mockCreateMeasurement.mock.calls[0][0];
+                expect(request.type).toBe(check === "tcp-ping" ? "ping" : "http");
+                if (timeout === undefined) {
+                    expect(request).not.toHaveProperty("timeout");
+                }
+                else {
+                    expect(request.timeout).toBe(timeout);
+                }
+                expect(request.measurementOptions).not.toHaveProperty("timeout");
+                expect((0, fs_1.readFileSync)((0, path_1.join)(testCwd, "history", "timeout-target.yml"), "utf8")).toContain("status: up");
+            });
+        });
+        it.each([0, -1, 5, 10, 16, 31, 15.5, NaN, Infinity, "30", null, true, {}])("rejects an invalid timeout (%s) without recording downtime", async (timeout) => {
+            getConfig.mockResolvedValue({
+                owner: "owner",
+                repo: "repo",
+                sites: [
+                    {
+                        name: "Invalid timeout",
+                        url: "https://example.com",
+                        type: "globalping",
+                        globalpingTimeout: timeout,
+                    },
+                ],
+                assignees: [],
+                workflowSchedule: {},
+            });
+            await expect(update(true)).rejects.toThrow("globalpingTimeout must be 15, 20, or 30 seconds for site Invalid timeout");
+            expect(mockCreateMeasurement).not.toHaveBeenCalled();
+            expect((0, fs_1.existsSync)((0, path_1.join)(testCwd, "history", "invalid-timeout.yml"))).toBe(false);
+            expect(issueApi.create).not.toHaveBeenCalled();
+            expect(commit).not.toHaveBeenCalled();
+            expect(push).not.toHaveBeenCalled();
+        });
+        it("does not apply the timeout to local checks", async () => {
+            getConfig.mockResolvedValue({
+                owner: "owner",
+                repo: "repo",
+                sites: [
+                    {
+                        name: "Local target",
+                        url: "198.51.100.42",
+                        type: "local",
+                        check: "tcp-ping",
+                        port: 443,
+                        globalpingTimeout: 30,
+                    },
+                ],
+                assignees: [],
+                workflowSchedule: {},
+            });
+            ping.mockResolvedValue({
+                avg: 12,
+                results: [{ seq: 1, time: 12 }],
+            });
+            await update(true);
+            expect(ping).toHaveBeenCalledTimes(1);
+            expect(mockCreateMeasurement).not.toHaveBeenCalled();
+            expect((0, fs_1.readFileSync)((0, path_1.join)(testCwd, "history", "local-target.yml"), "utf8")).toContain("status: up");
+        });
+    });
     it("retries transient GitHub API failures while loading maintenance events", async () => {
         getConfig.mockResolvedValue({
             owner: "owner",
@@ -129,7 +233,21 @@ describe("update globalping handling", () => {
         expect(commit).not.toHaveBeenCalled();
         expect(push).not.toHaveBeenCalled();
     });
-    it("retries a failed Globalping HTTP probe result", async () => {
+    it.each([undefined, 30])("retries a failed Globalping HTTP probe with timeout %s", async (timeout) => {
+        getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [
+                {
+                    name: "Blocked by Globalping",
+                    url: "https://blocked.example",
+                    type: "globalping",
+                    globalpingTimeout: timeout,
+                },
+            ],
+            assignees: [],
+            workflowSchedule: {},
+        });
         mockCreateMeasurement.mockResolvedValue({
             ok: true,
             data: { id: "measurement-id" },
@@ -169,6 +287,14 @@ describe("update globalping handling", () => {
         await update(true);
         expect(mockCreateMeasurement).toHaveBeenCalledTimes(2);
         expect(mockAwaitMeasurement).toHaveBeenCalledTimes(2);
+        for (const [request] of mockCreateMeasurement.mock.calls) {
+            if (timeout === undefined) {
+                expect(request).not.toHaveProperty("timeout");
+            }
+            else {
+                expect(request.timeout).toBe(timeout);
+            }
+        }
         expect((0, fs_1.readFileSync)((0, path_1.join)(testCwd, "history", "blocked-by-globalping.yml"), "utf8")).toContain("status: up");
     });
     it("retries a failed Globalping ping probe result", async () => {
