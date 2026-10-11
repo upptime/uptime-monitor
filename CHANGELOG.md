@@ -1,3 +1,12 @@
+## v1.45.1 (2026-10-11)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.45.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.45.0...v1.45.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.45.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.45.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.45.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`1c56273`](https://github.com/upptime/uptime-monitor/commit/1c56273)  Include provider response error body in notification error logs (#325)
+(Issues: [`#325`](https://github.com/upptime/uptime-monitor/issues/325))
+
 ## v1.45.0 (2026-10-10)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.45.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.44.1...v1.45.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.45.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.45.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.45.0.tar.gz))
