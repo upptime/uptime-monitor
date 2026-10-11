@@ -114,6 +114,76 @@ describe("Notifme result handling", () => {
     expect(logged).not.toContain("sendMessage");
     consoleSpy.mockRestore();
   });
+
+  it("includes the provider response error body for diagnosability", async () => {
+    const { axios, sendNotification } = loadNotifme({
+      NOTIFICATION_GOTIFY: "true",
+      NOTIFICATION_GOTIFY_URL: "https://gotify.example",
+      NOTIFICATION_GOTIFY_TOKEN: "gotify-app-token",
+    });
+    axios.post.mockRejectedValueOnce({
+      message: "Request failed with status code 403",
+      response: {
+        status: 403,
+        data: {
+          error: "Unauthorized",
+          errorDescription: "you need to provide a valid access token",
+        },
+      },
+    });
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await sendNotification("🟥 My Site is **down**");
+
+    const logged = consoleSpy.mock.calls.map((call) => call.join("\n")).join("\n");
+    expect(logged).toContain(
+      "Error sending Gotify: Request failed with status code 403 (you need to provide a valid access token)"
+    );
+    consoleSpy.mockRestore();
+  });
+
+  it("scrubs token query parameters echoed in error response bodies", async () => {
+    const { axios, sendNotification } = loadNotifme({
+      NOTIFICATION_GOTIFY: "true",
+      NOTIFICATION_GOTIFY_URL: "https://gotify.example",
+      NOTIFICATION_GOTIFY_TOKEN: "gotify-app-token",
+    });
+    axios.post.mockRejectedValueOnce({
+      message: "Request failed with status code 403",
+      response: {
+        status: 403,
+        data:
+          "Rejected POST https://gotify.example/message?token=gotify-app-token: forbidden",
+      },
+    });
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await sendNotification("🟥 My Site is **down**");
+
+    const logged = consoleSpy.mock.calls.map((call) => call.join("\n")).join("\n");
+    expect(logged).toContain("token=***");
+    expect(logged).not.toContain("gotify-app-token");
+    consoleSpy.mockRestore();
+  });
+
+  it("keeps the plain error message when no response body is available", async () => {
+    const { axios, sendNotification } = loadNotifme({
+      NOTIFICATION_GOTIFY: "true",
+      NOTIFICATION_GOTIFY_URL: "https://gotify.example",
+      NOTIFICATION_GOTIFY_TOKEN: "gotify-app-token",
+    });
+    axios.post.mockRejectedValueOnce({
+      message: "Request failed with status code 403",
+    });
+    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await sendNotification("🟥 My Site is **down**");
+
+    const logged = consoleSpy.mock.calls.map((call) => call.join("\n")).join("\n");
+    expect(logged).toContain("Error sending Gotify: Request failed with status code 403");
+    expect(logged).not.toMatch(/Error sending Gotify:.*\(/);
+    consoleSpy.mockRestore();
+  });
 });
 
 describe("Telegram notifications", () => {

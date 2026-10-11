@@ -22,8 +22,36 @@ export const formatNotificationError = (error: unknown): string => {
   return String(error);
 };
 
+const formatResponseErrorDetail = (error: unknown): string => {
+  if (!error || typeof error !== "object") return "";
+  const response = (error as { response?: { data?: unknown } }).response;
+  if (!response || typeof response !== "object") return "";
+  const data = response.data;
+  let detail: string | undefined;
+  if (typeof data === "string" && data.trim()) {
+    detail = data.trim();
+  } else if (data && typeof data === "object") {
+    const body = data as { errorDescription?: unknown; error?: unknown; message?: unknown };
+    detail =
+      (typeof body.errorDescription === "string" && body.errorDescription) ||
+      (typeof body.error === "string" && body.error) ||
+      (typeof body.message === "string" && body.message) ||
+      undefined;
+  }
+  if (!detail) return "";
+  // Error pages may echo the request URL, including secret query parameters such as tokens.
+  return detail
+    .replace(/([?&]token=)[^&\s"']+/gi, "$1***")
+    .slice(0, 200);
+};
+
 const logNotificationError = (channel: string, error: unknown) => {
-  console.log(`Error sending ${channel}: ${formatNotificationError(error)}`);
+  const detail = formatResponseErrorDetail(error);
+  if (detail) {
+    console.log(`Error sending ${channel}: ${formatNotificationError(error)} (${detail})`);
+  } else {
+    console.log(`Error sending ${channel}: ${formatNotificationError(error)}`);
+  }
 };
 
 const logNotifmeSendResult = (channel: NotifmeChannel, result: NotificationStatus | undefined) => {
