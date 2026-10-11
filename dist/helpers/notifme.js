@@ -26,8 +26,40 @@ const formatNotificationError = (error) => {
     return String(error);
 };
 exports.formatNotificationError = formatNotificationError;
+const formatResponseErrorDetail = (error) => {
+    if (!error || typeof error !== "object")
+        return "";
+    const response = error.response;
+    if (!response || typeof response !== "object")
+        return "";
+    const data = response.data;
+    let detail;
+    if (typeof data === "string" && data.trim()) {
+        detail = data.trim();
+    }
+    else if (data && typeof data === "object") {
+        const body = data;
+        detail =
+            (typeof body.errorDescription === "string" && body.errorDescription) ||
+                (typeof body.error === "string" && body.error) ||
+                (typeof body.message === "string" && body.message) ||
+                undefined;
+    }
+    if (!detail)
+        return "";
+    // Error pages may echo the request URL, including secret query parameters such as tokens.
+    return detail
+        .replace(/([?&]token=)[^&\s"']+/gi, "$1***")
+        .slice(0, 200);
+};
 const logNotificationError = (channel, error) => {
-    console.log(`Error sending ${channel}: ${(0, exports.formatNotificationError)(error)}`);
+    const detail = formatResponseErrorDetail(error);
+    if (detail) {
+        console.log(`Error sending ${channel}: ${(0, exports.formatNotificationError)(error)} (${detail})`);
+    }
+    else {
+        console.log(`Error sending ${channel}: ${(0, exports.formatNotificationError)(error)}`);
+    }
 };
 const logNotifmeSendResult = (channel, result) => {
     const label = notifmeChannelLabels[channel];
