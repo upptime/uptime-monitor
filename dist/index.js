@@ -98518,7 +98518,7 @@ function dumpException(ex)
 
 const farmhash = (function farmhashBinding () {
   try {
-    return __nccwpck_require__(83502);
+    return __nccwpck_require__(65517);
   } catch (e) {
     return __nccwpck_require__(51141);
   }
@@ -359734,11 +359734,17 @@ module.exports = Queue;
 
 /***/ }),
 
-/***/ 43448:
-/***/ ((module) => {
+/***/ 65517:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-module.exports = eval("require")("../lib/binding/node_libcurl.node");
+module.exports = require(__nccwpck_require__.ab + "build/Release/farmhash.node")
 
+/***/ }),
+
+/***/ 17001:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = require(__nccwpck_require__.ab + "lib/binding/node_libcurl.node")
 
 /***/ }),
 
@@ -359746,14 +359752,6 @@ module.exports = eval("require")("../lib/binding/node_libcurl.node");
 /***/ ((module) => {
 
 module.exports = eval("require")("./build/Debug/farmhash.node");
-
-
-/***/ }),
-
-/***/ 83502:
-/***/ ((module) => {
-
-module.exports = eval("require")("./build/Release/farmhash.node");
 
 
 /***/ }),
@@ -378946,7 +378944,7 @@ const CurlFeature_1 = __nccwpck_require__(65198);
 const CurlPause_1 = __nccwpck_require__(39014);
 const CurlWriteFunc_1 = __nccwpck_require__(61139);
 const CurlReadFunc_1 = __nccwpck_require__(44633);
-const bindings = __nccwpck_require__(43448);
+const bindings = __nccwpck_require__(17001);
 const { Curl: _Curl, CurlVersionInfo } = bindings;
 const decoder = new string_decoder_1.StringDecoder('utf8');
 // Handle used by curl instances created by the Curl wrapper.
@@ -379920,7 +379918,7 @@ exports.CurlMime = void 0;
  * LICENSE file in the root directory of this source tree.
  */
 __nccwpck_require__(2518);
-const bindings = __nccwpck_require__(43448);
+const bindings = __nccwpck_require__(17001);
 // @ts-expect-error - we are abusing TS merging here to have sane types for the addon classes
 const CurlMime = bindings.CurlMime;
 exports.CurlMime = CurlMime;
@@ -379943,7 +379941,7 @@ exports.CurlMimePart = void 0;
  */
 __nccwpck_require__(2518);
 const CurlReadFunc_1 = __nccwpck_require__(44633);
-const bindings = __nccwpck_require__(43448);
+const bindings = __nccwpck_require__(17001);
 // @ts-expect-error - we are abusing TS merging here to have sane types for the addon classes
 const CurlMimePart = bindings.CurlMimePart;
 exports.CurlMimePart = CurlMimePart;
@@ -380061,7 +380059,7 @@ exports.Easy = void 0;
 __nccwpck_require__(2518);
 const CurlMime_1 = __nccwpck_require__(7922);
 const CurlPause_1 = __nccwpck_require__(39014);
-const bindings = __nccwpck_require__(43448);
+const bindings = __nccwpck_require__(17001);
 // @ts-expect-error - we are abusing TS merging here to have sane types for the addon classes
 const Easy = bindings.Easy;
 exports.Easy = Easy;
@@ -380194,7 +380192,7 @@ exports.Multi = void 0;
  * LICENSE file in the root directory of this source tree.
  */
 __nccwpck_require__(2518);
-const bindings = __nccwpck_require__(43448);
+const bindings = __nccwpck_require__(17001);
 // @ts-expect-error - we are abusing TS merging here to have sane types for the addon classes
 const Multi = bindings.Multi;
 exports.Multi = Multi;
@@ -380216,7 +380214,7 @@ exports.Share = void 0;
  * LICENSE file in the root directory of this source tree.
  */
 __nccwpck_require__(2518);
-const bindings = __nccwpck_require__(43448);
+const bindings = __nccwpck_require__(17001);
 // @ts-expect-error - we are abusing TS merging here to have sane types for the addon classes
 const Share = bindings.Share;
 exports.Share = Share;
@@ -384510,7 +384508,7 @@ globalThis.__libcurlTls = node_tls_1.default;
 globalThis.__libcurlCurlEasyError = CurlEasyError_1.CurlEasyError;
 globalThis.__libcurlCurlMultiError = CurlMultiError_1.CurlMultiError;
 globalThis.__libcurlCurlSharedError = CurlSharedError_1.CurlSharedError;
-__nccwpck_require__(43448);
+__nccwpck_require__(17001);
 delete globalThis.__libcurlTls;
 delete globalThis.__libcurlCurlEasyError;
 delete globalThis.__libcurlCurlMultiError;
