@@ -1,3 +1,12 @@
+## v1.45.2 (2026-10-12)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.45.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.45.1...v1.45.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.45.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.45.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.45.2.tar.gz))
+
+### 🔒 Security issues
+
+- [`5941cd2`](https://github.com/upptime/uptime-monitor/commit/5941cd2)  Bump axios from 0.21.4 to 0.34.0 (#326)
+(Issues: [`#326`](https://github.com/upptime/uptime-monitor/issues/326) [`#242`](https://github.com/upptime/uptime-monitor/issues/242))
+
 ## v1.45.1 (2026-10-11)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.45.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.45.0...v1.45.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.45.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.45.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.45.1.tar.gz))
