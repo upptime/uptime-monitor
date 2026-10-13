@@ -1,3 +1,12 @@
+## v1.46.0 (2026-10-13)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.45.2...v1.46.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.0.tar.gz))
+
+### ✨ New features
+
+- [`ded3767`](https://github.com/upptime/uptime-monitor/commit/ded3767)  Add tcp check with split-chunk safe body-rule handling (#327)
+(Issues: [`#327`](https://github.com/upptime/uptime-monitor/issues/327) [`#322`](https://github.com/upptime/uptime-monitor/issues/322))
+
 ## v1.45.2 (2026-10-12)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.45.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.45.1...v1.45.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.45.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.45.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.45.2.tar.gz))
