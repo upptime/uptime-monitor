@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
+const net_1 = require("net");
 const os_1 = require("os");
 const path_1 = require("path");
 const mockCreateMeasurement = jest.fn();
@@ -764,6 +765,101 @@ describe("update globalping handling", () => {
             repo: "repo",
             issue_number: 42,
             state: "closed",
+        });
+    });
+    describe("tcp check", () => {
+        let server;
+        const sockets = [];
+        const listen = (onConnection) => new Promise((resolve) => {
+            server = (0, net_1.createServer)((socket) => {
+                sockets.push(socket);
+                socket.on("error", () => undefined);
+                onConnection(socket);
+            });
+            server.listen(0, "127.0.0.1", () => resolve(server.address().port));
+        });
+        const useTcpSite = (port, site) => getConfig.mockResolvedValue({
+            owner: "owner",
+            repo: "repo",
+            sites: [{ name: "Gateway", url: "127.0.0.1", check: "tcp", port, requestTimeout: 0.2, ...site }],
+            assignees: [],
+            workflowSchedule: {},
+        });
+        const history = () => (0, fs_1.readFileSync)((0, path_1.join)(testCwd, "history", "gateway.yml"), "utf8");
+        afterEach(async () => {
+            sockets.forEach((socket) => socket.destroy());
+            sockets.length = 0;
+            await new Promise((resolve) => server.close(resolve));
+        });
+        it("is up when the banner matches the regex", async () => {
+            const port = await listen((socket) => socket.write("SSH-2.0-OpenSSH_9.9\r\n"));
+            useTcpSite(port, { __dangerous__body_down_if_regex_missing: "^SSH-2\\.0-" });
+            await update(true);
+            expect(history()).toContain("status: up");
+        });
+        it("is down when the port accepts the connection but sends no banner", async () => {
+            const port = await listen(() => undefined);
+            useTcpSite(port, { __dangerous__body_down_if_regex_missing: "^SSH-2\\.0-" });
+            await update(true);
+            expect(history()).toContain("status: down");
+        }, 20000);
+        it("is down when the reply does not match the regex", async () => {
+            const port = await listen((socket) => socket.on("data", () => socket.write('{"status":"starting"}')));
+            useTcpSite(port, {
+                body: "GET /health\r\n",
+                __dangerous__body_down_if_regex_missing: '"status":\\s*"healthy"',
+            });
+            await update(true);
+            expect(history()).toContain("status: down");
+        }, 20000);
+        it("sends the body and supports the substring rules", async () => {
+            const port = await listen((socket) => socket.on("data", (data) => {
+                if (data.toString() === "PING\r\n")
+                    socket.write("+PONG\r\n");
+            }));
+            useTcpSite(port, { body: "PING\r\n", __dangerous__body_down_if_text_missing: "PONG" });
+            await update(true);
+            expect(history()).toContain("status: up");
+        });
+        it("is down when the down marker arrives in a later chunk", async () => {
+            // Regression: the read previously stopped on the first chunk because the
+            // status-up predicate returned true before the down marker arrived.
+            const port = await listen((socket) => {
+                socket.write("READY\n");
+                setTimeout(() => socket.end("DOWN\n"), 80);
+            });
+            useTcpSite(port, { __dangerous__body_down: "DOWN" });
+            await update(true);
+            expect(history()).toContain("status: down");
+        }, 20000);
+        it("is down when a degraded marker arrives in a later chunk", async () => {
+            const port = await listen((socket) => {
+                socket.write("OK\n");
+                setTimeout(() => socket.end("WARNING\n"), 80);
+            });
+            useTcpSite(port, { __dangerous__body_degraded: "WARNING" });
+            await update(true);
+            expect(history()).toContain("status: degraded");
+        }, 20000);
+        it("waits for the full stream before deciding when presence-marker rules are set", async () => {
+            // A positive-match rule confirms "up" early, but a presence-marker rule
+            // can still flip the status down — the read must not exit before EOF.
+            const port = await listen((socket) => {
+                socket.write("+PONG\r\n");
+                setTimeout(() => socket.end("ERR down\n"), 80);
+            });
+            useTcpSite(port, {
+                __dangerous__body_down_if_text_missing: "PONG",
+                __dangerous__body_down: "ERR down",
+            });
+            await update(true);
+            expect(history()).toContain("status: down");
+        }, 20000);
+        it("fails the action when the regex is not valid", async () => {
+            const port = await listen(() => undefined);
+            useTcpSite(port, { __dangerous__body_down_if_regex_missing: "(" });
+            await expect(update(true)).rejects.toThrow(SyntaxError);
+            expect(commit).not.toHaveBeenCalled();
         });
     });
 });
