@@ -20,6 +20,7 @@ const init_check_1 = require("./helpers/init-check");
 const notifme_1 = require("./helpers/notifme");
 const ping_1 = require("./helpers/ping");
 const request_1 = require("./helpers/request");
+const tcp_1 = require("./helpers/tcp");
 const secrets_1 = require("./helpers/secrets");
 const slug_1 = require("./helpers/slug");
 const ssl_date_checker_1 = require("./ssl-date-checker");
@@ -80,7 +81,45 @@ function getStatusFromHttpResult(site, httpCode, data, responseTime) {
     if (site.__dangerous__body_down_if_text_missing &&
         !data.includes((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down_if_text_missing)))
         status = "down";
+    const bodyRegex = getBodyRegex(site);
+    if (bodyRegex && !bodyRegex.test(data))
+        status = "down";
     return status;
+}
+/**
+ * Compile `__dangerous__body_down_if_regex_missing`, if it is set
+ * An invalid pattern is a configuration error, so the error is thrown
+ */
+function getBodyRegex(site) {
+    if (!site.__dangerous__body_down_if_regex_missing)
+        return undefined;
+    return new RegExp((0, environment_1.replaceEnvironmentVariables)(site.__dangerous__body_down_if_regex_missing));
+}
+/**
+ * Whether the site has a rule that checks the response body
+ */
+function hasBodyChecks(site) {
+    return Boolean(site.__dangerous__body_down ||
+        site.__dangerous__body_degraded ||
+        site.__dangerous__body_down_if_text_missing ||
+        site.__dangerous__body_degraded_if_text_missing ||
+        site.__dangerous__body_down_if_regex_missing);
+}
+/**
+ * Whether the site has "positive-match" body rules that can confirm "up"
+ * from a partial response.  These rules mark the site down only when a
+ * pattern is *missing* from the body, so once the pattern is found the
+ * site is definitely up and the TCP read can stop early.
+ *
+ * "Negative" rules (`body_down`, `body_degraded`) mark the site down when
+ * a pattern is *present*.  Absence of the pattern in an early chunk does
+ * not prove the site is up — the marker might arrive in a later chunk —
+ * so the read must wait for EOF / read-timeout / byte cap.
+ */
+function hasPositiveMatchRules(site) {
+    return Boolean(site.__dangerous__body_down_if_text_missing ||
+        site.__dangerous__body_degraded_if_text_missing ||
+        site.__dangerous__body_down_if_regex_missing);
 }
 function getStatusFromCertificateExpiresAt(expiresAt) {
     if (!expiresAt) {
@@ -232,6 +271,9 @@ const update = async (shouldCommit = false) => {
                 }
                 if (site.check === "ws") {
                     throw new Error(`ws is not supported with globalping: ${site.url}`);
+                }
+                else if (site.check === "tcp") {
+                    throw new Error(`tcp is not supported with globalping: ${site.url}`);
                 }
                 else if (site.check === "tcp-ping") {
                     const res = await client.createMeasurement({
@@ -420,6 +462,45 @@ const update = async (shouldCommit = false) => {
                 // All retries exhausted
                 console.log("ERROR tcp-ping all attempts failed", lastError);
                 return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+            }
+            else if (site.check === "tcp") {
+                console.log("Using tcp check instead of curl");
+                // Validate the regex before connecting, so that a bad pattern fails the run
+                getBodyRegex(site);
+                try {
+                    const result = await (0, tcp_1.tcpRead)({
+                        host: (0, environment_1.replaceEnvironmentVariables)(site.url),
+                        port: Number((0, environment_1.replaceEnvironmentVariables)(site.port ? String(site.port) : "")),
+                        payload: site.body ? (0, environment_1.replaceEnvironmentVariables)(site.body) : undefined,
+                        family: site.ipv6 ? 6 : 4,
+                        connectTimeout: (site.connectTimeout || 30) * 1000,
+                        readTimeout: (site.requestTimeout || 10) * 1000,
+                        isDone: hasBodyChecks(site)
+                            ? hasPositiveMatchRules(site) &&
+                                !site.__dangerous__body_down &&
+                                !site.__dangerous__body_degraded
+                                ? // Only positive-match rules (text_missing / regex_missing) are set:
+                                    // they confirm "up" once the pattern is found, so early exit is safe.
+                                    (data) => getStatusFromHttpResult(site, 200, data, 0) === "up"
+                                : // Presence-marker rules (body_down / body_degraded) mark the site down
+                                    // when a pattern appears.  Absence in the first chunk does not prove
+                                    // the site is up — wait for EOF / read-timeout / byte cap.
+                                    () => false
+                            : undefined,
+                    });
+                    const status = getStatusFromHttpResult(site, 200, result.data, result.responseTime);
+                    console.log("Result from tcp check", status, result.responseTime);
+                    return {
+                        result: { httpCode: status === "down" ? 0 : 200 },
+                        responseTime: result.responseTime.toFixed(0),
+                        status,
+                    };
+                }
+                catch (error) {
+                    // Log only the error code: the message can contain a secret host or port
+                    console.log("ERROR tcp check could not connect", error.code);
+                    return { result: { httpCode: 0 }, responseTime: (0).toFixed(0), status: "down" };
+                }
             }
             else if (site.check === "ws") {
                 console.log("Using websocket check instead of curl");
