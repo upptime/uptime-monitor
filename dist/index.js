@@ -415,14 +415,19 @@ exports.DYNAMIC_STRING_LENGTH_DEFAULT = "10";
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.replaceEnvironmentVariables = void 0;
 const constants_1 = __nccwpck_require__(71563);
+/**
+ * Sort names so that a longer name is replaced before a name that is its prefix
+ * (for example, $HOST_PORT before $HOST)
+ */
+const longestFirst = (keys) => [...keys].sort((a, b) => b.length - a.length);
 const replaceEnvironmentVariables = (str) => {
-    Object.keys(process.env).forEach((key) => {
+    longestFirst(Object.keys(process.env)).forEach((key) => {
         str = str.replace(`$${key}`, process.env[key] || `$${key}`);
     });
     const SECRETS_CONTEXT = process.env.SECRETS_CONTEXT || "{}";
     const allSecrets = JSON.parse(SECRETS_CONTEXT);
     const secrets = { ...JSON.parse(JSON.stringify(process.env)), allSecrets };
-    Object.keys(secrets).forEach((key) => {
+    longestFirst(Object.keys(secrets)).forEach((key) => {
         str = str.replace(`$${key}`, secrets[key] || `$${key}`);
     });
     str = substituteRandomNumbers(str);
