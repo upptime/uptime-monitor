@@ -1,3 +1,13 @@
+## v1.46.1 (2026-10-18)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.0...v1.46.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.1.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`15ed1c3`](https://github.com/upptime/uptime-monitor/commit/15ed1c3)  Replace longer variable names first in replaceEnvironmentVariables (#329)
+(Issues: [`#329`](https://github.com/upptime/uptime-monitor/issues/329))- [`65b93f6`](https://github.com/upptime/uptime-monitor/commit/65b93f6)  Parse response time with regex so site names containing &#x27; in &#x27; don&#x27;t break parsing (#331)
+(Issues: [`#331`](https://github.com/upptime/uptime-monitor/issues/331) [`#1188`](https://github.com/upptime/uptime-monitor/issues/1188))
+
 ## v1.46.0 (2026-10-13)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.0) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.45.2...v1.46.0) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.0) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.0.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.0.tar.gz))
