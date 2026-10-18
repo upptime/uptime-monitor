@@ -42,25 +42,17 @@ export const getResponseTimeForSite = async (
   const config = await getConfig();
 
   const data = await getHistoryItems(octokit, owner, repo, slug, 1);
+  /** Commit message example: "🟥 Broken Site is down (500 in 321 ms) [skip ci] [upptime]" */
   const responseTimes: [string, number][] = data
-    .filter(
-      (item) =>
-        item.commit.message.includes(" in ") &&
-        Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()) !== 0 &&
-        !isNaN(Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()))
-    )
-    /**
-     * Parse the commit message
-     * @example "🟥 Broken Site is down (500 in 321 ms) [skip ci] [upptime]"
-     * @returns [Date, 321] where Date is the commit date
-     */
-    .map(
-      (item) =>
-        [
-          (item.commit.author || {}).date,
-          parseInt(item.commit.message.split(" in ")[1].split("ms")[0].trim()),
-        ] as [string, number]
-    )
+    .map((item) => {
+      // Match "(<code> in <time> ms)" so a site name containing " in " (e.g. "Signing in")
+      // can't shift the split point and break parsing.
+      const match = item.commit.message.match(/\((\d+) in (\d+) ms\)/);
+      return [
+        (item.commit.author || {}).date,
+        match ? parseInt(match[2], 10) : NaN,
+      ] as [string, number];
+    })
     .filter((item) => item[1] && !isNaN(item[1]));
 
   const daySum: number[] = responseTimes
