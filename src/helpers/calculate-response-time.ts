@@ -8,6 +8,16 @@ import { getOwnerRepo } from "./secrets";
 /** Calculate the average of some numbers */
 const avg = (array: number[]) => (array.length ? array.reduce((a, b) => a + b) / array.length : 0);
 
+/**
+ * Read the response time from a commit message
+ * Matches " in <number> ms" so that a site name containing " in " (e.g. "Signing in") is not mistaken for it
+ * @example "🟥 Broken Site is down (500 in 321 ms) [skip ci] [upptime]" => 321
+ */
+export const responseTimeFromCommitMessage = (message: string) => {
+  const match = message.match(/ in (\d+) ?ms/);
+  return match ? parseInt(match[1]) : NaN;
+};
+
 /** Get commits for a history file */
 const getHistoryItems = async (
   octokit: Octokit,
@@ -43,23 +53,12 @@ export const getResponseTimeForSite = async (
 
   const data = await getHistoryItems(octokit, owner, repo, slug, 1);
   const responseTimes: [string, number][] = data
-    .filter(
-      (item) =>
-        item.commit.message.includes(" in ") &&
-        Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()) !== 0 &&
-        !isNaN(Number(item.commit.message.split(" in ")[1].split("ms")[0].trim()))
-    )
-    /**
-     * Parse the commit message
-     * @example "🟥 Broken Site is down (500 in 321 ms) [skip ci] [upptime]"
-     * @returns [Date, 321] where Date is the commit date
-     */
     .map(
       (item) =>
-        [
-          (item.commit.author || {}).date,
-          parseInt(item.commit.message.split(" in ")[1].split("ms")[0].trim()),
-        ] as [string, number]
+        [(item.commit.author || {}).date, responseTimeFromCommitMessage(item.commit.message)] as [
+          string,
+          number
+        ]
     )
     .filter((item) => item[1] && !isNaN(item[1]));
 
