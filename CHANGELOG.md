@@ -1,3 +1,12 @@
+## v1.46.2 (2026-10-19)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.1...v1.46.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.2.tar.gz))
+
+### 🔒 Security issues
+
+- [`51ff496`](https://github.com/upptime/uptime-monitor/commit/51ff496)  Bump npm_and_yarn group: nodemailer 6-&gt;10, axios 0.x-&gt;1, js-yaml 4-&gt;5, security patches (#328)
+(Issues: [`#328`](https://github.com/upptime/uptime-monitor/issues/328))
+
 ## v1.46.1 (2026-10-18)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.1) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.0...v1.46.1) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.1) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.1.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.1.tar.gz))
