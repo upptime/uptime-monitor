@@ -1,3 +1,12 @@
+## v1.46.3 (2026-10-21)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.2...v1.46.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.3.tar.gz))
+
+### 🔒 Security issues
+
+- [`3f5a610`](https://github.com/upptime/uptime-monitor/commit/3f5a610)  Update follow-redirects to 1.16.1 (#332)
+(Issues: [`#332`](https://github.com/upptime/uptime-monitor/issues/332))
+
 ## v1.46.2 (2026-10-19)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.2) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.1...v1.46.2) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.2) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.2.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.2.tar.gz))
