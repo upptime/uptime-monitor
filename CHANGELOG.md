@@ -1,3 +1,12 @@
+## v1.46.4 (2026-10-24)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.3...v1.46.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.4.tar.gz))
+
+### 🐛 Bug fixes
+
+- [`909a902`](https://github.com/upptime/uptime-monitor/commit/909a902)  Log the correct history page number (#333)
+(Issues: [`#333`](https://github.com/upptime/uptime-monitor/issues/333))
+
 ## v1.46.3 (2026-10-21)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.3) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.2...v1.46.3) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.3) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.3.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.3.tar.gz))
