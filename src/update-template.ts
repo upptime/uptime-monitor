@@ -50,8 +50,8 @@ export const updateTemplate = async () => {
   console.log("Added new .github/workflows");
 
   // Delete these specific template files
-  const delteFiles = ["README.pt-br.md", ".templaterc.json"];
-  for await (const file of delteFiles)
+  const deleteFiles = ["README.pt-br.md", ".templaterc.json"];
+  for await (const file of deleteFiles)
     try {
       if (`${owner}/${repo}` !== "upptime/upptime") await remove(join(".", file));
     } catch (error) {}

@@ -16,7 +16,7 @@ const getHistoryItems = async (
   slug: string,
   page: number
 ) => {
-  console.log("Fetching history - page", 1);
+  console.log("Fetching history - page", page);
   const results = await octokit.repos.listCommits({
     owner,
     repo,
