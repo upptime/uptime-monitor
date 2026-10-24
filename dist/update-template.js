@@ -33,8 +33,8 @@ const updateTemplate = async () => {
     await (0, fs_extra_1.writeFile)((0, path_1.join)(".", ".github", "workflows", "uptime.yml"), await (0, workflows_1.uptimeCiWorkflow)());
     console.log("Added new .github/workflows");
     // Delete these specific template files
-    const delteFiles = ["README.pt-br.md", ".templaterc.json"];
-    for await (const file of delteFiles)
+    const deleteFiles = ["README.pt-br.md", ".templaterc.json"];
+    for await (const file of deleteFiles)
         try {
             if (`${owner}/${repo}` !== "upptime/upptime")
                 await (0, fs_extra_1.remove)((0, path_1.join)(".", file));

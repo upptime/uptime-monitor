@@ -12,7 +12,7 @@ const secrets_1 = require("./secrets");
 const avg = (array) => (array.length ? array.reduce((a, b) => a + b) / array.length : 0);
 /** Get commits for a history file */
 const getHistoryItems = async (octokit, owner, repo, slug, page) => {
-    console.log("Fetching history - page", 1);
+    console.log("Fetching history - page", page);
     const results = await octokit.repos.listCommits({
         owner,
         repo,

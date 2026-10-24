@@ -155,7 +155,7 @@ const secrets_1 = __nccwpck_require__(10020);
 const avg = (array) => (array.length ? array.reduce((a, b) => a + b) / array.length : 0);
 /** Get commits for a history file */
 const getHistoryItems = async (octokit, owner, repo, slug, page) => {
-    console.log("Fetching history - page", 1);
+    console.log("Fetching history - page", page);
     const results = await octokit.repos.listCommits({
         owner,
         repo,
@@ -2610,8 +2610,8 @@ const updateTemplate = async () => {
     await (0, fs_extra_1.writeFile)((0, path_1.join)(".", ".github", "workflows", "uptime.yml"), await (0, workflows_1.uptimeCiWorkflow)());
     console.log("Added new .github/workflows");
     // Delete these specific template files
-    const delteFiles = ["README.pt-br.md", ".templaterc.json"];
-    for await (const file of delteFiles)
+    const deleteFiles = ["README.pt-br.md", ".templaterc.json"];
+    for await (const file of deleteFiles)
         try {
             if (`${owner}/${repo}` !== "upptime/upptime")
                 await (0, fs_extra_1.remove)((0, path_1.join)(".", file));
