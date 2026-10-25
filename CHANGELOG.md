@@ -1,3 +1,12 @@
+## v1.46.5 (2026-10-25)
+
+[📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.5) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.4...v1.46.5) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.5) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.5.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.5.tar.gz))
+
+### 🔒 Security issues
+
+- [`5fde2e4`](https://github.com/upptime/uptime-monitor/commit/5fde2e4)  Update direct nodemailer to 10.1.4 (#334)
+(Issues: [`#334`](https://github.com/upptime/uptime-monitor/issues/334))
+
 ## v1.46.4 (2026-10-24)
 
 [📝 Release notes](https://github.com/upptime/uptime-monitor/releases/tag/v1.46.4) · [💻 Compare](https://github.com/upptime/uptime-monitor/compare/v1.46.3...v1.46.4) · [🔖 Tag](https://github.com/upptime/uptime-monitor/tree/v1.46.4) · 🗄️ Archive ([zip](https://github.com/upptime/uptime-monitor/archive/v1.46.4.zip) · [tar.gz](https://github.com/upptime/uptime-monitor/archive/v1.46.4.tar.gz))
